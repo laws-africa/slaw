@@ -1,9 +1,3 @@
-require 'nokogiri'
-
-require 'slaw/xml_support'
-require 'slaw/lifecyle_event'
-require 'slaw/namespace'
-
 module Slaw
   # Wraps an AkomaNtoso 2.0 XML document describing an Act.
   class Act
@@ -16,45 +10,17 @@ module Slaw
     attr_accessor :doc, :meta, :body, :num, :year, :id_uri
     attr_accessor :filename, :mtime
 
-    # Find all XML files in +path+ and return
-    # a list of instances.
-    def self.discover(path)
-      acts = []
-
-      for fname in Dir.glob("#{path}/**/*.xml")
-        acts << self.from_file(fname)
-      end
-
-      acts
-    end
-
-    # Create an instance by reading in the act from a file.
-    def self.from_file(filename)
-      act = self.new
-      act.file(filename)
-      act
-    end
-
-    def self.from_node(node)
+    def self.for_node(node)
       @@acts[node.document]
     end
 
-    # Try to find an act who's FRBRuri matches this one,
-    # returning nil on failure
-    def self.from_uri(uri)
-      @@acts.each do |key, act|
-        return act if act.id_uri == uri
-      end
-
-      nil
-    end
-
     # Create a new instance
-    def initialize
+    def initialize(filename=nil)
+      self.load(filename) if filename
     end
 
     # Load the XML from +filename+
-    def file(filename)
+    def load(filename)
       @filename = filename
       @mtime = File::mtime(@filename)
 
@@ -227,11 +193,6 @@ module Slaw
     # Returns the publication element, if any.
     def publication
       @meta.at_xpath('./a:publication', a: AkomaNtoso::NS)
-    end
-
-    # A SupportFilesCollection instance for this act.
-    def support_files
-      @support_files ||= SupportFileCollection.for_act(self)
     end
 
     # Has this by-law been repealed?
