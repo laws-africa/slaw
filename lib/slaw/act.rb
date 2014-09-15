@@ -192,7 +192,7 @@ module Slaw
 
     # Returns the publication element, if any.
     def publication
-      @meta.at_xpath('./a:publication', a: AkomaNtoso::NS)
+      @meta.at_xpath('./a:publication', a: NS)
     end
 
     # Has this by-law been repealed?
@@ -213,7 +213,7 @@ module Slaw
       return nil unless repeal_el
 
       source_id = repeal_el['source'].sub(/^#/, '')
-      @meta.at_xpath("./a:references/a:passiveRef[@id='#{source_id}']", a: AkomaNtoso::NS)
+      @meta.at_xpath("./a:references/a:passiveRef[@id='#{source_id}']", a: NS)
     end
 
     # The XML element representing the repeal of this act, or nil
@@ -223,11 +223,11 @@ module Slaw
       #   <eventRef id="e2" date="2012-04-26" source="#amendment-1" type="amendment"/>
       #   <eventRef id="e3" date="2014-01-17" source="#repeal" type="repeal"/>
       # </lifecycle>
-      @meta.at_xpath('./a:lifecycle/a:eventRef[@type="repeal"]', a: AkomaNtoso::NS)
+      @meta.at_xpath('./a:lifecycle/a:eventRef[@type="repeal"]', a: NS)
     end
 
     def manifestation_date
-      node = @meta.at_xpath('./a:identification/a:FRBRManifestation/a:FRBRdate[@name="Generation"]', a: AkomaNtoso::NS)
+      node = @meta.at_xpath('./a:identification/a:FRBRManifestation/a:FRBRdate[@name="Generation"]', a: NS)
       node && node['date']
     end
 

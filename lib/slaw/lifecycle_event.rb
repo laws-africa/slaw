@@ -1,5 +1,3 @@
-require 'slaw/namespace'
-
 module Slaw
   # An event in the lifecycle of an act
   class LifecycleEvent
