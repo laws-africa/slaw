@@ -43,7 +43,7 @@ module Slaw
         builder.instruct! :xml, :version=>"1.0", :encoding=>"UTF-8"
         builder.akomaNtoso("xmlns:xsi"=> "http://www.w3.org/2001/XMLSchema-instance", 
                            "xsi:schemaLocation" => "http://www.akomantoso.org/2.0 akomantoso20.xsd",
-                           "xmlns" => AN) { |b|
+                           "xmlns" => NS) { |b|
           tree.to_xml(b)
         }
 
