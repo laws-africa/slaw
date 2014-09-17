@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Greg Kempe"]
   spec.email         = ["greg@kempe.net"]
   spec.summary       = %q{A lightweight library for using Akoma Ntoso acts in Ruby.}
-  spec.description   = %q{Slaw is a lightweight library for manipulating Akoma Ntoso acts in Ruby.}
+  spec.description   = %q{Slaw is a lightweight library for rendering and generating Akoma Ntoso acts from plain text and PDF documents.}
   spec.homepage      = ""
   spec.license       = "MIT"
 

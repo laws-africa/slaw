@@ -1,6 +1,6 @@
 # Slaw
 
-Slaw is a lightweight Ruby library for parsing and rendering Akoma Ntoso XML Act documents.
+Slaw is a lightweight library for rendering and generating Akoma Ntoso acts from plain text and PDF documents.
 It is used to power [openbylaws.org.za](http://openbylaws.org.za).
 
 ## Installation
