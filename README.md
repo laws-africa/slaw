@@ -1,6 +1,7 @@
 # Slaw
 
-TODO: Write a gem description
+Slaw is a lightweight Ruby library for parsing and rendering Akoma Ntoso XML Act documents.
+It is used to power [openbylaws.org.za](http://openbylaws.org.za).
 
 ## Installation
 
