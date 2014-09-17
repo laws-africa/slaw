@@ -10,6 +10,17 @@ module Slaw
     # The builder uses a grammar to break down a plain-text version of an act into a
     # syntax tree. This tree can then be serialized into an Akoma Ntoso compatible
     # XML document.
+    #
+    # @example Parse some text into a well-formed document
+    #     builder = Slaw::Builder.new
+    #     xml = builder.parse_text(text)
+    #     doc = builder.parse_xml(xml)
+    #     builder.postprocess(doc)
+    #
+    # @example A quicker way to build a well-formed document
+    #     builder = Slaw::Builder.new
+    #     doc = builder.parse_and_process_text(text)
+    #
     class Builder
       include Slaw::Namespace
       include Slaw::Logging
@@ -21,6 +32,16 @@ module Slaw
 
       def initialize(parse_options={})
         @parse_options = parse_options
+      end
+
+      # Do all the work necessary to parse text into a well-formed XML document.
+      #
+      # @param text [String] the text to parse
+      # @param root [Symbol] the root element of the grammar
+      #
+      # @return [Nokogiri::XML::Document] a well formed document
+      def parse_and_process_text(text, root=:bylaw)
+        postprocess(parse_xml(parse_text(text, root)))
       end
 
       # Parse text into XML. You should still run {#postprocess} on the
@@ -97,11 +118,15 @@ module Slaw
       # Postprocess an XML document.
       #
       # @param doc [Nokogiri::XML::Document]
+      #
+      # @return [Nokogiri::XML::Document] the updated document
       def postprocess(doc)
         normalise_headings(doc)
         find_short_title(doc)
         link_definitions(doc)
         nest_blocklists(doc)
+
+        doc
       end
 
       # Change CAPCASE headings into Sentence case.

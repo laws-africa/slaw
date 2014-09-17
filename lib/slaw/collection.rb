@@ -50,7 +50,7 @@ module Slaw
     # Try to find an act who's FRBRuri matches this one,
     # returning nil on failure
     #
-    # @param [String] the uri to look for
+    # @param uri [String] the uri to look for
     #
     # @return [Act, nil] the act, or nil
     def for_uri(uri)

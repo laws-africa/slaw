@@ -219,7 +219,7 @@ module Slaw
     # where `term+ is the plain text term and `defn` is
     # the {Nokogiri::XML::Node} containing the definition.
     #
-    # @return Hash{String => [String, Nokogiri::XML::Node]} map from strings to `[term, definition]` pairs
+    # @return {String => List(String, Nokogiri::XML::Node)} map from strings to `[term, definition]` pairs
     def term_definitions
       terms = {}
 
