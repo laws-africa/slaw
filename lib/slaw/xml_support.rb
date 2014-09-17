@@ -6,7 +6,7 @@ class Nokogiri::XML::Node
   # always have numbers.
   def num
     node = at_xpath('./a:num', a: Slaw::NS)
-    node ? node.text.gsub('.', '') : nil
+    node ? node.text.gsub(/\.$/, '') : nil
   end
 
   def heading
