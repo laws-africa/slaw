@@ -3,28 +3,36 @@ module Slaw
     module Blocklists
       include Slaw::Namespace
 
-      # Correctly re-nest nested block lists.
+      # Correctly re-nest nested block lists. We do this by identifying the
+      # numbering format of each item in the list and comparing it with the
+      # surrounding elements. When the numbering format changes, we start
+      # a new nested list.
       #
-      # (a)
-      # (b)
-      # (i)
-      # (ii)
-      # (aa)
-      # (bb)
-      # (c)
-      # (d)
+      # We make sure to handle special cases such as `(i)` coming between
+      # `(h)` and `(j)` versus being at the start of a `(i), (ii), (iii)`
+      # list.
+      #
+      #     (a)
+      #     (b)
+      #     (i)
+      #     (ii)
+      #     (aa)
+      #     (bb)
+      #     (c)
+      #     (d)
       #
       # becomes
       #
-      # (a)
-      # (b)
-      #   (i)
-      #   (ii)
-      #     (aa)
-      #     (bb)
-      # (c)
-      # (d)
+      #     (a)
+      #     (b)
+      #       (i)
+      #       (ii)
+      #         (aa)
+      #         (bb)
+      #     (c)
+      #     (d)
       #
+      # @param doc [Nokogiri::XML::Document] the document
       def self.nest_blocklists(doc)
         doc.xpath('//a:blockList', a: NS).each do |blocklist|
           items = blocklist.xpath('a:item', a: NS)
