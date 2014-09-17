@@ -59,14 +59,6 @@ module Slaw
       @short_title
     end
 
-    def url_path
-      "/#{@country}/acts/#{@year}/#{@num}/"
-    end
-
-    def url_file
-      "act-#{@year}-#{@num}"
-    end
-
     # Has this act been amended?
     def amended?
       @doc.at_xpath('/a:akomaNtoso/a:act', a: NS)['contains'] != 'originalVersion'

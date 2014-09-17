@@ -77,7 +77,7 @@
         <xsl:value-of select="@refersTo" />
       </xsl:attribute>
 
-      <xsl:attribute name="href"><xsl:value-of select="$base_url" />definitions/#def-<xsl:value-of select="translate(@refersTo, '#', '')" /></xsl:attribute>
+      <xsl:attribute name="href"><xsl:value-of select="$base_url" />/definitions/#def-<xsl:value-of select="translate(@refersTo, '#', '')" /></xsl:attribute>
 
       <xsl:apply-templates />
     </a>

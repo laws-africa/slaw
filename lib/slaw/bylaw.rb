@@ -38,14 +38,6 @@ module Slaw
       @short_title
     end
 
-    def url_path
-      "/#{@country}/by-law/#{@region}/#{@year}/#{@name}/"
-    end
-
-    def url_file
-      @name
-    end
-    
     def nature
       "by-law"
     end
