@@ -18,7 +18,6 @@ require 'slaw/parse/cleanser'
 require 'slaw/parse/error'
 require 'slaw/parse/grammar_helpers'
 require 'slaw/parse/nodes'
-require 'slaw/elasticsearch'
 
 module Slaw
 end

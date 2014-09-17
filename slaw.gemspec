@@ -23,7 +23,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 2.14.1"
 
   spec.add_runtime_dependency "nokogiri", "~> 1.6.0"
-  spec.add_runtime_dependency "elasticsearch", "~> 1.0.5"
   spec.add_runtime_dependency "treetop", "~> 1.5"
   spec.add_runtime_dependency "builder", "~> 3.2.2"
   spec.add_runtime_dependency "log4r", "~> 1.1.10"
