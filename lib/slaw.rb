@@ -11,6 +11,7 @@ require 'slaw/xml_support'
 require 'slaw/lifecycle_event'
 
 require 'slaw/render/html'
+require 'slaw/elasticsearch'
 
 module Slaw
 end
