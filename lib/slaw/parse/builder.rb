@@ -5,23 +5,42 @@ require 'treetop'
 
 module Slaw
   module Parse
-    # Primary class for building Akoma Ntoso documents.
+    # The primary class for building Akoma Ntoso documents from plain text documents.
     #
-    # It can convert from plain text a new Akoma Ntoso document, or
-    # update existing documents.
+    # The builder uses a grammar to break down a plain-text version of an act into a
+    # syntax tree. This tree can then be serialized into an Akoma Ntoso compatible
+    # XML document.
     class Builder
       include Slaw::Namespace
       include Slaw::Logging
 
       Treetop.load(File.dirname(__FILE__) + "/bylaw.treetop")
 
+      # [Hash] A Hash of options that are made available to the parser when parsing.
       attr_accessor :parse_options
 
-      def initialize()
-        @parse_options = {}
+      def initialize(parse_options={})
+        @parse_options = parse_options
       end
 
-      # Try to parse plain text into a syntax tree
+      # Parse text into XML. You should still run {#postprocess} on the
+      # resulting XML to normalise it.
+      #
+      # @param text [String] the text to parse
+      # @param root [Symbol] the root element of the grammar
+      #
+      # @return [String] an XML string
+      def parse_text(text, root=:bylaw)
+        tree = text_to_syntax_tree(text, root)
+        xml_from_syntax_tree(tree)
+      end
+
+      # Parse plain text into a syntax tree.
+      #
+      # @param text [String] the text to parse
+      # @param root [Symbol] the root element of the grammar
+      #
+      # @return [Object] the root of the resulting parse tree, usually a Treetop::Node object
       def text_to_syntax_tree(text, root=:bylaw)
         parser = Slaw::Parse::BylawParser.new
         parser.options = @parse_options
@@ -37,7 +56,12 @@ module Slaw
         tree
       end
 
-      # Generate an XML document from the given syntax tree.
+      # Generate an XML document from the given syntax tree. You should still
+      # run {#postprocess} on the resulting XML to normalise it.
+      #
+      # @param tree [Object] a Treetop::Node object
+      #
+      # @return [String] an XML string
       def xml_from_syntax_tree(tree)
         s = ""
         builder = ::Builder::XmlMarkup.new(indent: 2, target: s)
@@ -52,38 +76,37 @@ module Slaw
         s
       end
 
+      # Parse a string into a Nokogiri::XML::Document
+      #
+      # @param xml [String] string to parse
+      #
+      # @return [Nokogiri::XML::Document]
       def parse_xml(xml)
         Nokogiri::XML(xml, &:noblanks)
       end
 
+      # Serialise a Nokogiri::XML::Document into a string
+      #
+      # @param doc [Nokogiri::XML::Document] document
+      #
+      # @return [String] pretty printed string
       def to_xml(doc)
         doc.to_xml(indent: 2)
       end
 
-      # Run various postprocesses on the XML, and return
-      # the updated XML.
+      # Postprocess an XML document.
+      #
+      # @param doc [Nokogiri::XML::Document]
       def postprocess(doc)
         normalise_headings(doc)
         find_short_title(doc)
-        sanitise(doc)
-      end
-
-      # Do sanitisations, such as finding and linking definitions
-      def sanitise(doc)
         link_definitions(doc)
         nest_blocklists(doc)
       end
 
-      # recalculate ids for <term> elements
-      def renumber_terms(doc)
-        logger.info("Renumbering terms")
-
-        doc.xpath('//a:term', a: NS).each_with_index do |term, i|
-          term['id'] = "trm#{i}"
-        end
-      end
-
       # Change CAPCASE headings into Sentence case.
+      #
+      # @param doc [Nokogiri::XML::Document]
       def normalise_headings(doc)
         logger.info("Normalising headings")
 
@@ -96,6 +119,8 @@ module Slaw
       end
 
       # Find the short title and add it as an FRBRalias element in the meta section
+      #
+      # @param doc [Nokogiri::XML::Document]
       def find_short_title(doc)
         logger.info("Finding short title")
 
@@ -119,6 +144,8 @@ module Slaw
 
       # Find definitions of terms and introduce them into the
       # meta section of the document.
+      #
+      # @param doc [Nokogiri::XML::Document]
       def link_definitions(doc)
         logger.info("Finding and linking definitions")
 
@@ -128,6 +155,12 @@ module Slaw
         renumber_terms(doc)
       end
 
+      # Find `def` elements in the document and return a Hash from
+      # term ids to the text of each term
+      #
+      # @param doc [Nokogiri::XML::Document]
+      #
+      # @return [Hash{String, String}]
       def find_definitions(doc)
         guess_at_definitions(doc)
 
@@ -241,6 +274,21 @@ module Slaw
         end
       end
 
+      # recalculate ids for <term> elements
+      def renumber_terms(doc)
+        logger.info("Renumbering terms")
+
+        doc.xpath('//a:term', a: NS).each_with_index do |term, i|
+          term['id'] = "trm#{i}"
+        end
+      end
+
+      # Correctly nest blocklists.
+      #
+      # The grammar gives us flat blocklists, we need to introspect the
+      # numbering of the lists to correctly nest them.
+      #
+      # @param doc [Nokogiri::XML::Document]
       def nest_blocklists(doc)
         logger.info("Nesting blocklists")
 
