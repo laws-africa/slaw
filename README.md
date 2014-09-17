@@ -1,4 +1,4 @@
-# Slaw
+# Slaw [![Build Status](https://travis-ci.org/longhotsummer/slaw.svg)](http://travis-ci.org/longhotsummer/slaw)
 
 Slaw is a lightweight library for rendering and generating Akoma Ntoso acts from plain text and PDF documents.
 It is used to power [openbylaws.org.za](http://openbylaws.org.za).

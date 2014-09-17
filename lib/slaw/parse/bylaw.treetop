@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'slaw/parse/grammar_helpers'
 
 module Slaw
