@@ -2,6 +2,7 @@ require 'nokogiri'
 
 require 'slaw/version'
 require 'slaw/namespace'
+require 'slaw/logging'
 
 require 'slaw/act'
 require 'slaw/bylaw'
@@ -11,6 +12,12 @@ require 'slaw/xml_support'
 require 'slaw/lifecycle_event'
 
 require 'slaw/render/html'
+require 'slaw/parse/blocklists'
+require 'slaw/parse/builder'
+require 'slaw/parse/cleanser'
+require 'slaw/parse/error'
+require 'slaw/parse/grammar_helpers'
+require 'slaw/parse/nodes'
 require 'slaw/elasticsearch'
 
 module Slaw

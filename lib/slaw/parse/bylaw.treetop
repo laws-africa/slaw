@@ -1,0 +1,259 @@
+require 'slaw/parse/grammar_helpers'
+
+module Slaw
+  module Parse
+    grammar Bylaw
+      include Slaw::Parse::GrammarHelpers
+
+      ########
+      # major containers
+
+      rule bylaw
+        preamble
+        chapters:chapter*
+        schedules:schedules <Bylaw>
+      end
+
+      rule preamble
+        empty_line*
+        statements:naked_statement* <Preamble>
+      end
+
+      rule chapter
+        heading:chapter_heading?
+        parts:part+ <Chapter>
+      end
+
+      rule part
+        heading:part_heading?
+        sections:section+ <Part>
+      end
+
+      rule section
+        section_title
+        subsections:subsection* <Section>
+      end
+
+      rule subsection
+        statement:(numbered_statement / naked_statement)
+        blocklist:blocklist? <Subsection>
+      end
+
+      rule schedules
+        schedules:schedule* <ScheduleContainer>
+      end
+
+      rule schedule
+        schedule_heading
+        statements:schedule_statement* <Schedule>
+      end
+
+      ##########
+      # headings
+
+      rule chapter_heading
+        space? chapter_heading_prefix heading:(whitespace content)? eol
+        <ChapterHeading>
+      end
+
+      rule part_heading
+        space? part_heading_prefix eol? space? content eol
+        <PartHeading>
+      end
+
+      rule section_title
+        section_title_1 / section_1_title
+      end
+
+      rule section_title_1
+        &{ |s| options[:section_number_after_title] }
+        # Section title
+        # 1. Section content
+        content eol
+        section_title_prefix whitespace <SectionTitleType1>
+      end
+
+      rule section_1_title
+        # 1. Section title
+        # Section content
+        #
+        # Additionally, the section title is optional.
+        !{ |s| options[:section_number_after_title] }
+        section_title_prefix section_title:section_title_content? eol?
+        <SectionTitleType2>
+      end
+
+      rule section_title_content
+        space !numbered_statement_prefix content eol
+        # if a section title ends in a non-character or it's really long, it's probably section content
+        !{ |s| s[2].text_value[-1] =~ /[^a-zA-z]/ or s[2].text_value.length > 100 }
+      end
+
+      rule schedule_heading
+        space? schedule_heading_prefix
+        space? "\""? num:alphanums? "\""? space?
+        eol
+        schedule_title:schedule_title_content?
+      end
+
+      rule schedule_title_content
+        space? content eol
+
+        # if a schedule title ends in a non-character or it's really long, it's probably content
+        !{ |s| s[1].text_value[-1] =~ /[^a-zA-z]/ or s[1].text_value.length > 100 }
+      end
+
+      ##########
+      # statements
+
+      rule numbered_statement
+        space? numbered_statement_prefix whitespace? (!blocklist_item_prefix content eol)? <NumberedStatement>
+      end
+
+      rule naked_statement
+        space? !(part / chapter / section / schedule) content eol
+        <NakedStatement>
+      end
+
+      rule schedule_statement
+        space? (!schedule_heading) content eol
+      end
+
+      ##########
+      # prefixes
+
+      rule part_heading_prefix
+        'part'i space alphanums ':'?
+      end
+
+      rule chapter_heading_prefix
+        'chapter'i space alphanums
+      end
+
+      rule schedule_heading_prefix
+        'schedule'i 's'i?
+      end
+
+      rule section_title_prefix
+        number_letter '.'?
+      end
+
+      rule numbered_statement_prefix
+        # there are two subsection handling syntaxes:
+        # 
+        # (1) foo
+        # (2A) foo
+        #
+        # and
+        #
+        # 8.2 for
+        # 8.3 bar
+        #
+        # The second is less common, but this allows us to handle it.
+        # Note that it is usually accompanied by a similar list number format:
+        #
+        # 8.2.1 item 1
+        # 8.2.2 item 2
+        #
+        # which aren't subsections, but lists, so force the space at the end
+        # of the number to catch this case.
+        num:('(' number_letter ')')
+        /
+        num:dotted_number_2 '.'? space
+      end
+
+      ##########
+      # blocklists
+
+      rule blocklist
+        blocklist_item+ <Blocklist>
+      end
+
+      rule blocklist_item
+        space? blocklist_item_prefix whitespace? item_content:(!blocklist_item_prefix content eol)?
+        <BlocklistItem>
+      end
+
+      rule blocklist_item_prefix
+        ('(' letter_ordinal ')') / dotted_number_3
+      end
+
+      rule letter_ordinal
+        letter (letter / digit)*
+      end
+
+      #########
+      ## one line of basic content
+
+      rule content
+        # anything but a newline, followed by a
+        # newline or end of file (without consuming the newline)
+        [^\n]+ &eol
+      end
+
+      ##########
+      # terminals
+
+      # eg. 2, 2A, 2b
+      rule number_letter
+        number letter*
+      end
+
+      rule dotted_number_3
+        number '.' number ('.' number)+
+      end
+
+      rule dotted_number_2
+        number '.' number
+      end
+
+      rule number
+        digit+
+      end
+
+      rule digit
+        [0-9]
+      end
+
+      rule letter
+        [a-zA-Z]
+      end
+
+      rule alphanums
+        [a-zA-Z0-9]+
+      end
+
+      rule quotes
+        ["“”]
+      end
+      
+      rule non_quotes
+        [^"“”]
+      end
+
+      ##########
+      # whitespace
+
+      rule space
+        [ \t]+
+      end
+
+      rule whitespace
+        [ \t\n]*
+      end
+
+      rule empty_line
+        space? newline
+      end
+
+      rule eol
+        newline
+        empty_line*
+      end
+
+      rule newline
+        "\n"
+      end
+    end
+  end
+end
