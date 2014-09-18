@@ -19,5 +19,7 @@ require 'slaw/parse/error'
 require 'slaw/parse/grammar_helpers'
 require 'slaw/parse/nodes'
 
+require 'slaw/extract/extractor'
+
 module Slaw
 end

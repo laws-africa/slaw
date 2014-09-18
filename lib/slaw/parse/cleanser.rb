@@ -50,16 +50,17 @@ module Slaw
          .gsub("", '')
       end
 
+      # change weird quotes to normal ones
       def fix_quotes(s)
-        # change weird quotes to normal ones
         s.gsub(/‘‘|’’|''/, '"')
       end
 
+      # tabs to spaces
       def expand_tabs(s)
-        # tabs to spaces
         s.gsub(/\t/, ' ')
       end
 
+      # Try to remove boilerplate lines found in many files, such as page numbers.
       def remove_boilerplate(s)
         # nuke any line to do with Sabinet and the government printer
         s.gsub(/^.*Sabinet.*Government Printer.*$/i, '')\
@@ -72,6 +73,8 @@ module Slaw
          .gsub(/^\s*page \d+( of \d+)?\s*\n/i, '')
       end
 
+      # Get rid of whitespace at the end of lines and at the start and end of the 
+      # entire string.
       def chomp(s)
         # trailing whitespace at end of lines
         s = s.gsub(/ +$/, '')
@@ -85,8 +88,11 @@ module Slaw
         s.end_with?("\n") ? s : (s + "\n")
       end
 
-      # make educated guesses about lines that should
-      # have been broken but haven't, and break them
+      # Make educated guesses about lines that should
+      # have been broken but haven't, and break them.
+      #
+      # This is very dependent on a locale's legislation grammar, there are
+      # lots of rules of thumb that make this work.
       def break_lines(s)
         # often we find a section title munged onto the same line as its first statement
         # eg:
@@ -115,8 +121,8 @@ module Slaw
         s
       end
 
-      # finds likely candidates for unnecessarily broken lines
-      # and  them
+      # Find likely candidates for unnecessarily broken lines
+      # and unbreaks them.
       def unbreak_lines(s)
         lines = s.split(/\n/)
         output = []
@@ -141,8 +147,8 @@ module Slaw
         output.join("\n")
       end
 
-      # do our best to remove table of contents at the start,
-      # it really confuses the grammer
+      # Do our best to remove table of contents at the start,
+      # it really confuses the grammer.
       def strip_toc(s)
         # first, try to find 'TABLE OF CONTENTS' anywhere within the first 4K of text,
         if toc_start = s[0..4096].match(/TABLE OF CONTENTS/i)
