@@ -63,7 +63,14 @@ module Slaw
     # Parse the XML contained in the file-like object `io`
     # @param io [file-like] io object with XML
     def parse(io)
-      @doc = Nokogiri::XML(io)
+      self.doc = Nokogiri::XML(io)
+    end
+
+    # Set the XML document backing this bylaw.
+    #
+    # @param doc [Nokogiri::XML::Document] document
+    def doc=(doc)
+      @doc = doc
       @meta = @doc.at_xpath('/a:akomaNtoso/a:act/a:meta', a: NS)
       @body = @doc.at_xpath('/a:akomaNtoso/a:act/a:body', a: NS)
 

@@ -4,6 +4,9 @@ require 'spec_helper'
 require 'slaw'
 
 describe Slaw::Parse::Builder do
+  let(:parser) { double("parser") }
+  subject { Slaw::Parse::Builder.new(parser: parser) }
+
   describe '#nest_blocklists' do
     it 'should nest simple blocks' do
       doc = xml2doc(subsection(<<XML

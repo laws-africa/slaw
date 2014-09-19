@@ -16,8 +16,6 @@ require 'slaw/parse/blocklists'
 require 'slaw/parse/builder'
 require 'slaw/parse/cleanser'
 require 'slaw/parse/error'
-require 'slaw/parse/grammar_helpers'
-require 'slaw/parse/nodes'
 
 require 'slaw/extract/extractor'
 

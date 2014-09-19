@@ -12,61 +12,77 @@ module Slaw
     # XML document.
     #
     # @example Parse some text into a well-formed document
-    #     builder = Slaw::Builder.new
+    #     builder = Slaw::Builder.new(parser: parser)
     #     xml = builder.parse_text(text)
     #     doc = builder.parse_xml(xml)
     #     builder.postprocess(doc)
     #
     # @example A quicker way to build a well-formed document
-    #     builder = Slaw::Builder.new
     #     doc = builder.parse_and_process_text(text)
     #
     class Builder
       include Slaw::Namespace
       include Slaw::Logging
 
-      Treetop.load(File.dirname(__FILE__) + "/bylaw.treetop")
+      @@parsers = {}
 
-      # [Hash] A Hash of options that are made available to the parser when parsing.
-      attr_accessor :parse_options
-
-      def initialize(parse_options={})
-        @parse_options = parse_options
+      # Create a new builder.
+      #
+      # Specify either `:parser` or `:grammar_file` and `:grammar_class`.
+      #
+      # @option opts [Treetop::Runtime::CompiledParser] :parser parser to use
+      # @option opts [String] :grammar_file grammar filename to load a parser from
+      # @option opts [String] :grammar_class name of the class that the grammar will generate
+      def initialize(opts={})
+        if opts[:parser]
+          @parser = opts[:parser]
+        elsif opts[:grammar_file] and opts[:grammar_class]
+          if @@parsers[opts[:grammar_class]]
+            # already compiled the grammar, just use it
+            @parser = @@parsers[opts[:grammar_class]]
+          else
+            # load the grammar
+            Treetop.load(opts[:grammar_file])
+            cls = eval(opts[:grammar_class])
+            @parser = cls.new
+          end
+        else
+          raise ArgumentError.new("Specify either :parser or :grammar_file and :grammar_class")
+        end
       end
 
       # Do all the work necessary to parse text into a well-formed XML document.
       #
       # @param text [String] the text to parse
-      # @param root [Symbol] the root element of the grammar
+      # @param parse_options [Hash] options to parse to the parser
       #
       # @return [Nokogiri::XML::Document] a well formed document
-      def parse_and_process_text(text, root=:bylaw)
-        postprocess(parse_xml(parse_text(text, root)))
+      def parse_and_process_text(text, parse_options={})
+        postprocess(parse_xml(parse_text(text, parse_options)))
       end
 
       # Parse text into XML. You should still run {#postprocess} on the
       # resulting XML to normalise it.
       #
       # @param text [String] the text to parse
-      # @param root [Symbol] the root element of the grammar
+      # @param parse_options [Hash] options to parse to the parser
       #
       # @return [String] an XML string
-      def parse_text(text, root=:bylaw)
-        tree = text_to_syntax_tree(text, root)
+      def parse_text(text, parse_options={})
+        tree = text_to_syntax_tree(text, parse_options)
         xml_from_syntax_tree(tree)
       end
 
       # Parse plain text into a syntax tree.
       #
       # @param text [String] the text to parse
-      # @param root [Symbol] the root element of the grammar
+      # @param parse_options [Hash] options to parse to the parser
       #
-      # @return [Object] the root of the resulting parse tree, usually a Treetop::Node object
-      def text_to_syntax_tree(text, root=:bylaw)
-        parser = Slaw::Parse::BylawParser.new
-        parser.options = @parse_options
-
-        tree = parser.parse(text, {root: root})
+      # @return [Object] the root of the resulting parse tree, usually a Treetop::Runtime::SyntaxNode object
+      def text_to_syntax_tree(text, parse_options={})
+        logger.info("Parsing...")
+        tree = @parser.parse(text, parse_options)
+        logger.info("Parsed!")
 
         if tree.nil?
           raise Slaw::Parse::ParseError.new(parser.failure_reason || "Couldn't match to grammar",
@@ -80,7 +96,7 @@ module Slaw
       # Generate an XML document from the given syntax tree. You should still
       # run {#postprocess} on the resulting XML to normalise it.
       #
-      # @param tree [Object] a Treetop::Node object
+      # @param tree [Object] a Treetop::Runtime::SyntaxNode object
       #
       # @return [String] an XML string
       def xml_from_syntax_tree(tree)

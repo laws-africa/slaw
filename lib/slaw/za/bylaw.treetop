@@ -3,7 +3,7 @@
 require 'slaw/parse/grammar_helpers'
 
 module Slaw
-  module Parse
+  module ZA
     grammar Bylaw
       include Slaw::Parse::GrammarHelpers
 

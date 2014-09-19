@@ -1,5 +1,5 @@
 module Slaw
-  module Parse
+  module ZA
     module Bylaw
       class Bylaw < Treetop::Runtime::SyntaxNode
         def to_xml(b)
