@@ -7,17 +7,11 @@ module Slaw
   # is not identified by a year and a number, and therefore has a different FRBR uri structure.
   class ByLaw < Act
 
-    # [String] The region this by-law applies to
-    attr_accessor :region
+    # [String] The code of the region this by-law applies to
+    attr_reader :region
     
     # [String] A short file-like name of this by-law, unique within its year and region
-    attr_accessor :name
-
-    def initialize(*args)
-      super(*args)
-
-      @nature = "by-law"
-    end
+    attr_reader :name
 
     # ByLaws don't have numbers, use their short-name instead
     def num
@@ -35,16 +29,33 @@ module Slaw
       title
     end
 
+    # Set the short (file-like) name for this bylaw. This changes the {#id_uri}.
+    def name=(value)
+      @name = value
+      rebuild_id_uri
+    end
+
+    # Set the region code for this bylaw. This changes the {#id_uri}.
+    def region=(value)
+      @region = value
+      rebuild_id_uri
+    end
+
     protected
 
-    def extract_id
+    def extract_id_uri
       # /za/by-law/cape-town/2010/public-parks
 
       @id_uri = @meta.at_xpath('./a:identification/a:FRBRWork/a:FRBRuri', a: NS)['value']
-      empty, @country, type, @region, date, @name = @id_uri.split('/')
+      empty, @country, @nature, @region, date, @name = @id_uri.split('/')
 
       # yyyy[-mm-dd]
       @year = date.split('-', 2)[0]
+    end
+
+    def build_id_uri
+      # /za/by-law/cape-town/2010/public-parks
+      "/#{@country}/#{@nature}/#{@region}/#{@year}/#{@name}"
     end
 
   end

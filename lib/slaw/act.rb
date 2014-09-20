@@ -18,28 +18,28 @@ module Slaw
     attr_accessor :doc
     
     # [Nokogiri::XML::Node] The `meta` XML node
-    attr_accessor :meta
+    attr_reader :meta
 
     # [Nokogiri::XML::Node] The `body` XML node
-    attr_accessor :body
+    attr_reader :body
 
     # [String] The year this act was published
-    attr_accessor :year 
+    attr_reader :year
     
     # [String] The act number in the year this act was published
-    attr_accessor :num
+    attr_reader :num
 
     # [String] The FRBR URI of this act, which uniquely identifies it globally
-    attr_accessor :id_uri
+    attr_reader :id_uri
 
     # [String, nil] The source filename, or nil
-    attr_accessor :filename
+    attr_reader :filename
     
     # [Time, nil] The mtime of when the source file was last modified
-    attr_accessor :mtime
+    attr_reader :mtime
 
     # The underlying nature of this act, usually `act` although subclasses my override this.
-    attr_accessor :nature
+    attr_reader :nature
 
     # Get the act that wraps the document that owns this XML node
     # @param node [Nokogiri::XML::Node]
@@ -52,7 +52,6 @@ module Slaw
     # @param filename [String] filename to load XML from
     def initialize(filename=nil)
       self.load(filename) if filename
-      @nature = "act"
     end
 
     # Load the XML in `filename` into this instance
@@ -80,16 +79,69 @@ module Slaw
 
       @@acts[@doc] = self
 
-      extract_id
+      extract_id_uri
     end
 
-    # Parse the FRBR Uri into its constituent parts
-    def _extract_id
-      @id_uri = @meta.at_xpath('./a:identification/a:FRBRWork/a:FRBRuri', a: NS)['value']
-      empty, @country, type, date, @num = @id_uri.split('/')
+    # Directly set the FRBR URI of this act. This must be a well-formed URI,
+    # such as `/za/act/2002/2`. This will, in turn, update the {#year}, {#nature},
+    # {#country} and {#num} attributes.
+    #
+    # You probably don't want to use this method. Instead, set each component
+    # (such as {#date}) manually.
+    #
+    # @param uri [String] new URI
+    def id_uri=(uri)
+      for component, xpath in [['main',      '//a:act/a:meta/a:identification'],
+                               ['schedules', '//a:component/a:doc/a:meta/a:identification']] do
+        ident = @doc.at_xpath(xpath, a: NS)
+        next if not ident
 
-      # yyyy-mm-dd
-      @year = date.split('-', 2)[0]
+        # work
+        ident.at_xpath('a:FRBRWork/a:FRBRthis', a: NS)['value'] = "#{uri}/#{component}"
+        ident.at_xpath('a:FRBRWork/a:FRBRuri', a: NS)['value'] = uri
+
+        # expression
+        ident.at_xpath('a:FRBRExpression/a:FRBRthis', a: NS)['value'] = "#{uri}/#{component}/eng@"
+        ident.at_xpath('a:FRBRExpression/a:FRBRuri', a: NS)['value'] = "#{uri}/eng@"
+
+        # manifestation
+        ident.at_xpath('a:FRBRManifestation/a:FRBRthis', a: NS)['value'] = "#{uri}/#{component}/eng@"
+        ident.at_xpath('a:FRBRManifestation/a:FRBRuri', a: NS)['value'] = "#{uri}/eng@"
+      end
+
+      extract_id_uri
+    end
+
+    # The date at which this act was first created/promulgated.
+    #
+    # @return [String] date, YYYY-MM-DD
+    def date
+      node = @meta.at_xpath('./a:identification/a:FRBRWork/a:FRBRdate[@name="Generation"]', a: NS)
+      node && node['date']
+    end
+
+    # Set the date at which this act was first created/promulgated. This is usually the same
+    # as the publication date but this is not enforced.
+    #
+    # This also updates the {#year} of this act, which in turn updates the {#id_uri}.
+    #
+    # @param date [String] date, YYYY-MM-DD
+    def date=(value)
+      for frbr in ['FRBRWork', 'FRBRExpression'] do
+        @meta.at_xpath("./a:identification/a:#{frbr}/a:FRBRdate[@name=\"Generation\"]", a: NS)['date'] = value
+      end
+
+      self.year = value.split('-')[0]
+    end
+
+    # Set the year for this act. You probably want to call {#date=} instead.
+    #
+    # This will also update the {#id_uri} but will not change {#date} at all.
+    #
+    # @param year [String, Number] year
+    def year=(year)
+      @year = year.to_s
+      rebuild_id_uri
     end
 
     # An applicable short title for this act, either from the `FRBRalias` element
@@ -322,22 +374,6 @@ module Slaw
       @meta.at_xpath('./a:lifecycle/a:eventRef[@type="repeal"]', a: NS)
     end
 
-    # The date at which this act was first created/promulgated.
-    #
-    # @return [String] date, YYYY-MM-DD
-    def date
-      node = @meta.at_xpath('./a:identification/a:FRBRWork/a:FRBRdate[@name="Generation"]', a: NS)
-      node && node['date']
-    end
-
-    # Set the date at which this act was first created/promulgated. This is usually the same
-    # as the publication date but this is not enforced.
-    def date=(value)
-      for frbr in ['FRBRWork', 'FRBRExpression'] do
-        @meta.at_xpath("./a:identification/a:#{frbr}/a:FRBRdate[@name=\"Generation\"]", a: NS)['date'] = value
-      end
-    end
-
     # The date at which this particular XML manifestation of this document was generated.
     #
     # @return [String] date, YYYY-MM-DD
@@ -353,12 +389,23 @@ module Slaw
     protected
 
     # Parse the FRBR Uri into its constituent parts
-    def extract_id
+    def extract_id_uri
       @id_uri = @meta.at_xpath('./a:identification/a:FRBRWork/a:FRBRuri', a: NS)['value']
-      empty, @country, type, date, @num = @id_uri.split('/')
+      empty, @country, @nature, date, @num = @id_uri.split('/')
 
       # yyyy-mm-dd
       @year = date.split('-', 2)[0]
+    end
+
+    def build_id_uri
+      # /za/act/2002/3
+      "/#{@country}/#{@nature}/#{@year}/#{@num}"
+    end
+
+    # This rebuild's the FRBR uri for this document using its constituent components. It will
+    # update the XML then re-split the URI and grab its components.
+    def rebuild_id_uri
+      self.id_uri = build_id_uri
     end
   end
 

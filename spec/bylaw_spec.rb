@@ -34,9 +34,30 @@ describe Slaw::ByLaw do
 
   it 'should get/set the work date' do
     subject.date.should == '2002-02-28'
+
     subject.date = '2014-01-01'
     subject.date.should == '2014-01-01'
     subject.meta.at_xpath('./a:identification/a:FRBRWork/a:FRBRdate[@name="Generation"]', a: Slaw::NS)['date'].should == '2014-01-01'
     subject.meta.at_xpath('./a:identification/a:FRBRExpression/a:FRBRdate[@name="Generation"]', a: Slaw::NS)['date'].should == '2014-01-01'
+
+    subject.id_uri.should == '/za/by-law/cape-town/2014/community-fire-safety'
+  end
+
+  it 'should update the uri when the year changes' do
+    subject.id_uri.should == '/za/by-law/cape-town/2002/community-fire-safety'
+    subject.year = '1980'
+    subject.id_uri.should == '/za/by-law/cape-town/1980/community-fire-safety'
+  end
+
+  it 'should update the uri when the region changes' do
+    subject.id_uri.should == '/za/by-law/cape-town/2002/community-fire-safety'
+    subject.region = 'foo-bar'
+    subject.id_uri.should == '/za/by-law/foo-bar/2002/community-fire-safety'
+  end
+
+  it 'should update the uri when the name changes' do
+    subject.id_uri.should == '/za/by-law/cape-town/2002/community-fire-safety'
+    subject.name = 'foo-bar'
+    subject.id_uri.should == '/za/by-law/cape-town/2002/foo-bar'
   end
 end
