@@ -38,8 +38,11 @@ module Slaw
     # [Time, nil] The mtime of when the source file was last modified
     attr_reader :mtime
 
-    # The underlying nature of this act, usually `act` although subclasses my override this.
+    # [String] The underlying nature of this act, usually `act` although subclasses my override this.
     attr_reader :nature
+
+    # [Nokogiri::XML::Schema] schema to validate against
+    attr_accessor :schema
 
     # Get the act that wraps the document that owns this XML node
     # @param node [Nokogiri::XML::Node]
@@ -52,6 +55,7 @@ module Slaw
     # @param filename [String] filename to load XML from
     def initialize(filename=nil)
       self.load(filename) if filename
+      @schema = nil
     end
 
     # Load the XML in `filename` into this instance
@@ -63,8 +67,9 @@ module Slaw
       File.open(filename) { |f| parse(f) }
     end
     
-    # Parse the XML contained in the file-like object `io`
-    # @param io [file-like] io object with XML
+    # Parse the XML contained in the file-like or String object `io`
+    #
+    # @param io [String, file-like] io object or String with XML
     def parse(io)
       self.doc = Nokogiri::XML(io)
     end
@@ -380,6 +385,30 @@ module Slaw
     def manifestation_date
       node = @meta.at_xpath('./a:identification/a:FRBRManifestation/a:FRBRdate[@name="Generation"]', a: NS)
       node && node['date']
+    end
+
+    # Validate the XML behind this document against the Akoma Ntoso schema and return
+    # any errors.
+    #
+    # @return [Object] array of errors, possibly empty
+    def validate
+      @schema ||= Dir.chdir(File.dirname(__FILE__) + "/schemas") { Nokogiri::XML::Schema(File.read('akomantoso20.xsd')) }
+      @schema.validate(@doc)
+    end
+
+    # Does this document validate against the schema?
+    #
+    # @see {#validate}
+    def validates?
+      validate.empty?
+    end
+
+    # Serialise the XML for this act, passing `args` to the Nokogiri serialiser.
+    # The most useful argument is usually `indent: 2` if you like your XML perdy.
+    #
+    # @return [String] serialized XML
+    def to_xml(*args)
+      @doc.to_xml(*args)
     end
 
     def inspect

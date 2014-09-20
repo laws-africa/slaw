@@ -60,4 +60,9 @@ describe Slaw::ByLaw do
     subject.name = 'foo-bar'
     subject.id_uri.should == '/za/by-law/cape-town/2002/foo-bar'
   end
+
+  it 'should validate' do
+    subject.validate.should == []
+    subject.validates?.should be_true
+  end
 end
