@@ -31,4 +31,12 @@ describe Slaw::ByLaw do
     subject.publication['showAs'].should == 'foo'
     subject.publication['number'].should == '1234'
   end
+
+  it 'should get/set the work date' do
+    subject.date.should == '2002-02-28'
+    subject.date = '2014-01-01'
+    subject.date.should == '2014-01-01'
+    subject.meta.at_xpath('./a:identification/a:FRBRWork/a:FRBRdate[@name="Generation"]', a: Slaw::NS)['date'].should == '2014-01-01'
+    subject.meta.at_xpath('./a:identification/a:FRBRExpression/a:FRBRdate[@name="Generation"]', a: Slaw::NS)['date'].should == '2014-01-01'
+  end
 end

@@ -318,6 +318,22 @@ module Slaw
       @meta.at_xpath('./a:lifecycle/a:eventRef[@type="repeal"]', a: NS)
     end
 
+    # The date at which this act was first created/promulgated.
+    #
+    # @return [String] date, YYYY-MM-DD
+    def date
+      node = @meta.at_xpath('./a:identification/a:FRBRWork/a:FRBRdate[@name="Generation"]', a: NS)
+      node && node['date']
+    end
+
+    # Set the date at which this act was first created/promulgated. This is usually the same
+    # as the publication date but this is not enforced.
+    def date=(value)
+      for frbr in ['FRBRWork', 'FRBRExpression'] do
+        @meta.at_xpath("./a:identification/a:#{frbr}/a:FRBRdate[@name=\"Generation\"]", a: NS)['date'] = value
+      end
+    end
+
     # The date at which this particular XML manifestation of this document was generated.
     #
     # @return [String] date, YYYY-MM-DD
