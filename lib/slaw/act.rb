@@ -261,6 +261,24 @@ module Slaw
       @meta.at_xpath('./a:publication', a: NS)
     end
 
+    # Update the publication details of the act. All elements are optional.
+    #
+    # @option details [String] :name name of the publication
+    # @option details [String] :number publication number
+    # @option details [String] :date date of publication (YYYY-MM-DD)
+    def published!(details)
+      node = @meta.at_xpath('./a:publication', a: NS)
+      unless node
+        node = @doc.create_element('publication')
+        @meta.at_xpath('./a:identification', a: NS).after(node)
+      end
+
+      node['showAs'] = details[:name] if details.has_key? :name
+      node['name'] = details[:name] if details.has_key? :name
+      node['date'] = details[:date] if details.has_key? :date
+      node['number'] = details[:number] if details.has_key? :number
+    end
+
     # Has this by-law been repealed?
     #
     # @return [Boolean]
