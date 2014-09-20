@@ -38,6 +38,9 @@ module Slaw
     # [Time, nil] The mtime of when the source file was last modified
     attr_accessor :mtime
 
+    # The underlying nature of this act, usually `act` although subclasses my override this.
+    attr_accessor :nature
+
     # Get the act that wraps the document that owns this XML node
     # @param node [Nokogiri::XML::Node]
     # @return [Act] owning act
@@ -49,6 +52,7 @@ module Slaw
     # @param filename [String] filename to load XML from
     def initialize(filename=nil)
       self.load(filename) if filename
+      @nature = "act"
     end
 
     # Load the XML in `filename` into this instance
@@ -76,7 +80,7 @@ module Slaw
 
       @@acts[@doc] = self
 
-      _extract_id
+      extract_id
     end
 
     # Parse the FRBR Uri into its constituent parts
@@ -342,13 +346,19 @@ module Slaw
       node && node['date']
     end
 
-    # The underlying nature of this act, usually `act` although subclasses my override this.
-    def nature
-      "act"
-    end
-
     def inspect
       "<#{self.class.name} @id_uri=\"#{@id_uri}\">"
+    end
+
+    protected
+
+    # Parse the FRBR Uri into its constituent parts
+    def extract_id
+      @id_uri = @meta.at_xpath('./a:identification/a:FRBRWork/a:FRBRuri', a: NS)['value']
+      empty, @country, type, date, @num = @id_uri.split('/')
+
+      # yyyy-mm-dd
+      @year = date.split('-', 2)[0]
     end
   end
 

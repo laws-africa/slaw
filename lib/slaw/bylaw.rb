@@ -13,14 +13,10 @@ module Slaw
     # [String] A short file-like name of this by-law, unique within its year and region
     attr_accessor :name
 
-    def _extract_id
-      # /za/by-law/cape-town/2010/public-parks
+    def initialize(*args)
+      super(*args)
 
-      @id_uri = @meta.at_xpath('./a:identification/a:FRBRWork/a:FRBRuri', a: NS)['value']
-      empty, @country, type, @region, date, @name = @id_uri.split('/')
-
-      # yyyy[-mm-dd]
-      @year = date.split('-', 2)[0]
+      @nature = "by-law"
     end
 
     # ByLaws don't have numbers, use their short-name instead
@@ -39,8 +35,17 @@ module Slaw
       title
     end
 
-    def nature
-      "by-law"
+    protected
+
+    def extract_id
+      # /za/by-law/cape-town/2010/public-parks
+
+      @id_uri = @meta.at_xpath('./a:identification/a:FRBRWork/a:FRBRuri', a: NS)['value']
+      empty, @country, type, @region, date, @name = @id_uri.split('/')
+
+      # yyyy[-mm-dd]
+      @year = date.split('-', 2)[0]
     end
+
   end
 end
