@@ -28,15 +28,15 @@ module Slaw
       name
     end
 
-    def short_title
+    def title
       node = @meta.at_xpath('./a:identification/a:FRBRWork/a:FRBRalias', a: NS)
-      short_title = node ? node['value'] : "(Unknown)"
+      title = node ? node['value'] : "(Unknown)"
 
-      if amended? and not short_title.end_with?("as amended")
-        short_title = short_title + " as amended"
+      if amended? and not title.end_with?("as amended")
+        title = title + " as amended"
       end
 
-      short_title
+      title
     end
 
     def nature

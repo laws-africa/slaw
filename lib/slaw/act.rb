@@ -91,9 +91,20 @@ module Slaw
     # An applicable short title for this act, either from the `FRBRalias` element
     # or based on the act number and year.
     # @return [String]
-    def short_title
+    def title
       node = @meta.at_xpath('./a:identification/a:FRBRWork/a:FRBRalias', a: NS)
       node ? node['value'] : "Act #{num} of #{year}"
+    end
+
+    # Change the title of this act.
+    def title=(value)
+      node = @meta.at_xpath('./a:identification/a:FRBRWork/a:FRBRalias', a: NS)
+      unless node
+        node = @doc.create_element('FRBRalias')
+        @meta.at_xpath('./a:identification/a:FRBRWork/a:FRBRuri', a: NS).after(node)
+      end
+
+      node['value'] = value
     end
 
     # Has this act been amended? This is determined by testing the `contains`
