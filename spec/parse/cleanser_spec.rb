@@ -61,6 +61,10 @@ permit; and
     it 'should clean up wrapped definition lines after pdf' do
       subject.break_lines('“agricultural holding” means a portion of land not less than 0.8 hectares in extent used solely or mainly for the purpose of agriculture, horticulture or for breeding or keeping domesticated animals, poultry or bees; “approved” means as approved by the Council; “bund wall” means a containment wall surrounding an above ground storage tank, constructed of an impervious material and designed to contain 110% of the contents of the tank; “certificate of fitness” means a certificate contemplated in section 20; “certificate of registration” means a certificate contemplated in section 35;').should == "“agricultural holding” means a portion of land not less than 0.8 hectares in extent used solely or mainly for the purpose of agriculture, horticulture or for breeding or keeping domesticated animals, poultry or bees;\n“approved” means as approved by the Council;\n“bund wall” means a containment wall surrounding an above ground storage tank, constructed of an impervious material and designed to contain 110% of the contents of the tank;\n“certificate of fitness” means a certificate contemplated in section 20;\n“certificate of registration” means a certificate contemplated in section 35;"
     end
+
+    it 'should break at CAPCASE TO Normal Case' do
+      subject.break_lines('CHAPTER 3 PARKING METER PARKING GROUNDS Place of parking 7. No person may park or cause or permit to be parked any vehicle or allow a vehicle to be or remain in a parking meter parking ground otherwise than in a parking bay.').should == "CHAPTER 3 PARKING METER PARKING GROUNDS\nPlace of parking 7. No person may park or cause or permit to be parked any vehicle or allow a vehicle to be or remain in a parking meter parking ground otherwise than in a parking bay."
+    end
   end
 
   describe '#strip_toc' do

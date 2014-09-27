@@ -118,6 +118,9 @@ module Slaw
         # "foo" means ...; "bar" means
         s = s.gsub(/; (["”“][^"”“]+?["”“] means)/, ";\n\\1")
 
+        # CHAPTER 4 PARKING METER PARKING GROUNDS Place of parking
+        s = s.gsub(/([A-Z0-9 ]{5,}) ([A-Z][a-z ]{5,})/, "\\1\n\\2")
+
         s
       end
 
