@@ -125,7 +125,12 @@ between section titles before and after a section number:
     Definitions
     1. In this by-law, the following words ...
 
-This must be set by the user before parsing.
+This must be set by the user before parsing:
+
+```ruby
+generator = Slaw::ZA::BylawGenerator.new
+generator.parser.options = {section_number_after_title: true}
+```
 
 The parser does its best not to choke on input it doesn't understand, preferring a best effort
 to a completely accurate result. For example it may not be able to work out a section heading
@@ -156,6 +161,17 @@ from the node, if any. This makes it both fast and flexible, since it's easy to
 apply layout rules with CSS.
 
 Slaw can render either an entire document like this, or just a portion of the XML tree.
+
+```ruby
+# render an entire document
+renderer = Slaw::Render::HTMLRenderer.new
+puts renderer.render(bylaw.doc, '/')
+
+# render the first section only
+puts renderer.render(bylaw.sections[0], '/')
+```
+
+For more information, see [/lib/slaw/render/html.rb](/lib/slaw/render/html.rb).
 
 ## Meta-data
 
