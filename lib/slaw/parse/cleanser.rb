@@ -66,11 +66,15 @@ module Slaw
         s.gsub(/^.*Sabinet.*Government Printer.*$/i, '')\
          .gsub(/^.*Provincial Gazette \d+.*$/i, '')\
          .gsub(/^.*Provinsiale Koerant \d+.*$/i, '')\
+         .gsub(/^.*PROVINCIAL GAZETTE.*$/, '')\
+         .gsub(/^.*PROVINSIALE KOERANT.*$/, '')\
          .gsub(/^\s*\d+\s*$/, '')\
+         .gsub(/^.*This gazette is also available.*$/, '')\
         # get rid of date lines
          .gsub(/^\d+\s+\w+\s+\d+$/, '')\
         # get rid of page number lines
-         .gsub(/^\s*page \d+( of \d+)?\s*\n/i, '')
+         .gsub(/^\s*page \d+( of \d+)?\s*\n/i, '')\
+         .gsub(/^\s*\d*\s*No\. \d+$/, '')
       end
 
       # Get rid of whitespace at the end of lines and at the start and end of the 
