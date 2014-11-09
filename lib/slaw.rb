@@ -17,6 +17,7 @@ require 'slaw/parse/builder'
 require 'slaw/parse/cleanser'
 require 'slaw/parse/error'
 
+require 'slaw/za/bylaw_generator'
 require 'slaw/extract/extractor'
 
 module Slaw

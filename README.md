@@ -70,7 +70,7 @@ extractor = Slaw::Extract::Extractor.new
 text = extractor.extract_from_pdf('/path/to/file.pdf')
 
 # parse the text into a XML and
-generator = Slaw::ZA::ByLawGenerator.new
+generator = Slaw::ZA::BylawGenerator.new
 bylaw = generator.generate_from_text(text)
 puts bylaw.to_xml(indent: 2)
 
