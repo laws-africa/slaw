@@ -129,4 +129,12 @@ Definitions and interpretation
 1. (1) In this Chapter, unless the context otherwise indicates-"
     end
   end
+
+  describe '#remove_boilerplate' do
+    it 'should handle no toc' do
+      s = "(2)The provisions of section 12 (1) (a), (b), (d) and (g) and section 12(2), (3), (4) and (5), read with the necessary changes, apply to the taking into custody of cats.\nClaiming of impounded dogs and cats\n_____________________________________________________________________________________________ ___________ By-laws relating to Dogs and Cats for Promulgation\n14. (1) Any person may claim an impounded dog or cat if he or she –\n(a) satisfies the poundmaster that he or she is the owner or is otherwise entitled to the custody of the dog or cat concerned;"
+
+      subject.remove_boilerplate(s).should == "(2)The provisions of section 12 (1) (a), (b), (d) and (g) and section 12(2), (3), (4) and (5), read with the necessary changes, apply to the taking into custody of cats.\nClaiming of impounded dogs and cats\n\n14. (1) Any person may claim an impounded dog or cat if he or she –\n(a) satisfies the poundmaster that he or she is the owner or is otherwise entitled to the custody of the dog or cat concerned;"
+    end
+  end
 end

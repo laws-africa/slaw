@@ -74,7 +74,9 @@ module Slaw
          .gsub(/^\d+\s+\w+\s+\d+$/, '')\
         # get rid of page number lines
          .gsub(/^\s*page \d+( of \d+)?\s*\n/i, '')\
-         .gsub(/^\s*\d*\s*No\. \d+$/, '')
+         .gsub(/^\s*\d*\s*No\. \d+$/, '')\
+        # get rid of lines with lots of ____ or ---- chars, they're usually pagebreaks
+         .gsub(/^.*[_-]{5}.*$/, '')
       end
 
       # Get rid of whitespace at the end of lines and at the start and end of the 
