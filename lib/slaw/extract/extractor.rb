@@ -1,4 +1,5 @@
 require 'open3'
+require 'tempfile'
 
 module Slaw
   module Extract
@@ -46,14 +47,23 @@ module Slaw
       #
       # @return [String] extracted text
       def extract_from_pdf(filename)
-        cmd = pdf_to_text_cmd(filename)
-        logger.info("Executing: #{cmd}")
-        stdout, status = Open3.capture2(*cmd)
+        retried = false
 
-        if status == 0
-          cleanup(stdout)
-        else
-          nil
+        while true
+          cmd = pdf_to_text_cmd(filename)
+          logger.info("Executing: #{cmd}")
+          stdout, status = Open3.capture2(*cmd)
+
+          case status.exitstatus
+          when 0
+            return cleanup(stdout)
+          when 3
+            return nil if retried
+            retried = true
+            self.remove_pdf_password(filename)
+          else
+            return nil
+          end
         end
       end
 
@@ -77,6 +87,20 @@ module Slaw
         text = @cleanser.reformat(text)
 
         text
+      end
+
+      def remove_pdf_password(filename)
+        file = Tempfile.new('steno')
+        begin
+          logger.info("Trying to remove password from #{filename}")
+          cmd = "gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=#{file.path} -c .setpdfwrite -f #{filename}".split(" ")
+          logger.info("Executing: #{cmd}")
+          Open3.capture2(*cmd)
+          FileUtils.move(file.path, filename)
+        ensure
+          file.close
+          file.unlink
+        end
       end
 
       # Get location of the pdftotext executable for all instances.
