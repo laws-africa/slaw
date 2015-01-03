@@ -85,9 +85,9 @@ module Slaw
         logger.info("Parsed!")
 
         if tree.nil?
-          raise Slaw::Parse::ParseError.new(parser.failure_reason || "Couldn't match to grammar",
-                                            line: parser.failure_line || 0,
-                                            column: parser.failure_column || 0)
+          raise Slaw::Parse::ParseError.new(@parser.failure_reason || "Couldn't match to grammar",
+                                            line: @parser.failure_line || 0,
+                                            column: @parser.failure_column || 0)
         end
 
         tree
