@@ -31,16 +31,16 @@ Or install it with:
 To run PDF extraction you will also need [xpdf](http://www.foolabs.com/xpdf/) and
 If you're on a Mac, you can use:
 
-    brew install xpdf
+    $ brew install xpdf
 
 You may also need Ghostscript to remove password protection from PDF files. This is
 installed by default on most systems (including Mac). On Ubuntu you can use:
 
-    sudo apt-get install ghostscript
+    $ sudo apt-get install ghostscript
 
 The simplest way to use Slaw is via the commandline:
 
-    slaw convert myfile.pdf
+    $ slaw convert myfile.pdf
 
 ## Overview
 
