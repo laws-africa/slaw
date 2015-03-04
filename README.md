@@ -38,6 +38,10 @@ installed by default on most systems (including Mac). On Ubuntu you can use:
 
     sudo apt-get install ghostscript
 
+The simplest way to use Slaw is via the commandline:
+
+    slaw convert myfile.pdf
+
 ## Overview
 
 Slaw generates Acts in the [Akoma Ntoso](http://www.akomantoso.org) 2.0 XML
