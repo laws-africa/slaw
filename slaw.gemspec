@@ -26,4 +26,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "treetop", "~> 1.5"
   spec.add_runtime_dependency "builder", "~> 3.2.2"
   spec.add_runtime_dependency "log4r", "~> 1.1.10"
+  spec.add_runtime_dependency "thor", "~> 0.19.1"
 end
