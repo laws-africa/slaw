@@ -6,11 +6,15 @@ require 'slaw'
 class SlawCLI < Thor
   # TODO: support different grammars and locales
 
+  class_option :verbose, type: :boolean, desc: "Display log output on stderr"
+
   desc "parse FILE", "parse FILE into Akoma Ntoso XML"
   option :input, enum: ['text', 'pdf'], desc: "Type of input if it can't be determined automatically"
   option :pdftotext, desc: "Location of the pdftotext binary if not in PATH"
   option :definitions, type: :boolean, desc: "Find and link definitions (this can be slow). Default: false"
   def parse(name)
+    logging
+
     Slaw::Extract::Extractor.pdftotext_path = options[:pdftotext] if options[:pdftotext]
     extractor = Slaw::Extract::Extractor.new
 
@@ -30,6 +34,14 @@ class SlawCLI < Thor
     generator.builder.link_definitions(act.doc) if options[:definitions]
 
     puts act.to_xml(indent: 2)
+  end
+
+  no_commands do
+    def logging
+      logger = Log4r::Logger.new('Slaw')
+      logger.outputters = Log4r::Outputter.stderr
+      logger.outputters[0].level = options[:verbose] ? Log4r::DEBUG : Log4r::ERROR
+    end
   end
 end
 
