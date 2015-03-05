@@ -1,5 +1,6 @@
 require 'open3'
 require 'tempfile'
+require 'mimemagic'
 
 module Slaw
   module Extract
@@ -31,13 +32,19 @@ module Slaw
       def extract_from_file(filename)
         ext = filename[-4..-1].downcase
 
-        case ext
-        when '.pdf'
+        mimetype = get_mimetype(filename)
+
+        case mimetype && mimetype.type
+        when 'application/pdf'
           extract_from_pdf(filename)
-        when '.txt'
+        when 'text/plain', nil
           extract_from_text(filename)
         else
-          raise ArgumentError.new("Unsupported file type #{ext}")
+          if mimetype.text?
+            extract_from_text(filename)
+          else
+            raise ArgumentError.new("Unsupported file type #{ext} (#{mimetype || unknown})")
+          end
         end
       end
 
@@ -101,6 +108,11 @@ module Slaw
           file.close
           file.unlink
         end
+      end
+
+      def get_mimetype(filename)
+        File.open(filename) { |f| MimeMagic.by_magic(f) } \
+          || MimeMagic.by_path(filename)
       end
 
       # Get location of the pdftotext executable for all instances.

@@ -7,7 +7,7 @@ class SlawCLI < Thor
   # TODO: support different grammars and locales
 
   desc "parse FILE", "parse FILE into Akoma Ntoso XML"
-  option :input, enum: ['text', 'pdf'], desc: "Type of input, determined by file extension by default."
+  option :input, enum: ['text', 'pdf'], desc: "Type of input if it can't be determined automatically"
   option :pdftotext, desc: "Location of the pdftotext binary if not in PATH"
   def parse(name)
     Slaw::Extract::Extractor.pdftotext_path = options[:pdftotext] if options[:pdftotext]
