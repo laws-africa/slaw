@@ -139,7 +139,6 @@ module Slaw
       def postprocess(doc)
         normalise_headings(doc)
         find_short_title(doc)
-        link_definitions(doc)
         nest_blocklists(doc)
 
         doc

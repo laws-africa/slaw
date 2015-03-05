@@ -9,6 +9,7 @@ class SlawCLI < Thor
   desc "parse FILE", "parse FILE into Akoma Ntoso XML"
   option :input, enum: ['text', 'pdf'], desc: "Type of input if it can't be determined automatically"
   option :pdftotext, desc: "Location of the pdftotext binary if not in PATH"
+  option :definitions, type: :boolean, desc: "Find and link definitions (this can be slow). Default: false"
   def parse(name)
     Slaw::Extract::Extractor.pdftotext_path = options[:pdftotext] if options[:pdftotext]
     extractor = Slaw::Extract::Extractor.new
@@ -24,6 +25,10 @@ class SlawCLI < Thor
 
     generator = Slaw::ActGenerator.new
     act = generator.generate_from_text(text)
+
+    # definitions?
+    generator.builder.link_definitions(act.doc) if options[:definitions]
+
     puts act.to_xml(indent: 2)
   end
 end
