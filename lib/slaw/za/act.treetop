@@ -1,19 +1,20 @@
 # encoding: UTF-8
 
 require 'slaw/parse/grammar_helpers'
+require 'slaw/za/act_nodes'
 
 module Slaw
   module ZA
-    grammar Bylaw
+    grammar Act
       include Slaw::Parse::GrammarHelpers
 
       ########
       # major containers
 
-      rule bylaw
+      rule act
         preamble
         chapters:chapter*
-        schedules:schedules <Bylaw>
+        schedules:schedules <Act>
       end
 
       rule preamble

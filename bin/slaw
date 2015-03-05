@@ -22,9 +22,9 @@ class SlawCLI < Thor
       text = extractor.extract_from_file(name)
     end
 
-    generator = Slaw::ZA::BylawGenerator.new
-    bylaw = generator.generate_from_text(text)
-    puts bylaw.to_xml(indent: 2)
+    generator = Slaw::ActGenerator.new
+    act = generator.generate_from_text(text)
+    puts act.to_xml(indent: 2)
   end
 end
 
