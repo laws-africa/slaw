@@ -4,13 +4,13 @@ require 'thor'
 require 'slaw'
 
 class SlawCLI < Thor
-  desc "convert FILE", "convert FILE into Akoma Ntoso XML"
-  option :input, enum: ['text', 'pdf'], desc: "Type of input, determined by file extension by default."
-  option :output, enum: ['text', 'xml'], default: 'xml', desc: "Type of output required."
-
   # TODO: support different grammars and locales
 
-  def convert(name)
+  desc "parse FILE", "parse FILE into Akoma Ntoso XML"
+  option :input, enum: ['text', 'pdf'], desc: "Type of input, determined by file extension by default."
+  option :pdftotext, desc: "Location of the pdftotext binary if not in PATH"
+  def parse(name)
+    Slaw::Extract::Extractor.pdftotext_path = options[:pdftotext] if options[:pdftotext]
     extractor = Slaw::Extract::Extractor.new
 
     case options[:input]
@@ -22,14 +22,9 @@ class SlawCLI < Thor
       text = extractor.extract_from_file(name)
     end
 
-    case options[:output]
-    when 'text'
-      puts text
-    when 'xml'
-      generator = Slaw::ZA::BylawGenerator.new
-      bylaw = generator.generate_from_text(text)
-      puts bylaw.to_xml(indent: 2)
-    end
+    generator = Slaw::ZA::BylawGenerator.new
+    bylaw = generator.generate_from_text(text)
+    puts bylaw.to_xml(indent: 2)
   end
 end
 

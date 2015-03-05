@@ -40,7 +40,7 @@ installed by default on most systems (including Mac). On Ubuntu you can use:
 
 The simplest way to use Slaw is via the commandline:
 
-    $ slaw convert myfile.pdf
+    $ slaw parse myfile.pdf
 
 ## Overview
 
