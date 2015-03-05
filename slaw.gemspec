@@ -28,4 +28,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "log4r", "~> 1.1.10"
   spec.add_runtime_dependency "thor", "~> 0.19.1"
   spec.add_runtime_dependency "mimemagic", "~> 0.2.1"
+  spec.add_runtime_dependency 'yomu', '~> 0.2.2'
 end

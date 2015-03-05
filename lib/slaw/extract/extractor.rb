@@ -30,8 +30,6 @@ module Slaw
       #
       # @return [String] extracted text
       def extract_from_file(filename)
-        ext = filename[-4..-1].downcase
-
         mimetype = get_mimetype(filename)
 
         case mimetype && mimetype.type
@@ -40,11 +38,11 @@ module Slaw
         when 'text/plain', nil
           extract_from_text(filename)
         else
-          if mimetype.text?
-            extract_from_text(filename)
-          else
-            raise ArgumentError.new("Unsupported file type #{ext} (#{mimetype || unknown})")
+          text = extract_via_tika(filename)
+          if text.empty? or text.nil?
+            raise ArgumentError.new("Unsupported file type #{mimetype || 'unknown'}")
           end
+          text
         end
       end
 
@@ -85,6 +83,20 @@ module Slaw
 
       def extract_from_text(filename)
         cleanup(File.read(filename))
+      end
+
+      # Extract text from +filename+ by sending it to apache tika
+      # http://tika.apache.org/
+      def extract_via_tika(filename)
+        # the Yomu gem falls over when trying to write large amounts of data
+        # the JVM stdin, so we manually call java ourselves, relying on yomu
+        # to supply the gem
+        require 'slaw/extract/yomu_patch'
+        logger.info("Using Tika to get text from #{filename}. You need a JVM installed for this.")
+
+        text = Yomu.text_from_file(filename)
+        logger.info("Tika returned #{text.length} bytes")
+        text
       end
 
       # Run general once-off cleanup of extracted text.
