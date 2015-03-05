@@ -1,58 +1,77 @@
 module Slaw
   module ZA
-    module Bylaw
-      class Bylaw < Treetop::Runtime::SyntaxNode
+    module Act
+      class Act < Treetop::Runtime::SyntaxNode
+        FRBR_URI = '/za/act/1980/01'
+
         def to_xml(b)
           b.act(contains: "originalVersion") { |b|
-            b.meta { |b|
-              b.identification(source: "#openbylaws") { |b|
-                # TODO: correct values
-                b.FRBRWork { |b|
-                  b.FRBRthis(value: '/za/by-law/locale/1980/name/main')
-                  b.FRBRuri(value: '/za/by-law/locale/1980/name')
-                  b.FRBRalias(value: 'By-Law Short Title')
-                  b.FRBRdate(date: '1980-01-01', name: 'Generation')
-                  b.FRBRauthor(href: '#council', as: '#author')
-                  b.FRBRcountry(value: 'za')
-                }
-                b.FRBRExpression { |b|
-                  b.FRBRthis(value: '/za/by-law/locale/1980/name/main/eng@')
-                  b.FRBRuri(value: '/za/by-law/locale/1980/name/eng@')
-                  b.FRBRdate(date: '1980-01-01', name: 'Generation')
-                  b.FRBRauthor(href: '#council', as: '#author')
-                  b.FRBRlanguage(language: 'eng')
-                }
-                b.FRBRManifestation { |b|
-                  b.FRBRthis(value: '/za/by-law/locale/1980/name/main/eng@')
-                  b.FRBRuri(value: '/za/by-law/locale/1980/name/eng@')
-                  b.FRBRdate(date: Time.now.strftime('%Y-%m-%d'), name: 'Generation')
-                  b.FRBRauthor(href: '#openbylaws', as: '#author')
-                }
-              }
+            write_meta(b)
+            write_preamble(b)
+            write_body(b)
+            write_schedules(b)
+          }
+        end
 
-              b.publication(date: '1980-01-01',
-                            name: 'Province of Western Cape: Provincial Gazette',
-                            number: 'XXXX',
-                            showAs: 'Province of Western Cape: Provincial Gazette')
+        def write_meta(b)
+          b.meta { |b|
+            write_identification(b)
 
-              b.references(source: "#this") {
-                b.TLCOrganization(id: 'openbylaws', href: 'http://openbylaws.org.za', showAs: "openbylaws.org.za")
-                b.TLCOrganization(id: 'council', href: '/ontology/organization/za/council.cape-town', showAs: "Cape Town City Council")
-                b.TLCRole(id: 'author', href: '/ontology/role/author', showAs: 'Author')
-              }
-            }
+            b.publication(date: '1980-01-01',
+                          name: 'Publication Name',
+                          number: 'XXXX',
+                          showAs: 'Publication Name')
 
-            if preamble.text_value != ""
-              b.preamble { |b|
-                preamble.to_xml(b)
-              }
-            end
-
-            b.body { |b|
-              chapters.elements.each { |e| e.to_xml(b) }
+            b.references(source: "#this") {
+              b.TLCOrganization(id: 'slaw', href: 'https://github.com/longhotsummer/slaw', showAs: "Slaw")
+              b.TLCOrganization(id: 'council', href: '/ontology/organization/za/council', showAs: "Council")
+              b.TLCRole(id: 'author', href: '/ontology/role/author', showAs: 'Author')
             }
           }
+        end
 
+        def write_identification(b)
+          b.identification(source: "#slaw") { |b|
+            # use stub values so that we can generate a validating document
+            b.FRBRWork { |b|
+              b.FRBRthis(value: "#{FRBR_URI}/main")
+              b.FRBRuri(value: '/za/act/locale/1980/name')
+              b.FRBRalias(value: 'Short Title')
+              b.FRBRdate(date: '1980-01-01', name: 'Generation')
+              b.FRBRauthor(href: '#council', as: '#author')
+              b.FRBRcountry(value: 'za')
+            }
+            b.FRBRExpression { |b|
+              b.FRBRthis(value: '/za/act/locale/1980/name/main/eng@')
+              b.FRBRuri(value: '/za/act/locale/1980/name/eng@')
+              b.FRBRdate(date: '1980-01-01', name: 'Generation')
+              b.FRBRauthor(href: '#council', as: '#author')
+              b.FRBRlanguage(language: 'eng')
+            }
+            b.FRBRManifestation { |b|
+              b.FRBRthis(value: '/za/act/locale/1980/name/main/eng@')
+              b.FRBRuri(value: '/za/act/locale/1980/name/eng@')
+              b.FRBRdate(date: Time.now.strftime('%Y-%m-%d'), name: 'Generation')
+              b.FRBRauthor(href: '#slaw', as: '#author')
+            }
+          }
+        end
+
+        def write_preamble(b)
+          if preamble.text_value != ""
+            b.preamble { |b|
+              preamble.to_xml(b)
+            }
+          end
+        end
+
+        def write_body(b)
+          b.body { |b|
+            chapters.elements.each { |e| e.to_xml(b) }
+          }
+        end
+
+        def write_schedules(b)
           schedules.to_xml(b)
         end
       end
@@ -179,7 +198,7 @@ module Slaw
         # a section title of the form:
         #
         # Definitions
-        # 1. In this by-law...
+        # 1. In this act...
 
         def num
           section_title_prefix.number_letter.text_value
@@ -194,7 +213,7 @@ module Slaw
         # a section title of the form:
         #
         # 1. Definitions
-        # In this by-law...
+        # In this act...
         #
         # In this format, the title is optional and the section content may
         # start where we think the title is.
@@ -299,26 +318,26 @@ module Slaw
             b.component(id: 'component-0') { |b|
               b.doc(name: 'schedules') { |b|
                 b.meta { |b| 
-                  b.identification(source: "#openbylaws") { |b|
+                  b.identification(source: "#slaw") { |b|
                     b.FRBRWork { |b|
-                      b.FRBRthis(value: '/za/by-law/locale/1980/name/main/schedules')
-                      b.FRBRuri(value: '/za/by-law/locale/1980/name/schedules')
+                      b.FRBRthis(value: '/za/act/locale/1980/name/main/schedules')
+                      b.FRBRuri(value: '/za/act/locale/1980/name/schedules')
                       b.FRBRdate(date: '1980-01-01', name: 'Generation')
                       b.FRBRauthor(href: '#council', as: '#author')
                       b.FRBRcountry(value: 'za')
                     }
                     b.FRBRExpression { |b|
-                      b.FRBRthis(value: '/za/by-law/locale/1980/name/main//schedules/eng@')
-                      b.FRBRuri(value: '/za/by-law/locale/1980/name/schedules/eng@')
+                      b.FRBRthis(value: '/za/act/locale/1980/name/main//schedules/eng@')
+                      b.FRBRuri(value: '/za/act/locale/1980/name/schedules/eng@')
                       b.FRBRdate(date: '1980-01-01', name: 'Generation')
                       b.FRBRauthor(href: '#council', as: '#author')
                       b.FRBRlanguage(language: 'eng')
                     }
                     b.FRBRManifestation { |b|
-                      b.FRBRthis(value: '/za/by-law/locale/1980/name/main/schedules/eng@')
-                      b.FRBRuri(value: '/za/by-law/locale/1980/name/schedules/eng@')
+                      b.FRBRthis(value: '/za/act/locale/1980/name/main/schedules/eng@')
+                      b.FRBRuri(value: '/za/act/locale/1980/name/schedules/eng@')
                       b.FRBRdate(date: Time.now.strftime('%Y-%m-%d'), name: 'Generation')
-                      b.FRBRauthor(href: '#openbylaws', as: '#author')
+                      b.FRBRauthor(href: '#slaw', as: '#author')
                     }
                   }
                 }
