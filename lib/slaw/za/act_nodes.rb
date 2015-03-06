@@ -35,22 +35,22 @@ module Slaw
             # use stub values so that we can generate a validating document
             b.FRBRWork { |b|
               b.FRBRthis(value: "#{FRBR_URI}/main")
-              b.FRBRuri(value: '/za/act/locale/1980/name')
+              b.FRBRuri(value: FRBR_URI)
               b.FRBRalias(value: 'Short Title')
               b.FRBRdate(date: '1980-01-01', name: 'Generation')
               b.FRBRauthor(href: '#council', as: '#author')
               b.FRBRcountry(value: 'za')
             }
             b.FRBRExpression { |b|
-              b.FRBRthis(value: '/za/act/locale/1980/name/main/eng@')
-              b.FRBRuri(value: '/za/act/locale/1980/name/eng@')
+              b.FRBRthis(value: "#{FRBR_URI}/main/eng@")
+              b.FRBRuri(value: "#{FRBR_URI}/eng@")
               b.FRBRdate(date: '1980-01-01', name: 'Generation')
               b.FRBRauthor(href: '#council', as: '#author')
               b.FRBRlanguage(language: 'eng')
             }
             b.FRBRManifestation { |b|
-              b.FRBRthis(value: '/za/act/locale/1980/name/main/eng@')
-              b.FRBRuri(value: '/za/act/locale/1980/name/eng@')
+              b.FRBRthis(value: "#{FRBR_URI}/main/eng@")
+              b.FRBRuri(value: "#{FRBR_URI}/eng@")
               b.FRBRdate(date: Time.now.strftime('%Y-%m-%d'), name: 'Generation')
               b.FRBRauthor(href: '#slaw', as: '#author')
             }
@@ -320,22 +320,22 @@ module Slaw
                 b.meta { |b| 
                   b.identification(source: "#slaw") { |b|
                     b.FRBRWork { |b|
-                      b.FRBRthis(value: '/za/act/locale/1980/name/main/schedules')
-                      b.FRBRuri(value: '/za/act/locale/1980/name/schedules')
+                      b.FRBRthis(value: "#{FRBR_URI}/main/schedules")
+                      b.FRBRuri(value: "#{FRBR_URI}/schedules")
                       b.FRBRdate(date: '1980-01-01', name: 'Generation')
                       b.FRBRauthor(href: '#council', as: '#author')
                       b.FRBRcountry(value: 'za')
                     }
                     b.FRBRExpression { |b|
-                      b.FRBRthis(value: '/za/act/locale/1980/name/main//schedules/eng@')
-                      b.FRBRuri(value: '/za/act/locale/1980/name/schedules/eng@')
+                      b.FRBRthis(value: "#{FRBR_URI}/main/schedules/eng@")
+                      b.FRBRuri(value: "#{FRBR_URI}/schedules/eng@")
                       b.FRBRdate(date: '1980-01-01', name: 'Generation')
                       b.FRBRauthor(href: '#council', as: '#author')
                       b.FRBRlanguage(language: 'eng')
                     }
                     b.FRBRManifestation { |b|
-                      b.FRBRthis(value: '/za/act/locale/1980/name/main/schedules/eng@')
-                      b.FRBRuri(value: '/za/act/locale/1980/name/schedules/eng@')
+                      b.FRBRthis(value: "#{FRBR_URI}/main/schedules/eng@")
+                      b.FRBRuri(value: "#{FRBR_URI}/schedules/eng@")
                       b.FRBRdate(date: Time.now.strftime('%Y-%m-%d'), name: 'Generation')
                       b.FRBRauthor(href: '#slaw', as: '#author')
                     }
