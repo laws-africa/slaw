@@ -154,7 +154,9 @@ module Slaw
                 doc.xpath('//a:component/a:doc[@name="schedules"]//a:heading/text()', a: NS)
 
         nodes.each do |heading|
-          heading.content = heading.content.downcase.gsub(/^\w/) { $&.upcase }
+          if !(heading.content =~ /[a-z]/)
+            heading.content = heading.content.downcase.gsub(/^\w/) { $&.upcase }
+          end
         end
       end
 
