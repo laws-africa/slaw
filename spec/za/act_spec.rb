@@ -364,5 +364,103 @@ EOS
       sched.statements.elements[0].content.text_value.should == "Baz"
       sched.statements.elements[1].content.text_value.should == "Boom"
     end
+
+    it 'should serialise many schedules correctly' do
+      node = parse :schedules, <<EOS
+Schedule "1"
+A Title
+1. Foo
+2. Bar
+Schedule 2
+Another Title
+Baz
+Boom
+EOS
+
+      s = ""
+      builder = ::Builder::XmlMarkup.new(indent: 2, target: s)
+
+      node.to_xml(builder)
+
+      s.should == <<EOS
+<components>
+  <component id="component-1">
+    <doc name="schedule1">
+      <meta>
+        <identification source="#slaw">
+          <FRBRWork>
+            <FRBRthis value="/za/act/1980/01/schedule1"/>
+            <FRBRuri value="/za/act/1980/01"/>
+            <FRBRalias value="A Title"/>
+            <FRBRdate date="1980-01-01" name="Generation"/>
+            <FRBRauthor href="#council" as="#author"/>
+            <FRBRcountry value="za"/>
+          </FRBRWork>
+          <FRBRExpression>
+            <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+            <FRBRuri value="/za/act/1980/01/eng@"/>
+            <FRBRdate date="1980-01-01" name="Generation"/>
+            <FRBRauthor href="#council" as="#author"/>
+            <FRBRlanguage language="eng"/>
+          </FRBRExpression>
+          <FRBRManifestation>
+            <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+            <FRBRuri value="/za/act/1980/01/eng@"/>
+            <FRBRdate date="2015-04-22" name="Generation"/>
+            <FRBRauthor href="#slaw" as="#author"/>
+          </FRBRManifestation>
+        </identification>
+      </meta>
+      <mainBody>
+        <section id="schedule-1.section-0">
+          <content>
+            <p>1. Foo</p>
+            <p>2. Bar</p>
+          </content>
+        </section>
+      </mainBody>
+    </doc>
+  </component>
+  <component id="component-2">
+    <doc name="schedule2">
+      <meta>
+        <identification source="#slaw">
+          <FRBRWork>
+            <FRBRthis value="/za/act/1980/01/schedule2"/>
+            <FRBRuri value="/za/act/1980/01"/>
+            <FRBRalias value="Another Title"/>
+            <FRBRdate date="1980-01-01" name="Generation"/>
+            <FRBRauthor href="#council" as="#author"/>
+            <FRBRcountry value="za"/>
+          </FRBRWork>
+          <FRBRExpression>
+            <FRBRthis value="/za/act/1980/01/eng@/schedule2"/>
+            <FRBRuri value="/za/act/1980/01/eng@"/>
+            <FRBRdate date="1980-01-01" name="Generation"/>
+            <FRBRauthor href="#council" as="#author"/>
+            <FRBRlanguage language="eng"/>
+          </FRBRExpression>
+          <FRBRManifestation>
+            <FRBRthis value="/za/act/1980/01/eng@/schedule2"/>
+            <FRBRuri value="/za/act/1980/01/eng@"/>
+            <FRBRdate date="2015-04-22" name="Generation"/>
+            <FRBRauthor href="#slaw" as="#author"/>
+          </FRBRManifestation>
+        </identification>
+      </meta>
+      <mainBody>
+        <section id="schedule-2.section-0">
+          <content>
+            <p>Baz</p>
+            <p>Boom</p>
+          </content>
+        </section>
+      </mainBody>
+    </doc>
+  </component>
+</components>
+EOS
+
+    end
   end
 end

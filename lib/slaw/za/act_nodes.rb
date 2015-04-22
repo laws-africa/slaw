@@ -3,14 +3,17 @@ module Slaw
     module Act
       class Act < Treetop::Runtime::SyntaxNode
         FRBR_URI = '/za/act/1980/01'
+        WORK_URI = FRBR_URI
+        EXPRESSION_URI = "#{FRBR_URI}/eng@"
+        MANIFESTATION_URI = EXPRESSION_URI
 
         def to_xml(b)
           b.act(contains: "originalVersion") { |b|
             write_meta(b)
             write_preamble(b)
             write_body(b)
-            write_schedules(b)
           }
+          write_schedules(b)
         end
 
         def write_meta(b)
@@ -34,23 +37,23 @@ module Slaw
           b.identification(source: "#slaw") { |b|
             # use stub values so that we can generate a validating document
             b.FRBRWork { |b|
-              b.FRBRthis(value: "#{FRBR_URI}/main")
-              b.FRBRuri(value: FRBR_URI)
+              b.FRBRthis(value: "#{WORK_URI}/main")
+              b.FRBRuri(value: WORK_URI)
               b.FRBRalias(value: 'Short Title')
               b.FRBRdate(date: '1980-01-01', name: 'Generation')
               b.FRBRauthor(href: '#council', as: '#author')
               b.FRBRcountry(value: 'za')
             }
             b.FRBRExpression { |b|
-              b.FRBRthis(value: "#{FRBR_URI}/main/eng@")
-              b.FRBRuri(value: "#{FRBR_URI}/eng@")
+              b.FRBRthis(value: "#{EXPRESSION_URI}/main")
+              b.FRBRuri(value: EXPRESSION_URI)
               b.FRBRdate(date: '1980-01-01', name: 'Generation')
               b.FRBRauthor(href: '#council', as: '#author')
               b.FRBRlanguage(language: 'eng')
             }
             b.FRBRManifestation { |b|
-              b.FRBRthis(value: "#{FRBR_URI}/main/eng@")
-              b.FRBRuri(value: "#{FRBR_URI}/eng@")
+              b.FRBRthis(value: "#{MANIFESTATION_URI}/main")
+              b.FRBRuri(value: MANIFESTATION_URI)
               b.FRBRdate(date: Time.now.strftime('%Y-%m-%d'), name: 'Generation')
               b.FRBRauthor(href: '#slaw', as: '#author')
             }
@@ -315,37 +318,43 @@ module Slaw
           return if schedules.elements.empty?
 
           b.components { |b| 
-            b.component(id: 'component-0') { |b|
-              b.doc(name: 'schedules') { |b|
-                b.meta { |b| 
-                  b.identification(source: "#slaw") { |b|
-                    b.FRBRWork { |b|
-                      b.FRBRthis(value: "#{FRBR_URI}/main/schedules")
-                      b.FRBRuri(value: "#{FRBR_URI}/schedules")
-                      b.FRBRdate(date: '1980-01-01', name: 'Generation')
-                      b.FRBRauthor(href: '#council', as: '#author')
-                      b.FRBRcountry(value: 'za')
-                    }
-                    b.FRBRExpression { |b|
-                      b.FRBRthis(value: "#{FRBR_URI}/main/schedules/eng@")
-                      b.FRBRuri(value: "#{FRBR_URI}/schedules/eng@")
-                      b.FRBRdate(date: '1980-01-01', name: 'Generation')
-                      b.FRBRauthor(href: '#council', as: '#author')
-                      b.FRBRlanguage(language: 'eng')
-                    }
-                    b.FRBRManifestation { |b|
-                      b.FRBRthis(value: "#{FRBR_URI}/main/schedules/eng@")
-                      b.FRBRuri(value: "#{FRBR_URI}/schedules/eng@")
-                      b.FRBRdate(date: Time.now.strftime('%Y-%m-%d'), name: 'Generation')
-                      b.FRBRauthor(href: '#slaw', as: '#author')
-                    }
+            schedules.elements.each_with_index { |e, i| write_schedule(e, i+1, b) }
+          }
+        end
+
+        def write_schedule(element, i, b)
+          # component name
+          comp = "schedule#{i}"
+
+          b.component(id: "component-#{i}") { |b|
+            b.doc(name: "schedule#{i}") { |b|
+              b.meta { |b|
+                b.identification(source: "#slaw") { |b|
+                  b.FRBRWork { |b|
+                    b.FRBRthis(value: "#{Act::WORK_URI}/#{comp}")
+                    b.FRBRuri(value: Act::WORK_URI)
+                    b.FRBRalias(value: element.heading || "Schedule #{i}")
+                    b.FRBRdate(date: '1980-01-01', name: 'Generation')
+                    b.FRBRauthor(href: '#council', as: '#author')
+                    b.FRBRcountry(value: 'za')
+                  }
+                  b.FRBRExpression { |b|
+                    b.FRBRthis(value: "#{Act::EXPRESSION_URI}/#{comp}")
+                    b.FRBRuri(value: Act::EXPRESSION_URI)
+                    b.FRBRdate(date: '1980-01-01', name: 'Generation')
+                    b.FRBRauthor(href: '#council', as: '#author')
+                    b.FRBRlanguage(language: 'eng')
+                  }
+                  b.FRBRManifestation { |b|
+                    b.FRBRthis(value: "#{Act::MANIFESTATION_URI}/#{comp}")
+                    b.FRBRuri(value: Act::MANIFESTATION_URI)
+                    b.FRBRdate(date: Time.now.strftime('%Y-%m-%d'), name: 'Generation')
+                    b.FRBRauthor(href: '#slaw', as: '#author')
                   }
                 }
-
-                b.mainBody { |b|
-                  schedules.elements.each_with_index { |e, i| e.to_xml(b, i) }
-                }
               }
+
+              b.mainBody { |b| element.to_xml(b, i) }
             }
           }
         end
@@ -366,21 +375,12 @@ module Slaw
         end
 
         def to_xml(b, i)
-          n = num
-          id = if n
-                 "schedule-#{n}"
-               else
-                 "schedules"
-               end
+          n = num.nil? ? i : num
+          id = "schedule-#{n}"
 
-          b.chapter(id: id) { |b|
-            b.num(num) if num
-            b.heading(heading) if heading
-
-            b.section(id: id + ".section-0") { |b|
-              b.content { |b|
-                statements.elements.each { |e| b.p(e.content.text_value) }
-              }
+          b.section(id: id + ".section-0") { |b|
+            b.content { |b|
+              statements.elements.each { |e| b.p(e.content.text_value) }
             }
           }
         end
