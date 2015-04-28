@@ -65,7 +65,7 @@ module Slaw
       # resulting XML to normalise it.
       #
       # @param text [String] the text to parse
-      # @param parse_options [Hash] options to parse to the parser
+      # @param parse_options [Hash] options to pass to the parser
       #
       # @return [String] an XML string
       def parse_text(text, parse_options={})
@@ -76,7 +76,7 @@ module Slaw
       # Parse plain text into a syntax tree.
       #
       # @param text [String] the text to parse
-      # @param parse_options [Hash] options to parse to the parser
+      # @param parse_options [Hash] options to pass to the parser
       #
       # @return [Object] the root of the resulting parse tree, usually a Treetop::Runtime::SyntaxNode object
       def text_to_syntax_tree(text, parse_options={})
