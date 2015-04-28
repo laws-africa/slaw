@@ -8,7 +8,7 @@ class SlawCLI < Thor
 
   class_option :verbose, type: :boolean, desc: "Display log output on stderr"
 
-  desc "parse FILE", "parse FILE into Akoma Ntoso XML"
+  desc "parse FILE", "Parse FILE into Akoma Ntoso XML"
   option :input, enum: ['text', 'pdf'], desc: "Type of input if it can't be determined automatically"
   option :pdftotext, desc: "Location of the pdftotext binary if not in PATH"
   option :definitions, type: :boolean, desc: "Find and link definitions (this can be slow). Default: false"
@@ -34,6 +34,12 @@ class SlawCLI < Thor
     generator.builder.link_definitions(act.doc) if options[:definitions]
 
     puts act.to_xml(indent: 2)
+  end
+
+  map %w(--version) => :__print_version
+  desc "--version", "Print slaw version info"
+  def __print_version
+    say "slaw #{Slaw::VERSION}"
   end
 
   no_commands do
