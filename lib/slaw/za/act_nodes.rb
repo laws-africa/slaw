@@ -61,11 +61,7 @@ module Slaw
         end
 
         def write_preamble(b)
-          if preamble.text_value != ""
-            b.preamble { |b|
-              preamble.to_xml(b)
-            }
-          end
+          preamble.to_xml(b)
         end
 
         def write_body(b)
@@ -81,11 +77,15 @@ module Slaw
 
       class Preamble < Treetop::Runtime::SyntaxNode
         def to_xml(b)
-          statements.elements.each { |e|
-            if not (e.content.text_value =~ /^preamble/i)
-              b.p(e.content.text_value)
-            end
-          }
+          if text_value != ""
+            b.preamble { |b|
+              statements.elements.each { |e|
+                if not (e.content.text_value =~ /^preamble/i)
+                  b.p(e.content.text_value)
+                end
+              }
+            }
+          end
         end
       end
 
