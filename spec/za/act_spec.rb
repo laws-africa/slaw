@@ -196,6 +196,34 @@ EOS
   end
 
   #-------------------------------------------------------------------------------
+  # Remarks
+
+  describe 'remark' do
+    it 'should handle basic remarks' do
+      should_parse :remark, <<EOS
+      [Section 2 amended by Act 23 of 2004]
+EOS
+    end
+
+    it 'should handle a remark' do
+      node = parse :remark, <<EOS
+      [Section 2 amended by Act 23 of 2004]
+EOS
+      node.content.text_value.should == "Section 2 amended by Act 23 of 2004"
+    end
+
+    it 'should handle a remark in a section' do
+      node = parse :section, <<EOS
+      1. Section title
+      Some text is a long line.
+
+      [Section 1 amended by Act 23 of 2004]
+EOS
+      to_xml(node).should == "<section id=\"section-1\"><num>1.</num><heading>Section title</heading><subsection id=\"section-1.subsection-0\"><content><p>Some text is a long line.</p></content></subsection><p><remark>[Section 1 amended by Act 23 of 2004]</remark></p></section>"
+    end
+  end
+
+  #-------------------------------------------------------------------------------
   # Numbered statements
 
   describe 'numbered_statement' do
@@ -497,13 +525,8 @@ Other than as is set out hereinbelow, no signs other than locality bound signs, 
 2. Bar
 EOS
 
-      s = ""
-      builder = ::Builder::XmlMarkup.new(indent: 2, target: s)
-
-      node.to_xml(builder)
-
+      s = to_xml(node, 2)
       today = Time.now.strftime('%Y-%m-%d')
-
       s.should == <<EOS
 <components>
   <component id="component-1">

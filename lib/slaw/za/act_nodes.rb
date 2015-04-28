@@ -236,6 +236,9 @@ module Slaw
         def to_xml(b, idprefix, i=0)
           if statement.is_a?(NumberedStatement)
             attribs = {id: idprefix + statement.num.gsub(/[()]/, '')}
+          elsif statement.is_a?(Remark)
+            b.p { |b| b.remark('[' + statement.content.text_value + ']') }
+            return
           else
             attribs = {id: idprefix + "subsection-#{i}"}
           end
@@ -287,6 +290,9 @@ module Slaw
         def to_xml(b, idprefix)
           b.p(content.text_value) if content
         end
+      end
+
+      class Remark < Treetop::Runtime::SyntaxNode
       end
 
       class Blocklist < Treetop::Runtime::SyntaxNode

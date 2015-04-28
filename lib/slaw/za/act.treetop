@@ -38,7 +38,7 @@ module Slaw
       end
 
       rule subsection
-        statement:(numbered_statement / table / naked_statement)
+        statement:(numbered_statement / table / remark / naked_statement)
         blocklist:blocklist? <Subsection>
       end
 
@@ -114,7 +114,7 @@ module Slaw
       end
 
       rule naked_statement
-        space? !(part / chapter / section / schedule) content eol
+        space? !(part / chapter / section / schedule / remark) content eol
         <NakedStatement>
       end
 
@@ -137,6 +137,12 @@ module Slaw
 
       rule table_end
         space? '|}'
+      end
+
+      rule remark
+        # TODO: support (Section 3.5 amended by ... )
+        space? '[' content:[^\n\]]+ ']' eol
+        <Remark>
       end
 
       ##########
