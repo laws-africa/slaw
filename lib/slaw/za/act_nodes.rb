@@ -333,7 +333,7 @@ module Slaw
                   b.FRBRWork { |b|
                     b.FRBRthis(value: "#{Act::WORK_URI}/#{comp}")
                     b.FRBRuri(value: Act::WORK_URI)
-                    b.FRBRalias(value: element.heading || "Schedule #{i}")
+                    b.FRBRalias(value: element.alias)
                     b.FRBRdate(date: '1980-01-01', name: 'Generation')
                     b.FRBRauthor(href: '#council', as: '#author')
                     b.FRBRcountry(value: 'za')
@@ -366,6 +366,14 @@ module Slaw
           return (n && !n.empty?) ? n : nil
         end
 
+        def alias
+          if num
+            "Schedule #{num}"
+          else
+            "Schedule"
+          end
+        end
+
         def heading
           if schedule_heading.schedule_title.respond_to? :content
             schedule_heading.schedule_title.content.text_value
@@ -378,7 +386,10 @@ module Slaw
           n = num.nil? ? i : num
           id = "schedule-#{n}"
 
-          b.section(id: id + ".section-0") { |b|
+          # there is no good AKN hierarchy container for schedules, so we
+          # just use article because we don't use it anywhere else.
+          b.article(id: id) { |b|
+            b.heading(heading) if heading
             b.content { |b|
               statements.elements.each { |e| b.p(e.content.text_value) }
             }

@@ -382,6 +382,8 @@ EOS
 
       node.to_xml(builder)
 
+      today = Time.now.strftime('%Y-%m-%d')
+
       s.should == <<EOS
 <components>
   <component id="component-1">
@@ -391,7 +393,7 @@ EOS
           <FRBRWork>
             <FRBRthis value="/za/act/1980/01/schedule1"/>
             <FRBRuri value="/za/act/1980/01"/>
-            <FRBRalias value="A Title"/>
+            <FRBRalias value="Schedule 1"/>
             <FRBRdate date="1980-01-01" name="Generation"/>
             <FRBRauthor href="#council" as="#author"/>
             <FRBRcountry value="za"/>
@@ -406,18 +408,19 @@ EOS
           <FRBRManifestation>
             <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
             <FRBRuri value="/za/act/1980/01/eng@"/>
-            <FRBRdate date="2015-04-22" name="Generation"/>
+            <FRBRdate date="#{today}" name="Generation"/>
             <FRBRauthor href="#slaw" as="#author"/>
           </FRBRManifestation>
         </identification>
       </meta>
       <mainBody>
-        <section id="schedule-1.section-0">
+        <article id="schedule-1">
+          <heading>A Title</heading>
           <content>
             <p>1. Foo</p>
             <p>2. Bar</p>
           </content>
-        </section>
+        </article>
       </mainBody>
     </doc>
   </component>
@@ -428,7 +431,7 @@ EOS
           <FRBRWork>
             <FRBRthis value="/za/act/1980/01/schedule2"/>
             <FRBRuri value="/za/act/1980/01"/>
-            <FRBRalias value="Another Title"/>
+            <FRBRalias value="Schedule 2"/>
             <FRBRdate date="1980-01-01" name="Generation"/>
             <FRBRauthor href="#council" as="#author"/>
             <FRBRcountry value="za"/>
@@ -443,24 +446,84 @@ EOS
           <FRBRManifestation>
             <FRBRthis value="/za/act/1980/01/eng@/schedule2"/>
             <FRBRuri value="/za/act/1980/01/eng@"/>
-            <FRBRdate date="2015-04-22" name="Generation"/>
+            <FRBRdate date="#{today}" name="Generation"/>
             <FRBRauthor href="#slaw" as="#author"/>
           </FRBRManifestation>
         </identification>
       </meta>
       <mainBody>
-        <section id="schedule-2.section-0">
+        <article id="schedule-2">
+          <heading>Another Title</heading>
           <content>
             <p>Baz</p>
             <p>Boom</p>
           </content>
-        </section>
+        </article>
       </mainBody>
     </doc>
   </component>
 </components>
 EOS
 
+    end
+
+    it 'should serialise a single schedule without a heading' do
+      node = parse :schedules, <<EOS
+Schedule "1"
+Other than as is set out hereinbelow, no signs other than locality bound signs, temporary signs including loose portable sign, estate agents signs, newspaper headline posters and posters (the erection of which must comply with the appropriate schedules pertinent thereto) shall be erected on Municipal owned land.
+1. Foo
+2. Bar
+EOS
+
+      s = ""
+      builder = ::Builder::XmlMarkup.new(indent: 2, target: s)
+
+      node.to_xml(builder)
+
+      today = Time.now.strftime('%Y-%m-%d')
+
+      s.should == <<EOS
+<components>
+  <component id="component-1">
+    <doc name="schedule1">
+      <meta>
+        <identification source="#slaw">
+          <FRBRWork>
+            <FRBRthis value="/za/act/1980/01/schedule1"/>
+            <FRBRuri value="/za/act/1980/01"/>
+            <FRBRalias value="Schedule 1"/>
+            <FRBRdate date="1980-01-01" name="Generation"/>
+            <FRBRauthor href="#council" as="#author"/>
+            <FRBRcountry value="za"/>
+          </FRBRWork>
+          <FRBRExpression>
+            <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+            <FRBRuri value="/za/act/1980/01/eng@"/>
+            <FRBRdate date="1980-01-01" name="Generation"/>
+            <FRBRauthor href="#council" as="#author"/>
+            <FRBRlanguage language="eng"/>
+          </FRBRExpression>
+          <FRBRManifestation>
+            <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+            <FRBRuri value="/za/act/1980/01/eng@"/>
+            <FRBRdate date="#{today}" name="Generation"/>
+            <FRBRauthor href="#slaw" as="#author"/>
+          </FRBRManifestation>
+        </identification>
+      </meta>
+      <mainBody>
+        <article id="schedule-1">
+          <content>
+            <p>Other than as is set out hereinbelow, no signs other than locality bound signs, temporary signs including loose portable sign, estate agents signs, newspaper headline posters and posters (the erection of which must comply with the appropriate schedules pertinent thereto) shall be erected on Municipal owned land.</p>
+            <p>1. Foo</p>
+            <p>2. Bar</p>
+          </content>
+        </article>
+      </mainBody>
+    </doc>
+  </component>
+</components>
+EOS
     end
   end
 end
