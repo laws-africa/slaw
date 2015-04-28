@@ -12,8 +12,14 @@ class SlawCLI < Thor
   option :input, enum: ['text', 'pdf'], desc: "Type of input if it can't be determined automatically"
   option :pdftotext, desc: "Location of the pdftotext binary if not in PATH"
   option :definitions, type: :boolean, desc: "Find and link definitions (this can be slow). Default: false"
+  option :fragment, type: :string, desc: "Akoma Ntoso element name that the imported text represents. Support depends on the grammar."
+  option :id_prefix, type: :string, desc: "Prefix to be used when generating ID elements when parsing a fragment."
   def parse(name)
     logging
+
+    if options[:fragment] and options[:definitions]
+      raise Thor::Error.new("--definitions can't be used together with --fragment")
+    end
 
     Slaw::Extract::Extractor.pdftotext_path = options[:pdftotext] if options[:pdftotext]
     extractor = Slaw::Extract::Extractor.new
@@ -28,6 +34,18 @@ class SlawCLI < Thor
     end
 
     generator = Slaw::ActGenerator.new
+
+    if options[:fragment]
+      generator.document_class = Slaw::Fragment
+      generator.builder.parse_options[:root] = options[:fragment]
+
+      if options[:id_prefix]
+        prefix = options[:id_prefix]
+        prefix += "." unless prefix.end_with?('.')
+        generator.builder.fragment_id_prefix = prefix
+      end
+    end
+
     act = generator.generate_from_text(text)
 
     # definitions?

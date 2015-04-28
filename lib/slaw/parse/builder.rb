@@ -26,6 +26,12 @@ module Slaw
 
       @@parsers = {}
 
+      # Additional hash of options to be provided to the parser when parsing.
+      attr_accessor :parse_options
+
+      # Prefix to use when generating IDs for fragments
+      attr_accessor :fragment_id_prefix
+
       # Create a new builder.
       #
       # Specify either `:parser` or `:grammar_file` and `:grammar_class`.
@@ -49,6 +55,8 @@ module Slaw
         else
           raise ArgumentError.new("Specify either :parser or :grammar_file and :grammar_class")
         end
+
+        @parse_options = {}
       end
 
       # Do all the work necessary to parse text into a well-formed XML document.
@@ -65,7 +73,7 @@ module Slaw
       # resulting XML to normalise it.
       #
       # @param text [String] the text to parse
-      # @param parse_options [Hash] options to parse to the parser
+      # @param parse_options [Hash] options to pass to the parser
       #
       # @return [String] an XML string
       def parse_text(text, parse_options={})
@@ -76,11 +84,12 @@ module Slaw
       # Parse plain text into a syntax tree.
       #
       # @param text [String] the text to parse
-      # @param parse_options [Hash] options to parse to the parser
+      # @param parse_options [Hash] options to pass to the parser
       #
       # @return [Object] the root of the resulting parse tree, usually a Treetop::Runtime::SyntaxNode object
       def text_to_syntax_tree(text, parse_options={})
         logger.info("Parsing...")
+        parse_options = @parse_options.dup.update(parse_options)
         tree = @parser.parse(text, parse_options)
         logger.info("Parsed!")
 
@@ -107,7 +116,14 @@ module Slaw
         builder.akomaNtoso("xmlns:xsi"=> "http://www.w3.org/2001/XMLSchema-instance", 
                            "xsi:schemaLocation" => "http://www.akomantoso.org/2.0 akomantoso20.xsd",
                            "xmlns" => NS) { |b|
-          tree.to_xml(b)
+          args = [b]
+
+          # should we provide an id prefix?
+          arity = tree.method('to_xml').arity 
+          arity = arity.abs-1 if arity < 0
+          args << (fragment_id_prefix || "") if arity > 1
+
+          tree.to_xml(*args)
         }
 
         s

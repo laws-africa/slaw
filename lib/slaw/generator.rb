@@ -9,6 +9,9 @@ module Slaw
     # [Slaw::Parse::Builder] builder used by the generator
     attr_accessor :builder
 
+    # The type that will hold the generated document
+    attr_accessor :document_class
+
     def initialize
       @parser = Slaw::ZA::ActParser.new
       @builder = Slaw::Parse::Builder.new(parser: @parser)

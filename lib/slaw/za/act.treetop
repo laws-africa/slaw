@@ -82,7 +82,7 @@ module Slaw
         #
         # Additionally, the section title is optional.
         !{ |s| options[:section_number_after_title] }
-        section_title_prefix section_title:section_title_content? eol?
+        space? section_title_prefix section_title:section_title_content? eol?
         <SectionTitleType2>
       end
 
