@@ -1,4 +1,31 @@
 module Slaw
+  class AknBase
+    include Slaw::Namespace
+
+    attr_accessor :doc
+
+    # Serialise the XML for this act, passing `args` to the Nokogiri serialiser.
+    # The most useful argument is usually `indent: 2` if you like your XML perdy.
+    #
+    # @return [String] serialized XML
+    def to_xml(*args)
+      @doc.to_xml(*args)
+    end
+    
+    # Parse the XML contained in the file-like or String object `io`
+    #
+    # @param io [String, file-like] io object or String with XML
+    def parse(io)
+      self.doc = Nokogiri::XML(io)
+    end
+  end
+
+  # A fragment is a part of a larger document and doesn't have the context associated
+  # with the document.
+  class Fragment < AknBase
+    alias_method :fragment, :doc
+  end
+
   # An Act wraps a single {http://www.akomantoso.org/ AkomaNtoso 2.0 XML} act document in the form of a
   # Nokogiri::XML::Document object.
   #
@@ -7,8 +34,7 @@ module Slaw
   # identifying whether it has been amended ({#amended?}), repealed
   # ({#repealed?}) or what chapters ({#chapters}), parts ({#parts}) and
   # sections ({#sections}) it contains.
-  class Act
-    include Slaw::Namespace
+  class Act < AknBase
 
     # Allow us to jump from the XML document for an act to the
     # Act instance itself
@@ -65,13 +91,6 @@ module Slaw
       @mtime = File::mtime(@filename)
 
       File.open(filename) { |f| parse(f) }
-    end
-    
-    # Parse the XML contained in the file-like or String object `io`
-    #
-    # @param io [String, file-like] io object or String with XML
-    def parse(io)
-      self.doc = Nokogiri::XML(io)
     end
 
     # Set the XML document backing this bylaw.
@@ -401,14 +420,6 @@ module Slaw
     # @see {#validate}
     def validates?
       validate.empty?
-    end
-
-    # Serialise the XML for this act, passing `args` to the Nokogiri serialiser.
-    # The most useful argument is usually `indent: 2` if you like your XML perdy.
-    #
-    # @return [String] serialized XML
-    def to_xml(*args)
-      @doc.to_xml(*args)
     end
 
     def inspect

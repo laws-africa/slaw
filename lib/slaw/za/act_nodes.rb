@@ -7,7 +7,7 @@ module Slaw
         EXPRESSION_URI = "#{FRBR_URI}/eng@"
         MANIFESTATION_URI = EXPRESSION_URI
 
-        def to_xml(b)
+        def to_xml(b, idprefix)
           b.act(contains: "originalVersion") { |b|
             write_meta(b)
             write_preamble(b)
@@ -192,7 +192,7 @@ module Slaw
 
             idprefix = "#{id}."
 
-            subsections.elements.each_with_index { |e, i| e.to_xml(b, i, idprefix) }
+            subsections.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
           }
         end
       end
@@ -231,7 +231,7 @@ module Slaw
       end
 
       class Subsection < Treetop::Runtime::SyntaxNode
-        def to_xml(b, i, idprefix)
+        def to_xml(b, idprefix, i=0)
           if statement.is_a?(NumberedStatement)
             attribs = {id: idprefix + statement.num.gsub(/[()]/, '')}
           else
@@ -246,9 +246,9 @@ module Slaw
             b.content { |b| 
               if blocklist and blocklist.is_a?(Blocklist)
                 if statement.content
-                  blocklist.to_xml(b, i, idprefix) { |b| b << statement.content.text_value }
+                  blocklist.to_xml(b, idprefix, i) { |b| b << statement.content.text_value }
                 else
-                  blocklist.to_xml(b, i, idprefix)
+                  blocklist.to_xml(b, idprefix, i)
                 end
               else
                 # raw content
@@ -283,7 +283,7 @@ module Slaw
       class Blocklist < Treetop::Runtime::SyntaxNode
         # Render a block list to xml. If a block is given,
         # yield to it a builder to insert a listIntroduction node
-        def to_xml(b, i, idprefix, &block)
+        def to_xml(b, idprefix, i=0, &block)
           id = idprefix + "list#{i}"
           idprefix = id + '.'
 
@@ -382,7 +382,7 @@ module Slaw
           end
         end
 
-        def to_xml(b, i)
+        def to_xml(b, idprefix, i=0)
           n = num.nil? ? i : num
           id = "schedule-#{n}"
 
