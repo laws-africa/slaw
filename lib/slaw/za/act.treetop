@@ -110,7 +110,7 @@ module Slaw
       # statements
 
       rule numbered_statement
-        space? numbered_statement_prefix whitespace? (!blocklist_item_prefix content eol)? <NumberedStatement>
+        space? numbered_statement_prefix whitespace (!blocklist_item_prefix content eol)? <NumberedStatement>
       end
 
       rule naked_statement
@@ -173,7 +173,7 @@ module Slaw
       end
 
       rule blocklist_item
-        space? blocklist_item_prefix whitespace? item_content:(!blocklist_item_prefix content eol)?
+        space? blocklist_item_prefix whitespace item_content:(!blocklist_item_prefix content eol)?
         <BlocklistItem>
       end
 
