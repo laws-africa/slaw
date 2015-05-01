@@ -61,6 +61,28 @@ EOS
       to_xml(node).should == "<part id=\"part-2\"><num>2</num><heading>The Part Heading</heading><section id=\"section-1\"><num>1.</num><heading>Section</heading><subsection id=\"section-1.subsection-0\"><content><p>Hello there</p></content></subsection></section></part>"
     end
 
+    it 'should handle part headers with dashes' do
+      node = parse :part, <<EOS
+Part 2 - The Part Heading
+1. Section
+Hello there
+EOS
+      node.num.should == "2"
+      node.heading.title.should == 'The Part Heading'
+      to_xml(node).should == "<part id=\"part-2\"><num>2</num><heading>The Part Heading</heading><section id=\"section-1\"><num>1.</num><heading>Section</heading><subsection id=\"section-1.subsection-0\"><content><p>Hello there</p></content></subsection></section></part>"
+    end
+
+    it 'should handle part headers with colons' do
+      node = parse :part, <<EOS
+Part 2: The Part Heading
+1. Section
+Hello there
+EOS
+      node.num.should == "2"
+      node.heading.title.should == 'The Part Heading'
+      to_xml(node).should == "<part id=\"part-2\"><num>2</num><heading>The Part Heading</heading><section id=\"section-1\"><num>1.</num><heading>Section</heading><subsection id=\"section-1.subsection-0\"><content><p>Hello there</p></content></subsection></section></part>"
+    end
+
     it 'should handle parts and odd section numbers' do
       subject.parser.options = {section_number_after_title: false}
       node = parse :act, <<EOS

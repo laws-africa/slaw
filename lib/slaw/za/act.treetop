@@ -126,7 +126,7 @@ module Slaw
       # prefixes
 
       rule part_heading_prefix
-        'part'i space alphanums ':'?
+        'part'i space alphanums whitespace [:-]?
       end
 
       rule chapter_heading_prefix
