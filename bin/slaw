@@ -48,7 +48,12 @@ class SlawCLI < Thor
       end
     end
 
-    act = generator.generate_from_text(text)
+    begin
+      act = generator.generate_from_text(text)
+    rescue Slaw::Parse::ParseError => e
+      error e.message
+      exit 1
+    end
 
     # definitions?
     generator.builder.link_definitions(act.doc) if options[:definitions]
