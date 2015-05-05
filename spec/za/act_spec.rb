@@ -389,11 +389,11 @@ EOS
 
     it 'should serialise many schedules correctly' do
       node = parse :schedules, <<EOS
-Schedule "1"
+Schedule "2"
 A Title
 1. Foo
 2. Bar
-Schedule 2
+Schedule 3
 Another Title
 Baz
 Boom
@@ -409,44 +409,6 @@ EOS
       s.should == <<EOS
 <components>
   <component id="component-1">
-    <doc name="schedule1">
-      <meta>
-        <identification source="#slaw">
-          <FRBRWork>
-            <FRBRthis value="/za/act/1980/01/schedule1"/>
-            <FRBRuri value="/za/act/1980/01"/>
-            <FRBRalias value="Schedule 1"/>
-            <FRBRdate date="1980-01-01" name="Generation"/>
-            <FRBRauthor href="#council" as="#author"/>
-            <FRBRcountry value="za"/>
-          </FRBRWork>
-          <FRBRExpression>
-            <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
-            <FRBRuri value="/za/act/1980/01/eng@"/>
-            <FRBRdate date="1980-01-01" name="Generation"/>
-            <FRBRauthor href="#council" as="#author"/>
-            <FRBRlanguage language="eng"/>
-          </FRBRExpression>
-          <FRBRManifestation>
-            <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
-            <FRBRuri value="/za/act/1980/01/eng@"/>
-            <FRBRdate date="#{today}" name="Generation"/>
-            <FRBRauthor href="#slaw" as="#author"/>
-          </FRBRManifestation>
-        </identification>
-      </meta>
-      <mainBody>
-        <article id="schedule-1">
-          <heading>A Title</heading>
-          <content>
-            <p>1. Foo</p>
-            <p>2. Bar</p>
-          </content>
-        </article>
-      </mainBody>
-    </doc>
-  </component>
-  <component id="component-2">
     <doc name="schedule2">
       <meta>
         <identification source="#slaw">
@@ -475,6 +437,44 @@ EOS
       </meta>
       <mainBody>
         <article id="schedule-2">
+          <heading>A Title</heading>
+          <content>
+            <p>1. Foo</p>
+            <p>2. Bar</p>
+          </content>
+        </article>
+      </mainBody>
+    </doc>
+  </component>
+  <component id="component-2">
+    <doc name="schedule3">
+      <meta>
+        <identification source="#slaw">
+          <FRBRWork>
+            <FRBRthis value="/za/act/1980/01/schedule3"/>
+            <FRBRuri value="/za/act/1980/01"/>
+            <FRBRalias value="Schedule 3"/>
+            <FRBRdate date="1980-01-01" name="Generation"/>
+            <FRBRauthor href="#council" as="#author"/>
+            <FRBRcountry value="za"/>
+          </FRBRWork>
+          <FRBRExpression>
+            <FRBRthis value="/za/act/1980/01/eng@/schedule3"/>
+            <FRBRuri value="/za/act/1980/01/eng@"/>
+            <FRBRdate date="1980-01-01" name="Generation"/>
+            <FRBRauthor href="#council" as="#author"/>
+            <FRBRlanguage language="eng"/>
+          </FRBRExpression>
+          <FRBRManifestation>
+            <FRBRthis value="/za/act/1980/01/eng@/schedule3"/>
+            <FRBRuri value="/za/act/1980/01/eng@"/>
+            <FRBRdate date="#{today}" name="Generation"/>
+            <FRBRauthor href="#slaw" as="#author"/>
+          </FRBRManifestation>
+        </identification>
+      </meta>
+      <mainBody>
+        <article id="schedule-3">
           <heading>Another Title</heading>
           <content>
             <p>Baz</p>

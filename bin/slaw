@@ -37,8 +37,16 @@ class SlawCLI < Thor
 
     if options[:fragment]
       generator.document_class = Slaw::Fragment
+
       fragment = options[:fragment]
-      fragment = 'act' if fragment.downcase == 'akomantoso'
+      fragment = case fragment.downcase
+                 when 'akomantoso'
+                   'act'
+                 when 'doc'
+                   'schedule'
+                 else
+                   fragment
+                  end
       generator.builder.parse_options[:root] = fragment
 
       if options[:id_prefix]

@@ -318,43 +318,10 @@ module Slaw
           return if schedules.elements.empty?
 
           b.components { |b| 
-            schedules.elements.each_with_index { |e, i| write_schedule(e, i+1, b) }
-          }
-        end
-
-        def write_schedule(element, i, b)
-          # component name
-          comp = "schedule#{i}"
-
-          b.component(id: "component-#{i}") { |b|
-            b.doc(name: "schedule#{i}") { |b|
-              b.meta { |b|
-                b.identification(source: "#slaw") { |b|
-                  b.FRBRWork { |b|
-                    b.FRBRthis(value: "#{Act::WORK_URI}/#{comp}")
-                    b.FRBRuri(value: Act::WORK_URI)
-                    b.FRBRalias(value: element.alias)
-                    b.FRBRdate(date: '1980-01-01', name: 'Generation')
-                    b.FRBRauthor(href: '#council', as: '#author')
-                    b.FRBRcountry(value: 'za')
-                  }
-                  b.FRBRExpression { |b|
-                    b.FRBRthis(value: "#{Act::EXPRESSION_URI}/#{comp}")
-                    b.FRBRuri(value: Act::EXPRESSION_URI)
-                    b.FRBRdate(date: '1980-01-01', name: 'Generation')
-                    b.FRBRauthor(href: '#council', as: '#author')
-                    b.FRBRlanguage(language: 'eng')
-                  }
-                  b.FRBRManifestation { |b|
-                    b.FRBRthis(value: "#{Act::MANIFESTATION_URI}/#{comp}")
-                    b.FRBRuri(value: Act::MANIFESTATION_URI)
-                    b.FRBRdate(date: Time.now.strftime('%Y-%m-%d'), name: 'Generation')
-                    b.FRBRauthor(href: '#slaw', as: '#author')
-                  }
-                }
+            schedules.elements.each_with_index { |e, i| 
+              b.component(id: "component-#{i+1}") { |b|
+                e.to_xml(b, "", i+1)
               }
-
-              b.mainBody { |b| element.to_xml(b, i) }
             }
           }
         end
@@ -382,16 +349,49 @@ module Slaw
           end
         end
 
-        def to_xml(b, idprefix, i=0)
+        def to_xml(b, idprefix, i=1)
           n = num.nil? ? i : num
-          id = "schedule-#{n}"
 
-          # there is no good AKN hierarchy container for schedules, so we
-          # just use article because we don't use it anywhere else.
-          b.article(id: id) { |b|
-            b.heading(heading) if heading
-            b.content { |b|
-              statements.elements.each { |e| b.p(e.content.text_value) }
+          # component name
+          comp = "schedule#{n}"
+          id = "#{idprefix}schedule-#{n}"
+
+          b.doc(name: "schedule#{n}") { |b|
+            b.meta { |b|
+              b.identification(source: "#slaw") { |b|
+                b.FRBRWork { |b|
+                  b.FRBRthis(value: "#{Act::WORK_URI}/#{comp}")
+                  b.FRBRuri(value: Act::WORK_URI)
+                  b.FRBRalias(value: self.alias)
+                  b.FRBRdate(date: '1980-01-01', name: 'Generation')
+                  b.FRBRauthor(href: '#council', as: '#author')
+                  b.FRBRcountry(value: 'za')
+                }
+                b.FRBRExpression { |b|
+                  b.FRBRthis(value: "#{Act::EXPRESSION_URI}/#{comp}")
+                  b.FRBRuri(value: Act::EXPRESSION_URI)
+                  b.FRBRdate(date: '1980-01-01', name: 'Generation')
+                  b.FRBRauthor(href: '#council', as: '#author')
+                  b.FRBRlanguage(language: 'eng')
+                }
+                b.FRBRManifestation { |b|
+                  b.FRBRthis(value: "#{Act::MANIFESTATION_URI}/#{comp}")
+                  b.FRBRuri(value: Act::MANIFESTATION_URI)
+                  b.FRBRdate(date: Time.now.strftime('%Y-%m-%d'), name: 'Generation')
+                  b.FRBRauthor(href: '#slaw', as: '#author')
+                }
+              }
+            }
+
+            b.mainBody { |b| 
+              # there is no good AKN hierarchy container for schedules, so we
+              # just use article because we don't use it anywhere else.
+              b.article(id: id) { |b|
+                b.heading(heading) if heading
+                b.content { |b|
+                  statements.elements.each { |e| b.p(e.content.text_value) }
+                }
+              }
             }
           }
         end
