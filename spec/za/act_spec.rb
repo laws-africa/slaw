@@ -21,10 +21,10 @@ describe Slaw::ActGenerator do
     end
   end
 
-  def to_xml(node)
+  def to_xml(node, *args)
     s = ""
     b = Builder::XmlMarkup.new(target: s)
-    node.to_xml(b)
+    node.to_xml(b, *args)
     s
   end
 
@@ -546,6 +546,112 @@ EOS
   </component>
 </components>
 EOS
+    end
+  end
+
+  describe 'tables' do
+    it 'should parse basic tables' do
+      node = parse :table, <<EOS
+{|
+| r1c1
+| r1c2
+|-
+| r2c1
+| r2c2
+|}
+EOS
+
+      node.text_value.should == "{|\n| r1c1\n| r1c2\n|-\n| r2c1\n| r2c2\n|}\n"
+      to_xml(node, "prefix.").should == '<table id="prefix.table0">
+<tr>
+<td>
+r1c1
+</td>
+<td>
+r1c2
+</td>
+</tr>
+<tr>
+<td>
+r2c1
+</td>
+<td>
+r2c2
+</td>
+</tr>
+</table>'
+    end
+
+    it 'should parse a table in a section' do
+      node = parse :section, <<EOS
+10. A section title
+
+Heres a table:
+
+{|
+| r1c1
+| r1c2
+|-
+| r2c1
+| r2c2
+|}
+EOS
+
+      xml = to_xml(node)
+      xml.should == '<section id="section-10"><num>10.</num><heading>A section title</heading><subsection id="section-10.subsection-0"><content><p>Heres a table:</p></content></subsection><subsection id="section-10.subsection-1"><content><table id="section-10.subsection-1.table0">
+<tr>
+<td>
+r1c1
+</td>
+<td>
+r1c2
+</td>
+</tr>
+<tr>
+<td>
+r2c1
+</td>
+<td>
+r2c2
+</td>
+</tr>
+</table></content></subsection></section>'
+    end
+
+    it 'should parse a table in a schedule' do
+      node = parse :schedule, <<EOS
+Schedule 1
+
+Heres a table:
+
+{|
+| r1c1
+| r1c2
+|-
+| r2c1
+| r2c2
+|}
+EOS
+
+      xml = to_xml(node, "")
+      xml.should == '<doc name="schedule1"><meta><identification source="#slaw"><FRBRWork><FRBRthis value="/za/act/1980/01/schedule1"/><FRBRuri value="/za/act/1980/01"/><FRBRalias value="Schedule 1"/><FRBRdate date="1980-01-01" name="Generation"/><FRBRauthor href="#council" as="#author"/><FRBRcountry value="za"/></FRBRWork><FRBRExpression><FRBRthis value="/za/act/1980/01/eng@/schedule1"/><FRBRuri value="/za/act/1980/01/eng@"/><FRBRdate date="1980-01-01" name="Generation"/><FRBRauthor href="#council" as="#author"/><FRBRlanguage language="eng"/></FRBRExpression><FRBRManifestation><FRBRthis value="/za/act/1980/01/eng@/schedule1"/><FRBRuri value="/za/act/1980/01/eng@"/><FRBRdate date="2015-05-13" name="Generation"/><FRBRauthor href="#slaw" as="#author"/></FRBRManifestation></identification></meta><mainBody><article id="schedule-1"><content><p>Heres a table:</p><table id="schedule-1.table0">
+<tr>
+<td>
+r1c1
+</td>
+<td>
+r1c2
+</td>
+</tr>
+<tr>
+<td>
+r2c1
+</td>
+<td>
+r2c2
+</td>
+</tr>
+</table></content></article></mainBody></doc>'
     end
   end
 end

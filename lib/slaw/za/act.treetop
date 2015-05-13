@@ -38,7 +38,7 @@ module Slaw
       end
 
       rule subsection
-        statement:(numbered_statement / naked_statement)
+        statement:(numbered_statement / table / naked_statement)
         blocklist:blocklist? <Subsection>
       end
 
@@ -48,7 +48,7 @@ module Slaw
 
       rule schedule
         schedule_heading
-        statements:schedule_statement* <Schedule>
+        statements:(table / schedule_statement)* <Schedule>
       end
 
       ##########
@@ -120,6 +120,23 @@ module Slaw
 
       rule schedule_statement
         space? (!schedule_heading) content eol
+        <ScheduleStatement>
+      end
+
+      ##########
+      # tables
+
+      rule table
+        space? table_start eol? (!table_end content eol)* table_end eol
+        <Table>
+      end
+
+      rule table_start
+        space? '{|'
+      end
+
+      rule table_end
+        space? '|}'
       end
 
       ##########

@@ -29,4 +29,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "thor", "~> 0.19.1"
   spec.add_runtime_dependency "mimemagic", "~> 0.2.1"
   spec.add_runtime_dependency 'yomu', '~> 0.2.2'
+  spec.add_runtime_dependency 'wikicloth', '~> 0.8.3'
 end

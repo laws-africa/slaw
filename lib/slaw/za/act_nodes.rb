@@ -1,3 +1,5 @@
+require 'wikicloth'
+
 module Slaw
   module ZA
     module Act
@@ -252,7 +254,8 @@ module Slaw
                 end
               else
                 # raw content
-                b.p(statement.content.text_value) if statement.content
+                statement.to_xml(b, idprefix)
+                #b.p(statement.content.text_value) if statement.content
               end
             }
           }
@@ -278,6 +281,9 @@ module Slaw
       end
 
       class NakedStatement < Treetop::Runtime::SyntaxNode
+        def to_xml(b, idprefix)
+          b.p(content.text_value) if content
+        end
       end
 
       class Blocklist < Treetop::Runtime::SyntaxNode
@@ -310,6 +316,20 @@ module Slaw
             b.num(num)
             b.p(content) if content
           }
+        end
+      end
+
+      class Table < Treetop::Runtime::SyntaxNode
+        def to_xml(b, idprefix)
+          # parse the table using wikicloth
+          html = WikiCloth::Parser.new({data: self.text_value}).to_html
+
+          # we need to strip any surrounding p tags and add
+          # an id to the table
+          table = Nokogiri::HTML(html).css("table").first
+          table['id'] = "#{idprefix}table0"
+
+          b << table.to_html
         end
       end
 
@@ -389,11 +409,17 @@ module Slaw
               b.article(id: id) { |b|
                 b.heading(heading) if heading
                 b.content { |b|
-                  statements.elements.each { |e| b.p(e.content.text_value) }
+                  statements.elements.each { |e| e.to_xml(b, id + '.') }
                 }
               }
             }
           }
+        end
+      end
+
+      class ScheduleStatement < Treetop::Runtime::SyntaxNode
+        def to_xml(b, idprefix)
+          b.p(content.text_value) if content
         end
       end
     end
