@@ -1,3 +1,5 @@
+require 'wikicloth'
+
 module Slaw
   module ZA
     module Act
@@ -252,7 +254,7 @@ module Slaw
                 end
               else
                 # raw content
-                b.p(statement.content.text_value) if statement.content
+                statement.to_xml(b, idprefix)
               end
             }
           }
@@ -275,9 +277,16 @@ module Slaw
             elements[3].content
           end
         end
+
+        def to_xml(b, idprefix)
+          b.p(content.text_value) if content
+        end
       end
 
       class NakedStatement < Treetop::Runtime::SyntaxNode
+        def to_xml(b, idprefix)
+          b.p(content.text_value) if content
+        end
       end
 
       class Blocklist < Treetop::Runtime::SyntaxNode
@@ -310,6 +319,31 @@ module Slaw
             b.num(num)
             b.p(content) if content
           }
+        end
+      end
+
+      class Table < Treetop::Runtime::SyntaxNode
+        def to_xml(b, idprefix)
+          # parse the table using wikicloth
+          html = WikiCloth::Parser.new({data: self.text_value}).to_html
+
+          # we need to strip any surrounding p tags and add
+          # an id to the table
+          html = Nokogiri::HTML(html)
+          table = html.css("table").first
+          table['id'] = "#{idprefix}table0"
+
+          # wrap td and th content in p tags
+          table.css("td, th").each do |cell|
+            p = Nokogiri::XML::Node.new("p", html)
+            p.children = cell.children
+            p.parent = cell
+          end
+
+          table.xpath('//text()[1]').each{ |t|      t.content = t.content.lstrip }
+          table.xpath('//text()[last()]').each{ |t| t.content = t.content.rstrip }
+
+          b << table.to_html
         end
       end
 
@@ -389,11 +423,17 @@ module Slaw
               b.article(id: id) { |b|
                 b.heading(heading) if heading
                 b.content { |b|
-                  statements.elements.each { |e| b.p(e.content.text_value) }
+                  statements.elements.each { |e| e.to_xml(b, id + '.') }
                 }
               }
             }
           }
+        end
+      end
+
+      class ScheduleStatement < Treetop::Runtime::SyntaxNode
+        def to_xml(b, idprefix)
+          b.p(content.text_value) if content
         end
       end
     end
