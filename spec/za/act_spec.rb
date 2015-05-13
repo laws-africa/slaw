@@ -562,24 +562,10 @@ EOS
 EOS
 
       node.text_value.should == "{|\n| r1c1\n| r1c2\n|-\n| r2c1\n| r2c2\n|}\n"
-      to_xml(node, "prefix.").should == '<table id="prefix.table0">
-<tr>
-<td>
-r1c1
-</td>
-<td>
-r1c2
-</td>
-</tr>
-<tr>
-<td>
-r2c1
-</td>
-<td>
-r2c2
-</td>
-</tr>
-</table>'
+      to_xml(node, "prefix.").should == '<table id="prefix.table0"><tr><td><p>r1c1</p></td>
+<td><p>r1c2</p></td></tr>
+<tr><td><p>r2c1</p></td>
+<td><p>r2c2</p></td></tr></table>'
     end
 
     it 'should parse a table in a section' do
@@ -598,24 +584,10 @@ Heres a table:
 EOS
 
       xml = to_xml(node)
-      xml.should == '<section id="section-10"><num>10.</num><heading>A section title</heading><subsection id="section-10.subsection-0"><content><p>Heres a table:</p></content></subsection><subsection id="section-10.subsection-1"><content><table id="section-10.subsection-1.table0">
-<tr>
-<td>
-r1c1
-</td>
-<td>
-r1c2
-</td>
-</tr>
-<tr>
-<td>
-r2c1
-</td>
-<td>
-r2c2
-</td>
-</tr>
-</table></content></subsection></section>'
+      xml.should == '<section id="section-10"><num>10.</num><heading>A section title</heading><subsection id="section-10.subsection-0"><content><p>Heres a table:</p></content></subsection><subsection id="section-10.subsection-1"><content><table id="section-10.subsection-1.table0"><tr><td><p>r1c1</p></td>
+<td><p>r1c2</p></td></tr>
+<tr><td><p>r2c1</p></td>
+<td><p>r2c2</p></td></tr></table></content></subsection></section>'
     end
 
     it 'should parse a table in a schedule' do
@@ -634,24 +606,10 @@ Heres a table:
 EOS
 
       xml = to_xml(node, "")
-      xml.should == '<doc name="schedule1"><meta><identification source="#slaw"><FRBRWork><FRBRthis value="/za/act/1980/01/schedule1"/><FRBRuri value="/za/act/1980/01"/><FRBRalias value="Schedule 1"/><FRBRdate date="1980-01-01" name="Generation"/><FRBRauthor href="#council" as="#author"/><FRBRcountry value="za"/></FRBRWork><FRBRExpression><FRBRthis value="/za/act/1980/01/eng@/schedule1"/><FRBRuri value="/za/act/1980/01/eng@"/><FRBRdate date="1980-01-01" name="Generation"/><FRBRauthor href="#council" as="#author"/><FRBRlanguage language="eng"/></FRBRExpression><FRBRManifestation><FRBRthis value="/za/act/1980/01/eng@/schedule1"/><FRBRuri value="/za/act/1980/01/eng@"/><FRBRdate date="2015-05-13" name="Generation"/><FRBRauthor href="#slaw" as="#author"/></FRBRManifestation></identification></meta><mainBody><article id="schedule-1"><content><p>Heres a table:</p><table id="schedule-1.table0">
-<tr>
-<td>
-r1c1
-</td>
-<td>
-r1c2
-</td>
-</tr>
-<tr>
-<td>
-r2c1
-</td>
-<td>
-r2c2
-</td>
-</tr>
-</table></content></article></mainBody></doc>'
+      xml.should == '<doc name="schedule1"><meta><identification source="#slaw"><FRBRWork><FRBRthis value="/za/act/1980/01/schedule1"/><FRBRuri value="/za/act/1980/01"/><FRBRalias value="Schedule 1"/><FRBRdate date="1980-01-01" name="Generation"/><FRBRauthor href="#council" as="#author"/><FRBRcountry value="za"/></FRBRWork><FRBRExpression><FRBRthis value="/za/act/1980/01/eng@/schedule1"/><FRBRuri value="/za/act/1980/01/eng@"/><FRBRdate date="1980-01-01" name="Generation"/><FRBRauthor href="#council" as="#author"/><FRBRlanguage language="eng"/></FRBRExpression><FRBRManifestation><FRBRthis value="/za/act/1980/01/eng@/schedule1"/><FRBRuri value="/za/act/1980/01/eng@"/><FRBRdate date="2015-05-13" name="Generation"/><FRBRauthor href="#slaw" as="#author"/></FRBRManifestation></identification></meta><mainBody><article id="schedule-1"><content><p>Heres a table:</p><table id="schedule-1.table0"><tr><td><p>r1c1</p></td>
+<td><p>r1c2</p></td></tr>
+<tr><td><p>r2c1</p></td>
+<td><p>r2c2</p></td></tr></table></content></article></mainBody></doc>'
     end
   end
 end

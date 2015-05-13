@@ -255,7 +255,6 @@ module Slaw
               else
                 # raw content
                 statement.to_xml(b, idprefix)
-                #b.p(statement.content.text_value) if statement.content
               end
             }
           }
@@ -277,6 +276,10 @@ module Slaw
           else
             elements[3].content
           end
+        end
+
+        def to_xml(b, idprefix)
+          b.p(content.text_value) if content
         end
       end
 
@@ -326,8 +329,19 @@ module Slaw
 
           # we need to strip any surrounding p tags and add
           # an id to the table
-          table = Nokogiri::HTML(html).css("table").first
+          html = Nokogiri::HTML(html)
+          table = html.css("table").first
           table['id'] = "#{idprefix}table0"
+
+          # wrap td and th content in p tags
+          table.css("td, th").each do |cell|
+            p = Nokogiri::XML::Node.new("p", html)
+            p.children = cell.children
+            p.parent = cell
+          end
+
+          table.xpath('//text()[1]').each{ |t|      t.content = t.content.lstrip }
+          table.xpath('//text()[last()]').each{ |t| t.content = t.content.rstrip }
 
           b << table.to_html
         end
