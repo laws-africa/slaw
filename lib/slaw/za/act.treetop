@@ -114,7 +114,7 @@ module Slaw
       end
 
       rule naked_statement
-        space? !(part / chapter / section / schedule / remark) content eol
+        space? !(part / chapter / section / schedule) content eol
         <NakedStatement>
       end
 

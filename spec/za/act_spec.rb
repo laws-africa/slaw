@@ -219,7 +219,19 @@ EOS
 
       [Section 1 amended by Act 23 of 2004]
 EOS
-      to_xml(node).should == "<section id=\"section-1\"><num>1.</num><heading>Section title</heading><subsection id=\"section-1.subsection-0\"><content><p>Some text is a long line.</p></content></subsection><p><remark>[Section 1 amended by Act 23 of 2004]</remark></p></section>"
+      to_xml(node, 2).should == '<section id="section-1">
+  <num>1.</num>
+  <heading>Section title</heading>
+  <subsection id="section-1.subsection-0">
+    <content>
+      <p>Some text is a long line.</p>
+      <p>
+        <remark status="editorial">[Section 1 amended by Act 23 of 2004]</remark>
+      </p>
+    </content>
+  </subsection>
+</section>
+'
     end
   end
 
