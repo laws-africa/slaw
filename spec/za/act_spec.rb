@@ -427,13 +427,8 @@ Baz
 Boom
 EOS
 
-      s = ""
-      builder = ::Builder::XmlMarkup.new(indent: 2, target: s)
-
-      node.to_xml(builder)
-
+      s = to_xml(node, 2)
       today = Time.now.strftime('%Y-%m-%d')
-
       s.should == <<EOS
 <components>
   <component id="component-1">
