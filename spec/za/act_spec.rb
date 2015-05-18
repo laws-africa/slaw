@@ -225,6 +225,10 @@ EOS
   <subsection id="section-1.subsection-0">
     <content>
       <p>Some text is a long line.</p>
+    </content>
+  </subsection>
+  <subsection id="section-1.subsection-1">
+    <content>
       <p>
         <remark status="editorial">[Section 1 amended by Act 23 of 2004]</remark>
       </p>
