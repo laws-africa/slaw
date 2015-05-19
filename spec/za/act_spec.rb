@@ -201,13 +201,13 @@ EOS
   describe 'remark' do
     it 'should handle basic remarks' do
       should_parse :remark, <<EOS
-      [Section 2 amended by Act 23 of 2004]
+      [[Section 2 amended by Act 23 of 2004]]
 EOS
     end
 
     it 'should handle a remark' do
       node = parse :remark, <<EOS
-      [Section 2 amended by Act 23 of 2004]
+      [[Section 2 amended by Act 23 of 2004]]
 EOS
       node.content.text_value.should == "Section 2 amended by Act 23 of 2004"
     end
@@ -217,7 +217,7 @@ EOS
       1. Section title
       Some text is a long line.
 
-      [Section 1 amended by Act 23 of 2004]
+      [[Section 1 amended by Act 23 of 2004]]
 EOS
       to_xml(node, 2).should == '<section id="section-1">
   <num>1.</num>
