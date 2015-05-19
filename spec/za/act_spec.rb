@@ -344,13 +344,36 @@ EOS
 </subsection>'
     end
 
-    it 'should handle an inline remark' do
+    it 'should handle an inline remark at the end of a sentence' do
       node = parse :subsection, <<EOS
       This statement has an inline remark. [[Section 2 amended by Act 23 of 2004]]
 EOS
       to_xml(node, "").should == '<subsection id="subsection-0">
   <content>
     <p>This statement has an inline remark. <remark status="editorial">[Section 2 amended by Act 23 of 2004]</remark></p>
+  </content>
+</subsection>'
+    end
+
+    it 'should handle an inline remark mid-way through' do
+      node = parse :subsection, <<EOS
+      (1) This statement has an inline remark. [[Section 2 amended by Act 23 of 2004]] And now some more.
+EOS
+      to_xml(node, "").should == '<subsection id="1">
+  <num>(1)</num>
+  <content>
+    <p>This statement has an inline remark. <remark status="editorial">[Section 2 amended by Act 23 of 2004]</remark> And now some more.</p>
+  </content>
+</subsection>'
+    end
+
+    it 'should handle many inline remarks' do
+      node = parse :subsection, <<EOS
+      This statement has an inline remark. [[Section 2 amended by Act 23 of 2004]]. And now some more. [[Another remark]] [[and another]]
+EOS
+      to_xml(node, "").should == '<subsection id="subsection-0">
+  <content>
+    <p>This statement has an inline remark. <remark status="editorial">[Section 2 amended by Act 23 of 2004]</remark>. And now some more. <remark status="editorial">[Another remark]</remark> <remark status="editorial">[and another]</remark></p>
   </content>
 </subsection>'
     end
@@ -846,6 +869,17 @@ EOS
     it 'should handle a simple clause' do
       node = parse :clauses, "simple text"
       node.text_value.should == "simple text"
+    end
+
+    it 'should handle a clause with a remark' do
+      node = parse :clauses, "simple [[remark]]. text"
+      node.text_value.should == "simple [[remark]]. text"
+      node.elements[1].elements.first.is_a?(Slaw::ZA::Act::Remark).should be_true
+
+      node = parse :clauses, "simple [[remark]][[another]] text"
+      node.text_value.should == "simple [[remark]][[another]] text"
+      node.elements[1].elements.first.is_a?(Slaw::ZA::Act::Remark).should be_true
+      node.elements[2].elements.first.is_a?(Slaw::ZA::Act::Remark).should be_true
     end
   end
 end

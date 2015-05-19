@@ -125,7 +125,7 @@ module Slaw
 
       # one or more words, allowing inline elements
       rule clauses
-        (remark / [^ \t\n]+ [ \t]*)+
+        ((remark / [^ \t\n]+) [ \t]*)+
         <Clauses>
       end
 

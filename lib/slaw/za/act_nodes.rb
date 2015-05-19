@@ -280,7 +280,7 @@ module Slaw
         end
 
         def to_xml(b, idprefix)
-          b.p(content.text_value) if content
+          b.p { |b| content.to_xml(b, idprefix) } if content
         end
       end
 
@@ -297,10 +297,12 @@ module Slaw
       class Clauses < Treetop::Runtime::SyntaxNode
         def to_xml(b, idprefix=nil)
           for e in elements
-            if e.respond_to? :to_xml
-              e.to_xml(b, idprefix)
-            else
-              b << e.text_value
+            for e2 in e.elements
+              if e2.respond_to? :to_xml
+                e2.to_xml(b, idprefix)
+              else
+                b << e2.text_value
+              end
             end
           end
         end
