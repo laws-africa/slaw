@@ -171,6 +171,21 @@ EOS
 EOS
       node.statement.clauses.text_value.should == "naked statement (c) blah"
       node.blocklist.elements.first.num.should == "(a)"
+      to_xml(node, "").should == '<subsection id="subsection-0">
+  <content>
+    <blockList id="subsection-0.list0">
+      <listIntroduction>naked statement (c) blah</listIntroduction>
+      <item id="subsection-0.list0.a">
+        <num>(a)</num>
+        <p>foo</p>
+      </item>
+      <item id="subsection-0.list0.b">
+        <num>(b)</num>
+        <p>bar</p>
+      </item>
+    </blockList>
+  </content>
+</subsection>'
     end
 
     it 'should handle a blocklist' do
@@ -183,6 +198,30 @@ EOS
 EOS
       node.statement.num.should == "(2)"
       node.statement.content.text_value.should == "title"
+      to_xml(node, "").should == '<subsection id="2">
+  <num>(2)</num>
+  <content>
+    <blockList id="2.list0">
+      <listIntroduction>title</listIntroduction>
+      <item id="2.list0.a">
+        <num>(a)</num>
+        <p>one</p>
+      </item>
+      <item id="2.list0.b">
+        <num>(b)</num>
+        <p>two</p>
+      </item>
+      <item id="2.list0.c">
+        <num>(c)</num>
+        <p>three</p>
+      </item>
+      <item id="2.list0.i">
+        <num>(i)</num>
+        <p>four</p>
+      </item>
+    </blockList>
+  </content>
+</subsection>'
     end
 
     it 'should handle a subsection that dives straight into a list' do
@@ -196,6 +235,29 @@ EOS
       node.statement.content.should be_nil
       node.blocklist.elements.first.num.should == "(a)"
       node.blocklist.elements.first.content.should == "one"
+      to_xml(node, "").should == '<subsection id="1">
+  <num>(1)</num>
+  <content>
+    <blockList id="1.list0">
+      <item id="1.list0.a">
+        <num>(a)</num>
+        <p>one</p>
+      </item>
+      <item id="1.list0.b">
+        <num>(b)</num>
+        <p>two</p>
+      </item>
+      <item id="1.list0.c">
+        <num>(c)</num>
+        <p>three</p>
+      </item>
+      <item id="1.list0.i">
+        <num>(i)</num>
+        <p>four</p>
+      </item>
+    </blockList>
+  </content>
+</subsection>'
     end
 
     it 'should handle a blocklist that dives straight into another list' do
@@ -213,6 +275,29 @@ EOS
       node.blocklist.elements[1].content.should be_nil
       node.blocklist.elements[2].num.should == "(i)"
       node.blocklist.elements[2].content.should == "single"
+      to_xml(node, "").should == '<subsection id="1">
+  <num>(1)</num>
+  <content>
+    <blockList id="1.list0">
+      <listIntroduction>here\'s my really cool list,</listIntroduction>
+      <item id="1.list0.a">
+        <num>(a)</num>
+        <p>one</p>
+      </item>
+      <item id="1.list0.b">
+        <num>(b)</num>
+      </item>
+      <item id="1.list0.i">
+        <num>(i)</num>
+        <p>single</p>
+      </item>
+      <item id="1.list0.ii">
+        <num>(ii)</num>
+        <p>double</p>
+      </item>
+    </blockList>
+  </content>
+</subsection>'
     end
 
     context 'dotted numbers' do

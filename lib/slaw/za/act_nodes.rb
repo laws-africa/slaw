@@ -248,7 +248,8 @@ module Slaw
             b.content { |b| 
               if blocklist and blocklist.is_a?(Blocklist)
                 if statement.content
-                  blocklist.to_xml(b, idprefix, i) { |b| statement.content.to_xml(b) }
+                  # provide the statement as the list introduction to the block list
+                  blocklist.to_xml(b, idprefix, i) { |b| statement.content.to_xml(b, idprefix) }
                 else
                   blocklist.to_xml(b, idprefix, i)
                 end
@@ -286,6 +287,10 @@ module Slaw
       class NakedStatement < Treetop::Runtime::SyntaxNode
         def to_xml(b, idprefix)
           b.p { |b| clauses.to_xml(b, idprefix) } if clauses
+        end
+
+        def content
+          clauses
         end
       end
 
