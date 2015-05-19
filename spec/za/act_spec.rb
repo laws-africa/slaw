@@ -122,7 +122,7 @@ EOS
         (a) foo
         (b) bar
 EOS
-      node.statement.content.text_value.should == "naked statement (c) blah"
+      node.statement.clauses.text_value.should == "naked statement (c) blah"
       node.blocklist.elements.first.num.should == "(a)"
     end
 
@@ -199,17 +199,32 @@ EOS
   # Remarks
 
   describe 'remark' do
-    it 'should handle basic remarks' do
-      should_parse :remark, <<EOS
+    it 'should handle a plain remark' do
+      node = parse :subsection, <<EOS
       [[Section 2 amended by Act 23 of 2004]]
 EOS
+      to_xml(node, 2, "").should == '<subsection id="subsection-0">
+  <content>
+    <p>
+      <remark status="editorial">[Section 2 amended by Act 23 of 2004]</remark>
+    </p>
+  </content>
+</subsection>
+'
     end
 
-    it 'should handle a remark' do
-      node = parse :remark, <<EOS
-      [[Section 2 amended by Act 23 of 2004]]
+    it 'should handle an inline remark' do
+      node = parse :subsection, <<EOS
+      This statement has an inline remark. [[Section 2 amended by Act 23 of 2004]]
 EOS
-      node.content.text_value.should == "Section 2 amended by Act 23 of 2004"
+      to_xml(node, 2, "").should == '<subsection id="subsection-0">
+  <content>
+    <p>
+This statement has an inline remark.       <remark status="editorial">[Section 2 amended by Act 23 of 2004]</remark>
+    </p>
+  </content>
+</subsection>
+'
     end
 
     it 'should handle a remark in a section' do
@@ -224,7 +239,8 @@ EOS
   <heading>Section title</heading>
   <subsection id="section-1.subsection-0">
     <content>
-      <p>Some text is a long line.</p>
+      <p>
+Some text is a long line.      </p>
     </content>
   </subsection>
   <subsection id="section-1.subsection-1">
@@ -354,7 +370,7 @@ EOS
       section = node.elements[1].elements[0].elements[1].elements[0].elements[1].elements[1]
       section.section_title.title.should == ""
       section.section_title.num.should == "2"
-      section.subsections.elements[0].statement.content.text_value.should == "Notwithstanding the provision of any other By-law or legislation no person shall—"
+      section.subsections.elements[0].statement.clauses.text_value.should == "Notwithstanding the provision of any other By-law or legislation no person shall—"
     end
 
     it 'should handle sections without titles and with subsections' do
@@ -381,7 +397,7 @@ EOS
       section = node.elements[1].elements[0].elements[1].elements[0].elements[1].elements[0]
       section.section_title.title.should == ""
       section.section_title.num.should == "10"
-      section.subsections.elements[0].statement.content.text_value.should == "The owner of any premises which is let or sublet to more than one tenant, shall maintain at all times in a clean and sanitary condition every part of such premises as may be used in common by more than one tenant."
+      section.subsections.elements[0].statement.clauses.text_value.should == "The owner of any premises which is let or sublet to more than one tenant, shall maintain at all times in a clean and sanitary condition every part of such premises as may be used in common by more than one tenant."
     end
   end
 
@@ -645,6 +661,16 @@ EOS
 <td><p>r1c2</p></td></tr>
 <tr><td><p>r2c1</p></td>
 <td><p>r2c2</p></td></tr></table></content></article></mainBody></doc>'
+    end
+  end
+
+  #-------------------------------------------------------------------------------
+  # clauses
+
+  context 'clauses' do
+    it 'should handle a simple clause' do
+      node = parse :clauses, "simple text"
+      node.text_value.should == "simple text"
     end
   end
 end

@@ -82,8 +82,8 @@ module Slaw
           if text_value != ""
             b.preamble { |b|
               statements.elements.each { |e|
-                if not (e.content.text_value =~ /^preamble/i)
-                  b.p(e.content.text_value)
+                if not (e.clauses.text_value =~ /^preamble/i)
+                  b.p(e.clauses.text_value)
                 end
               }
             }
@@ -248,7 +248,7 @@ module Slaw
             b.content { |b| 
               if blocklist and blocklist.is_a?(Blocklist)
                 if statement.content
-                  blocklist.to_xml(b, idprefix, i) { |b| b << statement.content.text_value }
+                  blocklist.to_xml(b, idprefix, i) { |b| statement.content.to_xml(b) }
                 else
                   blocklist.to_xml(b, idprefix, i)
                 end
@@ -274,7 +274,7 @@ module Slaw
           if elements[3].text_value == ""
             nil
           else
-            elements[3].content
+            elements[3].clauses
           end
         end
 
@@ -285,13 +285,25 @@ module Slaw
 
       class NakedStatement < Treetop::Runtime::SyntaxNode
         def to_xml(b, idprefix)
-          b.p(content.text_value) if content
+          b.p { |b| clauses.to_xml(b, idprefix) } if clauses
+        end
+      end
+
+      class Clauses < Treetop::Runtime::SyntaxNode
+        def to_xml(b, idprefix=nil)
+          for e in elements
+            if e.respond_to? :to_xml
+              e.to_xml(b, idprefix)
+            else
+              b << e.text_value
+            end
+          end
         end
       end
 
       class Remark < Treetop::Runtime::SyntaxNode
         def to_xml(b, idprefix)
-          b.p { |b| b.remark('[' + content.text_value + ']', status: 'editorial') }
+          b.remark('[' + content.text_value + ']', status: 'editorial')
         end
       end
 
