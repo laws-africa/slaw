@@ -21,11 +21,10 @@ describe Slaw::ActGenerator do
     end
   end
 
-  def to_xml(node, indent=nil, *args)
-    s = ""
-    b = Builder::XmlMarkup.new(target: s, indent: indent)
+  def to_xml(node, *args)
+    b = ::Nokogiri::XML::Builder.new
     node.to_xml(b, *args)
-    s
+    b.doc.root.to_xml(encoding: 'UTF-8')
   end
 
   #-------------------------------------------------------------------------------
@@ -41,7 +40,19 @@ Hello there
 EOS
       node.num.should == "2"
       node.heading.title.should == 'The Chapter Heading'
-      to_xml(node).should == "<chapter id=\"chapter-2\"><num>2</num><heading>The Chapter Heading</heading><section id=\"section-1\"><num>1.</num><heading>Section</heading><subsection id=\"section-1.subsection-0\"><content><p>Hello there</p></content></subsection></section></chapter>"
+      to_xml(node).should == '<chapter id="chapter-2">
+  <num>2</num>
+  <heading>The Chapter Heading</heading>
+  <section id="section-1">
+    <num>1.</num>
+    <heading>Section</heading>
+    <subsection id="section-1.subsection-0">
+      <content>
+        <p>Hello there</p>
+      </content>
+    </subsection>
+  </section>
+</chapter>'
     end
   end
 
@@ -58,7 +69,19 @@ Hello there
 EOS
       node.num.should == "2"
       node.heading.title.should == 'The Part Heading'
-      to_xml(node).should == "<part id=\"part-2\"><num>2</num><heading>The Part Heading</heading><section id=\"section-1\"><num>1.</num><heading>Section</heading><subsection id=\"section-1.subsection-0\"><content><p>Hello there</p></content></subsection></section></part>"
+      to_xml(node).should == '<part id="part-2">
+  <num>2</num>
+  <heading>The Part Heading</heading>
+  <section id="section-1">
+    <num>1.</num>
+    <heading>Section</heading>
+    <subsection id="section-1.subsection-0">
+      <content>
+        <p>Hello there</p>
+      </content>
+    </subsection>
+  </section>
+</part>'
     end
 
     it 'should handle part headers with dashes' do
@@ -69,7 +92,19 @@ Hello there
 EOS
       node.num.should == "2"
       node.heading.title.should == 'The Part Heading'
-      to_xml(node).should == "<part id=\"part-2\"><num>2</num><heading>The Part Heading</heading><section id=\"section-1\"><num>1.</num><heading>Section</heading><subsection id=\"section-1.subsection-0\"><content><p>Hello there</p></content></subsection></section></part>"
+      to_xml(node).should == '<part id="part-2">
+  <num>2</num>
+  <heading>The Part Heading</heading>
+  <section id="section-1">
+    <num>1.</num>
+    <heading>Section</heading>
+    <subsection id="section-1.subsection-0">
+      <content>
+        <p>Hello there</p>
+      </content>
+    </subsection>
+  </section>
+</part>'
     end
 
     it 'should handle part headers with colons' do
@@ -80,7 +115,19 @@ Hello there
 EOS
       node.num.should == "2"
       node.heading.title.should == 'The Part Heading'
-      to_xml(node).should == "<part id=\"part-2\"><num>2</num><heading>The Part Heading</heading><section id=\"section-1\"><num>1.</num><heading>Section</heading><subsection id=\"section-1.subsection-0\"><content><p>Hello there</p></content></subsection></section></part>"
+      to_xml(node).should == '<part id="part-2">
+  <num>2</num>
+  <heading>The Part Heading</heading>
+  <section id="section-1">
+    <num>1.</num>
+    <heading>Section</heading>
+    <subsection id="section-1.subsection-0">
+      <content>
+        <p>Hello there</p>
+      </content>
+    </subsection>
+  </section>
+</part>'
     end
 
     it 'should handle parts and odd section numbers' do
@@ -122,8 +169,23 @@ EOS
         (a) foo
         (b) bar
 EOS
-      node.statement.content.text_value.should == "naked statement (c) blah"
+      node.statement.clauses.text_value.should == "naked statement (c) blah"
       node.blocklist.elements.first.num.should == "(a)"
+      to_xml(node, "").should == '<subsection id="subsection-0">
+  <content>
+    <blockList id="subsection-0.list0">
+      <listIntroduction>naked statement (c) blah</listIntroduction>
+      <item id="subsection-0.list0.a">
+        <num>(a)</num>
+        <p>foo</p>
+      </item>
+      <item id="subsection-0.list0.b">
+        <num>(b)</num>
+        <p>bar</p>
+      </item>
+    </blockList>
+  </content>
+</subsection>'
     end
 
     it 'should handle a blocklist' do
@@ -136,6 +198,30 @@ EOS
 EOS
       node.statement.num.should == "(2)"
       node.statement.content.text_value.should == "title"
+      to_xml(node, "").should == '<subsection id="2">
+  <num>(2)</num>
+  <content>
+    <blockList id="2.list0">
+      <listIntroduction>title</listIntroduction>
+      <item id="2.list0.a">
+        <num>(a)</num>
+        <p>one</p>
+      </item>
+      <item id="2.list0.b">
+        <num>(b)</num>
+        <p>two</p>
+      </item>
+      <item id="2.list0.c">
+        <num>(c)</num>
+        <p>three</p>
+      </item>
+      <item id="2.list0.i">
+        <num>(i)</num>
+        <p>four</p>
+      </item>
+    </blockList>
+  </content>
+</subsection>'
     end
 
     it 'should handle a subsection that dives straight into a list' do
@@ -149,6 +235,29 @@ EOS
       node.statement.content.should be_nil
       node.blocklist.elements.first.num.should == "(a)"
       node.blocklist.elements.first.content.should == "one"
+      to_xml(node, "").should == '<subsection id="1">
+  <num>(1)</num>
+  <content>
+    <blockList id="1.list0">
+      <item id="1.list0.a">
+        <num>(a)</num>
+        <p>one</p>
+      </item>
+      <item id="1.list0.b">
+        <num>(b)</num>
+        <p>two</p>
+      </item>
+      <item id="1.list0.c">
+        <num>(c)</num>
+        <p>three</p>
+      </item>
+      <item id="1.list0.i">
+        <num>(i)</num>
+        <p>four</p>
+      </item>
+    </blockList>
+  </content>
+</subsection>'
     end
 
     it 'should handle a blocklist that dives straight into another list' do
@@ -166,6 +275,29 @@ EOS
       node.blocklist.elements[1].content.should be_nil
       node.blocklist.elements[2].num.should == "(i)"
       node.blocklist.elements[2].content.should == "single"
+      to_xml(node, "").should == '<subsection id="1">
+  <num>(1)</num>
+  <content>
+    <blockList id="1.list0">
+      <listIntroduction>here\'s my really cool list,</listIntroduction>
+      <item id="1.list0.a">
+        <num>(a)</num>
+        <p>one</p>
+      </item>
+      <item id="1.list0.b">
+        <num>(b)</num>
+      </item>
+      <item id="1.list0.i">
+        <num>(i)</num>
+        <p>single</p>
+      </item>
+      <item id="1.list0.ii">
+        <num>(ii)</num>
+        <p>double</p>
+      </item>
+    </blockList>
+  </content>
+</subsection>'
     end
 
     context 'dotted numbers' do
@@ -199,17 +331,51 @@ EOS
   # Remarks
 
   describe 'remark' do
-    it 'should handle basic remarks' do
-      should_parse :remark, <<EOS
+    it 'should handle a plain remark' do
+      node = parse :subsection, <<EOS
       [[Section 2 amended by Act 23 of 2004]]
 EOS
+      to_xml(node, "").should == '<subsection id="subsection-0">
+  <content>
+    <p>
+      <remark status="editorial">[Section 2 amended by Act 23 of 2004]</remark>
+    </p>
+  </content>
+</subsection>'
     end
 
-    it 'should handle a remark' do
-      node = parse :remark, <<EOS
-      [[Section 2 amended by Act 23 of 2004]]
+    it 'should handle an inline remark at the end of a sentence' do
+      node = parse :subsection, <<EOS
+      This statement has an inline remark. [[Section 2 amended by Act 23 of 2004]]
 EOS
-      node.content.text_value.should == "Section 2 amended by Act 23 of 2004"
+      to_xml(node, "").should == '<subsection id="subsection-0">
+  <content>
+    <p>This statement has an inline remark. <remark status="editorial">[Section 2 amended by Act 23 of 2004]</remark></p>
+  </content>
+</subsection>'
+    end
+
+    it 'should handle an inline remark mid-way through' do
+      node = parse :subsection, <<EOS
+      (1) This statement has an inline remark. [[Section 2 amended by Act 23 of 2004]] And now some more.
+EOS
+      to_xml(node, "").should == '<subsection id="1">
+  <num>(1)</num>
+  <content>
+    <p>This statement has an inline remark. <remark status="editorial">[Section 2 amended by Act 23 of 2004]</remark> And now some more.</p>
+  </content>
+</subsection>'
+    end
+
+    it 'should handle many inline remarks' do
+      node = parse :subsection, <<EOS
+      This statement has an inline remark. [[Section 2 amended by Act 23 of 2004]]. And now some more. [[Another remark]] [[and another]]
+EOS
+      to_xml(node, "").should == '<subsection id="subsection-0">
+  <content>
+    <p>This statement has an inline remark. <remark status="editorial">[Section 2 amended by Act 23 of 2004]</remark>. And now some more. <remark status="editorial">[Another remark]</remark> <remark status="editorial">[and another]</remark></p>
+  </content>
+</subsection>'
     end
 
     it 'should handle a remark in a section' do
@@ -219,7 +385,7 @@ EOS
 
       [[Section 1 amended by Act 23 of 2004]]
 EOS
-      to_xml(node, 2).should == '<section id="section-1">
+      to_xml(node).should == '<section id="section-1">
   <num>1.</num>
   <heading>Section title</heading>
   <subsection id="section-1.subsection-0">
@@ -234,8 +400,7 @@ EOS
       </p>
     </content>
   </subsection>
-</section>
-'
+</section>'
     end
   end
 
@@ -354,7 +519,7 @@ EOS
       section = node.elements[1].elements[0].elements[1].elements[0].elements[1].elements[1]
       section.section_title.title.should == ""
       section.section_title.num.should == "2"
-      section.subsections.elements[0].statement.content.text_value.should == "Notwithstanding the provision of any other By-law or legislation no person shall—"
+      section.subsections.elements[0].statement.clauses.text_value.should == "Notwithstanding the provision of any other By-law or legislation no person shall—"
     end
 
     it 'should handle sections without titles and with subsections' do
@@ -381,7 +546,7 @@ EOS
       section = node.elements[1].elements[0].elements[1].elements[0].elements[1].elements[0]
       section.section_title.title.should == ""
       section.section_title.num.should == "10"
-      section.subsections.elements[0].statement.content.text_value.should == "The owner of any premises which is let or sublet to more than one tenant, shall maintain at all times in a clean and sanitary condition every part of such premises as may be used in common by more than one tenant."
+      section.subsections.elements[0].statement.clauses.text_value.should == "The owner of any premises which is let or sublet to more than one tenant, shall maintain at all times in a clean and sanitary condition every part of such premises as may be used in common by more than one tenant."
     end
   end
 
@@ -443,7 +608,7 @@ Baz
 Boom
 EOS
 
-      s = to_xml(node, 2)
+      s = to_xml(node)
       today = Time.now.strftime('%Y-%m-%d')
       s.should == <<EOS
 <components>
@@ -525,6 +690,7 @@ EOS
   </component>
 </components>
 EOS
+    .strip
 
     end
 
@@ -536,7 +702,7 @@ Other than as is set out hereinbelow, no signs other than locality bound signs, 
 2. Bar
 EOS
 
-      s = to_xml(node, 2)
+      s = to_xml(node)
       today = Time.now.strftime('%Y-%m-%d')
       s.should == <<EOS
 <components>
@@ -580,6 +746,7 @@ EOS
   </component>
 </components>
 EOS
+      .strip
     end
   end
 
@@ -596,7 +763,7 @@ EOS
 EOS
 
       node.text_value.should == "{|\n| r1c1\n| r1c2\n|-\n| r2c1\n| r2c2\n|}\n"
-      to_xml(node, nil, "prefix.").should == '<table id="prefix.table0"><tr><td><p>r1c1</p></td>
+      to_xml(node, "prefix.").should == '<table id="prefix.table0"><tr><td><p>r1c1</p></td>
 <td><p>r1c2</p></td></tr>
 <tr><td><p>r2c1</p></td>
 <td><p>r2c2</p></td></tr></table>'
@@ -618,10 +785,23 @@ Heres a table:
 EOS
 
       xml = to_xml(node)
-      xml.should == '<section id="section-10"><num>10.</num><heading>A section title</heading><subsection id="section-10.subsection-0"><content><p>Heres a table:</p></content></subsection><subsection id="section-10.subsection-1"><content><table id="section-10.subsection-1.table0"><tr><td><p>r1c1</p></td>
+      xml.should == '<section id="section-10">
+  <num>10.</num>
+  <heading>A section title</heading>
+  <subsection id="section-10.subsection-0">
+    <content>
+      <p>Heres a table:</p>
+    </content>
+  </subsection>
+  <subsection id="section-10.subsection-1">
+    <content>
+      <table id="section-10.subsection-1.table0"><tr><td><p>r1c1</p></td>
 <td><p>r1c2</p></td></tr>
 <tr><td><p>r2c1</p></td>
-<td><p>r2c2</p></td></tr></table></content></subsection></section>'
+<td><p>r2c2</p></td></tr></table>
+    </content>
+  </subsection>
+</section>'
     end
 
     it 'should parse a table in a schedule' do
@@ -639,12 +819,67 @@ Heres a table:
 |}
 EOS
 
-      xml = to_xml(node, nil, "")
+      xml = to_xml(node, "")
       today = Time.now.strftime('%Y-%m-%d')
-      xml.should == '<doc name="schedule1"><meta><identification source="#slaw"><FRBRWork><FRBRthis value="/za/act/1980/01/schedule1"/><FRBRuri value="/za/act/1980/01"/><FRBRalias value="Schedule 1"/><FRBRdate date="1980-01-01" name="Generation"/><FRBRauthor href="#council" as="#author"/><FRBRcountry value="za"/></FRBRWork><FRBRExpression><FRBRthis value="/za/act/1980/01/eng@/schedule1"/><FRBRuri value="/za/act/1980/01/eng@"/><FRBRdate date="1980-01-01" name="Generation"/><FRBRauthor href="#council" as="#author"/><FRBRlanguage language="eng"/></FRBRExpression><FRBRManifestation><FRBRthis value="/za/act/1980/01/eng@/schedule1"/><FRBRuri value="/za/act/1980/01/eng@"/><FRBRdate date="' + today + '" name="Generation"/><FRBRauthor href="#slaw" as="#author"/></FRBRManifestation></identification></meta><mainBody><article id="schedule-1"><content><p>Heres a table:</p><table id="schedule-1.table0"><tr><td><p>r1c1</p></td>
+      xml.should == '<doc name="schedule1">
+  <meta>
+    <identification source="#slaw">
+      <FRBRWork>
+        <FRBRthis value="/za/act/1980/01/schedule1"/>
+        <FRBRuri value="/za/act/1980/01"/>
+        <FRBRalias value="Schedule 1"/>
+        <FRBRdate date="1980-01-01" name="Generation"/>
+        <FRBRauthor href="#council" as="#author"/>
+        <FRBRcountry value="za"/>
+      </FRBRWork>
+      <FRBRExpression>
+        <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+        <FRBRuri value="/za/act/1980/01/eng@"/>
+        <FRBRdate date="1980-01-01" name="Generation"/>
+        <FRBRauthor href="#council" as="#author"/>
+        <FRBRlanguage language="eng"/>
+      </FRBRExpression>
+      <FRBRManifestation>
+        <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+        <FRBRuri value="/za/act/1980/01/eng@"/>
+        <FRBRdate date="' + today + '" name="Generation"/>
+        <FRBRauthor href="#slaw" as="#author"/>
+      </FRBRManifestation>
+    </identification>
+  </meta>
+  <mainBody>
+    <article id="schedule-1">
+      <content>
+        <p>Heres a table:</p>
+        <table id="schedule-1.table0"><tr><td><p>r1c1</p></td>
 <td><p>r1c2</p></td></tr>
 <tr><td><p>r2c1</p></td>
-<td><p>r2c2</p></td></tr></table></content></article></mainBody></doc>'
+<td><p>r2c2</p></td></tr></table>
+      </content>
+    </article>
+  </mainBody>
+</doc>'
+    end
+  end
+
+  #-------------------------------------------------------------------------------
+  # clauses
+
+  context 'clauses' do
+    it 'should handle a simple clause' do
+      node = parse :clauses, "simple text"
+      node.text_value.should == "simple text"
+    end
+
+    it 'should handle a clause with a remark' do
+      node = parse :clauses, "simple [[remark]]. text"
+      node.text_value.should == "simple [[remark]]. text"
+      node.elements[1].elements.first.is_a?(Slaw::ZA::Act::Remark).should be_true
+
+      node = parse :clauses, "simple [[remark]][[another]] text"
+      node.text_value.should == "simple [[remark]][[another]] text"
+      node.elements[1].elements.first.is_a?(Slaw::ZA::Act::Remark).should be_true
+      node.elements[2].elements.first.is_a?(Slaw::ZA::Act::Remark).should be_true
     end
   end
 end
