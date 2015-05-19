@@ -1,6 +1,5 @@
 # encoding: UTF-8
 
-require 'builder'
 require 'treetop'
 
 module Slaw
@@ -109,13 +108,11 @@ module Slaw
       #
       # @return [String] an XML string
       def xml_from_syntax_tree(tree)
-        s = ""
-        builder = ::Builder::XmlMarkup.new(indent: 2, target: s)
+        builder = ::Nokogiri::XML::Builder.new
 
-        builder.instruct! :xml, :version=>"1.0", :encoding=>"UTF-8"
         builder.akomaNtoso("xmlns:xsi"=> "http://www.w3.org/2001/XMLSchema-instance", 
                            "xsi:schemaLocation" => "http://www.akomantoso.org/2.0 akomantoso20.xsd",
-                           "xmlns" => NS) { |b|
+                           "xmlns" => NS) do |b|
           args = [b]
 
           # should we provide an id prefix?
@@ -124,9 +121,9 @@ module Slaw
           args << (fragment_id_prefix || "") if arity > 1
 
           tree.to_xml(*args)
-        }
+        end
 
-        s
+        builder.to_xml(encoding: 'UTF-8')
       end
 
       # Parse a string into a Nokogiri::XML::Document

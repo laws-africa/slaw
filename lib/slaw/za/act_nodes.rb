@@ -408,7 +408,7 @@ module Slaw
           comp = "schedule#{n}"
           id = "#{idprefix}schedule-#{n}"
 
-          b.doc(name: "schedule#{n}") { |b|
+          b.doc_(name: "schedule#{n}") { |b|
             b.meta { |b|
               b.identification(source: "#slaw") { |b|
                 b.FRBRWork { |b|
