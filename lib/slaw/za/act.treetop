@@ -88,8 +88,6 @@ module Slaw
 
       rule section_title_content
         space !numbered_statement_prefix content eol
-        # if a section title ends in a non-character or it's really long, it's probably section content
-        !{ |s| s[2].text_value[-1] =~ /[^a-zA-z]/ or s[2].text_value.length > 100 }
       end
 
       rule schedule_heading

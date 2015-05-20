@@ -505,23 +505,6 @@ EOS
       section.section_title.num.should == "2"
     end
 
-    it 'should handle sections without titles' do
-      subject.parser.options = {section_number_after_title: false}
-      node = parse :act, <<EOS
-1. No owner or occupier of any shop or business premises or vacant land, blah blah
-2. Notwithstanding the provision of any other By-law or legislation no person shall—
-EOS
-
-      section = node.elements[1].elements[0].elements[1].elements[0].elements[1].elements[0]
-      section.section_title.title.should == "No owner or occupier of any shop or business premises or vacant land, blah blah"
-      section.section_title.num.should == "1"
-
-      section = node.elements[1].elements[0].elements[1].elements[0].elements[1].elements[1]
-      section.section_title.title.should == ""
-      section.section_title.num.should == "2"
-      section.subsections.elements[0].statement.clauses.text_value.should == "Notwithstanding the provision of any other By-law or legislation no person shall—"
-    end
-
     it 'should handle sections without titles and with subsections' do
       subject.parser.options = {section_number_after_title: false}
       node = parse :act, <<EOS
@@ -534,19 +517,6 @@ EOS
       section.section_title.num.should == "10"
       section.subsections.elements[0].statement.num.should == "(1)"
       section.subsections.elements[0].statement.content.text_value.should == "Transporters must remove medical waste."
-    end
-
-    it 'should realise complex section titles are actually section content' do
-      subject.parser.options = {section_number_after_title: false}
-      node = parse :act, <<EOS
-10. The owner of any premises which is let or sublet to more than one tenant, shall maintain at all times in a clean and sanitary condition every part of such premises as may be used in common by more than one tenant.
-11. No person shall keep, cause or suffer to be kept any factory or trade premises so as to cause or give rise to smells or effluvia that constitute a health nuisance.
-EOS
-
-      section = node.elements[1].elements[0].elements[1].elements[0].elements[1].elements[0]
-      section.section_title.title.should == ""
-      section.section_title.num.should == "10"
-      section.subsections.elements[0].statement.clauses.text_value.should == "The owner of any premises which is let or sublet to more than one tenant, shall maintain at all times in a clean and sanitary condition every part of such premises as may be used in common by more than one tenant."
     end
   end
 
