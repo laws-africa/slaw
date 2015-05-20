@@ -22,11 +22,6 @@ module Slaw
           b.meta { |b|
             write_identification(b)
 
-            b.publication(date: '1980-01-01',
-                          name: 'Publication Name',
-                          number: 'XXXX',
-                          showAs: 'Publication Name')
-
             b.references(source: "#this") {
               b.TLCOrganization(id: 'slaw', href: 'https://github.com/longhotsummer/slaw', showAs: "Slaw")
               b.TLCOrganization(id: 'council', href: '/ontology/organization/za/council', showAs: "Council")
