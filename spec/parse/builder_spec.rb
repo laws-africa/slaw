@@ -301,6 +301,98 @@ XML
     end
 
     # -------------------------------------------------------------------------
+    it 'should handle (I) correctly' do
+      doc = xml2doc(subsection(<<XML
+              <blockList id="section-28.3.list2">
+                <item id="section-28.3.list2.g">
+                  <num>(g)</num>
+                  <p>all memorial work up to 150 mm in thickness must be securely attached to the base;</p>
+                </item>
+                <item id="section-28.3.list2.h">
+                  <num>(h)</num>
+                  <p>all the components of memorial work must be completed before being brought into a cemetery;</p>
+                </item>
+                <item id="section-28.3.list2.i">
+                  <num>(i)</num>
+                  <p>item i</p>
+                </item>
+                <item id="section-28.3.list2.I">
+                  <num>(I)</num>
+                  <p>a subitem</p>
+                </item>
+                <item id="section-28.3.list2.II">
+                  <num>(II)</num>
+                  <p>another subitem</p>
+                </item>
+                <item id="section-28.3.list2.j">
+                  <num>(j)</num>
+                  <p>in all cases where memorial work rests on a base -</p>
+                </item>
+                <item id="section-28.3.list2.i">
+                  <num>(i)</num>
+                  <p>such memorial work must have a foundation;</p>
+                </item>
+                <item id="section-28.3.list2.ii">
+                  <num>(ii)</num>
+                  <p>such memorial work must be set with cement mortar;</p>
+                </item>
+                <item id="section-28.3.list2.iii">
+                  <num>(iii)</num>
+                  <p>the bottom base of a single memorial work must not be less than 900mm long 220 mm wide x 250 mm thick and that of a double memorial work not less than 2 286 mm long x 200 mm wide x 250 mm thick; and</p>
+                </item>
+              </blockList>
+XML
+      ))
+
+      subject.nest_blocklists(doc)
+      doc.to_s.should == subsection(<<XML
+            <blockList id="section-28.3.list2">
+              <item id="section-28.3.list2.g">
+                <num>(g)</num>
+                <p>all memorial work up to 150 mm in thickness must be securely attached to the base;</p>
+              </item>
+              <item id="section-28.3.list2.h">
+                <num>(h)</num>
+                <p>all the components of memorial work must be completed before being brought into a cemetery;</p>
+              </item>
+              <item id="section-28.3.list2.i">
+                <num>(i)</num>
+                <blockList id="section-28.3.list2.i.list0">
+                  <listIntroduction>item i</listIntroduction>
+                  <item id="section-28.3.list2.i.list0.I">
+                    <num>(I)</num>
+                    <p>a subitem</p>
+                  </item>
+                  <item id="section-28.3.list2.i.list0.II">
+                    <num>(II)</num>
+                    <p>another subitem</p>
+                  </item>
+                </blockList>
+              </item>
+              <item id="section-28.3.list2.j">
+                <num>(j)</num>
+                <blockList id="section-28.3.list2.j.list1">
+                  <listIntroduction>in all cases where memorial work rests on a base -</listIntroduction>
+                  <item id="section-28.3.list2.j.list1.i">
+                    <num>(i)</num>
+                    <p>such memorial work must have a foundation;</p>
+                  </item>
+                  <item id="section-28.3.list2.j.list1.ii">
+                    <num>(ii)</num>
+                    <p>such memorial work must be set with cement mortar;</p>
+                  </item>
+                  <item id="section-28.3.list2.j.list1.iii">
+                    <num>(iii)</num>
+                    <p>the bottom base of a single memorial work must not be less than 900mm long 220 mm wide x 250 mm thick and that of a double memorial work not less than 2 286 mm long x 200 mm wide x 250 mm thick; and</p>
+                  </item>
+                </blockList>
+              </item>
+            </blockList>
+XML
+      )
+    end
+
+    # -------------------------------------------------------------------------
 
     it 'should handle deeply nested lists' do
       doc = xml2doc(subsection(<<XML

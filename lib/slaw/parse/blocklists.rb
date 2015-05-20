@@ -141,10 +141,16 @@ module Slaw
           prev_format
         when /^\([ivx]+/
           NumberingFormat.i
-        when /^\([a-z][a-z]/
+        when /^\([IVX]+/
+          NumberingFormat.I
+        when /^\([a-z]{2}/
           NumberingFormat.aa
-        when /^\([a-z]+/i
+        when /^\([A-Z]{2}/
+          NumberingFormat.AA
+        when /^\([a-z]+/
           NumberingFormat.a
+        when /^\([A-Z]+/
+          NumberingFormat.A
         when /^\d+(\.\d+)+$/
           NumberingFormat.new(:'i.i', item.num.count('.'))
         else
@@ -175,13 +181,19 @@ module Slaw
         end
 
         @@a = NumberingFormat.new(:a, 0)
-        @@i = NumberingFormat.new(:i, 1)
-        @@aa = NumberingFormat.new(:aa, 2)
-        @@unknown = NumberingFormat.new(:unknown, 3)
+        @@A = NumberingFormat.new(:a, 1)
+        @@i = NumberingFormat.new(:i, 2)
+        @@I = NumberingFormat.new(:I, 3)
+        @@aa = NumberingFormat.new(:aa, 4)
+        @@AA = NumberingFormat.new(:AA, 5)
+        @@unknown = NumberingFormat.new(:unknown, 9)
 
         def self.a; @@a; end
+        def self.A; @@A; end
         def self.i; @@i; end
+        def self.I; @@I; end
         def self.aa; @@aa; end
+        def self.AA; @@AA; end
         def self.unknown; @@unknown; end
       end
     end
