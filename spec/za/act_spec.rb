@@ -402,6 +402,55 @@ EOS
   </subsection>
 </section>'
     end
+
+    it 'should handle a remark in a schedule' do
+      node = parse :schedule, <<EOS
+      Schedule 1
+      A Title
+
+      [[Schedule 1 added by Act 23 of 2004]]
+
+      Some content
+EOS
+      to_xml(node, "").should == '<doc name="schedule1">
+  <meta>
+    <identification source="#slaw">
+      <FRBRWork>
+        <FRBRthis value="/za/act/1980/01/schedule1"/>
+        <FRBRuri value="/za/act/1980/01"/>
+        <FRBRalias value="Schedule 1"/>
+        <FRBRdate date="1980-01-01" name="Generation"/>
+        <FRBRauthor href="#council" as="#author"/>
+        <FRBRcountry value="za"/>
+      </FRBRWork>
+      <FRBRExpression>
+        <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+        <FRBRuri value="/za/act/1980/01/eng@"/>
+        <FRBRdate date="1980-01-01" name="Generation"/>
+        <FRBRauthor href="#council" as="#author"/>
+        <FRBRlanguage language="eng"/>
+      </FRBRExpression>
+      <FRBRManifestation>
+        <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+        <FRBRuri value="/za/act/1980/01/eng@"/>
+        <FRBRdate date="2015-05-20" name="Generation"/>
+        <FRBRauthor href="#slaw" as="#author"/>
+      </FRBRManifestation>
+    </identification>
+  </meta>
+  <mainBody>
+    <article id="schedule-1">
+      <heading>A Title</heading>
+      <content>
+        <p>
+          <remark status="editorial">[Schedule 1 added by Act 23 of 2004]</remark>
+        </p>
+        <p>Some content</p>
+      </content>
+    </article>
+  </mainBody>
+</doc>'
+    end
   end
 
   #-------------------------------------------------------------------------------
@@ -534,9 +583,9 @@ EOS
 
       sched = node.schedules.elements[0]
       sched.schedule_heading.schedule_heading_prefix.text_value.should == "Schedule"
-      sched.statements.elements[0].content.text_value.should == "Subject to approval in terms of this By-Law, the erection:"
-      sched.statements.elements[1].content.text_value.should == "1. Foo"
-      sched.statements.elements[2].content.text_value.should == "2. Bar"
+      sched.statements.elements[0].clauses.text_value.should == "Subject to approval in terms of this By-Law, the erection:"
+      sched.statements.elements[1].clauses.text_value.should == "1. Foo"
+      sched.statements.elements[2].clauses.text_value.should == "2. Bar"
     end
 
     it 'should handle many schedules' do
@@ -555,15 +604,15 @@ EOS
       sched.schedule_heading.schedule_heading_prefix.text_value.should == "Schedule"
       sched.schedule_heading.schedule_title.content.text_value.should == "A Title"
       sched.schedule_heading.num.text_value.should == "1"
-      sched.statements.elements[0].content.text_value.should == "1. Foo"
-      sched.statements.elements[1].content.text_value.should == "2. Bar"
+      sched.statements.elements[0].clauses.text_value.should == "1. Foo"
+      sched.statements.elements[1].clauses.text_value.should == "2. Bar"
 
       sched = node.schedules.elements[1]
       sched.schedule_heading.schedule_heading_prefix.text_value.should == "Schedule"
       sched.schedule_heading.schedule_title.content.text_value.should == "Another Title"
       sched.schedule_heading.num.text_value.should == "2"
-      sched.statements.elements[0].content.text_value.should == "Baz"
-      sched.statements.elements[1].content.text_value.should == "Boom"
+      sched.statements.elements[0].clauses.text_value.should == "Baz"
+      sched.statements.elements[1].clauses.text_value.should == "Boom"
     end
 
     it 'should serialise many schedules correctly' do

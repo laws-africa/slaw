@@ -453,7 +453,7 @@ module Slaw
 
       class ScheduleStatement < Treetop::Runtime::SyntaxNode
         def to_xml(b, idprefix)
-          b.p(content.text_value) if content
+          b.p { |b| clauses.to_xml(b, idprefix) } if clauses
         end
       end
     end

@@ -117,7 +117,7 @@ module Slaw
       end
 
       rule schedule_statement
-        space? (!schedule_heading) content eol
+        space? (!schedule_heading) clauses eol
         <ScheduleStatement>
       end
 
