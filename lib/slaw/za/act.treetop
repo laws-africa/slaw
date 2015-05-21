@@ -12,13 +12,21 @@ module Slaw
       # major containers
 
       rule act
-        preamble
+        empty_line*
+        preface:preface?
+        preamble:preamble?
         chapters:chapter*
         schedules:schedules <Act>
       end
 
+      rule preface
+        !'PREAMBLE'
+        ('PREFACE'i space? eol)?
+        statements:(!'PREAMBLE' naked_statement)* <Preface>
+      end
+
       rule preamble
-        empty_line*
+        'PREAMBLE'i space? eol
         statements:naked_statement* <Preamble>
       end
 

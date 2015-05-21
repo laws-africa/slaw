@@ -12,6 +12,7 @@ module Slaw
         def to_xml(b, idprefix)
           b.act(contains: "originalVersion") { |b|
             write_meta(b)
+            write_preface(b)
             write_preamble(b)
             write_body(b)
           }
@@ -57,6 +58,10 @@ module Slaw
           }
         end
 
+        def write_preface(b)
+          preface.to_xml(b)
+        end
+
         def write_preamble(b)
           preamble.to_xml(b)
         end
@@ -72,14 +77,26 @@ module Slaw
         end
       end
 
+      class Preface < Treetop::Runtime::SyntaxNode
+        def to_xml(b)
+          if text_value != ""
+            b.preface { |b|
+              statements.elements.each { |element|
+                for e in element.elements
+                  e.to_xml(b, "") if e.is_a? NakedStatement
+                end
+              }
+            }
+          end
+        end
+      end
+
       class Preamble < Treetop::Runtime::SyntaxNode
         def to_xml(b)
           if text_value != ""
             b.preamble { |b|
               statements.elements.each { |e|
-                if not (e.clauses.text_value =~ /^preamble/i)
-                  b.p { |b| e.clauses.to_xml(b, "") }
-                end
+                e.to_xml(b, "")
               }
             }
           end

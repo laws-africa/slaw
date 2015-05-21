@@ -139,7 +139,7 @@ PREVENTION AND SUPPRESSION OF HEALTH NUISANCES
 No owner or occupier of any shop or business premises or vacant land adjoining a shop or business premises shall cause a health nuisance.
 EOS
 
-      part = node.elements[1].elements[0].elements[1].elements[0]
+      part = node.chapters.elements[0].parts.elements[0]
       part.heading.num.should == "1"
       part.heading.title.should == "PREVENTION AND SUPPRESSION OF HEALTH NUISANCES"
 
@@ -466,10 +466,10 @@ EOS
   end
 
   #-------------------------------------------------------------------------------
-  # Preamble
+  # Preface
 
-  context 'preamble' do
-    it 'should consider any text at the start to be preamble' do
+  context 'preface' do
+    it 'should consider any text at the start to be preface' do
       node = parse :act, <<EOS
 foo
 bar
@@ -480,7 +480,7 @@ baz
 (1) hello
 EOS
 
-      node.elements.first.text_value.should == "foo
+      node.preface.text_value.should == "foo
 bar
 (1) stuff
 (2) more stuff
@@ -488,6 +488,99 @@ baz
 "
     end
 
+    it 'should support an optional preface' do
+      node = parse :act, <<EOS
+PREFACE
+foo
+1. Section
+(1) hello
+EOS
+
+      node.preface.text_value.should == "PREFACE\nfoo\n"
+      to_xml(node.preface).should == '<preface>
+  <p>foo</p>
+</preface>'
+    end
+
+    it 'should support remarks in the preface' do
+      node = parse :act, <<EOS
+PREFACE
+
+[[remark]]
+
+foo
+
+[[ another remark]]
+
+1. Section
+(1) hello
+EOS
+
+      to_xml(node.preface).should == '<preface>
+  <p>
+    <remark status="editorial">[remark]</remark>
+  </p>
+  <p>foo</p>
+  <p>
+    <remark status="editorial">[ another remark]</remark>
+  </p>
+</preface>'
+    end
+
+    it 'should support no preface' do
+      node = parse :act, <<EOS
+1. Section
+bar
+EOS
+
+      node.preface.text_value.should == ""
+    end
+
+    it 'should support prefaces and preambles' do
+      node = parse :act, <<EOS
+this is in the preface
+
+PREAMBLE
+
+this is in the preamble
+
+1. Section
+(1) hello
+EOS
+
+      to_xml(node.preface).should == '<preface>
+  <p>this is in the preface</p>
+</preface>'
+      to_xml(node.preamble).should == '<preamble>
+  <p>this is in the preamble</p>
+</preamble>'
+    end
+
+    it 'should support prefaces and preambles' do
+      node = parse :act, <<EOS
+PREFACE
+this is in the preface
+
+PREAMBLE
+this is in the preamble
+
+1. Section
+(1) hello
+EOS
+
+      to_xml(node.preface).should == '<preface>
+  <p>this is in the preface</p>
+</preface>'
+      to_xml(node.preamble).should == '<preamble>
+  <p>this is in the preamble</p>
+</preamble>'
+    end
+  end
+
+  #-------------------------------------------------------------------------------
+  # Preamble
+
+  context 'preamble' do
     it 'should support an optional preamble' do
       node = parse :act, <<EOS
 PREAMBLE
@@ -496,8 +589,8 @@ foo
 (1) hello
 EOS
 
-      node.elements.first.text_value.should == "PREAMBLE\nfoo\n"
-      to_xml(node.elements.first).should == '<preamble>
+      node.preamble.text_value.should == "PREAMBLE\nfoo\n"
+      to_xml(node.preamble).should == '<preamble>
   <p>foo</p>
 </preamble>'
     end
@@ -516,8 +609,7 @@ foo
 (1) hello
 EOS
 
-      #node.elements.first.text_value.should == "PREAMBLE\nfoo\n"
-      to_xml(node.elements.first).should == '<preamble>
+      to_xml(node.preamble).should == '<preamble>
   <p>
     <remark status="editorial">[remark]</remark>
   </p>
@@ -538,7 +630,6 @@ EOS
     end
   end
 
-
   #-------------------------------------------------------------------------------
   # Sections
 
@@ -550,7 +641,7 @@ Section
 1. (1) hello
 EOS
 
-      section = node.elements[1].elements[0].elements[1].elements[0].elements[1].elements[0]
+      section = node.chapters.elements.first.parts.elements.first.sections.elements.first
       section.section_title.content.text_value.should == "Section"
       section.section_title.section_title_prefix.number_letter.text_value.should == "1"
     end
@@ -562,7 +653,7 @@ EOS
 (1) hello
 EOS
 
-      section = node.elements[1].elements[0].elements[1].elements[0].elements[1].elements[0]
+      section = node.chapters.elements.first.parts.elements.first.sections.elements.first
       section.section_title.title.should == "Section"
       section.section_title.num.should == "1"
     end
@@ -576,11 +667,11 @@ EOS
 (2) Another line
 EOS
 
-      section = node.elements[1].elements[0].elements[1].elements[0].elements[1].elements[0]
+      section = node.chapters.elements.first.parts.elements.first.sections.elements.first
       section.section_title.title.should == "A section"
       section.section_title.num.should == "1"
 
-      section = node.elements[1].elements[0].elements[1].elements[0].elements[1].elements[1]
+      section = node.chapters.elements[0].parts.elements.first.sections.elements[1]
       section.section_title.title.should == "Another section"
       section.section_title.num.should == "2"
     end
@@ -592,7 +683,7 @@ EOS
 (2) Without limiting generality, stuff.
 EOS
 
-      section = node.elements[1].elements[0].elements[1].elements[0].elements[1].elements[0]
+      section = node.chapters.elements.first.parts.elements.first.sections.elements.first
       section.section_title.title.should == ""
       section.section_title.num.should == "10"
       section.subsections.elements[0].statement.num.should == "(1)"
