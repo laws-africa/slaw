@@ -78,7 +78,7 @@ module Slaw
             b.preamble { |b|
               statements.elements.each { |e|
                 if not (e.clauses.text_value =~ /^preamble/i)
-                  b.p(e.clauses.text_value)
+                  b.p { |b| e.clauses.to_xml(b, "") }
                 end
               }
             }

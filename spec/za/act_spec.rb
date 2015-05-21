@@ -412,6 +412,8 @@ EOS
 
       Some content
 EOS
+
+      today = Time.now.strftime('%Y-%m-%d')
       to_xml(node, "").should == '<doc name="schedule1">
   <meta>
     <identification source="#slaw">
@@ -433,7 +435,7 @@ EOS
       <FRBRManifestation>
         <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
         <FRBRuri value="/za/act/1980/01/eng@"/>
-        <FRBRdate date="2015-05-20" name="Generation"/>
+        <FRBRdate date="' + today + '" name="Generation"/>
         <FRBRauthor href="#slaw" as="#author"/>
       </FRBRManifestation>
     </identification>
@@ -495,6 +497,35 @@ foo
 EOS
 
       node.elements.first.text_value.should == "PREAMBLE\nfoo\n"
+      to_xml(node.elements.first).should == '<preamble>
+  <p>foo</p>
+</preamble>'
+    end
+
+    it 'should support remarks in the preamble' do
+      node = parse :act, <<EOS
+PREAMBLE
+
+[[remark]]
+
+foo
+
+[[ another remark]]
+
+1. Section
+(1) hello
+EOS
+
+      #node.elements.first.text_value.should == "PREAMBLE\nfoo\n"
+      to_xml(node.elements.first).should == '<preamble>
+  <p>
+    <remark status="editorial">[remark]</remark>
+  </p>
+  <p>foo</p>
+  <p>
+    <remark status="editorial">[ another remark]</remark>
+  </p>
+</preamble>'
     end
 
     it 'should support no preamble' do
