@@ -486,6 +486,66 @@ bar
 (2) more stuff
 baz
 "
+      to_xml(node.preface).should == '<preface>
+  <p>foo</p>
+  <p>bar</p>
+  <p>(1) stuff</p>
+  <p>(2) more stuff</p>
+  <p>baz</p>
+</preface>'
+
+      today = Time.now.strftime('%Y-%m-%d')
+      to_xml(node, "").should == '<act contains="originalVersion">
+  <meta>
+    <identification source="#slaw">
+      <FRBRWork>
+        <FRBRthis value="/za/act/1980/01/main"/>
+        <FRBRuri value="/za/act/1980/01"/>
+        <FRBRalias value="Short Title"/>
+        <FRBRdate date="1980-01-01" name="Generation"/>
+        <FRBRauthor href="#council" as="#author"/>
+        <FRBRcountry value="za"/>
+      </FRBRWork>
+      <FRBRExpression>
+        <FRBRthis value="/za/act/1980/01/eng@/main"/>
+        <FRBRuri value="/za/act/1980/01/eng@"/>
+        <FRBRdate date="1980-01-01" name="Generation"/>
+        <FRBRauthor href="#council" as="#author"/>
+        <FRBRlanguage language="eng"/>
+      </FRBRExpression>
+      <FRBRManifestation>
+        <FRBRthis value="/za/act/1980/01/eng@/main"/>
+        <FRBRuri value="/za/act/1980/01/eng@"/>
+        <FRBRdate date="' + today + '" name="Generation"/>
+        <FRBRauthor href="#slaw" as="#author"/>
+      </FRBRManifestation>
+    </identification>
+    <references source="#this">
+      <TLCOrganization id="slaw" href="https://github.com/longhotsummer/slaw" showAs="Slaw"/>
+      <TLCOrganization id="council" href="/ontology/organization/za/council" showAs="Council"/>
+      <TLCRole id="author" href="/ontology/role/author" showAs="Author"/>
+    </references>
+  </meta>
+  <preface>
+    <p>foo</p>
+    <p>bar</p>
+    <p>(1) stuff</p>
+    <p>(2) more stuff</p>
+    <p>baz</p>
+  </preface>
+  <body>
+    <section id="section-1">
+      <num>1.</num>
+      <heading>Section</heading>
+      <subsection id="section-1.1">
+        <num>(1)</num>
+        <content>
+          <p>hello</p>
+        </content>
+      </subsection>
+    </section>
+  </body>
+</act>'
     end
 
     it 'should support an optional preface' do

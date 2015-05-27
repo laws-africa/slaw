@@ -59,11 +59,11 @@ module Slaw
         end
 
         def write_preface(b)
-          preface.to_xml(b)
+          preface.to_xml(b) if preface.respond_to? :to_xml
         end
 
         def write_preamble(b)
-          preamble.to_xml(b)
+          preamble.to_xml(b) if preamble.respond_to? :to_xml
         end
 
         def write_body(b)
