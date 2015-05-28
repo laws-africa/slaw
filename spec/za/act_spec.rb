@@ -422,21 +422,21 @@ EOS
         <FRBRuri value="/za/act/1980/01"/>
         <FRBRalias value="Schedule 1"/>
         <FRBRdate date="1980-01-01" name="Generation"/>
-        <FRBRauthor href="#council" as="#author"/>
+        <FRBRauthor href="#council"/>
         <FRBRcountry value="za"/>
       </FRBRWork>
       <FRBRExpression>
         <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
         <FRBRuri value="/za/act/1980/01/eng@"/>
         <FRBRdate date="1980-01-01" name="Generation"/>
-        <FRBRauthor href="#council" as="#author"/>
+        <FRBRauthor href="#council"/>
         <FRBRlanguage language="eng"/>
       </FRBRExpression>
       <FRBRManifestation>
         <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
         <FRBRuri value="/za/act/1980/01/eng@"/>
         <FRBRdate date="' + today + '" name="Generation"/>
-        <FRBRauthor href="#slaw" as="#author"/>
+        <FRBRauthor href="#slaw"/>
       </FRBRManifestation>
     </identification>
   </meta>
@@ -503,27 +503,26 @@ baz
         <FRBRuri value="/za/act/1980/01"/>
         <FRBRalias value="Short Title"/>
         <FRBRdate date="1980-01-01" name="Generation"/>
-        <FRBRauthor href="#council" as="#author"/>
+        <FRBRauthor href="#council"/>
         <FRBRcountry value="za"/>
       </FRBRWork>
       <FRBRExpression>
         <FRBRthis value="/za/act/1980/01/eng@/main"/>
         <FRBRuri value="/za/act/1980/01/eng@"/>
         <FRBRdate date="1980-01-01" name="Generation"/>
-        <FRBRauthor href="#council" as="#author"/>
+        <FRBRauthor href="#council"/>
         <FRBRlanguage language="eng"/>
       </FRBRExpression>
       <FRBRManifestation>
         <FRBRthis value="/za/act/1980/01/eng@/main"/>
         <FRBRuri value="/za/act/1980/01/eng@"/>
         <FRBRdate date="' + today + '" name="Generation"/>
-        <FRBRauthor href="#slaw" as="#author"/>
+        <FRBRauthor href="#slaw"/>
       </FRBRManifestation>
     </identification>
     <references source="#this">
       <TLCOrganization id="slaw" href="https://github.com/longhotsummer/slaw" showAs="Slaw"/>
       <TLCOrganization id="council" href="/ontology/organization/za/council" showAs="Council"/>
-      <TLCRole id="author" href="/ontology/role/author" showAs="Author"/>
     </references>
   </meta>
   <preface>
@@ -822,21 +821,21 @@ EOS
             <FRBRuri value="/za/act/1980/01"/>
             <FRBRalias value="Schedule 2"/>
             <FRBRdate date="1980-01-01" name="Generation"/>
-            <FRBRauthor href="#council" as="#author"/>
+            <FRBRauthor href="#council"/>
             <FRBRcountry value="za"/>
           </FRBRWork>
           <FRBRExpression>
             <FRBRthis value="/za/act/1980/01/eng@/schedule2"/>
             <FRBRuri value="/za/act/1980/01/eng@"/>
             <FRBRdate date="1980-01-01" name="Generation"/>
-            <FRBRauthor href="#council" as="#author"/>
+            <FRBRauthor href="#council"/>
             <FRBRlanguage language="eng"/>
           </FRBRExpression>
           <FRBRManifestation>
             <FRBRthis value="/za/act/1980/01/eng@/schedule2"/>
             <FRBRuri value="/za/act/1980/01/eng@"/>
             <FRBRdate date="#{today}" name="Generation"/>
-            <FRBRauthor href="#slaw" as="#author"/>
+            <FRBRauthor href="#slaw"/>
           </FRBRManifestation>
         </identification>
       </meta>
@@ -860,21 +859,21 @@ EOS
             <FRBRuri value="/za/act/1980/01"/>
             <FRBRalias value="Schedule 3"/>
             <FRBRdate date="1980-01-01" name="Generation"/>
-            <FRBRauthor href="#council" as="#author"/>
+            <FRBRauthor href="#council"/>
             <FRBRcountry value="za"/>
           </FRBRWork>
           <FRBRExpression>
             <FRBRthis value="/za/act/1980/01/eng@/schedule3"/>
             <FRBRuri value="/za/act/1980/01/eng@"/>
             <FRBRdate date="1980-01-01" name="Generation"/>
-            <FRBRauthor href="#council" as="#author"/>
+            <FRBRauthor href="#council"/>
             <FRBRlanguage language="eng"/>
           </FRBRExpression>
           <FRBRManifestation>
             <FRBRthis value="/za/act/1980/01/eng@/schedule3"/>
             <FRBRuri value="/za/act/1980/01/eng@"/>
             <FRBRdate date="#{today}" name="Generation"/>
-            <FRBRauthor href="#slaw" as="#author"/>
+            <FRBRauthor href="#slaw"/>
           </FRBRManifestation>
         </identification>
       </meta>
@@ -916,21 +915,21 @@ EOS
             <FRBRuri value="/za/act/1980/01"/>
             <FRBRalias value="Schedule 1"/>
             <FRBRdate date="1980-01-01" name="Generation"/>
-            <FRBRauthor href="#council" as="#author"/>
+            <FRBRauthor href="#council"/>
             <FRBRcountry value="za"/>
           </FRBRWork>
           <FRBRExpression>
             <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
             <FRBRuri value="/za/act/1980/01/eng@"/>
             <FRBRdate date="1980-01-01" name="Generation"/>
-            <FRBRauthor href="#council" as="#author"/>
+            <FRBRauthor href="#council"/>
             <FRBRlanguage language="eng"/>
           </FRBRExpression>
           <FRBRManifestation>
             <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
             <FRBRuri value="/za/act/1980/01/eng@"/>
             <FRBRdate date="#{today}" name="Generation"/>
-            <FRBRauthor href="#slaw" as="#author"/>
+            <FRBRauthor href="#slaw"/>
           </FRBRManifestation>
         </identification>
       </meta>
@@ -1030,21 +1029,21 @@ EOS
         <FRBRuri value="/za/act/1980/01"/>
         <FRBRalias value="Schedule 1"/>
         <FRBRdate date="1980-01-01" name="Generation"/>
-        <FRBRauthor href="#council" as="#author"/>
+        <FRBRauthor href="#council"/>
         <FRBRcountry value="za"/>
       </FRBRWork>
       <FRBRExpression>
         <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
         <FRBRuri value="/za/act/1980/01/eng@"/>
         <FRBRdate date="1980-01-01" name="Generation"/>
-        <FRBRauthor href="#council" as="#author"/>
+        <FRBRauthor href="#council"/>
         <FRBRlanguage language="eng"/>
       </FRBRExpression>
       <FRBRManifestation>
         <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
         <FRBRuri value="/za/act/1980/01/eng@"/>
         <FRBRdate date="' + today + '" name="Generation"/>
-        <FRBRauthor href="#slaw" as="#author"/>
+        <FRBRauthor href="#slaw"/>
       </FRBRManifestation>
     </identification>
   </meta>

@@ -26,7 +26,6 @@ module Slaw
             b.references(source: "#this") {
               b.TLCOrganization(id: 'slaw', href: 'https://github.com/longhotsummer/slaw', showAs: "Slaw")
               b.TLCOrganization(id: 'council', href: '/ontology/organization/za/council', showAs: "Council")
-              b.TLCRole(id: 'author', href: '/ontology/role/author', showAs: 'Author')
             }
           }
         end
@@ -39,21 +38,21 @@ module Slaw
               b.FRBRuri(value: WORK_URI)
               b.FRBRalias(value: 'Short Title')
               b.FRBRdate(date: '1980-01-01', name: 'Generation')
-              b.FRBRauthor(href: '#council', as: '#author')
+              b.FRBRauthor(href: '#council')
               b.FRBRcountry(value: 'za')
             }
             b.FRBRExpression { |b|
               b.FRBRthis(value: "#{EXPRESSION_URI}/main")
               b.FRBRuri(value: EXPRESSION_URI)
               b.FRBRdate(date: '1980-01-01', name: 'Generation')
-              b.FRBRauthor(href: '#council', as: '#author')
+              b.FRBRauthor(href: '#council')
               b.FRBRlanguage(language: 'eng')
             }
             b.FRBRManifestation { |b|
               b.FRBRthis(value: "#{MANIFESTATION_URI}/main")
               b.FRBRuri(value: MANIFESTATION_URI)
               b.FRBRdate(date: Time.now.strftime('%Y-%m-%d'), name: 'Generation')
-              b.FRBRauthor(href: '#slaw', as: '#author')
+              b.FRBRauthor(href: '#slaw')
             }
           }
         end
@@ -435,21 +434,21 @@ module Slaw
                   b.FRBRuri(value: Act::WORK_URI)
                   b.FRBRalias(value: self.alias)
                   b.FRBRdate(date: '1980-01-01', name: 'Generation')
-                  b.FRBRauthor(href: '#council', as: '#author')
+                  b.FRBRauthor(href: '#council')
                   b.FRBRcountry(value: 'za')
                 }
                 b.FRBRExpression { |b|
                   b.FRBRthis(value: "#{Act::EXPRESSION_URI}/#{comp}")
                   b.FRBRuri(value: Act::EXPRESSION_URI)
                   b.FRBRdate(date: '1980-01-01', name: 'Generation')
-                  b.FRBRauthor(href: '#council', as: '#author')
+                  b.FRBRauthor(href: '#council')
                   b.FRBRlanguage(language: 'eng')
                 }
                 b.FRBRManifestation { |b|
                   b.FRBRthis(value: "#{Act::MANIFESTATION_URI}/#{comp}")
                   b.FRBRuri(value: Act::MANIFESTATION_URI)
                   b.FRBRdate(date: Time.now.strftime('%Y-%m-%d'), name: 'Generation')
-                  b.FRBRauthor(href: '#slaw', as: '#author')
+                  b.FRBRauthor(href: '#slaw')
                 }
               }
             }
