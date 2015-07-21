@@ -414,44 +414,46 @@ EOS
 EOS
 
       today = Time.now.strftime('%Y-%m-%d')
-      to_xml(node, "").should == '<doc name="schedule1">
-  <meta>
-    <identification source="#slaw">
-      <FRBRWork>
-        <FRBRthis value="/za/act/1980/01/schedule1"/>
-        <FRBRuri value="/za/act/1980/01"/>
-        <FRBRalias value="Schedule 1"/>
-        <FRBRdate date="1980-01-01" name="Generation"/>
-        <FRBRauthor href="#council"/>
-        <FRBRcountry value="za"/>
-      </FRBRWork>
-      <FRBRExpression>
-        <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
-        <FRBRuri value="/za/act/1980/01/eng@"/>
-        <FRBRdate date="1980-01-01" name="Generation"/>
-        <FRBRauthor href="#council"/>
-        <FRBRlanguage language="eng"/>
-      </FRBRExpression>
-      <FRBRManifestation>
-        <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
-        <FRBRuri value="/za/act/1980/01/eng@"/>
-        <FRBRdate date="' + today + '" name="Generation"/>
-        <FRBRauthor href="#slaw"/>
-      </FRBRManifestation>
-    </identification>
-  </meta>
-  <mainBody>
-    <article id="schedule-1">
-      <heading>A Title</heading>
-      <content>
-        <p>
-          <remark status="editorial">[Schedule 1 added by Act 23 of 2004]</remark>
-        </p>
-        <p>Some content</p>
-      </content>
-    </article>
-  </mainBody>
-</doc>'
+      to_xml(node, "").should == '<component id="component-schedule-1">
+  <doc name="schedule1">
+    <meta>
+      <identification source="#slaw">
+        <FRBRWork>
+          <FRBRthis value="/za/act/1980/01/schedule1"/>
+          <FRBRuri value="/za/act/1980/01"/>
+          <FRBRalias value="Schedule 1"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRcountry value="za"/>
+        </FRBRWork>
+        <FRBRExpression>
+          <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRlanguage language="eng"/>
+        </FRBRExpression>
+        <FRBRManifestation>
+          <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="' + today + '" name="Generation"/>
+          <FRBRauthor href="#slaw"/>
+        </FRBRManifestation>
+      </identification>
+    </meta>
+    <mainBody>
+      <article id="schedule-1">
+        <heading>A Title</heading>
+        <content>
+          <p>
+            <remark status="editorial">[Schedule 1 added by Act 23 of 2004]</remark>
+          </p>
+          <p>Some content</p>
+        </content>
+      </article>
+    </mainBody>
+  </doc>
+</component>'
     end
   end
 
@@ -814,7 +816,7 @@ EOS
       today = Time.now.strftime('%Y-%m-%d')
       s.should == <<EOS
 <components>
-  <component id="component-1">
+  <component id="component-schedule-2">
     <doc name="schedule2">
       <meta>
         <identification source="#slaw">
@@ -852,7 +854,7 @@ EOS
       </mainBody>
     </doc>
   </component>
-  <component id="component-2">
+  <component id="component-schedule-3">
     <doc name="schedule3">
       <meta>
         <identification source="#slaw">
@@ -897,7 +899,7 @@ EOS
     end
 
     it 'should serialise a single schedule without a heading' do
-      node = parse :schedules_container, <<EOS
+      node = parse :schedules, <<EOS
 Schedule "1"
 Other than as is set out hereinbelow, no signs other than locality bound signs, temporary signs including loose portable sign, estate agents signs, newspaper headline posters and posters (the erection of which must comply with the appropriate schedules pertinent thereto) shall be erected on Municipal owned land.
 1. Foo
@@ -907,46 +909,44 @@ EOS
       s = to_xml(node)
       today = Time.now.strftime('%Y-%m-%d')
       s.should == <<EOS
-<components>
-  <component id="component-1">
-    <doc name="schedule1">
-      <meta>
-        <identification source="#slaw">
-          <FRBRWork>
-            <FRBRthis value="/za/act/1980/01/schedule1"/>
-            <FRBRuri value="/za/act/1980/01"/>
-            <FRBRalias value="Schedule 1"/>
-            <FRBRdate date="1980-01-01" name="Generation"/>
-            <FRBRauthor href="#council"/>
-            <FRBRcountry value="za"/>
-          </FRBRWork>
-          <FRBRExpression>
-            <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
-            <FRBRuri value="/za/act/1980/01/eng@"/>
-            <FRBRdate date="1980-01-01" name="Generation"/>
-            <FRBRauthor href="#council"/>
-            <FRBRlanguage language="eng"/>
-          </FRBRExpression>
-          <FRBRManifestation>
-            <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
-            <FRBRuri value="/za/act/1980/01/eng@"/>
-            <FRBRdate date="#{today}" name="Generation"/>
-            <FRBRauthor href="#slaw"/>
-          </FRBRManifestation>
-        </identification>
-      </meta>
-      <mainBody>
-        <article id="schedule-1">
-          <content>
-            <p>Other than as is set out hereinbelow, no signs other than locality bound signs, temporary signs including loose portable sign, estate agents signs, newspaper headline posters and posters (the erection of which must comply with the appropriate schedules pertinent thereto) shall be erected on Municipal owned land.</p>
-            <p>1. Foo</p>
-            <p>2. Bar</p>
-          </content>
-        </article>
-      </mainBody>
-    </doc>
-  </component>
-</components>
+<component id="component-schedule-1">
+  <doc name="schedule1">
+    <meta>
+      <identification source="#slaw">
+        <FRBRWork>
+          <FRBRthis value="/za/act/1980/01/schedule1"/>
+          <FRBRuri value="/za/act/1980/01"/>
+          <FRBRalias value="Schedule 1"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRcountry value="za"/>
+        </FRBRWork>
+        <FRBRExpression>
+          <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRlanguage language="eng"/>
+        </FRBRExpression>
+        <FRBRManifestation>
+          <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="#{today}" name="Generation"/>
+          <FRBRauthor href="#slaw"/>
+        </FRBRManifestation>
+      </identification>
+    </meta>
+    <mainBody>
+      <article id="schedule-1">
+        <content>
+          <p>Other than as is set out hereinbelow, no signs other than locality bound signs, temporary signs including loose portable sign, estate agents signs, newspaper headline posters and posters (the erection of which must comply with the appropriate schedules pertinent thereto) shall be erected on Municipal owned land.</p>
+          <p>1. Foo</p>
+          <p>2. Bar</p>
+        </content>
+      </article>
+    </mainBody>
+  </doc>
+</component>
 EOS
       .strip
     end
@@ -1023,44 +1023,46 @@ EOS
 
       xml = to_xml(node, "")
       today = Time.now.strftime('%Y-%m-%d')
-      xml.should == '<doc name="schedule1">
-  <meta>
-    <identification source="#slaw">
-      <FRBRWork>
-        <FRBRthis value="/za/act/1980/01/schedule1"/>
-        <FRBRuri value="/za/act/1980/01"/>
-        <FRBRalias value="Schedule 1"/>
-        <FRBRdate date="1980-01-01" name="Generation"/>
-        <FRBRauthor href="#council"/>
-        <FRBRcountry value="za"/>
-      </FRBRWork>
-      <FRBRExpression>
-        <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
-        <FRBRuri value="/za/act/1980/01/eng@"/>
-        <FRBRdate date="1980-01-01" name="Generation"/>
-        <FRBRauthor href="#council"/>
-        <FRBRlanguage language="eng"/>
-      </FRBRExpression>
-      <FRBRManifestation>
-        <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
-        <FRBRuri value="/za/act/1980/01/eng@"/>
-        <FRBRdate date="' + today + '" name="Generation"/>
-        <FRBRauthor href="#slaw"/>
-      </FRBRManifestation>
-    </identification>
-  </meta>
-  <mainBody>
-    <article id="schedule-1">
-      <content>
-        <p>Heres a table:</p>
-        <table id="schedule-1.table0"><tr><td><p>r1c1</p></td>
+      xml.should == '<component id="component-schedule-1">
+  <doc name="schedule1">
+    <meta>
+      <identification source="#slaw">
+        <FRBRWork>
+          <FRBRthis value="/za/act/1980/01/schedule1"/>
+          <FRBRuri value="/za/act/1980/01"/>
+          <FRBRalias value="Schedule 1"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRcountry value="za"/>
+        </FRBRWork>
+        <FRBRExpression>
+          <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRlanguage language="eng"/>
+        </FRBRExpression>
+        <FRBRManifestation>
+          <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="' + today + '" name="Generation"/>
+          <FRBRauthor href="#slaw"/>
+        </FRBRManifestation>
+      </identification>
+    </meta>
+    <mainBody>
+      <article id="schedule-1">
+        <content>
+          <p>Heres a table:</p>
+          <table id="schedule-1.table0"><tr><td><p>r1c1</p></td>
 <td><p>r1c2</p></td></tr>
 <tr><td><p>r2c1</p></td>
 <td><p>r2c2</p></td></tr></table>
-      </content>
-    </article>
-  </mainBody>
-</doc>'
+        </content>
+      </article>
+    </mainBody>
+  </doc>
+</component>'
     end
   end
 
