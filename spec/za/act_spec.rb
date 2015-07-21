@@ -143,7 +143,7 @@ EOS
       part.heading.num.should == "1"
       part.heading.title.should == "PREVENTION AND SUPPRESSION OF HEALTH NUISANCES"
 
-      section = part.elements[1].elements[0]
+      section = part.sections.children.elements.first
       section.section_title.title.should == ""
       section.section_title.section_title_prefix.number_letter.text_value.should == "1"
     end
@@ -700,7 +700,7 @@ Section
 1. (1) hello
 EOS
 
-      section = node.chapters.children.elements.first.parts.children.elements.first.sections.elements.first
+      section = node.chapters.children.elements.first.parts.children.elements.first.sections.children.elements.first
       section.section_title.content.text_value.should == "Section"
       section.section_title.section_title_prefix.number_letter.text_value.should == "1"
     end
@@ -712,7 +712,7 @@ EOS
 (1) hello
 EOS
 
-      section = node.chapters.children.elements.first.parts.children.elements.first.sections.elements.first
+      section = node.chapters.children.elements.first.parts.children.elements.first.sections.children.elements.first
       section.section_title.title.should == "Section"
       section.section_title.num.should == "1"
     end
@@ -726,7 +726,7 @@ EOS
 (2) Another line
 EOS
 
-      sections = node.chapters.children.elements.first.parts.children.elements.first.sections.elements
+      sections = node.chapters.children.elements.first.parts.children.elements.first.sections.children.elements
 
       section = sections[0]
       section.section_title.title.should == "A section"
@@ -744,7 +744,7 @@ EOS
 (2) Without limiting generality, stuff.
 EOS
 
-      section = node.chapters.children.elements.first.parts.children.elements.first.sections.elements.first
+      section = node.chapters.children.elements.first.parts.children.elements.first.sections.children.elements.first
       section.section_title.title.should == ""
       section.section_title.num.should == "10"
       section.subsections.elements[0].statement.num.should == "(1)"

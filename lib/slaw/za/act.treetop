@@ -45,7 +45,11 @@ module Slaw
 
       rule part
         heading:part_heading?
-        sections:section+ <Part>
+        sections <Part>
+      end
+
+      rule sections
+        children:section+ <GroupNode>
       end
 
       rule section

@@ -125,11 +125,11 @@ module Slaw
 
             b.part(id: id) { |b|
               heading.to_xml(b)
-              sections.elements.each { |e| e.to_xml(b) }
+              sections.to_xml(b)
             }
           else
             # no parts
-            sections.elements.each { |e| e.to_xml(b) }
+            sections.to_xml(b)
           end
         end
       end
