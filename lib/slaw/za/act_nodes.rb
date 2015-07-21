@@ -67,12 +67,18 @@ module Slaw
 
         def write_body(b)
           b.body { |b|
-            chapters.elements.each { |e| e.to_xml(b) }
+            chapters.to_xml(b)
           }
         end
 
         def write_schedules(b)
           schedules.to_xml(b)
+        end
+      end
+
+      class GroupNode < Treetop::Runtime::SyntaxNode
+        def to_xml(b)
+          children.elements.each { |e| e.to_xml(b) }
         end
       end
 
@@ -160,11 +166,11 @@ module Slaw
 
             b.chapter(id: id) { |b|
               heading.to_xml(b)
-              parts.elements.each { |e| e.to_xml(b) }
+              parts.to_xml(b)
             }
           else
             # no chapters
-            parts.elements.each { |e| e.to_xml(b) }
+            parts.to_xml(b)
           end
         end
       end

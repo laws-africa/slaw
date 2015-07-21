@@ -139,7 +139,7 @@ PREVENTION AND SUPPRESSION OF HEALTH NUISANCES
 No owner or occupier of any shop or business premises or vacant land adjoining a shop or business premises shall cause a health nuisance.
 EOS
 
-      part = node.chapters.elements[0].parts.elements[0]
+      part = node.chapters.children.elements.first.parts.children.elements.first
       part.heading.num.should == "1"
       part.heading.title.should == "PREVENTION AND SUPPRESSION OF HEALTH NUISANCES"
 
@@ -700,7 +700,7 @@ Section
 1. (1) hello
 EOS
 
-      section = node.chapters.elements.first.parts.elements.first.sections.elements.first
+      section = node.chapters.children.elements.first.parts.children.elements.first.sections.elements.first
       section.section_title.content.text_value.should == "Section"
       section.section_title.section_title_prefix.number_letter.text_value.should == "1"
     end
@@ -712,7 +712,7 @@ EOS
 (1) hello
 EOS
 
-      section = node.chapters.elements.first.parts.elements.first.sections.elements.first
+      section = node.chapters.children.elements.first.parts.children.elements.first.sections.elements.first
       section.section_title.title.should == "Section"
       section.section_title.num.should == "1"
     end
@@ -726,11 +726,13 @@ EOS
 (2) Another line
 EOS
 
-      section = node.chapters.elements.first.parts.elements.first.sections.elements.first
+      sections = node.chapters.children.elements.first.parts.children.elements.first.sections.elements
+
+      section = sections[0]
       section.section_title.title.should == "A section"
       section.section_title.num.should == "1"
 
-      section = node.chapters.elements[0].parts.elements.first.sections.elements[1]
+      section = sections[1]
       section.section_title.title.should == "Another section"
       section.section_title.num.should == "2"
     end
@@ -742,7 +744,7 @@ EOS
 (2) Without limiting generality, stuff.
 EOS
 
-      section = node.chapters.elements.first.parts.elements.first.sections.elements.first
+      section = node.chapters.children.elements.first.parts.children.elements.first.sections.elements.first
       section.section_title.title.should == ""
       section.section_title.num.should == "10"
       section.subsections.elements[0].statement.num.should == "(1)"
