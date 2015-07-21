@@ -67,12 +67,20 @@ module Slaw
 
         def write_body(b)
           b.body { |b|
-            chapters.elements.each { |e| e.to_xml(b) }
+            chapters.to_xml(b)
           }
         end
 
         def write_schedules(b)
-          schedules.to_xml(b)
+          if schedules.text_value != ""
+            schedules.to_xml(b)
+          end
+        end
+      end
+
+      class GroupNode < Treetop::Runtime::SyntaxNode
+        def to_xml(b, *args)
+          children.elements.each { |e| e.to_xml(b, *args) }
         end
       end
 
@@ -119,11 +127,11 @@ module Slaw
 
             b.part(id: id) { |b|
               heading.to_xml(b)
-              sections.elements.each { |e| e.to_xml(b) }
+              sections.to_xml(b)
             }
           else
             # no parts
-            sections.elements.each { |e| e.to_xml(b) }
+            sections.to_xml(b)
           end
         end
       end
@@ -160,11 +168,11 @@ module Slaw
 
             b.chapter(id: id) { |b|
               heading.to_xml(b)
-              parts.elements.each { |e| e.to_xml(b) }
+              parts.to_xml(b)
             }
           else
             # no chapters
-            parts.elements.each { |e| e.to_xml(b) }
+            parts.to_xml(b)
           end
         end
       end
@@ -385,13 +393,9 @@ module Slaw
 
       class ScheduleContainer < Treetop::Runtime::SyntaxNode
         def to_xml(b)
-          return if schedules.elements.empty?
-
           b.components { |b| 
-            schedules.elements.each_with_index { |e, i| 
-              b.component(id: "component-#{i+1}") { |b|
-                e.to_xml(b, "", i+1)
-              }
+            schedules.children.elements.each_with_index { |e, i|
+              e.to_xml(b, "", i+1)
             }
           }
         end
@@ -419,47 +423,49 @@ module Slaw
           end
         end
 
-        def to_xml(b, idprefix, i=1)
+        def to_xml(b, idprefix=nil, i=1)
           n = num.nil? ? i : num
 
           # component name
           comp = "schedule#{n}"
           id = "#{idprefix}schedule-#{n}"
 
-          b.doc_(name: "schedule#{n}") { |b|
-            b.meta { |b|
-              b.identification(source: "#slaw") { |b|
-                b.FRBRWork { |b|
-                  b.FRBRthis(value: "#{Act::WORK_URI}/#{comp}")
-                  b.FRBRuri(value: Act::WORK_URI)
-                  b.FRBRalias(value: self.alias)
-                  b.FRBRdate(date: '1980-01-01', name: 'Generation')
-                  b.FRBRauthor(href: '#council')
-                  b.FRBRcountry(value: 'za')
-                }
-                b.FRBRExpression { |b|
-                  b.FRBRthis(value: "#{Act::EXPRESSION_URI}/#{comp}")
-                  b.FRBRuri(value: Act::EXPRESSION_URI)
-                  b.FRBRdate(date: '1980-01-01', name: 'Generation')
-                  b.FRBRauthor(href: '#council')
-                  b.FRBRlanguage(language: 'eng')
-                }
-                b.FRBRManifestation { |b|
-                  b.FRBRthis(value: "#{Act::MANIFESTATION_URI}/#{comp}")
-                  b.FRBRuri(value: Act::MANIFESTATION_URI)
-                  b.FRBRdate(date: Time.now.strftime('%Y-%m-%d'), name: 'Generation')
-                  b.FRBRauthor(href: '#slaw')
+          b.component(id: "component-#{id}") { |b|
+            b.doc_(name: "schedule#{n}") { |b|
+              b.meta { |b|
+                b.identification(source: "#slaw") { |b|
+                  b.FRBRWork { |b|
+                    b.FRBRthis(value: "#{Act::WORK_URI}/#{comp}")
+                    b.FRBRuri(value: Act::WORK_URI)
+                    b.FRBRalias(value: self.alias)
+                    b.FRBRdate(date: '1980-01-01', name: 'Generation')
+                    b.FRBRauthor(href: '#council')
+                    b.FRBRcountry(value: 'za')
+                  }
+                  b.FRBRExpression { |b|
+                    b.FRBRthis(value: "#{Act::EXPRESSION_URI}/#{comp}")
+                    b.FRBRuri(value: Act::EXPRESSION_URI)
+                    b.FRBRdate(date: '1980-01-01', name: 'Generation')
+                    b.FRBRauthor(href: '#council')
+                    b.FRBRlanguage(language: 'eng')
+                  }
+                  b.FRBRManifestation { |b|
+                    b.FRBRthis(value: "#{Act::MANIFESTATION_URI}/#{comp}")
+                    b.FRBRuri(value: Act::MANIFESTATION_URI)
+                    b.FRBRdate(date: Time.now.strftime('%Y-%m-%d'), name: 'Generation')
+                    b.FRBRauthor(href: '#slaw')
+                  }
                 }
               }
-            }
 
-            b.mainBody { |b| 
-              # there is no good AKN hierarchy container for schedules, so we
-              # just use article because we don't use it anywhere else.
-              b.article(id: id) { |b|
-                b.heading(heading) if heading
-                b.content { |b|
-                  statements.elements.each { |e| e.to_xml(b, id + '.') }
+              b.mainBody { |b| 
+                # there is no good AKN hierarchy container for schedules, so we
+                # just use article because we don't use it anywhere else.
+                b.article(id: id) { |b|
+                  b.heading(heading) if heading
+                  b.content { |b|
+                    statements.elements.each { |e| e.to_xml(b, id + '.') }
+                  }
                 }
               }
             }

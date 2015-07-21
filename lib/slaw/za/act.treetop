@@ -15,8 +15,8 @@ module Slaw
         empty_line*
         preface:preface?
         preamble:preamble?
-        chapters:chapter*
-        schedules:schedules <Act>
+        chapters:chapters?
+        schedules:schedules_container? <Act>
       end
 
       rule preface
@@ -30,14 +30,26 @@ module Slaw
         statements:naked_statement* <Preamble>
       end
 
+      rule chapters
+        children:chapter+ <GroupNode>
+      end
+
       rule chapter
         heading:chapter_heading?
-        parts:part+ <Chapter>
+        parts <Chapter>
+      end
+
+      rule parts
+        children:part+ <GroupNode>
       end
 
       rule part
         heading:part_heading?
-        sections:section+ <Part>
+        sections <Part>
+      end
+
+      rule sections
+        children:section+ <GroupNode>
       end
 
       rule section
@@ -50,8 +62,12 @@ module Slaw
         blocklist:blocklist? <Subsection>
       end
 
+      rule schedules_container
+        schedules:schedules <ScheduleContainer>
+      end
+
       rule schedules
-        schedules:schedule* <ScheduleContainer>
+        children:schedule+ <GroupNode>
       end
 
       rule schedule
