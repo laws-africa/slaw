@@ -72,13 +72,15 @@ module Slaw
         end
 
         def write_schedules(b)
-          schedules.to_xml(b)
+          if schedules.text_value != ""
+            schedules.to_xml(b)
+          end
         end
       end
 
       class GroupNode < Treetop::Runtime::SyntaxNode
-        def to_xml(b)
-          children.elements.each { |e| e.to_xml(b) }
+        def to_xml(b, *args)
+          children.elements.each { |e| e.to_xml(b, *args) }
         end
       end
 
@@ -391,10 +393,8 @@ module Slaw
 
       class ScheduleContainer < Treetop::Runtime::SyntaxNode
         def to_xml(b)
-          return if schedules.elements.empty?
-
           b.components { |b| 
-            schedules.elements.each_with_index { |e, i| 
+            schedules.children.elements.each_with_index { |e, i|
               b.component(id: "component-#{i+1}") { |b|
                 e.to_xml(b, "", i+1)
               }

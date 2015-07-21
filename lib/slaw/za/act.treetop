@@ -16,7 +16,7 @@ module Slaw
         preface:preface?
         preamble:preamble?
         chapters:chapters?
-        schedules:schedules <Act>
+        schedules:schedules_container? <Act>
       end
 
       rule preface
@@ -62,8 +62,12 @@ module Slaw
         blocklist:blocklist? <Subsection>
       end
 
+      rule schedules_container
+        schedules:schedules <ScheduleContainer>
+      end
+
       rule schedules
-        schedules:schedule* <ScheduleContainer>
+        children:schedule+ <GroupNode>
       end
 
       rule schedule

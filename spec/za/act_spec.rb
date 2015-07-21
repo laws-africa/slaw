@@ -764,7 +764,7 @@ Subject to approval in terms of this By-Law, the erection:
 2. Bar
 EOS
 
-      sched = node.schedules.elements[0]
+      sched = node.children.elements[0]
       sched.schedule_heading.schedule_heading_prefix.text_value.should == "Schedule"
       sched.statements.elements[0].clauses.text_value.should == "Subject to approval in terms of this By-Law, the erection:"
       sched.statements.elements[1].clauses.text_value.should == "1. Foo"
@@ -783,14 +783,14 @@ Baz
 Boom
 EOS
 
-      sched = node.schedules.elements[0]
+      sched = node.children.elements[0]
       sched.schedule_heading.schedule_heading_prefix.text_value.should == "Schedule"
       sched.schedule_heading.schedule_title.content.text_value.should == "A Title"
       sched.schedule_heading.num.text_value.should == "1"
       sched.statements.elements[0].clauses.text_value.should == "1. Foo"
       sched.statements.elements[1].clauses.text_value.should == "2. Bar"
 
-      sched = node.schedules.elements[1]
+      sched = node.children.elements[1]
       sched.schedule_heading.schedule_heading_prefix.text_value.should == "Schedule"
       sched.schedule_heading.schedule_title.content.text_value.should == "Another Title"
       sched.schedule_heading.num.text_value.should == "2"
@@ -799,7 +799,7 @@ EOS
     end
 
     it 'should serialise many schedules correctly' do
-      node = parse :schedules, <<EOS
+      node = parse :schedules_container, <<EOS
 Schedule "2"
 A Title
 1. Foo
@@ -897,7 +897,7 @@ EOS
     end
 
     it 'should serialise a single schedule without a heading' do
-      node = parse :schedules, <<EOS
+      node = parse :schedules_container, <<EOS
 Schedule "1"
 Other than as is set out hereinbelow, no signs other than locality bound signs, temporary signs including loose portable sign, estate agents signs, newspaper headline posters and posters (the erection of which must comply with the appropriate schedules pertinent thereto) shall be erected on Municipal owned land.
 1. Foo
