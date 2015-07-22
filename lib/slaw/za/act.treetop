@@ -15,7 +15,7 @@ module Slaw
         empty_line*
         preface:preface?
         preamble:preamble?
-        chapters:chapters?
+        body
         schedules:schedules_container? <Act>
       end
 
@@ -30,26 +30,20 @@ module Slaw
         statements:naked_statement* <Preamble>
       end
 
-      rule chapters
-        children:chapter+ <GroupNode>
+      rule body
+        children:(chapter / part / section / block_paragraphs / subsection)+ <Body>
       end
 
       rule chapter
-        heading:chapter_heading?
-        parts <Chapter>
-      end
-
-      rule parts
-        children:part+ <GroupNode>
+        heading:chapter_heading
+        children:(part / section / block_paragraphs / subsection)+
+        <Chapter>
       end
 
       rule part
-        heading:part_heading?
-        sections <Part>
-      end
-
-      rule sections
-        children:section+ <GroupNode>
+        heading:part_heading
+        children:(section / block_paragraphs / subsection)+
+        <Part>
       end
 
       rule section
@@ -72,19 +66,46 @@ module Slaw
 
       rule schedule
         schedule_heading
-        statements:(table / schedule_statement)* <Schedule>
+        body
+        <Schedule>
+      end
+
+      rule block_paragraphs
+        block_element+ <BlockParagraph>
+      end
+
+      rule block_element
+        (table / blocklist / naked_statement)
+      end
+
+      ##########
+      # group elements
+      # 
+      # these are used externally and provide support when parsing just
+      # a particular portion of a document
+
+      rule chapters
+        children:chapter+ <GroupNode>
+      end
+
+      rule parts
+        children:part+ <GroupNode>
+      end
+
+      rule sections
+        children:section+ <GroupNode>
       end
 
       ##########
       # headings
 
       rule chapter_heading
-        space? chapter_heading_prefix heading:(whitespace content)? eol
+        space? chapter_heading_prefix heading:(newline? content)? eol
         <ChapterHeading>
       end
 
       rule part_heading
-        space? part_heading_prefix eol? space? content eol
+        space? part_heading_prefix heading:(newline? content)? eol
         <PartHeading>
       end
 
@@ -136,7 +157,7 @@ module Slaw
       end
 
       rule naked_statement
-        space? !(part / chapter / section / schedule) clauses eol
+        space? !(chapter_heading / part_heading / section_title / schedule_heading) clauses eol
         <NakedStatement>
       end
 
@@ -176,11 +197,11 @@ module Slaw
       # prefixes
 
       rule part_heading_prefix
-        'part'i space alphanums whitespace [:-]?
+        'part'i space alphanums [ :-]*
       end
 
       rule chapter_heading_prefix
-        'chapter'i space alphanums
+        'chapter'i space alphanums [ :-]*
       end
 
       rule schedule_heading_prefix

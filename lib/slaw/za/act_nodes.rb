@@ -9,7 +9,7 @@ module Slaw
         EXPRESSION_URI = "#{FRBR_URI}/eng@"
         MANIFESTATION_URI = EXPRESSION_URI
 
-        def to_xml(b, idprefix=nil)
+        def to_xml(b, idprefix=nil, i=0)
           b.act(contains: "originalVersion") { |b|
             write_meta(b)
             write_preface(b)
@@ -66,15 +66,21 @@ module Slaw
         end
 
         def write_body(b)
-          b.body { |b|
-            chapters.to_xml(b)
-          }
+          body.to_xml(b)
         end
 
         def write_schedules(b)
           if schedules.text_value != ""
             schedules.to_xml(b)
           end
+        end
+      end
+
+      class Body < Treetop::Runtime::SyntaxNode
+        def to_xml(b)
+          b.body { |b|
+            children.elements.each { |e| e.to_xml(b, '') }
+          }
         end
       end
 
@@ -85,7 +91,7 @@ module Slaw
       end
 
       class Preface < Treetop::Runtime::SyntaxNode
-        def to_xml(b)
+        def to_xml(b, *args)
           if text_value != ""
             b.preface { |b|
               statements.elements.each { |element|
@@ -99,7 +105,7 @@ module Slaw
       end
 
       class Preamble < Treetop::Runtime::SyntaxNode
-        def to_xml(b)
+        def to_xml(b, *args)
           if text_value != ""
             b.preamble { |b|
               statements.elements.each { |e|
@@ -112,27 +118,21 @@ module Slaw
 
       class Part < Treetop::Runtime::SyntaxNode
         def num
-          heading.empty? ? nil : heading.num
+          heading.num
         end
 
-        def to_xml(b)
-          # do we have a part heading?
-          if not heading.empty?
-            id = "part-#{num}"
+        def to_xml(b, *args)
+          id = "part-#{num}"
 
-            # include a chapter number in the id if our parent has one
-            if parent and parent.parent.is_a?(Chapter) and parent.parent.num
-              id = "chapter-#{parent.parent.num}.#{id}"
-            end
-
-            b.part(id: id) { |b|
-              heading.to_xml(b)
-              sections.to_xml(b)
-            }
-          else
-            # no parts
-            sections.to_xml(b)
+          # include a chapter number in the id if our parent has one
+          if parent and parent.parent.is_a?(Chapter) and parent.parent.num
+            id = "chapter-#{parent.parent.num}.#{id}"
           end
+
+          b.part(id: id) { |b|
+            heading.to_xml(b)
+            children.elements.each_with_index { |e, i| e.to_xml(b, id + '.', i) }
+          }
         end
       end
 
@@ -142,38 +142,34 @@ module Slaw
         end
 
         def title
-          content.text_value
+          if heading.text_value and heading.respond_to? :content
+            heading.content.text_value
+          end
         end
 
         def to_xml(b)
           b.num(num)
-          b.heading(title)
+          b.heading(title) if title
         end
       end
 
       class Chapter < Treetop::Runtime::SyntaxNode
         def num
-          heading.empty? ? nil : heading.num
+          heading.num
         end
 
-        def to_xml(b)
-          # do we have a chapter heading?
-          if not heading.empty?
-            id = "chapter-#{num}"
+        def to_xml(b, *args)
+          id = "chapter-#{num}"
 
-            # include a part number in the id if our parent has one
-            if parent and parent.parent.is_a?(Part) and parent.parent.num
-              id = "part-#{parent.parent.num}.#{id}"
-            end
-
-            b.chapter(id: id) { |b|
-              heading.to_xml(b)
-              parts.to_xml(b)
-            }
-          else
-            # no chapters
-            parts.to_xml(b)
+          # include a part number in the id if our parent has one
+          if parent and parent.parent.is_a?(Part) and parent.parent.num
+            id = "part-#{parent.parent.num}.#{id}"
           end
+
+          b.chapter(id: id) { |b|
+            heading.to_xml(b)
+            children.elements.each_with_index { |e, i| e.to_xml(b, id + '.', i) }
+          }
         end
       end
 
@@ -183,10 +179,8 @@ module Slaw
         end
 
         def title
-          if self.respond_to? :heading
+          if heading.text_value and heading.respond_to? :content
             heading.content.text_value
-          elsif self.respond_to? :content
-            content.text_value
           end
         end
 
@@ -205,7 +199,7 @@ module Slaw
           section_title.title
         end
 
-        def to_xml(b)
+        def to_xml(b, *args)
           id = "section-#{num}"
           b.section(id: id) { |b|
             b.num("#{num}.")
@@ -276,6 +270,16 @@ module Slaw
                 # raw content
                 statement.to_xml(b, idprefix)
               end
+            }
+          }
+        end
+      end
+
+      class BlockParagraph < Treetop::Runtime::SyntaxNode
+        def to_xml(b, idprefix='', i=0)
+          b.paragraph(id: "#{idprefix}paragraph-0") { |b|
+            b.content { |b|
+              elements.each_with_index { |e, i| e.to_xml(b, idprefix) }
             }
           }
         end
@@ -463,9 +467,7 @@ module Slaw
                 # just use article because we don't use it anywhere else.
                 b.article(id: id) { |b|
                   b.heading(heading) if heading
-                  b.content { |b|
-                    statements.elements.each { |e| e.to_xml(b, id + '.') }
-                  }
+                  body.children.elements.each { |e| e.to_xml(b) }
                 }
               }
             }

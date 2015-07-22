@@ -28,18 +28,84 @@ describe Slaw::ActGenerator do
   end
 
   #-------------------------------------------------------------------------------
+  # General body
+
+  describe 'body' do
+    it 'should handle general content before chapters' do
+      node = parse :body, <<EOS
+Some content before the section
+
+1. Section
+Hello there
+EOS
+      to_xml(node).should == '<body>
+  <paragraph id="paragraph-0">
+    <content>
+      <p>Some content before the section</p>
+    </content>
+  </paragraph>
+  <section id="section-1">
+    <num>1.</num>
+    <heading>Section</heading>
+    <subsection id="section-1.subsection-0">
+      <content>
+        <p>Hello there</p>
+      </content>
+    </subsection>
+  </section>
+</body>'
+    end
+
+    it 'should handle blocklists before chapters' do
+      node = parse :body, <<EOS
+Some content before the section
+
+(a) foo
+(b) bar
+
+1. Section
+Hello there
+EOS
+      to_xml(node).should == '<body>
+  <paragraph id="paragraph-0">
+    <content>
+      <p>Some content before the section</p>
+      <blockList id="list0">
+        <item id="list0.a">
+          <num>(a)</num>
+          <p>foo</p>
+        </item>
+        <item id="list0.b">
+          <num>(b)</num>
+          <p>bar</p>
+        </item>
+      </blockList>
+    </content>
+  </paragraph>
+  <section id="section-1">
+    <num>1.</num>
+    <heading>Section</heading>
+    <subsection id="section-1.subsection-0">
+      <content>
+        <p>Hello there</p>
+      </content>
+    </subsection>
+  </section>
+</body>'
+    end
+  end
+
+  #-------------------------------------------------------------------------------
   # Chapters
   #
   describe 'chapters' do
     it 'should handle chapter headers' do
       node = parse :chapter, <<EOS
-ChaPTEr 2
+ChaPTEr 2 - 
 The Chapter Heading
 1. Section
 Hello there
 EOS
-      node.num.should == "2"
-      node.heading.title.should == 'The Chapter Heading'
       to_xml(node).should == '<chapter id="chapter-2">
   <num>2</num>
   <heading>The Chapter Heading</heading>
@@ -49,6 +115,79 @@ EOS
     <subsection id="section-1.subsection-0">
       <content>
         <p>Hello there</p>
+      </content>
+    </subsection>
+  </section>
+</chapter>'
+    end
+
+    it 'should handle chapters without titles' do
+      node = parse :chapter, <<EOS
+ChaPTEr 2:
+
+1. Section
+Hello there
+EOS
+      to_xml(node).should == '<chapter id="chapter-2">
+  <num>2</num>
+  <section id="section-1">
+    <num>1.</num>
+    <heading>Section</heading>
+    <subsection id="section-1.subsection-0">
+      <content>
+        <p>Hello there</p>
+      </content>
+    </subsection>
+  </section>
+</chapter>'
+    end
+
+    it 'should handle general content at the start of a chapter' do
+      node = parse :chapter, <<EOS
+Chapter 2
+The Chapter Heading
+
+Some lines at the start of the chapter.
+EOS
+      node.num.should == "2"
+      node.heading.title.should == 'The Chapter Heading'
+      to_xml(node).should == '<chapter id="chapter-2">
+  <num>2</num>
+  <heading>The Chapter Heading</heading>
+  <paragraph id="chapter-2.paragraph-0">
+    <content>
+      <p>Some lines at the start of the chapter.</p>
+    </content>
+  </paragraph>
+</chapter>'
+    end
+
+    it 'should handle general content at the start of a chapter with other content' do
+      node = parse :chapter, <<EOS
+Chapter 2 - The Chapter Heading
+
+Some lines at the start of the chapter.
+
+1. Section 1
+
+Section text.
+EOS
+      node.num.should == "2"
+      node.heading.title.should == 'The Chapter Heading'
+      to_xml(node).should == '<chapter id="chapter-2">
+  <num>2</num>
+  <heading>The Chapter Heading</heading>
+  <paragraph id="chapter-2.paragraph-0">
+    <content>
+      <p>Some lines at the start of the chapter.</p>
+    </content>
+  </paragraph>
+  <section id="section-1">
+    <num>1.</num>
+    <heading>Section 1</heading>
+    <subsection id="section-1.subsection-0">
+      <content>
+        <p>Section text.</p>
       </content>
     </subsection>
   </section>
@@ -67,8 +206,6 @@ The Part Heading
 1. Section
 Hello there
 EOS
-      node.num.should == "2"
-      node.heading.title.should == 'The Part Heading'
       to_xml(node).should == '<part id="part-2">
   <num>2</num>
   <heading>The Part Heading</heading>
@@ -90,8 +227,6 @@ Part 2 - The Part Heading
 1. Section
 Hello there
 EOS
-      node.num.should == "2"
-      node.heading.title.should == 'The Part Heading'
       to_xml(node).should == '<part id="part-2">
   <num>2</num>
   <heading>The Part Heading</heading>
@@ -113,11 +248,30 @@ Part 2: The Part Heading
 1. Section
 Hello there
 EOS
-      node.num.should == "2"
-      node.heading.title.should == 'The Part Heading'
       to_xml(node).should == '<part id="part-2">
   <num>2</num>
   <heading>The Part Heading</heading>
+  <section id="section-1">
+    <num>1.</num>
+    <heading>Section</heading>
+    <subsection id="section-1.subsection-0">
+      <content>
+        <p>Hello there</p>
+      </content>
+    </subsection>
+  </section>
+</part>'
+    end
+
+    it 'should handle part headers without titles' do
+      node = parse :part, <<EOS
+Part 2:
+
+1. Section
+Hello there
+EOS
+      to_xml(node).should == '<part id="part-2">
+  <num>2</num>
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
@@ -147,6 +301,38 @@ EOS
     <subsection id="section-1.subsection-0">
       <content>
         <p>No owner or occupier of any shop or business premises or vacant land adjoining a shop or business premises shall cause a health nuisance.</p>
+      </content>
+    </subsection>
+  </section>
+</part>'
+    end
+    
+    it 'should handle general content after the part heading' do
+      node = parse :part, <<EOS
+Part 2
+The Part Heading
+
+Some text before the part.
+
+1. Section
+Hello there
+EOS
+      node.num.should == "2"
+      node.heading.title.should == 'The Part Heading'
+      to_xml(node).should == '<part id="part-2">
+  <num>2</num>
+  <heading>The Part Heading</heading>
+  <paragraph id="part-2.paragraph-0">
+    <content>
+      <p>Some text before the part.</p>
+    </content>
+  </paragraph>
+  <section id="section-1">
+    <num>1.</num>
+    <heading>Section</heading>
+    <subsection id="section-1.subsection-0">
+      <content>
+        <p>Hello there</p>
       </content>
     </subsection>
   </section>
@@ -449,12 +635,14 @@ EOS
     <mainBody>
       <article id="schedule-1">
         <heading>A Title</heading>
-        <content>
-          <p>
-            <remark status="editorial">[Schedule 1 added by Act 23 of 2004]</remark>
-          </p>
-          <p>Some content</p>
-        </content>
+        <paragraph id="paragraph-0">
+          <content>
+            <p>
+              <remark status="editorial">[Schedule 1 added by Act 23 of 2004]</remark>
+            </p>
+            <p>Some content</p>
+          </content>
+        </paragraph>
       </article>
     </mainBody>
   </doc>
@@ -741,67 +929,35 @@ EOS
 
     it 'should handle section numbers without a dot' do
       subject.parser.options = {section_number_after_title: false}
-      node = parse :act, <<EOS
+      node = parse :body, <<EOS
 1 A section
 (1) hello
 2 Another section
 (2) Another line
 EOS
       s = to_xml(node)
-      today = Time.now.strftime('%Y-%m-%d')
-      s.should == '<act contains="originalVersion">
-  <meta>
-    <identification source="#slaw">
-      <FRBRWork>
-        <FRBRthis value="/za/act/1980/01/main"/>
-        <FRBRuri value="/za/act/1980/01"/>
-        <FRBRalias value="Short Title"/>
-        <FRBRdate date="1980-01-01" name="Generation"/>
-        <FRBRauthor href="#council"/>
-        <FRBRcountry value="za"/>
-      </FRBRWork>
-      <FRBRExpression>
-        <FRBRthis value="/za/act/1980/01/eng@/main"/>
-        <FRBRuri value="/za/act/1980/01/eng@"/>
-        <FRBRdate date="1980-01-01" name="Generation"/>
-        <FRBRauthor href="#council"/>
-        <FRBRlanguage language="eng"/>
-      </FRBRExpression>
-      <FRBRManifestation>
-        <FRBRthis value="/za/act/1980/01/eng@/main"/>
-        <FRBRuri value="/za/act/1980/01/eng@"/>
-        <FRBRdate date="' + today + '" name="Generation"/>
-        <FRBRauthor href="#slaw"/>
-      </FRBRManifestation>
-    </identification>
-    <references source="#this">
-      <TLCOrganization id="slaw" href="https://github.com/longhotsummer/slaw" showAs="Slaw"/>
-      <TLCOrganization id="council" href="/ontology/organization/za/council" showAs="Council"/>
-    </references>
-  </meta>
-  <body>
-    <section id="section-1">
-      <num>1.</num>
-      <heading>A section</heading>
-      <subsection id="section-1.1">
-        <num>(1)</num>
-        <content>
-          <p>hello</p>
-        </content>
-      </subsection>
-    </section>
-    <section id="section-2">
-      <num>2.</num>
-      <heading>Another section</heading>
-      <subsection id="section-2.2">
-        <num>(2)</num>
-        <content>
-          <p>Another line</p>
-        </content>
-      </subsection>
-    </section>
-  </body>
-</act>'
+      s.should == '<body>
+  <section id="section-1">
+    <num>1.</num>
+    <heading>A section</heading>
+    <subsection id="section-1.1">
+      <num>(1)</num>
+      <content>
+        <p>hello</p>
+      </content>
+    </subsection>
+  </section>
+  <section id="section-2">
+    <num>2.</num>
+    <heading>Another section</heading>
+    <subsection id="section-2.2">
+      <num>(2)</num>
+      <content>
+        <p>Another line</p>
+      </content>
+    </subsection>
+  </section>
+</body>'
     end
 
     it 'should handle sections without titles and with subsections' do
@@ -872,108 +1028,23 @@ EOS
     </meta>
     <mainBody>
       <article id="schedule-1">
-        <content>
-          <p>Subject to approval in terms of this By-Law, the erection:</p>
-          <p>1. Foo</p>
-          <p>2. Bar</p>
-        </content>
+        <paragraph id="paragraph-0">
+          <content>
+            <p>Subject to approval in terms of this By-Law, the erection:</p>
+          </content>
+        </paragraph>
+        <section id="section-1">
+          <num>1.</num>
+          <heading>Foo</heading>
+        </section>
+        <section id="section-2">
+          <num>2.</num>
+          <heading>Bar</heading>
+        </section>
       </article>
     </mainBody>
   </doc>
 </component>'
-    end
-
-    it 'should handle many schedules' do
-      node = parse :schedules_container, <<EOS
-Schedule "1"
-A Title
-1. Foo
-2. Bar
-Schedule 2
-Another Title
-Baz
-Boom
-EOS
-      s = to_xml(node)
-      today = Time.now.strftime('%Y-%m-%d')
-      s.should == '<components>
-  <component id="component-schedule-1">
-    <doc name="schedule1">
-      <meta>
-        <identification source="#slaw">
-          <FRBRWork>
-            <FRBRthis value="/za/act/1980/01/schedule1"/>
-            <FRBRuri value="/za/act/1980/01"/>
-            <FRBRalias value="Schedule 1"/>
-            <FRBRdate date="1980-01-01" name="Generation"/>
-            <FRBRauthor href="#council"/>
-            <FRBRcountry value="za"/>
-          </FRBRWork>
-          <FRBRExpression>
-            <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
-            <FRBRuri value="/za/act/1980/01/eng@"/>
-            <FRBRdate date="1980-01-01" name="Generation"/>
-            <FRBRauthor href="#council"/>
-            <FRBRlanguage language="eng"/>
-          </FRBRExpression>
-          <FRBRManifestation>
-            <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
-            <FRBRuri value="/za/act/1980/01/eng@"/>
-            <FRBRdate date="' + today + '" name="Generation"/>
-            <FRBRauthor href="#slaw"/>
-          </FRBRManifestation>
-        </identification>
-      </meta>
-      <mainBody>
-        <article id="schedule-1">
-          <heading>A Title</heading>
-          <content>
-            <p>1. Foo</p>
-            <p>2. Bar</p>
-          </content>
-        </article>
-      </mainBody>
-    </doc>
-  </component>
-  <component id="component-schedule-2">
-    <doc name="schedule2">
-      <meta>
-        <identification source="#slaw">
-          <FRBRWork>
-            <FRBRthis value="/za/act/1980/01/schedule2"/>
-            <FRBRuri value="/za/act/1980/01"/>
-            <FRBRalias value="Schedule 2"/>
-            <FRBRdate date="1980-01-01" name="Generation"/>
-            <FRBRauthor href="#council"/>
-            <FRBRcountry value="za"/>
-          </FRBRWork>
-          <FRBRExpression>
-            <FRBRthis value="/za/act/1980/01/eng@/schedule2"/>
-            <FRBRuri value="/za/act/1980/01/eng@"/>
-            <FRBRdate date="1980-01-01" name="Generation"/>
-            <FRBRauthor href="#council"/>
-            <FRBRlanguage language="eng"/>
-          </FRBRExpression>
-          <FRBRManifestation>
-            <FRBRthis value="/za/act/1980/01/eng@/schedule2"/>
-            <FRBRuri value="/za/act/1980/01/eng@"/>
-            <FRBRdate date="' + today + '" name="Generation"/>
-            <FRBRauthor href="#slaw"/>
-          </FRBRManifestation>
-        </identification>
-      </meta>
-      <mainBody>
-        <article id="schedule-2">
-          <heading>Another Title</heading>
-          <content>
-            <p>Baz</p>
-            <p>Boom</p>
-          </content>
-        </article>
-      </mainBody>
-    </doc>
-  </component>
-</components>'
     end
 
     it 'should serialise many schedules correctly' do
@@ -1022,10 +1093,14 @@ EOS
       <mainBody>
         <article id="schedule-2">
           <heading>A Title</heading>
-          <content>
-            <p>1. Foo</p>
-            <p>2. Bar</p>
-          </content>
+          <section id="section-1">
+            <num>1.</num>
+            <heading>Foo</heading>
+          </section>
+          <section id="section-2">
+            <num>2.</num>
+            <heading>Bar</heading>
+          </section>
         </article>
       </mainBody>
     </doc>
@@ -1060,10 +1135,12 @@ EOS
       <mainBody>
         <article id="schedule-3">
           <heading>Another Title</heading>
-          <content>
-            <p>Baz</p>
-            <p>Boom</p>
-          </content>
+          <paragraph id="paragraph-0">
+            <content>
+              <p>Baz</p>
+              <p>Boom</p>
+            </content>
+          </paragraph>
         </article>
       </mainBody>
     </doc>
@@ -1114,11 +1191,94 @@ EOS
     </meta>
     <mainBody>
       <article id="schedule-1">
-        <content>
-          <p>Other than as is set out hereinbelow, no signs other than locality bound signs, temporary signs including loose portable sign, estate agents signs, newspaper headline posters and posters (the erection of which must comply with the appropriate schedules pertinent thereto) shall be erected on Municipal owned land.</p>
-          <p>1. Foo</p>
-          <p>2. Bar</p>
-        </content>
+        <paragraph id="paragraph-0">
+          <content>
+            <p>Other than as is set out hereinbelow, no signs other than locality bound signs, temporary signs including loose portable sign, estate agents signs, newspaper headline posters and posters (the erection of which must comply with the appropriate schedules pertinent thereto) shall be erected on Municipal owned land.</p>
+          </content>
+        </paragraph>
+        <section id="section-1">
+          <num>1.</num>
+          <heading>Foo</heading>
+        </section>
+        <section id="section-2">
+          <num>2.</num>
+          <heading>Bar</heading>
+        </section>
+      </article>
+    </mainBody>
+  </doc>
+</component>
+EOS
+      .strip
+    end
+
+    it 'should support rich parts, chapters and sections in a schedule' do
+      node = parse :schedules, <<EOS
+Schedule 1
+Forms
+
+Part I
+Form of authentication statement
+
+This printed impression has been carefully compared by me with the bill which was passed by Parliament and found by me to be a true copy of the bill.
+
+Part II
+Form of statement of the President’s assent.
+
+I signify my assent to the bill and a whole bunch of other stuff.
+EOS
+
+      s = to_xml(node)
+      today = Time.now.strftime('%Y-%m-%d')
+      s.should == <<EOS
+<component id="component-schedule-1">
+  <doc name="schedule1">
+    <meta>
+      <identification source="#slaw">
+        <FRBRWork>
+          <FRBRthis value="/za/act/1980/01/schedule1"/>
+          <FRBRuri value="/za/act/1980/01"/>
+          <FRBRalias value="Schedule 1"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRcountry value="za"/>
+        </FRBRWork>
+        <FRBRExpression>
+          <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRlanguage language="eng"/>
+        </FRBRExpression>
+        <FRBRManifestation>
+          <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="#{today}" name="Generation"/>
+          <FRBRauthor href="#slaw"/>
+        </FRBRManifestation>
+      </identification>
+    </meta>
+    <mainBody>
+      <article id="schedule-1">
+        <heading>Forms</heading>
+        <part id="part-I">
+          <num>I</num>
+          <heading>Form of authentication statement</heading>
+          <paragraph id="part-I.paragraph-0">
+            <content>
+              <p>This printed impression has been carefully compared by me with the bill which was passed by Parliament and found by me to be a true copy of the bill.</p>
+            </content>
+          </paragraph>
+        </part>
+        <part id="part-II">
+          <num>II</num>
+          <heading>Form of statement of the President’s assent.</heading>
+          <paragraph id="part-II.paragraph-0">
+            <content>
+              <p>I signify my assent to the bill and a whole bunch of other stuff.</p>
+            </content>
+          </paragraph>
+        </part>
       </article>
     </mainBody>
   </doc>
@@ -1231,13 +1391,15 @@ EOS
     </meta>
     <mainBody>
       <article id="schedule-1">
-        <content>
-          <p>Heres a table:</p>
-          <table id="schedule-1.table0"><tr><td><p>r1c1</p></td>
+        <paragraph id="paragraph-0">
+          <content>
+            <p>Heres a table:</p>
+            <table id="table0"><tr><td><p>r1c1</p></td>
 <td><p>r1c2</p></td></tr>
 <tr><td><p>r2c1</p></td>
 <td><p>r2c2</p></td></tr></table>
-        </content>
+          </content>
+        </paragraph>
       </article>
     </mainBody>
   </doc>
