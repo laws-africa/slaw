@@ -118,31 +118,21 @@ module Slaw
 
       class Part < Treetop::Runtime::SyntaxNode
         def num
-          heading.empty? ? nil : heading.num
+          heading.num
         end
 
         def to_xml(b, *args)
-          # do we have a part heading?
-          if not heading.empty?
-            id = "part-#{num}"
+          id = "part-#{num}"
 
-            # include a chapter number in the id if our parent has one
-            if parent and parent.parent.is_a?(Chapter) and parent.parent.num
-              id = "chapter-#{parent.parent.num}.#{id}"
-            end
-
-            b.part(id: id) { |b|
-              heading.to_xml(b)
-              content_to_xml(b, id + '.')
-            }
-          else
-            # no parts
-            content_to_xml(b)
+          # include a chapter number in the id if our parent has one
+          if parent and parent.parent.is_a?(Chapter) and parent.parent.num
+            id = "chapter-#{parent.parent.num}.#{id}"
           end
-        end
 
-        def content_to_xml(b, idprefix='')
-          children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+          b.part(id: id) { |b|
+            heading.to_xml(b)
+            children.elements.each_with_index { |e, i| e.to_xml(b, id + '.', i) }
+          }
         end
       end
 
@@ -163,31 +153,21 @@ module Slaw
 
       class Chapter < Treetop::Runtime::SyntaxNode
         def num
-          heading.empty? ? nil : heading.num
+          heading.num
         end
 
         def to_xml(b, *args)
-          # do we have a chapter heading?
-          if not heading.empty?
-            id = "chapter-#{num}"
+          id = "chapter-#{num}"
 
-            # include a part number in the id if our parent has one
-            if parent and parent.parent.is_a?(Part) and parent.parent.num
-              id = "part-#{parent.parent.num}.#{id}"
-            end
-
-            b.chapter(id: id) { |b|
-              heading.to_xml(b)
-              content_to_xml(b, id + ".")
-            }
-          else
-            # no chapters
-            content_to_xml(b)
+          # include a part number in the id if our parent has one
+          if parent and parent.parent.is_a?(Part) and parent.parent.num
+            id = "part-#{parent.parent.num}.#{id}"
           end
-        end
 
-        def content_to_xml(b, idprefix='')
-          children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+          b.chapter(id: id) { |b|
+            heading.to_xml(b)
+            children.elements.each_with_index { |e, i| e.to_xml(b, id + '.', i) }
+          }
         end
       end
 
