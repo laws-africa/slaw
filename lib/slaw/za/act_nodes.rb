@@ -142,12 +142,14 @@ module Slaw
         end
 
         def title
-          content.text_value
+          if heading.text_value and heading.respond_to? :content
+            heading.content.text_value
+          end
         end
 
         def to_xml(b)
           b.num(num)
-          b.heading(title)
+          b.heading(title) if title
         end
       end
 
@@ -177,10 +179,8 @@ module Slaw
         end
 
         def title
-          if self.respond_to? :heading
+          if heading.text_value and heading.respond_to? :content
             heading.content.text_value
-          elsif self.respond_to? :content
-            content.text_value
           end
         end
 

@@ -100,12 +100,12 @@ module Slaw
       # headings
 
       rule chapter_heading
-        space? chapter_heading_prefix heading:(whitespace content)? eol
+        space? chapter_heading_prefix heading:(newline? content)? eol
         <ChapterHeading>
       end
 
       rule part_heading
-        space? part_heading_prefix eol? space? content eol
+        space? part_heading_prefix heading:(newline? content)? eol
         <PartHeading>
       end
 
@@ -197,11 +197,11 @@ module Slaw
       # prefixes
 
       rule part_heading_prefix
-        'part'i space alphanums whitespace [:-]?
+        'part'i space alphanums [ :-]*
       end
 
       rule chapter_heading_prefix
-        'chapter'i space alphanums
+        'chapter'i space alphanums [ :-]*
       end
 
       rule schedule_heading_prefix
