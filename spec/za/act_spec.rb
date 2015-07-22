@@ -132,20 +132,25 @@ EOS
 
     it 'should handle parts and odd section numbers' do
       subject.parser.options = {section_number_after_title: false}
-      node = parse :act, <<EOS
+      node = parse :parts, <<EOS
 PART 1
 PREVENTION AND SUPPRESSION OF HEALTH NUISANCES
 1.
 No owner or occupier of any shop or business premises or vacant land adjoining a shop or business premises shall cause a health nuisance.
 EOS
-
-      part = node.chapters.children.elements.first.parts.children.elements.first
-      part.heading.num.should == "1"
-      part.heading.title.should == "PREVENTION AND SUPPRESSION OF HEALTH NUISANCES"
-
-      section = part.sections.children.elements.first
-      section.section_title.title.should == ""
-      section.section_title.section_title_prefix.number_letter.text_value.should == "1"
+      to_xml(node).should == '<part id="part-1">
+  <num>1</num>
+  <heading>PREVENTION AND SUPPRESSION OF HEALTH NUISANCES</heading>
+  <section id="section-1">
+    <num>1.</num>
+    <heading/>
+    <subsection id="section-1.subsection-0">
+      <content>
+        <p>No owner or occupier of any shop or business premises or vacant land adjoining a shop or business premises shall cause a health nuisance.</p>
+      </content>
+    </subsection>
+  </section>
+</part>'
     end
   end
 
@@ -697,26 +702,41 @@ EOS
   context 'sections' do
     it 'should handle section numbers after title' do
       subject.parser.options = {section_number_after_title: true}
-      node = parse :act, <<EOS
+      node = parse :section, <<EOS
 Section
 1. (1) hello
 EOS
 
-      section = node.chapters.children.elements.first.parts.children.elements.first.sections.children.elements.first
-      section.section_title.content.text_value.should == "Section"
-      section.section_title.section_title_prefix.number_letter.text_value.should == "1"
+      s = to_xml(node)
+      s.should == '<section id="section-1">
+  <num>1.</num>
+  <heading>Section</heading>
+  <subsection id="section-1.1">
+    <num>(1)</num>
+    <content>
+      <p>hello</p>
+    </content>
+  </subsection>
+</section>'
     end
 
     it 'should handle section numbers before title' do
       subject.parser.options = {section_number_after_title: false}
-      node = parse :act, <<EOS
+      node = parse :section, <<EOS
 1. Section
 (1) hello
 EOS
-
-      section = node.chapters.children.elements.first.parts.children.elements.first.sections.children.elements.first
-      section.section_title.title.should == "Section"
-      section.section_title.num.should == "1"
+      s = to_xml(node)
+      s.should == '<section id="section-1">
+  <num>1.</num>
+  <heading>Section</heading>
+  <subsection id="section-1.1">
+    <num>(1)</num>
+    <content>
+      <p>hello</p>
+    </content>
+  </subsection>
+</section>'
     end
 
     it 'should handle section numbers without a dot' do
@@ -727,30 +747,86 @@ EOS
 2 Another section
 (2) Another line
 EOS
-
-      sections = node.chapters.children.elements.first.parts.children.elements.first.sections.children.elements
-
-      section = sections[0]
-      section.section_title.title.should == "A section"
-      section.section_title.num.should == "1"
-
-      section = sections[1]
-      section.section_title.title.should == "Another section"
-      section.section_title.num.should == "2"
+      s = to_xml(node)
+      today = Time.now.strftime('%Y-%m-%d')
+      s.should == '<act contains="originalVersion">
+  <meta>
+    <identification source="#slaw">
+      <FRBRWork>
+        <FRBRthis value="/za/act/1980/01/main"/>
+        <FRBRuri value="/za/act/1980/01"/>
+        <FRBRalias value="Short Title"/>
+        <FRBRdate date="1980-01-01" name="Generation"/>
+        <FRBRauthor href="#council"/>
+        <FRBRcountry value="za"/>
+      </FRBRWork>
+      <FRBRExpression>
+        <FRBRthis value="/za/act/1980/01/eng@/main"/>
+        <FRBRuri value="/za/act/1980/01/eng@"/>
+        <FRBRdate date="1980-01-01" name="Generation"/>
+        <FRBRauthor href="#council"/>
+        <FRBRlanguage language="eng"/>
+      </FRBRExpression>
+      <FRBRManifestation>
+        <FRBRthis value="/za/act/1980/01/eng@/main"/>
+        <FRBRuri value="/za/act/1980/01/eng@"/>
+        <FRBRdate date="' + today + '" name="Generation"/>
+        <FRBRauthor href="#slaw"/>
+      </FRBRManifestation>
+    </identification>
+    <references source="#this">
+      <TLCOrganization id="slaw" href="https://github.com/longhotsummer/slaw" showAs="Slaw"/>
+      <TLCOrganization id="council" href="/ontology/organization/za/council" showAs="Council"/>
+    </references>
+  </meta>
+  <body>
+    <section id="section-1">
+      <num>1.</num>
+      <heading>A section</heading>
+      <subsection id="section-1.1">
+        <num>(1)</num>
+        <content>
+          <p>hello</p>
+        </content>
+      </subsection>
+    </section>
+    <section id="section-2">
+      <num>2.</num>
+      <heading>Another section</heading>
+      <subsection id="section-2.2">
+        <num>(2)</num>
+        <content>
+          <p>Another line</p>
+        </content>
+      </subsection>
+    </section>
+  </body>
+</act>'
     end
 
     it 'should handle sections without titles and with subsections' do
       subject.parser.options = {section_number_after_title: false}
-      node = parse :act, <<EOS
+      node = parse :section, <<EOS
 10. (1) Transporters must remove medical waste.
 (2) Without limiting generality, stuff.
 EOS
-
-      section = node.chapters.children.elements.first.parts.children.elements.first.sections.children.elements.first
-      section.section_title.title.should == ""
-      section.section_title.num.should == "10"
-      section.subsections.elements[0].statement.num.should == "(1)"
-      section.subsections.elements[0].statement.content.text_value.should == "Transporters must remove medical waste."
+      s = to_xml(node)
+      s.should == '<section id="section-10">
+  <num>10.</num>
+  <heading/>
+  <subsection id="section-10.1">
+    <num>(1)</num>
+    <content>
+      <p>Transporters must remove medical waste.</p>
+    </content>
+  </subsection>
+  <subsection id="section-10.2">
+    <num>(2)</num>
+    <content>
+      <p>Without limiting generality, stuff.</p>
+    </content>
+  </subsection>
+</section>'
     end
   end
 
@@ -765,16 +841,50 @@ Subject to approval in terms of this By-Law, the erection:
 1. Foo
 2. Bar
 EOS
-
-      sched = node.children.elements[0]
-      sched.schedule_heading.schedule_heading_prefix.text_value.should == "Schedule"
-      sched.statements.elements[0].clauses.text_value.should == "Subject to approval in terms of this By-Law, the erection:"
-      sched.statements.elements[1].clauses.text_value.should == "1. Foo"
-      sched.statements.elements[2].clauses.text_value.should == "2. Bar"
+      s = to_xml(node)
+      today = Time.now.strftime('%Y-%m-%d')
+      s.should == '<component id="component-schedule-1">
+  <doc name="schedule1">
+    <meta>
+      <identification source="#slaw">
+        <FRBRWork>
+          <FRBRthis value="/za/act/1980/01/schedule1"/>
+          <FRBRuri value="/za/act/1980/01"/>
+          <FRBRalias value="Schedule"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRcountry value="za"/>
+        </FRBRWork>
+        <FRBRExpression>
+          <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRlanguage language="eng"/>
+        </FRBRExpression>
+        <FRBRManifestation>
+          <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="' + today + '" name="Generation"/>
+          <FRBRauthor href="#slaw"/>
+        </FRBRManifestation>
+      </identification>
+    </meta>
+    <mainBody>
+      <article id="schedule-1">
+        <content>
+          <p>Subject to approval in terms of this By-Law, the erection:</p>
+          <p>1. Foo</p>
+          <p>2. Bar</p>
+        </content>
+      </article>
+    </mainBody>
+  </doc>
+</component>'
     end
 
     it 'should handle many schedules' do
-      node = parse :schedules, <<EOS
+      node = parse :schedules_container, <<EOS
 Schedule "1"
 A Title
 1. Foo
@@ -784,20 +894,86 @@ Another Title
 Baz
 Boom
 EOS
-
-      sched = node.children.elements[0]
-      sched.schedule_heading.schedule_heading_prefix.text_value.should == "Schedule"
-      sched.schedule_heading.schedule_title.content.text_value.should == "A Title"
-      sched.schedule_heading.num.text_value.should == "1"
-      sched.statements.elements[0].clauses.text_value.should == "1. Foo"
-      sched.statements.elements[1].clauses.text_value.should == "2. Bar"
-
-      sched = node.children.elements[1]
-      sched.schedule_heading.schedule_heading_prefix.text_value.should == "Schedule"
-      sched.schedule_heading.schedule_title.content.text_value.should == "Another Title"
-      sched.schedule_heading.num.text_value.should == "2"
-      sched.statements.elements[0].clauses.text_value.should == "Baz"
-      sched.statements.elements[1].clauses.text_value.should == "Boom"
+      s = to_xml(node)
+      today = Time.now.strftime('%Y-%m-%d')
+      s.should == '<components>
+  <component id="component-schedule-1">
+    <doc name="schedule1">
+      <meta>
+        <identification source="#slaw">
+          <FRBRWork>
+            <FRBRthis value="/za/act/1980/01/schedule1"/>
+            <FRBRuri value="/za/act/1980/01"/>
+            <FRBRalias value="Schedule 1"/>
+            <FRBRdate date="1980-01-01" name="Generation"/>
+            <FRBRauthor href="#council"/>
+            <FRBRcountry value="za"/>
+          </FRBRWork>
+          <FRBRExpression>
+            <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+            <FRBRuri value="/za/act/1980/01/eng@"/>
+            <FRBRdate date="1980-01-01" name="Generation"/>
+            <FRBRauthor href="#council"/>
+            <FRBRlanguage language="eng"/>
+          </FRBRExpression>
+          <FRBRManifestation>
+            <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+            <FRBRuri value="/za/act/1980/01/eng@"/>
+            <FRBRdate date="' + today + '" name="Generation"/>
+            <FRBRauthor href="#slaw"/>
+          </FRBRManifestation>
+        </identification>
+      </meta>
+      <mainBody>
+        <article id="schedule-1">
+          <heading>A Title</heading>
+          <content>
+            <p>1. Foo</p>
+            <p>2. Bar</p>
+          </content>
+        </article>
+      </mainBody>
+    </doc>
+  </component>
+  <component id="component-schedule-2">
+    <doc name="schedule2">
+      <meta>
+        <identification source="#slaw">
+          <FRBRWork>
+            <FRBRthis value="/za/act/1980/01/schedule2"/>
+            <FRBRuri value="/za/act/1980/01"/>
+            <FRBRalias value="Schedule 2"/>
+            <FRBRdate date="1980-01-01" name="Generation"/>
+            <FRBRauthor href="#council"/>
+            <FRBRcountry value="za"/>
+          </FRBRWork>
+          <FRBRExpression>
+            <FRBRthis value="/za/act/1980/01/eng@/schedule2"/>
+            <FRBRuri value="/za/act/1980/01/eng@"/>
+            <FRBRdate date="1980-01-01" name="Generation"/>
+            <FRBRauthor href="#council"/>
+            <FRBRlanguage language="eng"/>
+          </FRBRExpression>
+          <FRBRManifestation>
+            <FRBRthis value="/za/act/1980/01/eng@/schedule2"/>
+            <FRBRuri value="/za/act/1980/01/eng@"/>
+            <FRBRdate date="' + today + '" name="Generation"/>
+            <FRBRauthor href="#slaw"/>
+          </FRBRManifestation>
+        </identification>
+      </meta>
+      <mainBody>
+        <article id="schedule-2">
+          <heading>Another Title</heading>
+          <content>
+            <p>Baz</p>
+            <p>Boom</p>
+          </content>
+        </article>
+      </mainBody>
+    </doc>
+  </component>
+</components>'
     end
 
     it 'should serialise many schedules correctly' do
@@ -951,6 +1127,9 @@ EOS
       .strip
     end
   end
+
+  #-------------------------------------------------------------------------------
+  # tables
 
   describe 'tables' do
     it 'should parse basic tables' do

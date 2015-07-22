@@ -9,7 +9,7 @@ module Slaw
         EXPRESSION_URI = "#{FRBR_URI}/eng@"
         MANIFESTATION_URI = EXPRESSION_URI
 
-        def to_xml(b, idprefix)
+        def to_xml(b, idprefix=nil)
           b.act(contains: "originalVersion") { |b|
             write_meta(b)
             write_preface(b)
