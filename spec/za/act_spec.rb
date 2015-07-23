@@ -193,6 +193,28 @@ EOS
   </section>
 </chapter>'
     end
+
+    it 'should handle whitespace in chapter titles' do
+      node = parse :chapter, <<EOS
+Chapter 2
+  The Chapter Heading
+1. Section
+Hello there
+EOS
+      to_xml(node).should == '<chapter id="chapter-2">
+  <num>2</num>
+  <heading>The Chapter Heading</heading>
+  <section id="section-1">
+    <num>1.</num>
+    <heading>Section</heading>
+    <subsection id="section-1.subsection-0">
+      <content>
+        <p>Hello there</p>
+      </content>
+    </subsection>
+  </section>
+</chapter>'
+    end
   end
 
   #-------------------------------------------------------------------------------
@@ -272,6 +294,28 @@ Hello there
 EOS
       to_xml(node).should == '<part id="part-2">
   <num>2</num>
+  <section id="section-1">
+    <num>1.</num>
+    <heading>Section</heading>
+    <subsection id="section-1.subsection-0">
+      <content>
+        <p>Hello there</p>
+      </content>
+    </subsection>
+  </section>
+</part>'
+    end
+
+    it 'should handle part headers with whitespace' do
+      node = parse :part, <<EOS
+Part 2
+  The Part Heading
+1. Section
+Hello there
+EOS
+      to_xml(node).should == '<part id="part-2">
+  <num>2</num>
+  <heading>The Part Heading</heading>
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>

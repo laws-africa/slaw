@@ -143,7 +143,7 @@ module Slaw
 
         def title
           if heading.text_value and heading.respond_to? :content
-            heading.content.text_value
+            heading.content.text_value.strip
           end
         end
 
@@ -180,7 +180,7 @@ module Slaw
 
         def title
           if heading.text_value and heading.respond_to? :content
-            heading.content.text_value
+            heading.content.text_value.strip
           end
         end
 
