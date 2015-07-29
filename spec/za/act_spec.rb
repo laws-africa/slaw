@@ -215,6 +215,23 @@ EOS
   </section>
 </chapter>'
     end
+
+    it 'should handle empty chapters' do
+      node = parse :body, <<EOS
+Chapter 2 The Chapter Heading
+Chapter 3 The Other Heading
+EOS
+      to_xml(node).should == '<body>
+  <chapter id="chapter-2">
+    <num>2</num>
+    <heading>The Chapter Heading</heading>
+  </chapter>
+  <chapter id="chapter-3">
+    <num>3</num>
+    <heading>The Other Heading</heading>
+  </chapter>
+</body>'
+    end
   end
 
   #-------------------------------------------------------------------------------
@@ -381,6 +398,23 @@ EOS
     </subsection>
   </section>
 </part>'
+    end
+
+    it 'should handle empty parts' do
+      node = parse :body, <<EOS
+Part 2 The Part Heading
+Part 3 The Other Heading
+EOS
+      to_xml(node).should == '<body>
+  <part id="part-2">
+    <num>2</num>
+    <heading>The Part Heading</heading>
+  </part>
+  <part id="part-3">
+    <num>3</num>
+    <heading>The Other Heading</heading>
+  </part>
+</body>'
     end
   end
 

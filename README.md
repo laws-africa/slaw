@@ -219,6 +219,7 @@ Akoma Ntoso `component` elements at the end of the XML document, with a name of 
 ### 0.7.2
 
 * add --section-number-position argument to slaw command
+* grammar supports empty chapters and parts
 
 ### 0.7.1
 

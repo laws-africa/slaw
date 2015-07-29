@@ -36,13 +36,13 @@ module Slaw
 
       rule chapter
         heading:chapter_heading
-        children:(part / section / block_paragraphs / subsection)+
+        children:(part / section / block_paragraphs / subsection)*
         <Chapter>
       end
 
       rule part
         heading:part_heading
-        children:(section / block_paragraphs / subsection)+
+        children:(section / block_paragraphs / subsection)*
         <Part>
       end
 
