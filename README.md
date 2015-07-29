@@ -213,3 +213,13 @@ Akoma Ntoso `component` elements at the end of the XML document, with a name of 
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+## Changelog
+
+### 0.7.2
+
+* add --section-number-position argument to slaw command
+
+### 0.7.1
+
+* major changes to grammar to permit chapters, parts, sections etc. in schedules

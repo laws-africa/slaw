@@ -14,6 +14,7 @@ class SlawCLI < Thor
   option :definitions, type: :boolean, desc: "Find and link definitions (this can be slow). Default: false"
   option :fragment, type: :string, desc: "Akoma Ntoso element name that the imported text represents. Support depends on the grammar."
   option :id_prefix, type: :string, desc: "Prefix to be used when generating ID elements when parsing a fragment."
+  option :section_number_position, enum: ['before-title', 'after-title', 'guess'], desc: "Where do section titles come in relation to the section number? Default: before-title"
   def parse(name)
     logging
 
@@ -54,6 +55,18 @@ class SlawCLI < Thor
         prefix += "." unless prefix.end_with?('.')
         generator.builder.fragment_id_prefix = prefix
       end
+    end
+
+    case (options[:section_number_position] || "before-title")
+    when "before-title"
+      generator.parser.options[:section_number_after_title] = false
+    when "after-title"
+      generator.parser.options[:section_number_after_title] = true
+    when "guess"
+      after = generator.guess_section_number_after_title(text)
+      error "guessed section number position is #{after ? "after-title" : "before-title"}"
+
+      generator.parser.options[:section_number_after_title] = after
     end
 
     begin

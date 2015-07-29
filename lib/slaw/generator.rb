@@ -35,5 +35,24 @@ module Slaw
       text = @cleanser.reformat(text)
       text
     end
+
+    # Try to determine if section numbers come after titles,
+    # rather than before.
+    #
+    # eg:
+    #
+    #   Section title
+    #   1. Section content
+    #
+    # versus
+    #
+    #   1. Section title
+    #   Section content
+    def guess_section_number_after_title(text)
+      before = text.scan(/^\w{4,}[^\n]+\n\d+\. /).length
+      after  = text.scan(/^\s*\n\d+\. \w{4,}/).length
+
+      before > after * 1.25
+    end
   end
 end
