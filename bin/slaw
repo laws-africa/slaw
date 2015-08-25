@@ -6,6 +6,12 @@ require 'slaw'
 class SlawCLI < Thor
   # TODO: support different grammars and locales
 
+  # Exit with non-zero exit code on failure.
+  # See https://github.com/erikhuda/thor/issues/244
+  def self.exit_on_failure?
+    true
+  end
+
   class_option :verbose, type: :boolean, desc: "Display log output on stderr"
 
   desc "parse FILE", "Parse FILE into Akoma Ntoso XML"

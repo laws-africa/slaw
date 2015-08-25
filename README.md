@@ -216,6 +216,10 @@ Akoma Ntoso `component` elements at the end of the XML document, with a name of 
 
 ## Changelog
 
+### 0.7.3
+
+* exit with non-zero exit code on failure (see https://github.com/erikhuda/thor/issues/244)
+
 ### 0.7.2
 
 * add --section-number-position argument to slaw command
