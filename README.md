@@ -218,6 +218,7 @@ Akoma Ntoso `component` elements at the end of the XML document, with a name of 
 
 ### 0.7.3
 
+* add link-definitions command to find and extract defined terms and link them to their definitions
 * exit with non-zero exit code on failure (see https://github.com/erikhuda/thor/issues/244)
 
 ### 0.7.2

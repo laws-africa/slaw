@@ -88,6 +88,16 @@ class SlawCLI < Thor
     puts act.to_xml(indent: 2)
   end
 
+  desc "link-definitions FILE", "Find and link defined terms in FILE"
+  def link_definitions(name)
+    builder = Slaw::ActGenerator.new.builder
+
+    doc = File.open(name, 'r') { |f| doc = builder.parse_xml(f.read) }
+    builder.link_definitions(doc)
+
+    puts builder.to_xml(doc)
+  end
+
   map %w(--version) => :__print_version
   desc "--version", "Print slaw version info"
   def __print_version
