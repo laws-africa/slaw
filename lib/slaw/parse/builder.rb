@@ -232,6 +232,18 @@ module Slaw
         terms
       end
 
+      # Find defined terms in the document.
+      #
+      # This looks for heading elements with the words 'definitions' or 'interpretation',
+      # and then looks for phrases like
+      #
+      #   "this word" means something...
+      #
+      # It identifies "this word" as a defined term and wraps it in a def tag with a refersTo
+      # attribute referencing the term being defined. The surrounding block
+      # structure is also has its refersTo attribute set to the term. This way, the term
+      # is both marked as defined, and the container element with the full
+      # definition of the term is identified.
       def guess_at_definitions(doc)
         doc.xpath('//a:section', a: NS).select do |section|
           # sections with headings like Definitions
@@ -254,16 +266,17 @@ module Slaw
               term_id = 'term-' + term.gsub(/[^a-zA-Z0-9_-]/, '_')
 
               # <p>"<def refersTo="#term-affected_land">affected land</def>" means land in respect of which an application has been lodged in terms of section 17(1);</p>
-              defn = doc.create_element('def', term, refersTo: "##{term_id}")
+              refersTo = "##{term_id}"
+              defn = doc.create_element('def', term, refersTo: refersTo)
               rest = match.post_match
 
               text.before(defn)
               defn.before(doc.create_text_node('"'))
               text.content = '"' + rest
 
-              # adjust the container's id
-              parent = find_up(container, ['blockList', 'point']) || find_up(container, ['subsection', 'section'])
-              parent['id'] = "def-#{term_id}"
+              # adjust the container's refersTo attribute
+              parent = find_up(container, ['item', 'point', 'blockList', 'list', 'paragraph', 'subsection', 'section', 'chapter', 'part'])
+              parent['refersTo'] = refersTo
             end
           end
         end

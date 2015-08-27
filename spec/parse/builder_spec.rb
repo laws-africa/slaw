@@ -617,14 +617,14 @@ XML
       subject.guess_at_definitions(doc)
       doc.to_s.should == section(<<XML
         <heading>Definitions</heading>
-        <subsection id="def-term-authorised_official">
+        <subsection id="section-1.subsection-1" refersTo="#term-authorised_official">
           <content>
             <p>"<def refersTo="#term-authorised_official">authorised official</def>" means any official of the Council who has been authorised by it to administer, implement and enforce the provisions of these By-laws;</p>
           </content>
         </subsection>
         <subsection id="section-1.subsection-2">
           <content>
-            <blockList id="def-term-Council">
+            <blockList id="section-1.subsection-2.list2" refersTo="#term-Council">
               <listIntroduction>"<def refersTo="#term-Council">Council</def>" means –                </listIntroduction>
               <item id="section-1.subsection-2.list2.a">
                 <num>(a)</num>

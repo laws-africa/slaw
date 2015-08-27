@@ -216,6 +216,10 @@ Akoma Ntoso `component` elements at the end of the XML document, with a name of 
 
 ## Changelog
 
+### 0.7.4
+
+* use refersTo to identify blocks containing term definitions, rather than setting an (invalid) ID
+
 ### 0.7.3
 
 * add link-definitions command to find and extract defined terms and link them to their definitions
