@@ -222,11 +222,13 @@ module Slaw
         terms = {}
         doc.xpath('//a:def', a: NS).each do |defn|
           # <p>"<def refersTo="#term-affected_land">affected land</def>" means land in respect of which an application has been lodged in terms of section 17(1);</p>
-          id = defn['refersTo'].sub(/^#/, '')
-          term = defn.content
-          terms[id] = term
+          if defn['refersTo']
+            id = defn['refersTo'].sub(/^#/, '')
+            term = defn.content
+            terms[id] = term
 
-          logger.info("+ Found definition for: #{term}")
+            logger.info("+ Found definition for: #{term}")
+          end
         end
 
         terms
