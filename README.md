@@ -216,6 +216,10 @@ Akoma Ntoso `component` elements at the end of the XML document, with a name of 
 
 ## Changelog
 
+### 0.8.0
+
+* parse command only reformats input for PDFs or when --reformat is given
+
 ### 0.7.4
 
 * use refersTo to identify blocks containing term definitions, rather than setting an (invalid) ID
