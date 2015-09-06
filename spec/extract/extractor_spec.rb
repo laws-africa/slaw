@@ -9,6 +9,6 @@ describe Slaw::Extract::Extractor do
     f.write('This is some text')
     f.rewind
 
-    subject.extract_from_file(f.path).should == "This is some text\n"
+    subject.extract_from_file(f.path).should == "This is some text"
   end
 end

@@ -30,10 +30,18 @@ module Slaw
       act
     end
 
+    # Run basic cleanup on text, such as ensuring clean newlines
+    # and removing tabs. This is always automatically done before
+    # processing.
     def cleanup(text)
-      text = @cleanser.cleanup(text)
-      text = @cleanser.reformat(text)
-      text
+      @cleanser.cleanup(text)
+    end
+
+    # Reformat some common errors in text to help make parsing more
+    # successful. Option and only recommended when processing a document
+    # for the first time.
+    def reformat(text)
+      @cleanser.reformat(text)
     end
 
     # Try to determine if section numbers come after titles,

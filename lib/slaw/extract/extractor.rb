@@ -17,14 +17,7 @@ module Slaw
 
       @@pdftotext_path = "pdftotext"
 
-      # Object with text cleaning helpers
-      attr_accessor :cleanser
-
-      def initialize
-        @cleanser = Slaw::Parse::Cleanser.new
-      end
-
-      # Extract text from a file and run cleanup on it.
+      # Extract text from a file.
       #
       # @param filename [String] filename to extract from
       #
@@ -61,7 +54,7 @@ module Slaw
 
           case status.exitstatus
           when 0
-            return cleanup(stdout)
+            return stdout
           when 3
             return nil if retried
             retried = true
@@ -82,7 +75,7 @@ module Slaw
       end
 
       def extract_from_text(filename)
-        cleanup(File.read(filename))
+        File.read(filename)
       end
 
       # Extract text from +filename+ by sending it to apache tika
@@ -96,15 +89,6 @@ module Slaw
 
         text = Yomu.text_from_file(filename)
         logger.info("Tika returned #{text.length} bytes")
-        text
-      end
-
-      # Run general once-off cleanup of extracted text.
-      def cleanup(text)
-        text = @cleanser.cleanup(text)
-        text = @cleanser.remove_empty_lines(text)
-        text = @cleanser.reformat(text)
-
         text
       end
 
