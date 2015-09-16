@@ -407,12 +407,14 @@ module Slaw
 
       class Schedule < Treetop::Runtime::SyntaxNode
         def num
-          n = schedule_heading.num.text_value
+          n = schedule_title.num.text_value
           return (n && !n.empty?) ? n : nil
         end
 
         def alias
-          if num
+          if not schedule_title.title.text_value.blank?
+            schedule_title.title.text_value
+          elsif num
             "Schedule #{num}"
           else
             "Schedule"
@@ -420,26 +422,31 @@ module Slaw
         end
 
         def heading
-          if schedule_heading.schedule_title.respond_to? :content
-            schedule_heading.schedule_title.content.text_value
+          if schedule_title.heading.respond_to? :content
+            schedule_title.heading.content.text_value
           else
             nil
           end
         end
 
         def to_xml(b, idprefix=nil, i=1)
-          n = num.nil? ? i : num
+          if num
+            n = num
+            component = "schedule#{n}"
+          else
+            n = i
+            # make a component name from the schedule title
+            component = self.alias.downcase().strip().gsub(/[^a-z0-9]/i, '').gsub(/ +/, '')
+          end
 
-          # component name
-          comp = "schedule#{n}"
-          id = "#{idprefix}schedule-#{n}"
+          id = "#{idprefix}#{component}"
 
           b.component(id: "component-#{id}") { |b|
-            b.doc_(name: "schedule#{n}") { |b|
+            b.doc_(name: component) { |b|
               b.meta { |b|
                 b.identification(source: "#slaw") { |b|
                   b.FRBRWork { |b|
-                    b.FRBRthis(value: "#{Act::WORK_URI}/#{comp}")
+                    b.FRBRthis(value: "#{Act::WORK_URI}/#{component}")
                     b.FRBRuri(value: Act::WORK_URI)
                     b.FRBRalias(value: self.alias)
                     b.FRBRdate(date: '1980-01-01', name: 'Generation')
@@ -447,14 +454,14 @@ module Slaw
                     b.FRBRcountry(value: 'za')
                   }
                   b.FRBRExpression { |b|
-                    b.FRBRthis(value: "#{Act::EXPRESSION_URI}/#{comp}")
+                    b.FRBRthis(value: "#{Act::EXPRESSION_URI}/#{component}")
                     b.FRBRuri(value: Act::EXPRESSION_URI)
                     b.FRBRdate(date: '1980-01-01', name: 'Generation')
                     b.FRBRauthor(href: '#council')
                     b.FRBRlanguage(language: 'eng')
                   }
                   b.FRBRManifestation { |b|
-                    b.FRBRthis(value: "#{Act::MANIFESTATION_URI}/#{comp}")
+                    b.FRBRthis(value: "#{Act::MANIFESTATION_URI}/#{component}")
                     b.FRBRuri(value: Act::MANIFESTATION_URI)
                     b.FRBRdate(date: Time.now.strftime('%Y-%m-%d'), name: 'Generation')
                     b.FRBRauthor(href: '#slaw')
