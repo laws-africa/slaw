@@ -65,7 +65,7 @@ module Slaw
       end
 
       rule schedule
-        schedule_heading
+        schedule_title
         body
         <Schedule>
       end
@@ -135,18 +135,10 @@ module Slaw
         space !numbered_statement_prefix content eol
       end
 
-      rule schedule_heading
-        space? schedule_heading_prefix
-        space? "\""? num:alphanums? "\""? space?
+      rule schedule_title
+        space? schedule_title_prefix space? "\""? num:alphanums? "\""? [ \t:-]* title:(content)?
+        heading:(newline space? content)?
         eol
-        schedule_title:schedule_title_content?
-      end
-
-      rule schedule_title_content
-        space? content eol
-
-        # if a schedule title ends in a non-character or it's really long, it's probably content
-        !{ |s| s[1].text_value[-1] =~ /[^a-zA-z]/ or s[1].text_value.length > 100 }
       end
 
       ##########
@@ -157,12 +149,12 @@ module Slaw
       end
 
       rule naked_statement
-        space? !(chapter_heading / part_heading / section_title / schedule_heading) clauses eol
+        space? !(chapter_heading / part_heading / section_title / schedule_title) clauses eol
         <NakedStatement>
       end
 
       rule schedule_statement
-        space? (!schedule_heading) clauses eol
+        space? (!schedule_title) clauses eol
         <ScheduleStatement>
       end
 
@@ -204,7 +196,7 @@ module Slaw
         'chapter'i space alphanums [ :-]*
       end
 
-      rule schedule_heading_prefix
+      rule schedule_title_prefix
         'schedule'i 's'i?
       end
 
