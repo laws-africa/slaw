@@ -474,7 +474,7 @@ module Slaw
                 # just use article because we don't use it anywhere else.
                 b.article(id: id) { |b|
                   b.heading(heading) if heading
-                  body.children.elements.each { |e| e.to_xml(b) }
+                  body.children.elements.each { |e| e.to_xml(b) } if body.is_a? Body
                 }
               }
             }

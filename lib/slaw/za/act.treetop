@@ -66,7 +66,7 @@ module Slaw
 
       rule schedule
         schedule_title
-        body
+        body:body?
         <Schedule>
       end
 
