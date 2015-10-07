@@ -1484,6 +1484,15 @@ EOS
 EOS
       .strip
     end
+
+    it 'should not get confused by schedule headings in TOC' do
+      parse :act, <<EOS
+Schedule 1. Summoning and procedure of Joint Sittings of Senate and House of Assembly.
+Schedule 2. Oaths.
+Schedule 3. Matters which shall continue to be regulated by Swazi Law and Custom.
+Schedule 4. Specially entrenched provisions and entrenched provisions.
+EOS
+    end
   end
 
   #-------------------------------------------------------------------------------
