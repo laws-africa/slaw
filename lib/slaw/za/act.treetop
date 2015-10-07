@@ -136,7 +136,7 @@ module Slaw
       end
 
       rule schedule_title
-        space? schedule_title_prefix space? "\""? num:alphanums? "\""? [ \t:-]* title:(content)?
+        space? schedule_title_prefix space? "\""? num:alphanums? "\""? [ \t:.-]* title:(content)?
         heading:(newline space? content)?
         eol
       end

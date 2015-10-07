@@ -1290,6 +1290,66 @@ EOS
 </component>'
     end
 
+    it 'should handle a schedule with dot in the number' do
+      node = parse :schedules, <<EOS
+Schedule 1. First Schedule
+Schedule Heading
+
+Subject to approval in terms of this By-Law, the erection:
+1. Foo
+2. Bar
+EOS
+      s = to_xml(node)
+      today = Time.now.strftime('%Y-%m-%d')
+      s.should == '<component id="component-schedule1">
+  <doc name="schedule1">
+    <meta>
+      <identification source="#slaw">
+        <FRBRWork>
+          <FRBRthis value="/za/act/1980/01/schedule1"/>
+          <FRBRuri value="/za/act/1980/01"/>
+          <FRBRalias value="First Schedule"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRcountry value="za"/>
+        </FRBRWork>
+        <FRBRExpression>
+          <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRlanguage language="eng"/>
+        </FRBRExpression>
+        <FRBRManifestation>
+          <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="' + today + '" name="Generation"/>
+          <FRBRauthor href="#slaw"/>
+        </FRBRManifestation>
+      </identification>
+    </meta>
+    <mainBody>
+      <article id="schedule1">
+        <heading>Schedule Heading</heading>
+        <paragraph id="paragraph-0">
+          <content>
+            <p>Subject to approval in terms of this By-Law, the erection:</p>
+          </content>
+        </paragraph>
+        <section id="section-1">
+          <num>1.</num>
+          <heading>Foo</heading>
+        </section>
+        <section id="section-2">
+          <num>2.</num>
+          <heading>Bar</heading>
+        </section>
+      </article>
+    </mainBody>
+  </doc>
+</component>'
+    end
+
     it 'should handle a schedule with a title' do
       node = parse :schedules, <<EOS
 Schedule - First Schedule
