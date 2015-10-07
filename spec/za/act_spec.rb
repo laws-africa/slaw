@@ -31,7 +31,7 @@ describe Slaw::ActGenerator do
   # General body
 
   describe 'body' do
-    it 'should handle general content before chapters' do
+    it 'should handle general content before sections' do
       node = parse :body, <<EOS
 Some content before the section
 
@@ -56,7 +56,7 @@ EOS
 </body>'
     end
 
-    it 'should handle blocklists before chapters' do
+    it 'should handle blocklists before sections' do
       node = parse :body, <<EOS
 Some content before the section
 
