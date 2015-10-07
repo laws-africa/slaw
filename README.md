@@ -216,6 +216,10 @@ Akoma Ntoso `component` elements at the end of the XML document, with a name of 
 
 ## Changelog
 
+### 0.8.2
+
+* Schedules can be empty (#10)
+
 ### 0.8.1
 
 * Schedules can have both a title and a heading, permitting schedules titled "First Schedule" and not just "Schedule 1"
