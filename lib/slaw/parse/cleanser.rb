@@ -103,10 +103,10 @@ module Slaw
         # often we find a section title munged onto the same line as its first statement
         # eg:
         # foo bar. New section title 62. (1) For the purpose
-        s = s.gsub(/\. ([^.]+) (\d+\. \(1\) )/, ".\n" + '\1' + "\n" + '\2')
+        s = s.gsub(/\. ([^.]+) (\d+\. ?\(1\) )/, ".\n" + '\1' + "\n" + '\2')
 
         # New section title 62. (1) For the purpose
-        s = s.gsub(/(\w) (\d+\. \(1\) )/, '\1' + "\n" + '\2')
+        s = s.gsub(/(\w) (\d+\. ?\(1\) )/, '\1' + "\n" + '\2')
 
         # (1) foo; (2) bar
         # (1) foo. (2) bar

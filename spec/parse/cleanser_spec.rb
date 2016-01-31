@@ -55,7 +55,9 @@ permit; and
 
     it 'should break lines at likely section titles' do
       subject.break_lines('foo bar. New section title 62. (1) For the purpose').should == "foo bar.\nNew section title\n62. (1) For the purpose"
+      subject.break_lines('foo bar. New section title 62.(1) For the purpose').should == "foo bar.\nNew section title\n62.(1) For the purpose"
       subject.break_lines('New section title 62. (1) For the purpose').should == "New section title\n62. (1) For the purpose"
+      subject.break_lines('New section title 62.(1) For the purpose').should == "New section title\n62.(1) For the purpose"
     end
 
     it 'should clean up wrapped definition lines after pdf' do

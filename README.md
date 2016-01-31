@@ -216,6 +216,10 @@ Akoma Ntoso `component` elements at the end of the XML document, with a name of 
 
 ## Changelog
 
+### 0.8.3
+
+* During cleanup, break lines on section titles that don't have a space after the number, eg: "New section title 4.(1) The content..."
+
 ### 0.8.2
 
 * Schedules can be empty (#10)
