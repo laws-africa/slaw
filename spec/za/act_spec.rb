@@ -428,35 +428,6 @@ EOS
 EOS
     end
 
-    it 'should handle a naked statement' do
-      should_parse :subsection, 'naked statement'
-    end
-
-    it 'should handle a naked statement and blocklist' do
-      node = parse :subsection, <<EOS
-        naked statement (c) blah
-        (a) foo
-        (b) bar
-EOS
-      node.statement.clauses.text_value.should == "naked statement (c) blah"
-      node.blocklist.elements.first.num.should == "(a)"
-      to_xml(node, "").should == '<subsection id="subsection-0">
-  <content>
-    <blockList id="subsection-0.list0">
-      <listIntroduction>naked statement (c) blah</listIntroduction>
-      <item id="subsection-0.list0.a">
-        <num>(a)</num>
-        <p>foo</p>
-      </item>
-      <item id="subsection-0.list0.b">
-        <num>(b)</num>
-        <p>bar</p>
-      </item>
-    </blockList>
-  </content>
-</subsection>'
-    end
-
     it 'should handle a blocklist' do
       node = parse :subsection, <<EOS
         (2) title
@@ -465,9 +436,7 @@ EOS
         (c) three
         (i) four
 EOS
-      node.statement.num.should == "(2)"
-      node.statement.content.text_value.should == "title"
-      to_xml(node, "").should == '<subsection id="2">
+      to_xml(node, "", 1).should == '<subsection id="2">
   <num>(2)</num>
   <content>
     <blockList id="2.list0">
@@ -501,10 +470,7 @@ EOS
         (i) four
 EOS
                   )
-      node.statement.content.should be_nil
-      node.blocklist.elements.first.num.should == "(a)"
-      node.blocklist.elements.first.content.should == "one"
-      to_xml(node, "").should == '<subsection id="1">
+      to_xml(node, "", 1).should == '<subsection id="1">
   <num>(1)</num>
   <content>
     <blockList id="1.list0">
@@ -537,14 +503,7 @@ EOS
         (ii) double
 EOS
                   )
-      node.statement.content.text_value.should == "here's my really cool list,"
-      node.blocklist.elements.first.num.should == "(a)"
-      node.blocklist.elements.first.content.should == "one"
-      node.blocklist.elements[1].num.should == "(b)"
-      node.blocklist.elements[1].content.should be_nil
-      node.blocklist.elements[2].num.should == "(i)"
-      node.blocklist.elements[2].content.should == "single"
-      to_xml(node, "").should == '<subsection id="1">
+      to_xml(node, "", 1).should == '<subsection id="1">
   <num>(1)</num>
   <content>
     <blockList id="1.list0">
@@ -574,8 +533,7 @@ EOS
         node = parse :subsection, <<EOS
           9.9. foo
 EOS
-        node.statement.content.text_value.should == "foo"
-        node.statement.num.should == "9.9"
+        node.num.should == "9.9"
       end
 
       it 'should handle dotted number sublists' do
@@ -586,12 +544,26 @@ EOS
           9.9.2.1 item3
 EOS
                     )
-        node.statement.content.text_value.should == "foo"
-        node.blocklist.elements.first.num.should == "9.9.1"
-        node.blocklist.elements.first.content.should == "item1"
-
-        node.blocklist.elements[2].num.should == "9.9.2.1"
-        node.blocklist.elements[2].content.should == "item3"
+        to_xml(node, '', 1).should == '<subsection id="9.9">
+  <num>9.9</num>
+  <content>
+    <blockList id="9.9.list0">
+      <listIntroduction>foo</listIntroduction>
+      <item id="9.9.list0.9.9.1">
+        <num>9.9.1</num>
+        <p>item1</p>
+      </item>
+      <item id="9.9.list0.9.9.2">
+        <num>9.9.2</num>
+        <p>item2</p>
+      </item>
+      <item id="9.9.list0.9.9.2.1">
+        <num>9.9.2.1</num>
+        <p>item3</p>
+      </item>
+    </blockList>
+  </content>
+</subsection>'
       end
     end
   end
@@ -959,9 +931,9 @@ EOS
   end
 
   #-------------------------------------------------------------------------------
-  # Sections
+  # Section
 
-  context 'sections' do
+  context 'section' do
     it 'should handle section numbers after title' do
       subject.parser.options = {section_number_after_title: true}
       node = parse :section, <<EOS
@@ -1085,6 +1057,42 @@ EOS
         </item>
       </blockList>
       <p>and some stuff</p>
+    </content>
+  </paragraph>
+</section>'
+    end
+
+    it 'should handle a naked statement' do
+      should_parse :section, <<EOS
+1. Section
+
+naked statement
+EOS
+    end
+
+    it 'should handle a naked statement and blocklist' do
+      node = parse :section, <<EOS
+1. Section
+naked statement (c) blah
+(a) foo
+(b) bar
+EOS
+      to_xml(node, "").should == '<section id="section-1">
+  <num>1.</num>
+  <heading>Section</heading>
+  <paragraph id="section-1.paragraph-0">
+    <content>
+      <blockList id="section-1.paragraph-0.list0">
+        <listIntroduction>naked statement (c) blah</listIntroduction>
+        <item id="section-1.paragraph-0.list0.a">
+          <num>(a)</num>
+          <p>foo</p>
+        </item>
+        <item id="section-1.paragraph-0.list0.b">
+          <num>(b)</num>
+          <p>bar</p>
+        </item>
+      </blockList>
     </content>
   </paragraph>
 </section>'

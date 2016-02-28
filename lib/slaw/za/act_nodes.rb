@@ -245,7 +245,8 @@ module Slaw
         end
       end
 
-      class Subsection < Treetop::Runtime::SyntaxNode
+      # TODO: remove
+      class XSubsection < Treetop::Runtime::SyntaxNode
         def to_xml(b, idprefix, i=0)
           if statement.is_a?(NumberedStatement)
             attribs = {id: idprefix + statement.num.gsub(/[()]/, '')}
@@ -288,23 +289,9 @@ module Slaw
         end
       end
 
-      class NumberedStatement < Treetop::Runtime::SyntaxNode
+      class Subsection < Treetop::Runtime::SyntaxNode
         def num
-          numbered_statement_prefix.num.text_value
-        end
-
-        # TODO: remove?
-        def parentheses?
-          !numbered_statement_prefix.respond_to? :dotted_number_2
-        end
-
-        def content
-          # TODO: is this content weirdness necessary?
-          if elements[3].text_value == ""
-            nil
-          else
-            elements[3].clauses
-          end
+          subsection_prefix.num.text_value
         end
 
         def to_xml(b, idprefix, i)
@@ -313,7 +300,10 @@ module Slaw
 
           b.subsection(id: id) { |b|
             b.num(num)
-            b.content { |b| b.p { |b| content.to_xml(b, idprefix) }} if content
+            b.content { |b|
+              # TODO: blocklist must use listintroduction
+              children.elements.each { |e| e.to_xml(b, idprefix) }
+            }
           }
         end
       end

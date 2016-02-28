@@ -22,26 +22,29 @@ module Slaw
       rule preface
         !'PREAMBLE'
         ('PREFACE'i space? eol)?
-        statements:(!'PREAMBLE' naked_statement)* <Preface>
+        statements:(!'PREAMBLE' pre_body_statement)* <Preface>
       end
 
       rule preamble
         'PREAMBLE'i space? eol
-        statements:naked_statement* <Preamble>
+        statements:pre_body_statement* <Preamble>
       end
 
       rule body
+        # TODO: shouldn't block_para and subsection be swapped?
         children:(chapter / part / section / block_paragraphs / subsection)+ <Body>
       end
 
       rule chapter
         heading:chapter_heading
+        # TODO: shouldn't block_para and subsection be swapped?
         children:(part / section / block_paragraphs / subsection)*
         <Chapter>
       end
 
       rule part
         heading:part_heading
+        # TODO: shouldn't block_para and subsection be swapped?
         children:(section / block_paragraphs / subsection)*
         <Part>
       end
@@ -51,10 +54,11 @@ module Slaw
         children:(subsection / block_paragraphs)* <Section>
       end
 
-      #rule subsection
-      #  statement:numbered_statement
-      #  <Subsection>
-      #end
+      rule subsection
+        # TODO: do it make sense to allow an eol here?
+        space? subsection_prefix whitespace eol?
+        children:block_element* <Subsection>
+      end
 
       rule schedules_container
         schedules:schedules <ScheduleContainer>
@@ -68,14 +72,6 @@ module Slaw
         schedule_title
         body:body?
         <Schedule>
-      end
-
-      rule block_paragraphs
-        block_element+ <BlockParagraph>
-      end
-
-      rule block_element
-        (table / blocklist / naked_statement)
       end
 
       ##########
@@ -132,7 +128,7 @@ module Slaw
       end
 
       rule section_title_content
-        space !numbered_statement_prefix content eol
+        space !subsection_prefix content eol
       end
 
       rule schedule_title
@@ -142,22 +138,30 @@ module Slaw
       end
 
       ##########
-      # statements
-
-      # TODO: RENAME class
-      rule subsection
-        space? numbered_statement_prefix whitespace (!blocklist_item_prefix clauses)? eol <NumberedStatement>
+      # blocks of content inside containers
+      rule block_paragraphs
+        block_element+ <BlockParagraph>
       end
 
+      rule block_element
+        (table / blocklist / naked_statement)
+      end
+
+      ##########
+      # statements - single lines of content
+
       rule naked_statement
+        space? !(chapter_heading / part_heading / section_title / schedule_title / subsection_prefix) clauses eol
+        <NakedStatement>
+      end
+
+      rule pre_body_statement
         space? !(chapter_heading / part_heading / section_title / schedule_title) clauses eol
         <NakedStatement>
       end
 
-      rule schedule_statement
-        space? (!schedule_title) clauses eol
-        <ScheduleStatement>
-      end
+      ##########
+      # inline content
 
       # one or more words, allowing inline elements
       rule clauses
@@ -205,7 +209,7 @@ module Slaw
         number_letter '.'?
       end
 
-      rule numbered_statement_prefix
+      rule subsection_prefix
         # there are two subsection handling syntaxes:
         # 
         # (1) foo
@@ -237,7 +241,7 @@ module Slaw
       end
 
       rule blocklist_item
-        space? blocklist_item_prefix whitespace item_content:(!blocklist_item_prefix content)? eol
+        space? blocklist_item_prefix whitespace item_content:(!blocklist_item_prefix content eol)? eol?
         <BlocklistItem>
       end
 
