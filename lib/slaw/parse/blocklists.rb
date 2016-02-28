@@ -47,10 +47,17 @@ module Slaw
         item = items.shift
 
         sublist_count = 0
+        number_format = our_number_format
 
         while item and item.name == 'item'
           number_format = guess_number_format(item, number_format)
           break unless number_format
+
+          # (aa) after (z) is same numbering type, pretend we've always
+          # been this format
+          if item.num == "(aa)" and item.previous_element and item.previous_element.num == "(z)"
+            our_number_format = number_format
+          end
 
           if number_format != our_number_format
             # new sublist, or back to the old list?

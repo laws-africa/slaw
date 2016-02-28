@@ -394,6 +394,106 @@ XML
 
     # -------------------------------------------------------------------------
 
+    it 'should treat (aa) after (z) as siblings' do
+      doc = xml2doc(subsection(<<XML
+        <blockList id="list0">
+          <item id="list0.y">
+            <num>(y)</num>
+            <p>foo</p>
+          </item>
+          <item id="list0.z">
+            <num>(z)</num>
+            <p>item-z</p>
+          </item>
+          <item id="list0.aa">
+            <num>(aa)</num>
+            <p>item-aa</p>
+          </item>
+          <item id="list0.bb">
+            <num>(bb)</num>
+            <p>item-bb</p>
+          </item>
+        </blockList>
+XML
+    ))
+
+      subject.nest_blocklists(doc)
+      doc.to_s.should == subsection(<<XML
+            <blockList id="list0">
+              <item id="list0.y">
+                <num>(y)</num>
+                <p>foo</p>
+              </item>
+              <item id="list0.z">
+                <num>(z)</num>
+                <p>item-z</p>
+              </item>
+              <item id="list0.aa">
+                <num>(aa)</num>
+                <p>item-aa</p>
+              </item>
+              <item id="list0.bb">
+                <num>(bb)</num>
+                <p>item-bb</p>
+              </item>
+            </blockList>
+XML
+      )
+    end
+
+    # -------------------------------------------------------------------------
+
+    it 'should treat (AA) after (z) a sublist' do
+      doc = xml2doc(subsection(<<XML
+        <blockList id="list0">
+          <item id="list0.y">
+            <num>(y)</num>
+            <p>foo</p>
+          </item>
+          <item id="list0.z">
+            <num>(z)</num>
+            <p>item-z</p>
+          </item>
+          <item id="list0.AA">
+            <num>(AA)</num>
+            <p>item-AA</p>
+          </item>
+          <item id="list0.BB">
+            <num>(BB)</num>
+            <p>item-BB</p>
+          </item>
+        </blockList>
+XML
+    ))
+
+      subject.nest_blocklists(doc)
+      doc.to_s.should == subsection(<<XML
+            <blockList id="list0">
+              <item id="list0.y">
+                <num>(y)</num>
+                <p>foo</p>
+              </item>
+              <item id="list0.z">
+                <num>(z)</num>
+                <blockList id="list0.z.list0">
+                  <listIntroduction>item-z</listIntroduction>
+                  <item id="list0.z.list0.AA">
+                    <num>(AA)</num>
+                    <p>item-AA</p>
+                  </item>
+                  <item id="list0.z.list0.BB">
+                    <num>(BB)</num>
+                    <p>item-BB</p>
+                  </item>
+                </blockList>
+              </item>
+            </blockList>
+XML
+      )
+    end
+
+    # -------------------------------------------------------------------------
+
     it 'should handle deeply nested lists' do
       doc = xml2doc(subsection(<<XML
         <blockList id="list0">
