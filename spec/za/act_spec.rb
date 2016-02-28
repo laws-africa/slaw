@@ -47,11 +47,11 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <subsection id="section-1.subsection-0">
+    <paragraph id="section-1.paragraph-0">
       <content>
         <p>Hello there</p>
       </content>
-    </subsection>
+    </paragraph>
   </section>
 </body>'
     end
@@ -70,12 +70,12 @@ EOS
   <paragraph id="paragraph-0">
     <content>
       <p>Some content before the section</p>
-      <blockList id="list0">
-        <item id="list0.a">
+      <blockList id="paragraph-0.list0">
+        <item id="paragraph-0.list0.a">
           <num>(a)</num>
           <p>foo</p>
         </item>
-        <item id="list0.b">
+        <item id="paragraph-0.list0.b">
           <num>(b)</num>
           <p>bar</p>
         </item>
@@ -85,11 +85,11 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <subsection id="section-1.subsection-0">
+    <paragraph id="section-1.paragraph-0">
       <content>
         <p>Hello there</p>
       </content>
-    </subsection>
+    </paragraph>
   </section>
 </body>'
     end
@@ -112,11 +112,11 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <subsection id="section-1.subsection-0">
+    <paragraph id="section-1.paragraph-0">
       <content>
         <p>Hello there</p>
       </content>
-    </subsection>
+    </paragraph>
   </section>
 </chapter>'
     end
@@ -133,11 +133,11 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <subsection id="section-1.subsection-0">
+    <paragraph id="section-1.paragraph-0">
       <content>
         <p>Hello there</p>
       </content>
-    </subsection>
+    </paragraph>
   </section>
 </chapter>'
     end
@@ -185,11 +185,11 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section 1</heading>
-    <subsection id="section-1.subsection-0">
+    <paragraph id="section-1.paragraph-0">
       <content>
         <p>Section text.</p>
       </content>
-    </subsection>
+    </paragraph>
   </section>
 </chapter>'
     end
@@ -207,11 +207,11 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <subsection id="section-1.subsection-0">
+    <paragraph id="section-1.paragraph-0">
       <content>
         <p>Hello there</p>
       </content>
-    </subsection>
+    </paragraph>
   </section>
 </chapter>'
     end
@@ -729,8 +729,8 @@ EOS
 
   describe 'numbered_statement' do
     it 'should handle basic numbered statements' do
-      should_parse :numbered_statement, '(1) foo bar'
-      should_parse :numbered_statement, '(1a) foo bar'
+      should_parse :subsection, '(1) foo bar'
+      should_parse :subsection, '(1a) foo bar'
     end
   end
 
@@ -1074,12 +1074,12 @@ EOS
   <heading>Section</heading>
   <paragraph id="section-1.paragraph-0">
     <content>
-      <blockList id="section-1.list0">
-        <item id="section-1.list0.a">
+      <blockList id="section-1.paragraph-0.list0">
+        <item id="section-1.paragraph-0.list0.a">
           <num>(a)</num>
           <p>first</p>
         </item>
-        <item id="section-1.list0.b">
+        <item id="section-1.paragraph-0.list0.b">
           <num>(b)</num>
           <p>second</p>
         </item>
@@ -1623,19 +1623,15 @@ EOS
       xml.should == '<section id="section-10">
   <num>10.</num>
   <heading>A section title</heading>
-  <subsection id="section-10.subsection-0">
+  <paragraph id="section-10.paragraph-0">
     <content>
       <p>Heres a table:</p>
-    </content>
-  </subsection>
-  <subsection id="section-10.subsection-1">
-    <content>
-      <table id="section-10.subsection-1.table0"><tr><td><p>r1c1</p></td>
+      <table id="section-10.paragraph-0.table0"><tr><td><p>r1c1</p></td>
 <td><p>r1c2</p></td></tr>
 <tr><td><p>r2c1</p></td>
 <td><p>r2c2</p></td></tr></table>
     </content>
-  </subsection>
+  </paragraph>
 </section>'
     end
 
@@ -1688,7 +1684,7 @@ EOS
         <paragraph id="paragraph-0">
           <content>
             <p>Heres a table:</p>
-            <table id="table0"><tr><td><p>r1c1</p></td>
+            <table id="paragraph-0.table0"><tr><td><p>r1c1</p></td>
 <td><p>r1c2</p></td></tr>
 <tr><td><p>r2c1</p></td>
 <td><p>r2c2</p></td></tr></table>
