@@ -48,13 +48,13 @@ module Slaw
 
       rule section
         section_title
-        subsections:subsection* <Section>
+        children:(subsection / block_paragraphs)* <Section>
       end
 
-      rule subsection
-        statement:(numbered_statement / table / naked_statement)
-        blocklist:blocklist? <Subsection>
-      end
+      #rule subsection
+      #  statement:numbered_statement
+      #  <Subsection>
+      #end
 
       rule schedules_container
         schedules:schedules <ScheduleContainer>
@@ -144,8 +144,9 @@ module Slaw
       ##########
       # statements
 
-      rule numbered_statement
-        space? numbered_statement_prefix whitespace (!blocklist_item_prefix clauses eol)? <NumberedStatement>
+      # TODO: RENAME class
+      rule subsection
+        space? numbered_statement_prefix whitespace (!blocklist_item_prefix clauses)? eol <NumberedStatement>
       end
 
       rule naked_statement
@@ -236,7 +237,7 @@ module Slaw
       end
 
       rule blocklist_item
-        space? blocklist_item_prefix whitespace item_content:(!blocklist_item_prefix content eol)?
+        space? blocklist_item_prefix whitespace item_content:(!blocklist_item_prefix content)? eol
         <BlocklistItem>
       end
 

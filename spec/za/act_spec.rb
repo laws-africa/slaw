@@ -251,11 +251,11 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <subsection id="section-1.subsection-0">
+    <paragraph id="section-1.paragraph-0">
       <content>
         <p>Hello there</p>
       </content>
-    </subsection>
+    </paragraph>
   </section>
 </part>'
     end
@@ -272,11 +272,11 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <subsection id="section-1.subsection-0">
+    <paragraph id="section-1.paragraph-0">
       <content>
         <p>Hello there</p>
       </content>
-    </subsection>
+    </paragraph>
   </section>
 </part>'
     end
@@ -293,11 +293,11 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <subsection id="section-1.subsection-0">
+    <paragraph id="section-1.paragraph-0">
       <content>
         <p>Hello there</p>
       </content>
-    </subsection>
+    </paragraph>
   </section>
 </part>'
     end
@@ -314,11 +314,11 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <subsection id="section-1.subsection-0">
+    <paragraph id="section-1.paragraph-0">
       <content>
         <p>Hello there</p>
       </content>
-    </subsection>
+    </paragraph>
   </section>
 </part>'
     end
@@ -336,11 +336,11 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <subsection id="section-1.subsection-0">
+    <paragraph id="section-1.paragraph-0">
       <content>
         <p>Hello there</p>
       </content>
-    </subsection>
+    </paragraph>
   </section>
 </part>'
     end
@@ -359,11 +359,11 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading/>
-    <subsection id="section-1.subsection-0">
+    <paragraph id="section-1.paragraph-0">
       <content>
         <p>No owner or occupier of any shop or business premises or vacant land adjoining a shop or business premises shall cause a health nuisance.</p>
       </content>
-    </subsection>
+    </paragraph>
   </section>
 </part>'
     end
@@ -391,11 +391,11 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <subsection id="section-1.subsection-0">
+    <paragraph id="section-1.paragraph-0">
       <content>
         <p>Hello there</p>
       </content>
-    </subsection>
+    </paragraph>
   </section>
 </part>'
     end
@@ -601,34 +601,34 @@ EOS
 
   describe 'remark' do
     it 'should handle a plain remark' do
-      node = parse :subsection, <<EOS
+      node = parse :block_paragraphs, <<EOS
       [[Section 2 amended by Act 23 of 2004]]
 EOS
-      to_xml(node, "").should == '<subsection id="subsection-0">
+      to_xml(node, "").should == '<paragraph id="paragraph-0">
   <content>
     <p>
       <remark status="editorial">[Section 2 amended by Act 23 of 2004]</remark>
     </p>
   </content>
-</subsection>'
+</paragraph>'
     end
 
     it 'should handle an inline remark at the end of a sentence' do
-      node = parse :subsection, <<EOS
+      node = parse :block_paragraphs, <<EOS
       This statement has an inline remark. [[Section 2 amended by Act 23 of 2004]]
 EOS
-      to_xml(node, "").should == '<subsection id="subsection-0">
+      to_xml(node, "").should == '<paragraph id="paragraph-0">
   <content>
     <p>This statement has an inline remark. <remark status="editorial">[Section 2 amended by Act 23 of 2004]</remark></p>
   </content>
-</subsection>'
+</paragraph>'
     end
 
     it 'should handle an inline remark mid-way through' do
       node = parse :subsection, <<EOS
       (1) This statement has an inline remark. [[Section 2 amended by Act 23 of 2004]] And now some more.
 EOS
-      to_xml(node, "").should == '<subsection id="1">
+      to_xml(node, "", 1).should == '<subsection id="1">
   <num>(1)</num>
   <content>
     <p>This statement has an inline remark. <remark status="editorial">[Section 2 amended by Act 23 of 2004]</remark> And now some more.</p>
@@ -637,14 +637,14 @@ EOS
     end
 
     it 'should handle many inline remarks' do
-      node = parse :subsection, <<EOS
+      node = parse :block_paragraphs, <<EOS
       This statement has an inline remark. [[Section 2 amended by Act 23 of 2004]]. And now some more. [[Another remark]] [[and another]]
 EOS
-      to_xml(node, "").should == '<subsection id="subsection-0">
+      to_xml(node, "").should == '<paragraph id="paragraph-0">
   <content>
     <p>This statement has an inline remark. <remark status="editorial">[Section 2 amended by Act 23 of 2004]</remark>. And now some more. <remark status="editorial">[Another remark]</remark> <remark status="editorial">[and another]</remark></p>
   </content>
-</subsection>'
+</paragraph>'
     end
 
     it 'should handle a remark in a section' do
@@ -657,18 +657,14 @@ EOS
       to_xml(node).should == '<section id="section-1">
   <num>1.</num>
   <heading>Section title</heading>
-  <subsection id="section-1.subsection-0">
+  <paragraph id="section-1.paragraph-0">
     <content>
       <p>Some text is a long line.</p>
-    </content>
-  </subsection>
-  <subsection id="section-1.subsection-1">
-    <content>
       <p>
         <remark status="editorial">[Section 1 amended by Act 23 of 2004]</remark>
       </p>
     </content>
-  </subsection>
+  </paragraph>
 </section>'
     end
 
@@ -1060,6 +1056,37 @@ EOS
       <p>Without limiting generality, stuff.</p>
     </content>
   </subsection>
+</section>'
+    end
+
+    it 'should handle sections that dive straight into lists' do
+      subject.parser.options = {section_number_after_title: false}
+      node = parse :section, <<EOS
+1. Section
+(a) first
+(b) second
+and some stuff
+EOS
+      
+      s = to_xml(node)
+      s.should == '<section id="section-1">
+  <num>1.</num>
+  <heading>Section</heading>
+  <paragraph id="section-1.paragraph-0">
+    <content>
+      <blockList id="section-1.list0">
+        <item id="section-1.list0.a">
+          <num>(a)</num>
+          <p>first</p>
+        </item>
+        <item id="section-1.list0.b">
+          <num>(b)</num>
+          <p>second</p>
+        </item>
+      </blockList>
+      <p>and some stuff</p>
+    </content>
+  </paragraph>
 </section>'
     end
   end

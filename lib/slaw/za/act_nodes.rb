@@ -207,7 +207,7 @@ module Slaw
 
             idprefix = "#{id}."
 
-            subsections.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+            children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
           }
         end
       end
@@ -290,11 +290,13 @@ module Slaw
           numbered_statement_prefix.num.text_value
         end
 
+        # TODO: remove?
         def parentheses?
           !numbered_statement_prefix.respond_to? :dotted_number_2
         end
 
         def content
+          # TODO: is this content weirdness necessary?
           if elements[3].text_value == ""
             nil
           else
@@ -302,13 +304,19 @@ module Slaw
           end
         end
 
-        def to_xml(b, idprefix)
-          b.p { |b| content.to_xml(b, idprefix) } if content
+        def to_xml(b, idprefix, i)
+          id = idprefix + num.gsub(/[()]/, '')
+          idprefix = id + "."
+
+          b.subsection(id: id) { |b|
+            b.num(num)
+            b.content { |b| b.p { |b| content.to_xml(b, idprefix) }} if content
+          }
         end
       end
 
       class NakedStatement < Treetop::Runtime::SyntaxNode
-        def to_xml(b, idprefix)
+        def to_xml(b, idprefix, i=0)
           b.p { |b| clauses.to_xml(b, idprefix) } if clauses
         end
 
