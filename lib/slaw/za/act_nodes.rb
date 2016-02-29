@@ -245,37 +245,6 @@ module Slaw
         end
       end
 
-      # TODO: remove
-      class XSubsection < Treetop::Runtime::SyntaxNode
-        def to_xml(b, idprefix, i=0)
-          if statement.is_a?(NumberedStatement)
-            attribs = {id: idprefix + statement.num.gsub(/[()]/, '')}
-          else
-            attribs = {id: idprefix + "subsection-#{i}"}
-          end
-
-          idprefix = attribs[:id] + "."
-
-          b.subsection(attribs) { |b|
-            b.num(statement.num) if statement.is_a?(NumberedStatement)
-            
-            b.content { |b| 
-              if blocklist and blocklist.is_a?(Blocklist)
-                if statement.content
-                  # provide the statement as the list introduction to the block list
-                  blocklist.to_xml(b, idprefix, i) { |b| statement.content.to_xml(b, idprefix) }
-                else
-                  blocklist.to_xml(b, idprefix, i)
-                end
-              else
-                # raw content
-                statement.to_xml(b, idprefix)
-              end
-            }
-          }
-        end
-      end
-
       class BlockParagraph < Treetop::Runtime::SyntaxNode
         def to_xml(b, idprefix='', i=0)
           id = "#{idprefix}paragraph-0"
