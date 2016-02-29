@@ -139,12 +139,39 @@ module Slaw
 
       ##########
       # blocks of content inside containers
+
       rule block_paragraphs
         block_element+ <BlockParagraph>
       end
 
       rule block_element
         (table / blocklist / naked_statement)
+      end
+
+      rule blocklist
+        blocklist_item+ <Blocklist>
+      end
+
+      rule blocklist_item
+        space? blocklist_item_prefix whitespace item_content:(!blocklist_item_prefix content eol)? eol?
+        <BlocklistItem>
+      end
+
+      rule blocklist_item_prefix
+        ('(' letter_ordinal ')') / dotted_number_3
+      end
+
+      rule table
+        space? table_start eol? (!table_end content eol)* table_end eol
+        <Table>
+      end
+
+      rule table_start
+        space? '{|'
+      end
+
+      rule table_end
+        space? '|}'
       end
 
       ##########
@@ -172,22 +199,6 @@ module Slaw
       rule remark
         '[[' content:(!']]' .)+ ']]'
         <Remark>
-      end
-
-      ##########
-      # tables
-
-      rule table
-        space? table_start eol? (!table_end content eol)* table_end eol
-        <Table>
-      end
-
-      rule table_start
-        space? '{|'
-      end
-
-      rule table_end
-        space? '|}'
       end
 
       ##########
@@ -233,26 +244,6 @@ module Slaw
         num:dotted_number_2 '.'? space
       end
 
-      ##########
-      # blocklists
-
-      rule blocklist
-        blocklist_item+ <Blocklist>
-      end
-
-      rule blocklist_item
-        space? blocklist_item_prefix whitespace item_content:(!blocklist_item_prefix content eol)? eol?
-        <BlocklistItem>
-      end
-
-      rule blocklist_item_prefix
-        ('(' letter_ordinal ')') / dotted_number_3
-      end
-
-      rule letter_ordinal
-        letter (letter / digit)*
-      end
-
       #########
       ## one line of basic content
 
@@ -268,6 +259,10 @@ module Slaw
       # eg. 2, 2A, 2b
       rule number_letter
         number letter*
+      end
+
+      rule letter_ordinal
+        letter (letter / digit)*
       end
 
       rule dotted_number_3
