@@ -271,6 +271,9 @@ module Slaw
             b.num(num)
             b.content { |b|
               # TODO: blocklist must use listintroduction
+              # TODO: if we don't use listIntroduction, then for definition
+              #       sections the definition of a term that has a blocklist is separated
+              #       from the definition
               children.elements.each { |e| e.to_xml(b, idprefix) }
             }
           }
