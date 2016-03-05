@@ -746,7 +746,7 @@ EOS
     <mainBody>
       <article id="schedule1">
         <heading>A Title</heading>
-        <paragraph id="paragraph-0">
+        <paragraph id="schedule1.paragraph-0">
           <content>
             <p>
               <remark status="editorial">[Schedule 1 added by Act 23 of 2004]</remark>
@@ -1207,7 +1207,7 @@ EOS
     </meta>
     <mainBody>
       <article id="schedule">
-        <paragraph id="paragraph-0">
+        <paragraph id="schedule.paragraph-0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
           </content>
@@ -1314,7 +1314,7 @@ EOS
       <mainBody>
         <article id="schedule3">
           <heading>Another Title</heading>
-          <paragraph id="paragraph-0">
+          <paragraph id="schedule3.paragraph-0">
             <content>
               <p>Baz</p>
               <p>Boom</p>
@@ -1371,7 +1371,7 @@ EOS
     <mainBody>
       <article id="schedule1">
         <heading>Schedule Heading</heading>
-        <paragraph id="paragraph-0">
+        <paragraph id="schedule1.paragraph-0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
           </content>
@@ -1431,7 +1431,7 @@ EOS
     <mainBody>
       <article id="schedule1">
         <heading>Schedule Heading</heading>
-        <paragraph id="paragraph-0">
+        <paragraph id="schedule1.paragraph-0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
           </content>
@@ -1489,7 +1489,7 @@ EOS
     </meta>
     <mainBody>
       <article id="firstschedule">
-        <paragraph id="paragraph-0">
+        <paragraph id="firstschedule.paragraph-0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
           </content>
@@ -1549,7 +1549,7 @@ EOS
     </meta>
     <mainBody>
       <article id="schedule1">
-        <paragraph id="paragraph-0">
+        <paragraph id="schedule1.paragraph-0">
           <content>
             <p>Other than as is set out hereinbelow, no signs other than locality bound signs, temporary signs including loose portable sign, estate agents signs, newspaper headline posters and posters (the erection of which must comply with the appropriate schedules pertinent thereto) shall be erected on Municipal owned land.</p>
           </content>
@@ -1754,10 +1754,10 @@ EOS
     </meta>
     <mainBody>
       <article id="schedule1">
-        <paragraph id="paragraph-0">
+        <paragraph id="schedule1.paragraph-0">
           <content>
             <p>Heres a table:</p>
-            <table id="paragraph-0.table1"><tr><td><p>r1c1</p></td>
+            <table id="schedule1.paragraph-0.table1"><tr><td><p>r1c1</p></td>
 <td><p>r1c2</p></td></tr>
 <tr><td><p>r2c1</p></td>
 <td><p>r2c2</p></td></tr></table>

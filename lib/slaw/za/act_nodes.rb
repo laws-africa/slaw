@@ -439,11 +439,13 @@ module Slaw
               }
 
               b.mainBody { |b| 
+                idprefix = "#{id}."
+
                 # there is no good AKN hierarchy container for schedules, so we
                 # just use article because we don't use it anywhere else.
                 b.article(id: id) { |b|
                   b.heading(heading) if heading
-                  body.children.elements.each { |e| e.to_xml(b) } if body.is_a? Body
+                  body.children.elements.each_with_index { |e| e.to_xml(b, idprefix, i) } if body.is_a? Body
                 }
               }
             }
