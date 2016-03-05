@@ -216,12 +216,15 @@ Akoma Ntoso `component` elements at the end of the XML document, with a name of 
 
 ## Changelog
 
-### 0.8.4
+### 0.9.0
 
+* This release makes reasonably significant changes to generated XML, particularly
+  for sections without explicit subsections.
 * Blocklists with (aa) following (z) are using the same numbering format.
 * Change how blockList listIntroduction elements are created to be more generic
 * Support for sections that dive straight into lists without subsections
 * Simplify grammar
+* Fix elements with potentially duplicate ids
 
 ### 0.8.3
 
