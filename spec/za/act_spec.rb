@@ -232,6 +232,31 @@ EOS
   </chapter>
 </body>'
     end
+
+    it 'should be able to contain just a table' do
+      node = parse :chapter, <<EOS
+Chapter 2 The Chapter
+
+{|
+| foo
+|}
+EOS
+      to_xml(node).should == '<chapter id="chapter-2">
+  <num>2</num>
+  <heading>The Chapter</heading>
+  <paragraph id="chapter-2.paragraph-0">
+    <content>
+      <table id="chapter-2.paragraph-0.table0">
+        <tr>
+          <td>
+            <p>foo</p>
+          </td>
+        </tr>
+      </table>
+    </content>
+  </paragraph>
+</chapter>'
+    end
   end
 
   #-------------------------------------------------------------------------------
