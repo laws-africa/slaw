@@ -70,12 +70,12 @@ EOS
   <paragraph id="paragraph-0">
     <content>
       <p>Some content before the section</p>
-      <blockList id="paragraph-0.list0">
-        <item id="paragraph-0.list0.a">
+      <blockList id="paragraph-0.list1">
+        <item id="paragraph-0.list1.a">
           <num>(a)</num>
           <p>foo</p>
         </item>
-        <item id="paragraph-0.list0.b">
+        <item id="paragraph-0.list1.b">
           <num>(b)</num>
           <p>bar</p>
         </item>
@@ -1148,12 +1148,12 @@ EOS
   <paragraph id="section-1.paragraph-0">
     <content>
       <p>naked statement (c) blah</p>
-      <blockList id="section-1.paragraph-0.list0">
-        <item id="section-1.paragraph-0.list0.a">
+      <blockList id="section-1.paragraph-0.list1">
+        <item id="section-1.paragraph-0.list1.a">
           <num>(a)</num>
           <p>foo</p>
         </item>
-        <item id="section-1.paragraph-0.list0.b">
+        <item id="section-1.paragraph-0.list1.b">
           <num>(b)</num>
           <p>bar</p>
         </item>
@@ -1699,7 +1699,7 @@ EOS
   <paragraph id="section-10.paragraph-0">
     <content>
       <p>Heres a table:</p>
-      <table id="section-10.paragraph-0.table0"><tr><td><p>r1c1</p></td>
+      <table id="section-10.paragraph-0.table1"><tr><td><p>r1c1</p></td>
 <td><p>r1c2</p></td></tr>
 <tr><td><p>r2c1</p></td>
 <td><p>r2c2</p></td></tr></table>
@@ -1757,7 +1757,7 @@ EOS
         <paragraph id="paragraph-0">
           <content>
             <p>Heres a table:</p>
-            <table id="paragraph-0.table0"><tr><td><p>r1c1</p></td>
+            <table id="paragraph-0.table1"><tr><td><p>r1c1</p></td>
 <td><p>r1c2</p></td></tr>
 <tr><td><p>r2c1</p></td>
 <td><p>r2c2</p></td></tr></table>

@@ -79,7 +79,7 @@ module Slaw
       class Body < Treetop::Runtime::SyntaxNode
         def to_xml(b)
           b.body { |b|
-            children.elements.each { |e| e.to_xml(b, '') }
+            children.elements.each_with_index { |e, i| e.to_xml(b, '', i) }
           }
         end
       end
@@ -340,7 +340,7 @@ module Slaw
       end
 
       class Table < Treetop::Runtime::SyntaxNode
-        def to_xml(b, idprefix)
+        def to_xml(b, idprefix, i=0)
           # parse the table using wikicloth
           html = WikiCloth::Parser.new({data: self.text_value}).to_html
 
@@ -348,7 +348,7 @@ module Slaw
           # an id to the table
           html = Nokogiri::HTML(html)
           table = html.css("table").first
-          table['id'] = "#{idprefix}table0"
+          table['id'] = "#{idprefix}table#{i}"
 
           # wrap td and th content in p tags
           table.css("td, th").each do |cell|
