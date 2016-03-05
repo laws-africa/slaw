@@ -219,6 +219,9 @@ Akoma Ntoso `component` elements at the end of the XML document, with a name of 
 ### 0.8.4
 
 * Blocklists with (aa) following (z) are using the same numbering format.
+* Change how blockList listIntroduction elements are created to be more generic
+* Support for sections that dive straight into lists without subsections
+* Simplify grammar
 
 ### 0.8.3
 
