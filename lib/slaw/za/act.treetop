@@ -31,21 +31,18 @@ module Slaw
       end
 
       rule body
-        # TODO: shouldn't block_para and subsection be swapped?
-        children:(chapter / part / section / block_paragraphs / subsection)+ <Body>
+        children:(chapter / part / section / subsection / block_paragraphs )+ <Body>
       end
 
       rule chapter
         heading:chapter_heading
-        # TODO: shouldn't block_para and subsection be swapped?
-        children:(part / section / block_paragraphs / subsection)*
+        children:(part / section / subsection / block_paragraphs)*
         <Chapter>
       end
 
       rule part
         heading:part_heading
-        # TODO: shouldn't block_para and subsection be swapped?
-        children:(section / block_paragraphs / subsection)*
+        children:(section / subsection / block_paragraphs)*
         <Part>
       end
 

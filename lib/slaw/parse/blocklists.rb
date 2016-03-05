@@ -36,7 +36,7 @@ module Slaw
       def self.nest_blocklists(doc)
         doc.xpath('//a:blockList', a: NS).each do |blocklist|
           items = blocklist.xpath('a:item', a: NS)
-          nest_blocklist_items(items.to_a, guess_number_format(items.first), nil, nil)
+          nest_blocklist_items(items.to_a, guess_number_format(items.first), nil, nil) unless items.empty?
         end
       end
 
@@ -162,6 +162,17 @@ module Slaw
           NumberingFormat.new(:'i.i', item.num.count('.'))
         else
           NumberingFormat.unknown
+        end
+      end
+
+      # Change p tags preceding a blocklist into listIntroductions within the blocklist
+      def self.fix_intros(doc)
+        doc.xpath('//a:blockList', a: NS).each do |blocklist|
+          prev = blocklist.previous
+          if prev and prev.name == 'p'
+            prev.name = 'listIntroduction'
+            blocklist.prepend_child(prev)
+          end
         end
       end
 

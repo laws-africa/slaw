@@ -464,8 +464,8 @@ EOS
       to_xml(node, "", 1).should == '<subsection id="2">
   <num>(2)</num>
   <content>
+    <p>title</p>
     <blockList id="2.list0">
-      <listIntroduction>title</listIntroduction>
       <item id="2.list0.a">
         <num>(a)</num>
         <p>one</p>
@@ -531,8 +531,8 @@ EOS
       to_xml(node, "", 1).should == '<subsection id="1">
   <num>(1)</num>
   <content>
+    <p>here\'s my really cool list,</p>
     <blockList id="1.list0">
-      <listIntroduction>here\'s my really cool list,</listIntroduction>
       <item id="1.list0.a">
         <num>(a)</num>
         <p>one</p>
@@ -572,8 +572,8 @@ EOS
         to_xml(node, '', 1).should == '<subsection id="9.9">
   <num>9.9</num>
   <content>
+    <p>foo</p>
     <blockList id="9.9.list0">
-      <listIntroduction>foo</listIntroduction>
       <item id="9.9.list0.9.9.1">
         <num>9.9.1</num>
         <p>item1</p>
@@ -1107,8 +1107,8 @@ EOS
   <heading>Section</heading>
   <paragraph id="section-1.paragraph-0">
     <content>
+      <p>naked statement (c) blah</p>
       <blockList id="section-1.paragraph-0.list0">
-        <listIntroduction>naked statement (c) blah</listIntroduction>
         <item id="section-1.paragraph-0.list0.a">
           <num>(a)</num>
           <p>foo</p>

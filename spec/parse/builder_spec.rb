@@ -7,7 +7,7 @@ describe Slaw::Parse::Builder do
   let(:parser) { double("parser") }
   subject { Slaw::Parse::Builder.new(parser: parser) }
 
-  describe '#nest_blocklists' do
+  describe '#adjust_blocklists' do
     it 'should nest simple blocks' do
       doc = xml2doc(subsection(<<XML
             <blockList id="section-10.1.lst0">
@@ -39,7 +39,7 @@ describe Slaw::Parse::Builder do
 XML
       ))
 
-      subject.nest_blocklists(doc)
+      subject.adjust_blocklists(doc)
       doc.to_s.should == subsection(<<XML
             <blockList id="section-10.1.lst0">
               <item id="section-10.1.lst0.a">
@@ -100,7 +100,7 @@ XML
 XML
       ))
 
-      subject.nest_blocklists(doc)
+      subject.adjust_blocklists(doc)
       doc.to_s.should == subsection(<<XML
             <blockList id="section-10.1.lst0">
               <item id="section-10.1.lst0.a">
@@ -147,7 +147,7 @@ XML
 XML
       ))
 
-      subject.nest_blocklists(doc)
+      subject.adjust_blocklists(doc)
       doc.to_s.should == subsection(<<XML
             <blockList id="section-10.1.lst0">
               <item id="section-10.1.lst0.h">
@@ -196,7 +196,7 @@ XML
 XML
       ))
 
-      subject.nest_blocklists(doc)
+      subject.adjust_blocklists(doc)
       doc.to_s.should == subsection(<<XML
             <blockList id="section-10.1.lst0">
               <item id="section-10.1.lst0.t">
@@ -262,7 +262,7 @@ XML
 XML
       ))
 
-      subject.nest_blocklists(doc)
+      subject.adjust_blocklists(doc)
       doc.to_s.should == subsection(<<XML
             <blockList id="section-28.3.list2">
               <item id="section-28.3.list2.g">
@@ -344,7 +344,7 @@ XML
 XML
       ))
 
-      subject.nest_blocklists(doc)
+      subject.adjust_blocklists(doc)
       doc.to_s.should == subsection(<<XML
             <blockList id="section-28.3.list2">
               <item id="section-28.3.list2.g">
@@ -417,7 +417,7 @@ XML
 XML
     ))
 
-      subject.nest_blocklists(doc)
+      subject.adjust_blocklists(doc)
       doc.to_s.should == subsection(<<XML
             <blockList id="list0">
               <item id="list0.y">
@@ -466,7 +466,7 @@ XML
 XML
     ))
 
-      subject.nest_blocklists(doc)
+      subject.adjust_blocklists(doc)
       doc.to_s.should == subsection(<<XML
             <blockList id="list0">
               <item id="list0.y">
@@ -541,7 +541,7 @@ XML
 XML
     ))
 
-      subject.nest_blocklists(doc)
+      subject.adjust_blocklists(doc)
       doc.to_s.should == subsection(<<XML
             <blockList id="list0">
               <item id="list0.a">
@@ -620,7 +620,7 @@ XML
 XML
       ))
 
-      subject.nest_blocklists(doc)
+      subject.adjust_blocklists(doc)
       doc.to_s.should == subsection(<<XML
             <blockList id="section-10.1.lst0">
               <item id="section-10.1.lst0.h">
@@ -667,7 +667,7 @@ XML
 XML
       ))
 
-      subject.nest_blocklists(doc)
+      subject.adjust_blocklists(doc)
       doc.to_s.should == subsection(<<XML
             <blockList id="section-9.subsection-2.list2">
               <item id="section-9.subsection-2.list2.9.2.1">
@@ -683,6 +683,31 @@ XML
                     <p>the dependent or assistant is only permitted to replace the permit-</p>
                   </item>
                 </blockList>
+              </item>
+            </blockList>
+XML
+      )
+    end
+
+    it 'should handle p tags just before' do
+      doc = xml2doc(subsection(<<XML
+        <p>intro</p>
+        <blockList id="section-10.1.lst0">
+          <item id="section-10.1.lst0.a">
+            <num>(a)</num>
+            <p>foo</p>
+          </item>
+        </blockList>
+XML
+        ))
+
+      subject.adjust_blocklists(doc)
+      doc.to_s.should == subsection(<<XML
+            <blockList id="section-10.1.lst0">
+              <listIntroduction>intro</listIntroduction>
+              <item id="section-10.1.lst0.a">
+                <num>(a)</num>
+                <p>foo</p>
               </item>
             </blockList>
 XML
