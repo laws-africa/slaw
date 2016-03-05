@@ -22,38 +22,39 @@ module Slaw
       rule preface
         !'PREAMBLE'
         ('PREFACE'i space? eol)?
-        statements:(!'PREAMBLE' naked_statement)* <Preface>
+        statements:(!'PREAMBLE' pre_body_statement)* <Preface>
       end
 
       rule preamble
         'PREAMBLE'i space? eol
-        statements:naked_statement* <Preamble>
+        statements:pre_body_statement* <Preamble>
       end
 
       rule body
-        children:(chapter / part / section / block_paragraphs / subsection)+ <Body>
+        children:(chapter / part / section / subsection / block_paragraphs )+ <Body>
       end
 
       rule chapter
         heading:chapter_heading
-        children:(part / section / block_paragraphs / subsection)*
+        children:(part / section / subsection / block_paragraphs)*
         <Chapter>
       end
 
       rule part
         heading:part_heading
-        children:(section / block_paragraphs / subsection)*
+        children:(section / subsection / block_paragraphs)*
         <Part>
       end
 
       rule section
         section_title
-        subsections:subsection* <Section>
+        children:(subsection / block_paragraphs)* <Section>
       end
 
       rule subsection
-        statement:(numbered_statement / table / naked_statement)
-        blocklist:blocklist? <Subsection>
+        # TODO: do it make sense to allow an eol here?
+        space? subsection_prefix whitespace eol?
+        children:block_element* <Subsection>
       end
 
       rule schedules_container
@@ -68,14 +69,6 @@ module Slaw
         schedule_title
         body:body?
         <Schedule>
-      end
-
-      rule block_paragraphs
-        block_element+ <BlockParagraph>
-      end
-
-      rule block_element
-        (table / blocklist / naked_statement)
       end
 
       ##########
@@ -132,7 +125,7 @@ module Slaw
       end
 
       rule section_title_content
-        space !numbered_statement_prefix content eol
+        space !subsection_prefix content eol
       end
 
       rule schedule_title
@@ -142,35 +135,28 @@ module Slaw
       end
 
       ##########
-      # statements
+      # blocks of content inside containers
 
-      rule numbered_statement
-        space? numbered_statement_prefix whitespace (!blocklist_item_prefix clauses eol)? <NumberedStatement>
+      rule block_paragraphs
+        block_element+ <BlockParagraph>
       end
 
-      rule naked_statement
-        space? !(chapter_heading / part_heading / section_title / schedule_title) clauses eol
-        <NakedStatement>
+      rule block_element
+        (table / blocklist / naked_statement)
       end
 
-      rule schedule_statement
-        space? (!schedule_title) clauses eol
-        <ScheduleStatement>
+      rule blocklist
+        blocklist_item+ <Blocklist>
       end
 
-      # one or more words, allowing inline elements
-      rule clauses
-        ((remark / [^ \t\n]+) [ \t]*)+
-        <Clauses>
+      rule blocklist_item
+        space? blocklist_item_prefix whitespace item_content:(!blocklist_item_prefix content eol)? eol?
+        <BlocklistItem>
       end
 
-      rule remark
-        '[[' content:(!']]' .)+ ']]'
-        <Remark>
+      rule blocklist_item_prefix
+        ('(' letter_ordinal ')') / dotted_number_3
       end
-
-      ##########
-      # tables
 
       rule table
         space? table_start eol? (!table_end content eol)* table_end eol
@@ -183,6 +169,33 @@ module Slaw
 
       rule table_end
         space? '|}'
+      end
+
+      ##########
+      # statements - single lines of content
+
+      rule naked_statement
+        space? !(chapter_heading / part_heading / section_title / schedule_title / subsection_prefix) clauses eol
+        <NakedStatement>
+      end
+
+      rule pre_body_statement
+        space? !(chapter_heading / part_heading / section_title / schedule_title) clauses eol
+        <NakedStatement>
+      end
+
+      ##########
+      # inline content
+
+      # one or more words, allowing inline elements
+      rule clauses
+        ((remark / [^ \t\n]+) [ \t]*)+
+        <Clauses>
+      end
+
+      rule remark
+        '[[' content:(!']]' .)+ ']]'
+        <Remark>
       end
 
       ##########
@@ -204,7 +217,7 @@ module Slaw
         number_letter '.'?
       end
 
-      rule numbered_statement_prefix
+      rule subsection_prefix
         # there are two subsection handling syntaxes:
         # 
         # (1) foo
@@ -228,26 +241,6 @@ module Slaw
         num:dotted_number_2 '.'? space
       end
 
-      ##########
-      # blocklists
-
-      rule blocklist
-        blocklist_item+ <Blocklist>
-      end
-
-      rule blocklist_item
-        space? blocklist_item_prefix whitespace item_content:(!blocklist_item_prefix content eol)?
-        <BlocklistItem>
-      end
-
-      rule blocklist_item_prefix
-        ('(' letter_ordinal ')') / dotted_number_3
-      end
-
-      rule letter_ordinal
-        letter (letter / digit)*
-      end
-
       #########
       ## one line of basic content
 
@@ -263,6 +256,10 @@ module Slaw
       # eg. 2, 2A, 2b
       rule number_letter
         number letter*
+      end
+
+      rule letter_ordinal
+        letter (letter / digit)*
       end
 
       rule dotted_number_3

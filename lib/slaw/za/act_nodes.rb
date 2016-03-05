@@ -79,7 +79,7 @@ module Slaw
       class Body < Treetop::Runtime::SyntaxNode
         def to_xml(b)
           b.body { |b|
-            children.elements.each { |e| e.to_xml(b, '') }
+            children.elements.each_with_index { |e, i| e.to_xml(b, '', i) }
           }
         end
       end
@@ -207,7 +207,7 @@ module Slaw
 
             idprefix = "#{id}."
 
-            subsections.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+            children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
           }
         end
       end
@@ -245,70 +245,39 @@ module Slaw
         end
       end
 
-      class Subsection < Treetop::Runtime::SyntaxNode
-        def to_xml(b, idprefix, i=0)
-          if statement.is_a?(NumberedStatement)
-            attribs = {id: idprefix + statement.num.gsub(/[()]/, '')}
-          else
-            attribs = {id: idprefix + "subsection-#{i}"}
-          end
-
-          idprefix = attribs[:id] + "."
-
-          b.subsection(attribs) { |b|
-            b.num(statement.num) if statement.is_a?(NumberedStatement)
-            
-            b.content { |b| 
-              if blocklist and blocklist.is_a?(Blocklist)
-                if statement.content
-                  # provide the statement as the list introduction to the block list
-                  blocklist.to_xml(b, idprefix, i) { |b| statement.content.to_xml(b, idprefix) }
-                else
-                  blocklist.to_xml(b, idprefix, i)
-                end
-              else
-                # raw content
-                statement.to_xml(b, idprefix)
-              end
-            }
-          }
-        end
-      end
-
       class BlockParagraph < Treetop::Runtime::SyntaxNode
         def to_xml(b, idprefix='', i=0)
-          b.paragraph(id: "#{idprefix}paragraph-0") { |b|
+          id = "#{idprefix}paragraph-0"
+          idprefix = "#{id}."
+
+          b.paragraph(id: id) { |b|
             b.content { |b|
-              elements.each_with_index { |e, i| e.to_xml(b, idprefix) }
+              elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
             }
           }
         end
       end
 
-      class NumberedStatement < Treetop::Runtime::SyntaxNode
+      class Subsection < Treetop::Runtime::SyntaxNode
         def num
-          numbered_statement_prefix.num.text_value
+          subsection_prefix.num.text_value
         end
 
-        def parentheses?
-          !numbered_statement_prefix.respond_to? :dotted_number_2
-        end
+        def to_xml(b, idprefix, i)
+          id = idprefix + num.gsub(/[()]/, '')
+          idprefix = id + "."
 
-        def content
-          if elements[3].text_value == ""
-            nil
-          else
-            elements[3].clauses
-          end
-        end
-
-        def to_xml(b, idprefix)
-          b.p { |b| content.to_xml(b, idprefix) } if content
+          b.subsection(id: id) { |b|
+            b.num(num)
+            b.content { |b|
+              children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+            }
+          }
         end
       end
 
       class NakedStatement < Treetop::Runtime::SyntaxNode
-        def to_xml(b, idprefix)
+        def to_xml(b, idprefix, i=0)
           b.p { |b| clauses.to_xml(b, idprefix) } if clauses
         end
 
@@ -371,7 +340,7 @@ module Slaw
       end
 
       class Table < Treetop::Runtime::SyntaxNode
-        def to_xml(b, idprefix)
+        def to_xml(b, idprefix, i=0)
           # parse the table using wikicloth
           html = WikiCloth::Parser.new({data: self.text_value}).to_html
 
@@ -379,7 +348,7 @@ module Slaw
           # an id to the table
           html = Nokogiri::HTML(html)
           table = html.css("table").first
-          table['id'] = "#{idprefix}table0"
+          table['id'] = "#{idprefix}table#{i}"
 
           # wrap td and th content in p tags
           table.css("td, th").each do |cell|
@@ -470,11 +439,13 @@ module Slaw
               }
 
               b.mainBody { |b| 
+                idprefix = "#{id}."
+
                 # there is no good AKN hierarchy container for schedules, so we
                 # just use article because we don't use it anywhere else.
                 b.article(id: id) { |b|
                   b.heading(heading) if heading
-                  body.children.elements.each { |e| e.to_xml(b) } if body.is_a? Body
+                  body.children.elements.each_with_index { |e| e.to_xml(b, idprefix, i) } if body.is_a? Body
                 }
               }
             }

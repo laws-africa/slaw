@@ -47,11 +47,11 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <subsection id="section-1.subsection-0">
+    <paragraph id="section-1.paragraph-0">
       <content>
         <p>Hello there</p>
       </content>
-    </subsection>
+    </paragraph>
   </section>
 </body>'
     end
@@ -70,12 +70,12 @@ EOS
   <paragraph id="paragraph-0">
     <content>
       <p>Some content before the section</p>
-      <blockList id="list0">
-        <item id="list0.a">
+      <blockList id="paragraph-0.list1">
+        <item id="paragraph-0.list1.a">
           <num>(a)</num>
           <p>foo</p>
         </item>
-        <item id="list0.b">
+        <item id="paragraph-0.list1.b">
           <num>(b)</num>
           <p>bar</p>
         </item>
@@ -85,11 +85,11 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <subsection id="section-1.subsection-0">
+    <paragraph id="section-1.paragraph-0">
       <content>
         <p>Hello there</p>
       </content>
-    </subsection>
+    </paragraph>
   </section>
 </body>'
     end
@@ -112,11 +112,11 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <subsection id="section-1.subsection-0">
+    <paragraph id="section-1.paragraph-0">
       <content>
         <p>Hello there</p>
       </content>
-    </subsection>
+    </paragraph>
   </section>
 </chapter>'
     end
@@ -133,11 +133,11 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <subsection id="section-1.subsection-0">
+    <paragraph id="section-1.paragraph-0">
       <content>
         <p>Hello there</p>
       </content>
-    </subsection>
+    </paragraph>
   </section>
 </chapter>'
     end
@@ -185,11 +185,11 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section 1</heading>
-    <subsection id="section-1.subsection-0">
+    <paragraph id="section-1.paragraph-0">
       <content>
         <p>Section text.</p>
       </content>
-    </subsection>
+    </paragraph>
   </section>
 </chapter>'
     end
@@ -207,11 +207,11 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <subsection id="section-1.subsection-0">
+    <paragraph id="section-1.paragraph-0">
       <content>
         <p>Hello there</p>
       </content>
-    </subsection>
+    </paragraph>
   </section>
 </chapter>'
     end
@@ -232,6 +232,31 @@ EOS
   </chapter>
 </body>'
     end
+
+    it 'should be able to contain just a table' do
+      node = parse :chapter, <<EOS
+Chapter 2 The Chapter
+
+{|
+| foo
+|}
+EOS
+      to_xml(node).should == '<chapter id="chapter-2">
+  <num>2</num>
+  <heading>The Chapter</heading>
+  <paragraph id="chapter-2.paragraph-0">
+    <content>
+      <table id="chapter-2.paragraph-0.table0">
+        <tr>
+          <td>
+            <p>foo</p>
+          </td>
+        </tr>
+      </table>
+    </content>
+  </paragraph>
+</chapter>'
+    end
   end
 
   #-------------------------------------------------------------------------------
@@ -251,11 +276,11 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <subsection id="section-1.subsection-0">
+    <paragraph id="section-1.paragraph-0">
       <content>
         <p>Hello there</p>
       </content>
-    </subsection>
+    </paragraph>
   </section>
 </part>'
     end
@@ -272,11 +297,11 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <subsection id="section-1.subsection-0">
+    <paragraph id="section-1.paragraph-0">
       <content>
         <p>Hello there</p>
       </content>
-    </subsection>
+    </paragraph>
   </section>
 </part>'
     end
@@ -293,11 +318,11 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <subsection id="section-1.subsection-0">
+    <paragraph id="section-1.paragraph-0">
       <content>
         <p>Hello there</p>
       </content>
-    </subsection>
+    </paragraph>
   </section>
 </part>'
     end
@@ -314,11 +339,11 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <subsection id="section-1.subsection-0">
+    <paragraph id="section-1.paragraph-0">
       <content>
         <p>Hello there</p>
       </content>
-    </subsection>
+    </paragraph>
   </section>
 </part>'
     end
@@ -336,11 +361,11 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <subsection id="section-1.subsection-0">
+    <paragraph id="section-1.paragraph-0">
       <content>
         <p>Hello there</p>
       </content>
-    </subsection>
+    </paragraph>
   </section>
 </part>'
     end
@@ -359,11 +384,11 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading/>
-    <subsection id="section-1.subsection-0">
+    <paragraph id="section-1.paragraph-0">
       <content>
         <p>No owner or occupier of any shop or business premises or vacant land adjoining a shop or business premises shall cause a health nuisance.</p>
       </content>
-    </subsection>
+    </paragraph>
   </section>
 </part>'
     end
@@ -391,11 +416,11 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <subsection id="section-1.subsection-0">
+    <paragraph id="section-1.paragraph-0">
       <content>
         <p>Hello there</p>
       </content>
-    </subsection>
+    </paragraph>
   </section>
 </part>'
     end
@@ -428,35 +453,6 @@ EOS
 EOS
     end
 
-    it 'should handle a naked statement' do
-      should_parse :subsection, 'naked statement'
-    end
-
-    it 'should handle a naked statement and blocklist' do
-      node = parse :subsection, <<EOS
-        naked statement (c) blah
-        (a) foo
-        (b) bar
-EOS
-      node.statement.clauses.text_value.should == "naked statement (c) blah"
-      node.blocklist.elements.first.num.should == "(a)"
-      to_xml(node, "").should == '<subsection id="subsection-0">
-  <content>
-    <blockList id="subsection-0.list0">
-      <listIntroduction>naked statement (c) blah</listIntroduction>
-      <item id="subsection-0.list0.a">
-        <num>(a)</num>
-        <p>foo</p>
-      </item>
-      <item id="subsection-0.list0.b">
-        <num>(b)</num>
-        <p>bar</p>
-      </item>
-    </blockList>
-  </content>
-</subsection>'
-    end
-
     it 'should handle a blocklist' do
       node = parse :subsection, <<EOS
         (2) title
@@ -465,26 +461,24 @@ EOS
         (c) three
         (i) four
 EOS
-      node.statement.num.should == "(2)"
-      node.statement.content.text_value.should == "title"
-      to_xml(node, "").should == '<subsection id="2">
+      to_xml(node, "", 1).should == '<subsection id="2">
   <num>(2)</num>
   <content>
-    <blockList id="2.list0">
-      <listIntroduction>title</listIntroduction>
-      <item id="2.list0.a">
+    <p>title</p>
+    <blockList id="2.list1">
+      <item id="2.list1.a">
         <num>(a)</num>
         <p>one</p>
       </item>
-      <item id="2.list0.b">
+      <item id="2.list1.b">
         <num>(b)</num>
         <p>two</p>
       </item>
-      <item id="2.list0.c">
+      <item id="2.list1.c">
         <num>(c)</num>
         <p>three</p>
       </item>
-      <item id="2.list0.i">
+      <item id="2.list1.i">
         <num>(i)</num>
         <p>four</p>
       </item>
@@ -501,10 +495,7 @@ EOS
         (i) four
 EOS
                   )
-      node.statement.content.should be_nil
-      node.blocklist.elements.first.num.should == "(a)"
-      node.blocklist.elements.first.content.should == "one"
-      to_xml(node, "").should == '<subsection id="1">
+      to_xml(node, "", 1).should == '<subsection id="1">
   <num>(1)</num>
   <content>
     <blockList id="1.list0">
@@ -537,30 +528,23 @@ EOS
         (ii) double
 EOS
                   )
-      node.statement.content.text_value.should == "here's my really cool list,"
-      node.blocklist.elements.first.num.should == "(a)"
-      node.blocklist.elements.first.content.should == "one"
-      node.blocklist.elements[1].num.should == "(b)"
-      node.blocklist.elements[1].content.should be_nil
-      node.blocklist.elements[2].num.should == "(i)"
-      node.blocklist.elements[2].content.should == "single"
-      to_xml(node, "").should == '<subsection id="1">
+      to_xml(node, "", 1).should == '<subsection id="1">
   <num>(1)</num>
   <content>
-    <blockList id="1.list0">
-      <listIntroduction>here\'s my really cool list,</listIntroduction>
-      <item id="1.list0.a">
+    <p>here\'s my really cool list,</p>
+    <blockList id="1.list1">
+      <item id="1.list1.a">
         <num>(a)</num>
         <p>one</p>
       </item>
-      <item id="1.list0.b">
+      <item id="1.list1.b">
         <num>(b)</num>
       </item>
-      <item id="1.list0.i">
+      <item id="1.list1.i">
         <num>(i)</num>
         <p>single</p>
       </item>
-      <item id="1.list0.ii">
+      <item id="1.list1.ii">
         <num>(ii)</num>
         <p>double</p>
       </item>
@@ -574,8 +558,7 @@ EOS
         node = parse :subsection, <<EOS
           9.9. foo
 EOS
-        node.statement.content.text_value.should == "foo"
-        node.statement.num.should == "9.9"
+        node.num.should == "9.9"
       end
 
       it 'should handle dotted number sublists' do
@@ -586,13 +569,67 @@ EOS
           9.9.2.1 item3
 EOS
                     )
-        node.statement.content.text_value.should == "foo"
-        node.blocklist.elements.first.num.should == "9.9.1"
-        node.blocklist.elements.first.content.should == "item1"
-
-        node.blocklist.elements[2].num.should == "9.9.2.1"
-        node.blocklist.elements[2].content.should == "item3"
+        to_xml(node, '', 1).should == '<subsection id="9.9">
+  <num>9.9</num>
+  <content>
+    <p>foo</p>
+    <blockList id="9.9.list1">
+      <item id="9.9.list1.9.9.1">
+        <num>9.9.1</num>
+        <p>item1</p>
+      </item>
+      <item id="9.9.list1.9.9.2">
+        <num>9.9.2</num>
+        <p>item2</p>
+      </item>
+      <item id="9.9.list1.9.9.2.1">
+        <num>9.9.2.1</num>
+        <p>item3</p>
+      </item>
+    </blockList>
+  </content>
+</subsection>'
       end
+    end
+
+    it 'should id blocklists correctly' do
+      node = parse(:subsection, <<EOS
+        (1) a list
+        (a) item 1
+        (b) item 2
+        some text
+        (c) item 3
+        (d) item 4
+EOS
+      )
+
+      to_xml(node, '', 1).should == '<subsection id="1">
+  <num>(1)</num>
+  <content>
+    <p>a list</p>
+    <blockList id="1.list1">
+      <item id="1.list1.a">
+        <num>(a)</num>
+        <p>item 1</p>
+      </item>
+      <item id="1.list1.b">
+        <num>(b)</num>
+        <p>item 2</p>
+      </item>
+    </blockList>
+    <p>some text</p>
+    <blockList id="1.list3">
+      <item id="1.list3.c">
+        <num>(c)</num>
+        <p>item 3</p>
+      </item>
+      <item id="1.list3.d">
+        <num>(d)</num>
+        <p>item 4</p>
+      </item>
+    </blockList>
+  </content>
+</subsection>'
     end
   end
 
@@ -601,34 +638,34 @@ EOS
 
   describe 'remark' do
     it 'should handle a plain remark' do
-      node = parse :subsection, <<EOS
+      node = parse :block_paragraphs, <<EOS
       [[Section 2 amended by Act 23 of 2004]]
 EOS
-      to_xml(node, "").should == '<subsection id="subsection-0">
+      to_xml(node, "").should == '<paragraph id="paragraph-0">
   <content>
     <p>
       <remark status="editorial">[Section 2 amended by Act 23 of 2004]</remark>
     </p>
   </content>
-</subsection>'
+</paragraph>'
     end
 
     it 'should handle an inline remark at the end of a sentence' do
-      node = parse :subsection, <<EOS
+      node = parse :block_paragraphs, <<EOS
       This statement has an inline remark. [[Section 2 amended by Act 23 of 2004]]
 EOS
-      to_xml(node, "").should == '<subsection id="subsection-0">
+      to_xml(node, "").should == '<paragraph id="paragraph-0">
   <content>
     <p>This statement has an inline remark. <remark status="editorial">[Section 2 amended by Act 23 of 2004]</remark></p>
   </content>
-</subsection>'
+</paragraph>'
     end
 
     it 'should handle an inline remark mid-way through' do
       node = parse :subsection, <<EOS
       (1) This statement has an inline remark. [[Section 2 amended by Act 23 of 2004]] And now some more.
 EOS
-      to_xml(node, "").should == '<subsection id="1">
+      to_xml(node, "", 1).should == '<subsection id="1">
   <num>(1)</num>
   <content>
     <p>This statement has an inline remark. <remark status="editorial">[Section 2 amended by Act 23 of 2004]</remark> And now some more.</p>
@@ -637,14 +674,14 @@ EOS
     end
 
     it 'should handle many inline remarks' do
-      node = parse :subsection, <<EOS
+      node = parse :block_paragraphs, <<EOS
       This statement has an inline remark. [[Section 2 amended by Act 23 of 2004]]. And now some more. [[Another remark]] [[and another]]
 EOS
-      to_xml(node, "").should == '<subsection id="subsection-0">
+      to_xml(node, "").should == '<paragraph id="paragraph-0">
   <content>
     <p>This statement has an inline remark. <remark status="editorial">[Section 2 amended by Act 23 of 2004]</remark>. And now some more. <remark status="editorial">[Another remark]</remark> <remark status="editorial">[and another]</remark></p>
   </content>
-</subsection>'
+</paragraph>'
     end
 
     it 'should handle a remark in a section' do
@@ -657,18 +694,14 @@ EOS
       to_xml(node).should == '<section id="section-1">
   <num>1.</num>
   <heading>Section title</heading>
-  <subsection id="section-1.subsection-0">
+  <paragraph id="section-1.paragraph-0">
     <content>
       <p>Some text is a long line.</p>
-    </content>
-  </subsection>
-  <subsection id="section-1.subsection-1">
-    <content>
       <p>
         <remark status="editorial">[Section 1 amended by Act 23 of 2004]</remark>
       </p>
     </content>
-  </subsection>
+  </paragraph>
 </section>'
     end
 
@@ -713,7 +746,7 @@ EOS
     <mainBody>
       <article id="schedule1">
         <heading>A Title</heading>
-        <paragraph id="paragraph-0">
+        <paragraph id="schedule1.paragraph-0">
           <content>
             <p>
               <remark status="editorial">[Schedule 1 added by Act 23 of 2004]</remark>
@@ -733,8 +766,8 @@ EOS
 
   describe 'numbered_statement' do
     it 'should handle basic numbered statements' do
-      should_parse :numbered_statement, '(1) foo bar'
-      should_parse :numbered_statement, '(1a) foo bar'
+      should_parse :subsection, '(1) foo bar'
+      should_parse :subsection, '(1a) foo bar'
     end
   end
 
@@ -963,9 +996,9 @@ EOS
   end
 
   #-------------------------------------------------------------------------------
-  # Sections
+  # Section
 
-  context 'sections' do
+  context 'section' do
     it 'should handle section numbers after title' do
       subject.parser.options = {section_number_after_title: true}
       node = parse :section, <<EOS
@@ -1062,6 +1095,73 @@ EOS
   </subsection>
 </section>'
     end
+
+    it 'should handle sections that dive straight into lists' do
+      subject.parser.options = {section_number_after_title: false}
+      node = parse :section, <<EOS
+1. Section
+(a) first
+(b) second
+and some stuff
+EOS
+      
+      s = to_xml(node)
+      s.should == '<section id="section-1">
+  <num>1.</num>
+  <heading>Section</heading>
+  <paragraph id="section-1.paragraph-0">
+    <content>
+      <blockList id="section-1.paragraph-0.list0">
+        <item id="section-1.paragraph-0.list0.a">
+          <num>(a)</num>
+          <p>first</p>
+        </item>
+        <item id="section-1.paragraph-0.list0.b">
+          <num>(b)</num>
+          <p>second</p>
+        </item>
+      </blockList>
+      <p>and some stuff</p>
+    </content>
+  </paragraph>
+</section>'
+    end
+
+    it 'should handle a naked statement' do
+      should_parse :section, <<EOS
+1. Section
+
+naked statement
+EOS
+    end
+
+    it 'should handle a naked statement and blocklist' do
+      node = parse :section, <<EOS
+1. Section
+naked statement (c) blah
+(a) foo
+(b) bar
+EOS
+      to_xml(node, "").should == '<section id="section-1">
+  <num>1.</num>
+  <heading>Section</heading>
+  <paragraph id="section-1.paragraph-0">
+    <content>
+      <p>naked statement (c) blah</p>
+      <blockList id="section-1.paragraph-0.list1">
+        <item id="section-1.paragraph-0.list1.a">
+          <num>(a)</num>
+          <p>foo</p>
+        </item>
+        <item id="section-1.paragraph-0.list1.b">
+          <num>(b)</num>
+          <p>bar</p>
+        </item>
+      </blockList>
+    </content>
+  </paragraph>
+</section>'
+    end
   end
 
   #-------------------------------------------------------------------------------
@@ -1107,7 +1207,7 @@ EOS
     </meta>
     <mainBody>
       <article id="schedule">
-        <paragraph id="paragraph-0">
+        <paragraph id="schedule.paragraph-0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
           </content>
@@ -1214,7 +1314,7 @@ EOS
       <mainBody>
         <article id="schedule3">
           <heading>Another Title</heading>
-          <paragraph id="paragraph-0">
+          <paragraph id="schedule3.paragraph-0">
             <content>
               <p>Baz</p>
               <p>Boom</p>
@@ -1271,7 +1371,7 @@ EOS
     <mainBody>
       <article id="schedule1">
         <heading>Schedule Heading</heading>
-        <paragraph id="paragraph-0">
+        <paragraph id="schedule1.paragraph-0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
           </content>
@@ -1331,7 +1431,7 @@ EOS
     <mainBody>
       <article id="schedule1">
         <heading>Schedule Heading</heading>
-        <paragraph id="paragraph-0">
+        <paragraph id="schedule1.paragraph-0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
           </content>
@@ -1389,7 +1489,7 @@ EOS
     </meta>
     <mainBody>
       <article id="firstschedule">
-        <paragraph id="paragraph-0">
+        <paragraph id="firstschedule.paragraph-0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
           </content>
@@ -1449,7 +1549,7 @@ EOS
     </meta>
     <mainBody>
       <article id="schedule1">
-        <paragraph id="paragraph-0">
+        <paragraph id="schedule1.paragraph-0">
           <content>
             <p>Other than as is set out hereinbelow, no signs other than locality bound signs, temporary signs including loose portable sign, estate agents signs, newspaper headline posters and posters (the erection of which must comply with the appropriate schedules pertinent thereto) shall be erected on Municipal owned land.</p>
           </content>
@@ -1596,19 +1696,15 @@ EOS
       xml.should == '<section id="section-10">
   <num>10.</num>
   <heading>A section title</heading>
-  <subsection id="section-10.subsection-0">
+  <paragraph id="section-10.paragraph-0">
     <content>
       <p>Heres a table:</p>
-    </content>
-  </subsection>
-  <subsection id="section-10.subsection-1">
-    <content>
-      <table id="section-10.subsection-1.table0"><tr><td><p>r1c1</p></td>
+      <table id="section-10.paragraph-0.table1"><tr><td><p>r1c1</p></td>
 <td><p>r1c2</p></td></tr>
 <tr><td><p>r2c1</p></td>
 <td><p>r2c2</p></td></tr></table>
     </content>
-  </subsection>
+  </paragraph>
 </section>'
     end
 
@@ -1658,10 +1754,10 @@ EOS
     </meta>
     <mainBody>
       <article id="schedule1">
-        <paragraph id="paragraph-0">
+        <paragraph id="schedule1.paragraph-0">
           <content>
             <p>Heres a table:</p>
-            <table id="table0"><tr><td><p>r1c1</p></td>
+            <table id="schedule1.paragraph-0.table1"><tr><td><p>r1c1</p></td>
 <td><p>r1c2</p></td></tr>
 <tr><td><p>r2c1</p></td>
 <td><p>r2c2</p></td></tr></table>

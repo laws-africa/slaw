@@ -152,7 +152,7 @@ module Slaw
       def postprocess(doc)
         normalise_headings(doc)
         find_short_title(doc)
-        nest_blocklists(doc)
+        adjust_blocklists(doc)
 
         doc
       end
@@ -353,16 +353,17 @@ module Slaw
         end
       end
 
-      # Correctly nest blocklists.
+      # Adjust blocklists:
       #
-      # The grammar gives us flat blocklists, we need to introspect the
-      # numbering of the lists to correctly nest them.
+      # - nest them correctly
+      # - change preceding p tags into listIntroductions
       #
       # @param doc [Nokogiri::XML::Document]
-      def nest_blocklists(doc)
-        logger.info("Nesting blocklists")
+      def adjust_blocklists(doc)
+        logger.info("Adjusting blocklists")
 
         Slaw::Parse::Blocklists.nest_blocklists(doc)
+        Slaw::Parse::Blocklists.fix_intros(doc)
       end
 
       protected
