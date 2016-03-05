@@ -465,20 +465,20 @@ EOS
   <num>(2)</num>
   <content>
     <p>title</p>
-    <blockList id="2.list0">
-      <item id="2.list0.a">
+    <blockList id="2.list1">
+      <item id="2.list1.a">
         <num>(a)</num>
         <p>one</p>
       </item>
-      <item id="2.list0.b">
+      <item id="2.list1.b">
         <num>(b)</num>
         <p>two</p>
       </item>
-      <item id="2.list0.c">
+      <item id="2.list1.c">
         <num>(c)</num>
         <p>three</p>
       </item>
-      <item id="2.list0.i">
+      <item id="2.list1.i">
         <num>(i)</num>
         <p>four</p>
       </item>
@@ -532,19 +532,19 @@ EOS
   <num>(1)</num>
   <content>
     <p>here\'s my really cool list,</p>
-    <blockList id="1.list0">
-      <item id="1.list0.a">
+    <blockList id="1.list1">
+      <item id="1.list1.a">
         <num>(a)</num>
         <p>one</p>
       </item>
-      <item id="1.list0.b">
+      <item id="1.list1.b">
         <num>(b)</num>
       </item>
-      <item id="1.list0.i">
+      <item id="1.list1.i">
         <num>(i)</num>
         <p>single</p>
       </item>
-      <item id="1.list0.ii">
+      <item id="1.list1.ii">
         <num>(ii)</num>
         <p>double</p>
       </item>
@@ -573,16 +573,16 @@ EOS
   <num>9.9</num>
   <content>
     <p>foo</p>
-    <blockList id="9.9.list0">
-      <item id="9.9.list0.9.9.1">
+    <blockList id="9.9.list1">
+      <item id="9.9.list1.9.9.1">
         <num>9.9.1</num>
         <p>item1</p>
       </item>
-      <item id="9.9.list0.9.9.2">
+      <item id="9.9.list1.9.9.2">
         <num>9.9.2</num>
         <p>item2</p>
       </item>
-      <item id="9.9.list0.9.9.2.1">
+      <item id="9.9.list1.9.9.2.1">
         <num>9.9.2.1</num>
         <p>item3</p>
       </item>
@@ -590,6 +590,46 @@ EOS
   </content>
 </subsection>'
       end
+    end
+
+    it 'should id blocklists correctly' do
+      node = parse(:subsection, <<EOS
+        (1) a list
+        (a) item 1
+        (b) item 2
+        some text
+        (c) item 3
+        (d) item 4
+EOS
+      )
+
+      to_xml(node, '', 1).should == '<subsection id="1">
+  <num>(1)</num>
+  <content>
+    <p>a list</p>
+    <blockList id="1.list1">
+      <item id="1.list1.a">
+        <num>(a)</num>
+        <p>item 1</p>
+      </item>
+      <item id="1.list1.b">
+        <num>(b)</num>
+        <p>item 2</p>
+      </item>
+    </blockList>
+    <p>some text</p>
+    <blockList id="1.list3">
+      <item id="1.list3.c">
+        <num>(c)</num>
+        <p>item 3</p>
+      </item>
+      <item id="1.list3.d">
+        <num>(d)</num>
+        <p>item 4</p>
+      </item>
+    </blockList>
+  </content>
+</subsection>'
     end
   end
 
