@@ -93,6 +93,31 @@ EOS
   </section>
 </body>'
     end
+
+    it 'should handle escaped content' do
+      node = parse :body, <<EOS
+\\1. ignored
+
+1. Section
+\\Chapter 2 ignored
+EOS
+      to_xml(node).should == '<body>
+  <paragraph id="paragraph-0">
+    <content>
+      <p>1. ignored</p>
+    </content>
+  </paragraph>
+  <section id="section-1">
+    <num>1.</num>
+    <heading>Section</heading>
+    <paragraph id="section-1.paragraph-0">
+      <content>
+        <p>Chapter 2 ignored</p>
+      </content>
+    </paragraph>
+  </section>
+</body>'
+    end
   end
 
   #-------------------------------------------------------------------------------
@@ -253,6 +278,29 @@ EOS
           </td>
         </tr>
       </table>
+    </content>
+  </paragraph>
+</chapter>'
+    end
+
+    it 'should ignore escaped chapter headers' do
+      node = parse :chapter, <<EOS
+Chapter 1 The Chapter
+
+Stuff
+
+\\Chapter 2 - Ignored
+
+More stuff
+EOS
+      to_xml(node).should == '<chapter id="chapter-1">
+  <num>1</num>
+  <heading>The Chapter</heading>
+  <paragraph id="chapter-1.paragraph-0">
+    <content>
+      <p>Stuff</p>
+      <p>Chapter 2 - Ignored</p>
+      <p>More stuff</p>
     </content>
   </paragraph>
 </chapter>'
@@ -438,6 +486,24 @@ EOS
   <part id="part-3">
     <num>3</num>
     <heading>The Other Heading</heading>
+  </part>
+</body>'
+    end
+
+    it 'should handle escaped parts' do
+      node = parse :body, <<EOS
+Part 2 The Part Heading
+\\Part 3 ignored
+EOS
+      to_xml(node).should == '<body>
+  <part id="part-2">
+    <num>2</num>
+    <heading>The Part Heading</heading>
+    <paragraph id="part-2.paragraph-0">
+      <content>
+        <p>Part 3 ignored</p>
+      </content>
+    </paragraph>
   </part>
 </body>'
     end
@@ -628,6 +694,30 @@ EOS
         <p>item 4</p>
       </item>
     </blockList>
+  </content>
+</subsection>'
+    end
+
+    it 'should ignore escaped items' do
+      node = parse(:subsection, <<EOS
+        (1) a subsection
+        \\(1) ignored
+        \\9.9.2 item2
+        \\some text
+        \\(d) item 4
+        \\(b) (i) single
+EOS
+      )
+
+      to_xml(node, '', 1).should == '<subsection id="1">
+  <num>(1)</num>
+  <content>
+    <p>a subsection</p>
+    <p>(1) ignored</p>
+    <p>9.9.2 item2</p>
+    <p>some text</p>
+    <p>(d) item 4</p>
+    <p>(b) (i) single</p>
   </content>
 </subsection>'
     end
@@ -867,6 +957,18 @@ EOS
 </preface>'
     end
 
+    it 'should ignore escaped preface' do
+      node = parse :act, <<EOS
+\\PREFACE
+1. Section
+(1) hello
+EOS
+
+      to_xml(node.preface).should == '<preface>
+  <p>PREFACE</p>
+</preface>'
+    end
+
     it 'should support remarks in the preface' do
       node = parse :act, <<EOS
 PREFACE
@@ -993,10 +1095,29 @@ EOS
 
       node.elements.first.text_value.should == ""
     end
+
+    it 'should ignore escaped preamble' do
+      node = parse :act, <<EOS
+PREFACE
+
+this is the preface
+
+PREAMBLE
+
+\\PREAMBLE
+
+1. Section
+(1) hello
+EOS
+
+      to_xml(node.preamble).should == '<preamble>
+  <p>PREAMBLE</p>
+</preamble>'
+    end
   end
 
   #-------------------------------------------------------------------------------
-  # Section
+  # Sections
 
   context 'section' do
     it 'should handle section numbers after title' do
@@ -1158,6 +1279,29 @@ EOS
           <p>bar</p>
         </item>
       </blockList>
+    </content>
+  </paragraph>
+</section>'
+    end
+
+    it 'should ignore escaped section headings' do
+      node = parse :section, <<EOS
+1. Section
+
+\\1. ignored
+\\2. another line
+stuff
+\\3. a third
+EOS
+      to_xml(node, "").should == '<section id="section-1">
+  <num>1.</num>
+  <heading>Section</heading>
+  <paragraph id="section-1.paragraph-0">
+    <content>
+      <p>1. ignored</p>
+      <p>2. another line</p>
+      <p>stuff</p>
+      <p>3. a third</p>
     </content>
   </paragraph>
 </section>'
@@ -1653,6 +1797,61 @@ Schedule 3. Matters which shall continue to be regulated by Swazi Law and Custom
 Schedule 4. Specially entrenched provisions and entrenched provisions.
 EOS
     end
+
+    it 'should handle escaped schedules' do
+      node = parse :schedules, <<EOS
+Schedule
+
+Subject to approval in terms of this By-Law.
+
+\\Schedule another
+
+More stuff
+EOS
+      s = to_xml(node)
+      today = Time.now.strftime('%Y-%m-%d')
+      s.should == '<component id="component-schedule">
+  <doc name="schedule">
+    <meta>
+      <identification source="#slaw">
+        <FRBRWork>
+          <FRBRthis value="/za/act/1980/01/schedule"/>
+          <FRBRuri value="/za/act/1980/01"/>
+          <FRBRalias value="Schedule"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRcountry value="za"/>
+        </FRBRWork>
+        <FRBRExpression>
+          <FRBRthis value="/za/act/1980/01/eng@/schedule"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRlanguage language="eng"/>
+        </FRBRExpression>
+        <FRBRManifestation>
+          <FRBRthis value="/za/act/1980/01/eng@/schedule"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="' + today + '" name="Generation"/>
+          <FRBRauthor href="#slaw"/>
+        </FRBRManifestation>
+      </identification>
+    </meta>
+    <mainBody>
+      <article id="schedule">
+        <paragraph id="schedule.paragraph-0">
+          <content>
+            <p>Subject to approval in terms of this By-Law.</p>
+            <p>Schedule another</p>
+            <p>More stuff</p>
+          </content>
+        </paragraph>
+      </article>
+    </mainBody>
+  </doc>
+</component>'
+    end
+
   end
 
   #-------------------------------------------------------------------------------
@@ -1767,6 +1966,24 @@ EOS
     </mainBody>
   </doc>
 </component>'
+    end
+
+    it 'should ignore an escaped table' do
+      node = parse :block_paragraphs, <<EOS
+\\{|
+| r1c1
+| r1c2
+|}
+EOS
+
+      to_xml(node).should == '<paragraph id="paragraph-0">
+  <content>
+    <p>{|</p>
+    <p>| r1c1</p>
+    <p>| r1c2</p>
+    <p>|}</p>
+  </content>
+</paragraph>'
     end
   end
 

@@ -157,6 +157,8 @@ in a document to indicate different levels of nesting.
 
 During post-processing it works out how to nest these appropriately.
 
+Special words, such as ``part`` and ``chapter`` are ignored if the line starts with a backslash ``\``.
+
 For more information see the South African by-law grammar at
 [lib/slaw/za/bylaw.treetop](lib/slaw/za/bylaw.treetop) and the list nesting
 at [lib/slaw/parse/blocklists.rb](lib/slaw/parse/blocklists.rb).
@@ -215,6 +217,10 @@ Akoma Ntoso `component` elements at the end of the XML document, with a name of 
 5. Create new Pull Request
 
 ## Changelog
+
+### 0.9.1
+
+* Support escaping special words with a backslash
 
 ### 0.9.0
 
