@@ -38,4 +38,59 @@ Some content.
       end
     end
   end
+
+  describe 'unparse' do
+    it 'should escape keywards when unparsing' do
+      doc = xml2doc(section(<<XML
+        <num>1.</num>
+        <heading>Section</heading>
+        <paragraph id="section-1.paragraph-0">
+          <content>
+            <p>Chapter 2 ignored</p>
+            <p>Part 2 ignored</p>
+            <p>Schedule 2 ignored</p>
+            <p>BODY ignored</p>
+            <p>PREAMBLE ignored</p>
+            <p>PREFACE ignored</p>
+            <p>2. ignored</p>
+            <p>2.1 ignored</p>
+            <p>(2) ignored</p>
+            <p>(a) ignored</p>
+            <p>(2a) ignored</p>
+            <p>{| ignored</p>
+          </content>
+        </paragraph>
+XML
+      ))
+
+      text = subject.text_from_act(doc)
+      text.should == '1. Section
+
+\Chapter 2 ignored
+
+\Part 2 ignored
+
+\Schedule 2 ignored
+
+\BODY ignored
+
+\PREAMBLE ignored
+
+\PREFACE ignored
+
+\2. ignored
+
+\2.1 ignored
+
+\(2) ignored
+
+\(a) ignored
+
+\(2a) ignored
+
+\{| ignored
+
+'
+    end
+  end
 end
