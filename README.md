@@ -218,8 +218,9 @@ Akoma Ntoso `component` elements at the end of the XML document, with a name of 
 
 ## Changelog
 
-### 0.9.1
+### 0.10.0
 
+* New command `unparse FILE` which transforms an Akoma Ntoso XML document into plain text, suitable for re-parsing
 * Support escaping special words with a backslash
 
 ### 0.9.0
