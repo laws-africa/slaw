@@ -110,5 +110,39 @@ PREFACE not escaped
 
 '
     end
+
+    it 'should escape listIntros when unparsing' do
+      doc = xml2doc(section(<<XML
+        <num>1.</num>
+        <heading>Section</heading>
+        <paragraph id="section-9.paragraph-0">
+          <content>
+            <blockList id="section-9.paragraph-0.list1">
+              <listIntroduction>(2) A special meeting:</listIntroduction>
+              <item id="section-9.paragraph-0.list1.a">
+                <num>(a)</num>
+                <p>the chairperson so directs; or</p>
+              </item>
+              <item id="section-9.paragraph-0.list1.b">
+                <num>(b)</num>
+                <p>a majority of the members</p>
+              </item>
+            </blockList>
+          </content>
+        </paragraph>
+XML
+      ))
+
+      text = subject.text_from_act(doc)
+      text.should == '1. Section
+
+\(2) A special meeting:
+
+(a) the chairperson so directs; or
+
+(b) a majority of the members
+
+'
+    end
   end
 end
