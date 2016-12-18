@@ -85,12 +85,12 @@
     <xsl:variable name="numprefix" select="translate(substring(., 1, 3), '1234567890', 'NNNNNNNNNN')" />
 
     <!-- p tags must escape initial content that looks like a block element marker -->
-    <xsl:if test="starts-with($prefix, 'BODY') or
-                  starts-with($prefix, 'CHAPTER') or
-                  starts-with($prefix, 'PART') or
-                  starts-with($prefix, 'PREAMBLE') or
-                  starts-with($prefix, 'PREFACE') or
-                  starts-with($prefix, 'SCHEDULE') or
+    <xsl:if test="$prefix = 'BODY' or
+                  $prefix = 'PREAMBLE' or
+                  $prefix = 'PREFACE' or
+                  starts-with($prefix, 'CHAPTER ') or
+                  starts-with($prefix, 'PART ') or
+                  starts-with($prefix, 'SCHEDULE ') or
                   starts-with($prefix, '{|') or
                   starts-with($numprefix, '(') or
                   starts-with($numprefix, 'N.')">

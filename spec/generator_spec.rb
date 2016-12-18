@@ -47,11 +47,17 @@ Some content.
         <paragraph id="section-1.paragraph-0">
           <content>
             <p>Chapter 2 ignored</p>
+            <p>Chapters</p>
             <p>Part 2 ignored</p>
+            <p>participation</p>
             <p>Schedule 2 ignored</p>
-            <p>BODY ignored</p>
-            <p>PREAMBLE ignored</p>
-            <p>PREFACE ignored</p>
+            <p>Schedules</p>
+            <p>BODY not escaped</p>
+            <p>BODY</p>
+            <p>PREAMBLE not escaped</p>
+            <p>PREAMBLE</p>
+            <p>PREFACE not escaped</p>
+            <p>PREFACE</p>
             <p>2. ignored</p>
             <p>2.1 ignored</p>
             <p>(2) ignored</p>
@@ -68,15 +74,27 @@ XML
 
 \Chapter 2 ignored
 
+Chapters
+
 \Part 2 ignored
+
+participation
 
 \Schedule 2 ignored
 
-\BODY ignored
+Schedules
 
-\PREAMBLE ignored
+BODY not escaped
 
-\PREFACE ignored
+\BODY
+
+PREAMBLE not escaped
+
+\PREAMBLE
+
+PREFACE not escaped
+
+\PREFACE
 
 \2. ignored
 
