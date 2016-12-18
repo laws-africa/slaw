@@ -62,5 +62,13 @@ module Slaw
 
       before > after * 1.25
     end
+
+    # Transform an Akoma Ntoso XML document back into a plain-text version
+    # suitable for re-parsing back into XML with no loss of structure.
+    def text_from_act(doc)
+      here = File.dirname(__FILE__)
+      xslt = Nokogiri::XSLT(File.read(File.join([here, 'za/act_text.xsl'])))
+      xslt.transform(doc).child.to_xml
+    end
   end
 end

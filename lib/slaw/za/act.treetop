@@ -31,7 +31,7 @@ module Slaw
       end
 
       rule body
-        children:(chapter / part / section / subsection / block_paragraphs )+ <Body>
+        children:(chapter / part / section / subsection / block_paragraphs)+ <Body>
       end
 
       rule chapter
@@ -173,14 +173,17 @@ module Slaw
 
       ##########
       # statements - single lines of content
+      #
+      # If a statement starts with a backslash, it's considered to have escaped the subsequent word,
+      # and is ignored. This allows escaping of section headings, etc.
 
       rule naked_statement
-        space? !(chapter_heading / part_heading / section_title / schedule_title / subsection_prefix) clauses eol
+        space? !(chapter_heading / part_heading / section_title / schedule_title / subsection_prefix) '\\'? clauses eol
         <NakedStatement>
       end
 
       rule pre_body_statement
-        space? !(chapter_heading / part_heading / section_title / schedule_title) clauses eol
+        space? !(chapter_heading / part_heading / section_title / schedule_title) '\\'? clauses eol
         <NakedStatement>
       end
 

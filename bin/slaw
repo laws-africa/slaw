@@ -102,6 +102,14 @@ class SlawCLI < Thor
     puts builder.to_xml(doc)
   end
 
+  desc "unparse FILE", "Unparse FILE from Akoma Ntoso XML back into text suitable for re-parsing"
+  def unparse(name)
+    generator = Slaw::ActGenerator.new
+
+    doc = File.open(name, 'r') { |f| doc = generator.builder.parse_xml(f.read) }
+    puts generator.text_from_act(doc)
+  end
+
   map %w(--version) => :__print_version
   desc "--version", "Print slaw version info"
   def __print_version
