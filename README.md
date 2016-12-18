@@ -218,6 +218,10 @@ Akoma Ntoso `component` elements at the end of the XML document, with a name of 
 
 ## Changelog
 
+### 0.10.1
+
+* Ensure backslash escaping handles listIntroductions and partial words correctly
+
 ### 0.10.0
 
 * New command `unparse FILE` which transforms an Akoma Ntoso XML document into plain text, suitable for re-parsing
