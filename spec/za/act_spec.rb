@@ -1876,6 +1876,27 @@ EOS
 <td><p>r2c2</p></td></tr></table>'
     end
 
+    it 'should allow newlines in table cells' do
+      node = parse :table, <<EOS
+{|
+| foo
+bar
+baz
+|
+one
+two
+
+three
+
+|}
+EOS
+
+      to_xml(node, "prefix.").should == '<table id="prefix.table0">
+  <tr><td><p>foo<eol/>bar<eol/>baz</p></td>
+<td><p>one<eol/>two<eol/>three</p></td></tr>
+</table>'
+    end
+
     it 'should parse a table in a section' do
       node = parse :section, <<EOS
 10. A section title

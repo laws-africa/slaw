@@ -355,12 +355,23 @@ module Slaw
             p = Nokogiri::XML::Node.new("p", html)
             p.children = cell.children
             p.parent = cell
+
+            # replace newlines with <eol>
+            p.search("text()").each do |text|
+              lines = text.content.strip.split(/\n+/)
+              text.content = lines.shift
+
+              for line in lines
+                eol = text.add_next_sibling(Nokogiri::XML::Node.new("eol", html))
+                text = eol.add_next_sibling(Nokogiri::XML::Text.new(line, html))
+              end
+            end
           end
 
           table.xpath('//text()[1]').each{ |t|      t.content = t.content.lstrip }
           table.xpath('//text()[last()]').each{ |t| t.content = t.content.rstrip }
 
-          b << table.to_html
+          b.parent << table
         end
       end
 

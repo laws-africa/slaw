@@ -168,5 +168,38 @@ Section 1 [[ foo ]]
 
 '
     end
+
+    it 'should replace eol with newlines in tables' do
+      doc = xml2doc(section(<<XML
+        <num>1.</num>
+        <table id="section-21.paragraph-0.table1">
+          <tr>
+            <td>
+              <p>foo<eol/>bar<eol/>baz</p>
+            </td>
+            <td>
+              <p>one<eol/>two<eol/>three</p>
+            </td>
+          </tr>
+        </table>'
+XML
+      ))
+
+      text = subject.text_from_act(doc)
+      text.should == '1. 
+
+{| 
+|-
+| foo
+bar
+baz
+| one
+two
+three
+|-
+|}
+
+'
+    end
   end
 end

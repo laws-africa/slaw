@@ -113,4 +113,8 @@
     </xsl:element>
   </xsl:template>
 
+  <xsl:template match="a:eol">
+    <xsl:element name="br" />
+  </xsl:template>
+
 </xsl:stylesheet>

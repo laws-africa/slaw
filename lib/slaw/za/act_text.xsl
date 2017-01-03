@@ -230,6 +230,11 @@
     <xsl:text>]</xsl:text>
   </xsl:template>
 
+  <xsl:template match="a:eol">
+    <xsl:text>
+</xsl:text>
+  </xsl:template>
+
 
   <!-- for most nodes, just dump their text content -->
   <xsl:template match="*">
