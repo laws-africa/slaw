@@ -218,8 +218,9 @@ Akoma Ntoso `component` elements at the end of the XML document, with a name of 
 
 ## Changelog
 
-### ?
+### 0.11.0
 
+* Support newlines in table cells as EOL (or BR in HTML)
 * FIX unparsing of remarks, introduced in 0.10.0
 
 ### 0.10.1
