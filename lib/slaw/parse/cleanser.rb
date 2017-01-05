@@ -18,13 +18,13 @@ module Slaw
         s = expand_tabs(s)
         s = chomp(s)
         s = enforce_newline(s)
-        s = remove_boilerplate(s)
       end
 
       # Run deeper introspections and reformat the text, such as
       # unwrapping/re-wrapping lines. These may not be safe to run
       # multiple times.
       def reformat(s)
+        s = remove_boilerplate(s)
         s = unbreak_lines(s)
         s = break_lines(s)
         s = strip_toc(s)
@@ -71,7 +71,7 @@ module Slaw
          .gsub(/^\s*\d+\s*$/, '')\
          .gsub(/^.*This gazette is also available.*$/, '')\
         # get rid of date lines
-         .gsub(/^\d+\s+\w+\s+\d+$/, '')\
+         .gsub(/^\d{1,2}\s+\w+\s+\d{4}$/, '')\
         # get rid of page number lines
          .gsub(/^\s*page \d+( of \d+)?\s*\n/i, '')\
          .gsub(/^\s*\d*\s*No\. \d+$/, '')\
