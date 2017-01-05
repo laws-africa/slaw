@@ -342,7 +342,8 @@ module Slaw
       class Table < Treetop::Runtime::SyntaxNode
         def to_xml(b, idprefix, i=0)
           # parse the table using wikicloth
-          html = WikiCloth::Parser.new({data: self.text_value}).to_html
+          text = self.text_value.strip.gsub(/\n\s+/, "\n")
+          html = WikiCloth::Parser.new({data: text}).to_html
 
           # we need to strip any surrounding p tags and add
           # an id to the table

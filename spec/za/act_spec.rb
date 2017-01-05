@@ -1883,17 +1883,22 @@ EOS
 bar
 baz
 |
-one
+ one
+
 two
 
-three
+ three
+|
+  four
 
+|-
 |}
 EOS
 
       to_xml(node, "prefix.").should == '<table id="prefix.table0">
   <tr><td><p>foo<eol/>bar<eol/>baz</p></td>
-<td><p>one<eol/>two<eol/>three</p></td></tr>
+<td><p>one<eol/>two<eol/>three</p></td>
+<td><p>four</p></td></tr>
 </table>'
     end
 

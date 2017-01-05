@@ -178,7 +178,10 @@ Section 1 [[ foo ]]
               <p>foo<eol/>bar<eol/>baz</p>
             </td>
             <td>
-              <p>one<eol/>two<eol/>three</p>
+              <p>
+              one<eol/>two<eol/>three
+
+              </p>
             </td>
           </tr>
         </table>'
@@ -193,9 +196,12 @@ XML
 | foo
 bar
 baz
-| one
+| 
+              one
 two
 three
+
+              
 |-
 |}
 
