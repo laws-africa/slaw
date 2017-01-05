@@ -118,7 +118,7 @@ PREFACE not escaped
         <paragraph id="section-9.paragraph-0">
           <content>
             <blockList id="section-9.paragraph-0.list1">
-              <listIntroduction>(2) A special meeting:</listIntroduction>
+              <listIntroduction>(2) A special meeting <remark>[ foo ]</remark>:</listIntroduction>
               <item id="section-9.paragraph-0.list1.a">
                 <num>(a)</num>
                 <p>the chairperson so directs; or</p>
@@ -136,11 +136,35 @@ XML
       text = subject.text_from_act(doc)
       text.should == '1. Section
 
-\(2) A special meeting:
+\(2) A special meeting [[ foo ]]:
 
 (a) the chairperson so directs; or
 
 (b) a majority of the members
+
+'
+    end
+
+    it 'should unparse remarks correctly' do
+      doc = xml2doc(section(<<XML
+        <num>1.</num>
+        <paragraph id="section-19.paragraph-0">
+          <content>
+            <p>
+              <remark status="editorial">[ foo ]</remark>
+            </p>
+            <p>Section 1 <remark status="editorial">[ foo ]</remark></p>
+          </content>
+        </paragraph>
+XML
+      ))
+
+      text = subject.text_from_act(doc)
+      text.should == '1. 
+
+[[ foo ]]
+
+Section 1 [[ foo ]]
 
 '
     end
