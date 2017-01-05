@@ -218,6 +218,10 @@ Akoma Ntoso `component` elements at the end of the XML document, with a name of 
 
 ## Changelog
 
+### ?
+
+* FIX unparsing of remarks, introduced in 0.10.0
+
 ### 0.10.1
 
 * Ensure backslash escaping handles listIntroductions and partial words correctly
