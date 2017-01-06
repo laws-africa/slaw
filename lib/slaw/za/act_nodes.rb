@@ -342,7 +342,8 @@ module Slaw
       class Table < Treetop::Runtime::SyntaxNode
         def to_xml(b, idprefix, i=0)
           # parse the table using wikicloth
-          text = self.text_value.strip.gsub(/\n\s+/, "\n")
+          # strip whitespace at the start of lines, to avoid wikicloth from treating it as PRE
+          text = self.text_value.strip.gsub(/^[ \t]+/, '')
           html = WikiCloth::Parser.new({data: text}).to_html
 
           # we need to strip any surrounding p tags and add
@@ -359,7 +360,7 @@ module Slaw
 
             # replace newlines with <eol>
             p.search("text()").each do |text|
-              lines = text.content.strip.split(/\n+/)
+              lines = text.content.strip.split(/\n/)
               text.content = lines.shift
 
               for line in lines

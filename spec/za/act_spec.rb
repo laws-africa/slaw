@@ -1881,10 +1881,10 @@ EOS
 {|
 | foo
 bar
+
 baz
 |
  one
-
 two
 
  three
@@ -1896,8 +1896,8 @@ two
 EOS
 
       to_xml(node, "prefix.").should == '<table id="prefix.table0">
-  <tr><td><p>foo<eol/>bar<eol/>baz</p></td>
-<td><p>one<eol/>two<eol/>three</p></td>
+  <tr><td><p>foo<eol/>bar<eol/><eol/>baz</p></td>
+<td><p>one<eol/>two<eol/><eol/>three</p></td>
 <td><p>four</p></td></tr>
 </table>'
     end
