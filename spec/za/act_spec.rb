@@ -852,6 +852,82 @@ EOS
   end
 
   #-------------------------------------------------------------------------------
+  # Refs
+
+  describe 'ref' do
+    it 'should handle a plain ref' do
+      node = parse :block_paragraphs, <<EOS
+      Hello [there](/za/act/123) friend.
+EOS
+      to_xml(node, "").should == '<paragraph id="paragraph-0">
+  <content>
+    <p>Hello <ref href="/za/act/123">there</ref> friend.</p>
+  </content>
+</paragraph>'
+    end
+
+    it 'should work many on a line' do
+      node = parse :block_paragraphs, <<EOS
+      Hello [there](/za/act/123) friend [and](http://foo.bar.com/with space) you too.
+EOS
+      to_xml(node, "").should == '<paragraph id="paragraph-0">
+  <content>
+    <p>Hello <ref href="/za/act/123">there</ref> friend <ref href="http://foo.bar.com/with space">and</ref> you too.</p>
+  </content>
+</paragraph>'
+    end
+
+    it 'should handle brackets' do
+      node = parse :block_paragraphs, <<EOS
+      Hello ([there](/za/act/123)).
+EOS
+      to_xml(node, "").should == '<paragraph id="paragraph-0">
+  <content>
+    <p>Hello (<ref href="/za/act/123">there</ref>).</p>
+  </content>
+</paragraph>'
+    end
+
+    it 'should handle many clauses on a line' do
+      node = parse :block_paragraphs, <<EOS
+      Hello [there](/za/act/123)[[remark one]] my[friend](/za) [[remark 2]][end](/foo).
+EOS
+      to_xml(node, "").should == '<paragraph id="paragraph-0">
+  <content>
+    <p>Hello <ref href="/za/act/123">there</ref><remark status="editorial">[remark one]</remark> my<ref href="/za">friend</ref> <remark status="editorial">[remark 2]</remark><ref href="/foo">end</ref>.</p>
+  </content>
+</paragraph>'
+    end
+
+    it 'text should not cross end of line' do
+      node = parse :block_paragraphs, <<EOS
+      Hello [there
+      
+      my](/za/act/123) friend.
+EOS
+      to_xml(node, "").should == '<paragraph id="paragraph-0">
+  <content>
+    <p>Hello [there</p>
+    <p>my](/za/act/123) friend.</p>
+  </content>
+</paragraph>'
+    end
+
+    it 'href should not cross end of line' do
+      node = parse :block_paragraphs, <<EOS
+      Hello [there](/za/act
+      /123) friend.
+EOS
+      to_xml(node, "").should == '<paragraph id="paragraph-0">
+  <content>
+    <p>Hello [there](/za/act</p>
+    <p>/123) friend.</p>
+  </content>
+</paragraph>'
+    end
+  end
+
+  #-------------------------------------------------------------------------------
   # Numbered statements
 
   describe 'numbered_statement' do
@@ -2025,12 +2101,12 @@ EOS
     it 'should handle a clause with a remark' do
       node = parse :clauses, "simple [[remark]]. text"
       node.text_value.should == "simple [[remark]]. text"
-      node.elements[1].elements.first.is_a?(Slaw::ZA::Act::Remark).should be_true
+      node.elements[7].is_a?(Slaw::ZA::Act::Remark).should be_true
 
       node = parse :clauses, "simple [[remark]][[another]] text"
       node.text_value.should == "simple [[remark]][[another]] text"
-      node.elements[1].elements.first.is_a?(Slaw::ZA::Act::Remark).should be_true
-      node.elements[2].elements.first.is_a?(Slaw::ZA::Act::Remark).should be_true
+      node.elements[7].is_a?(Slaw::ZA::Act::Remark).should be_true
+      node.elements[7].is_a?(Slaw::ZA::Act::Remark).should be_true
     end
   end
 end

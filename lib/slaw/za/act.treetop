@@ -192,13 +192,20 @@ module Slaw
 
       # one or more words, allowing inline elements
       rule clauses
-        ((remark / [^ \t\n]+) [ \t]*)+
+        (remark / ref / [^\n])*
         <Clauses>
       end
 
       rule remark
         '[[' content:(!']]' .)+ ']]'
         <Remark>
+      end
+
+      rule ref
+        # links like markdown
+        # eg. [link text](link url)
+        '[' content:(!'](' [^\n])+ '](' href:([^)\n]+) ')'
+        <Ref>
       end
 
       ##########
