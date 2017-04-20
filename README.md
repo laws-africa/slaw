@@ -218,6 +218,11 @@ Akoma Ntoso `component` elements at the end of the XML document, with a name of 
 
 ## Changelog
 
+### 0.12.0
+
+* Support links/references using Markdown-like \[text](href) syntax.
+* FIX allow remarks in blocklist items
+
 ### 0.11.0
 
 * Support newlines in table cells as EOL (or BR in HTML)
