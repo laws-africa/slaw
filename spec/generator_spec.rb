@@ -169,6 +169,25 @@ Section 1 [[ foo ]]
 '
     end
 
+    it 'should unparse refs correctly' do
+      doc = xml2doc(section(<<XML
+        <num>1.</num>
+        <paragraph id="section-19.paragraph-0">
+          <content>
+            <p>Hello <ref href="/za/act/123">there</ref> friend.</p>
+          </content>
+        </paragraph>
+XML
+      ))
+
+      text = subject.text_from_act(doc)
+      text.should == '1. 
+
+Hello [there](/za/act/123) friend.
+
+'
+    end
+
     it 'should replace eol with newlines in tables' do
       doc = xml2doc(section(<<XML
         <num>1.</num>

@@ -289,12 +289,10 @@ module Slaw
       class Clauses < Treetop::Runtime::SyntaxNode
         def to_xml(b, idprefix=nil)
           for e in elements
-            for e2 in e.elements
-              if e2.respond_to? :to_xml
-                e2.to_xml(b, idprefix)
-              else
-                b << e2.text_value
-              end
+            if e.respond_to? :to_xml
+              e.to_xml(b, idprefix)
+            else
+              b << e.text_value
             end
           end
         end
@@ -303,6 +301,12 @@ module Slaw
       class Remark < Treetop::Runtime::SyntaxNode
         def to_xml(b, idprefix)
           b.remark('[' + content.text_value + ']', status: 'editorial')
+        end
+      end
+
+      class Ref < Treetop::Runtime::SyntaxNode
+        def to_xml(b, idprefix)
+          b.ref(content.text_value, href: href.text_value)
         end
       end
 
@@ -326,15 +330,10 @@ module Slaw
           blocklist_item_prefix.text_value
         end
 
-        def content
-          # TODO this really seems a bit odd
-          item_content.content.text_value if respond_to? :item_content and item_content.respond_to? :content
-        end
-
         def to_xml(b, idprefix)
           b.item(id: idprefix + num.gsub(/[()]/, '')) { |b|
             b.num(num)
-            b.p(content) if content
+            b.p { |b| item_content.clauses.to_xml(b, idprefix) } if respond_to? :item_content and item_content.respond_to? :clauses
           }
         end
       end

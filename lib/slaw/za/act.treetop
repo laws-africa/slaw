@@ -150,7 +150,7 @@ module Slaw
       end
 
       rule blocklist_item
-        space? blocklist_item_prefix whitespace item_content:(!blocklist_item_prefix content eol)? eol?
+        space? blocklist_item_prefix whitespace item_content:(!blocklist_item_prefix clauses eol)? eol?
         <BlocklistItem>
       end
 
@@ -192,13 +192,20 @@ module Slaw
 
       # one or more words, allowing inline elements
       rule clauses
-        ((remark / [^ \t\n]+) [ \t]*)+
+        (remark / ref / [^\n])*
         <Clauses>
       end
 
       rule remark
         '[[' content:(!']]' .)+ ']]'
         <Remark>
+      end
+
+      rule ref
+        # links like markdown
+        # eg. [link text](link url)
+        '[' content:(!'](' [^\n])+ '](' href:([^)\n]+) ')'
+        <Ref>
       end
 
       ##########
