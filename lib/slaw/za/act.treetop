@@ -52,8 +52,11 @@ module Slaw
       end
 
       rule subsection
-        # TODO: do it make sense to allow an eol here?
-        space? subsection_prefix whitespace eol?
+        space? subsection_prefix space?
+        # eg: (2) (a) foo
+        first_child:inline_block_element?
+        # eg: (2)
+        eol?
         children:block_element* <Subsection>
       end
 
@@ -125,6 +128,9 @@ module Slaw
       end
 
       rule section_title_content
+        # don't match subsections, eg.
+        #
+        # 10. (1) subsection content...
         space !subsection_prefix content eol
       end
 
@@ -145,12 +151,19 @@ module Slaw
         (table / blocklist / naked_statement)
       end
 
+      # Block elements that don't have to appear at the start of a line.
+      # ie. we don't need to guard against the start of a chapter, section, etc.
+      rule inline_block_element
+        (table / blocklist / inline_statement)
+      end
+
       rule blocklist
         blocklist_item+ <Blocklist>
       end
 
       rule blocklist_item
-        space? blocklist_item_prefix whitespace item_content:(!blocklist_item_prefix clauses eol)? eol?
+        # TODO: this whitespace should probably be space, to allow empty blocklist items followed by plain text
+        space? blocklist_item_prefix whitespace item_content:(!blocklist_item_prefix clauses:clauses? eol)? eol?
         <BlocklistItem>
       end
 
@@ -187,12 +200,17 @@ module Slaw
         <NakedStatement>
       end
 
+      rule inline_statement
+        space? '\\'? clauses eol
+        <NakedStatement>
+      end
+
       ##########
       # inline content
 
       # one or more words, allowing inline elements
       rule clauses
-        (remark / ref / [^\n])*
+        (remark / ref / [^\n])+
         <Clauses>
       end
 

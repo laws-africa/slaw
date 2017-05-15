@@ -218,6 +218,12 @@ Akoma Ntoso `component` elements at the end of the XML document, with a name of 
 
 ## Changelog
 
+### 0.13.0
+
+* FIX allow Schedule, Part and other headings at the start of blocklist and subsections
+* FIX replace empty CONTENT elements with empty P tags so XML validates
+* Better handling of empty subsections and blocklist items
+
 ### 0.12.0
 
 * Support links/references using Markdown-like \[text](href) syntax.

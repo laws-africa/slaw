@@ -586,6 +586,63 @@ EOS
 </subsection>'
     end
 
+    it 'should handle a subsection that is empty and dives straight into a list' do
+      node = parse(:subsection, <<EOS
+        (1)
+        (a) one
+        (b) two
+EOS
+                  )
+      to_xml(node, "", 1).should == '<subsection id="1">
+  <num>(1)</num>
+  <content>
+    <blockList id="1.list0">
+      <item id="1.list0.a">
+        <num>(a)</num>
+        <p>one</p>
+      </item>
+      <item id="1.list0.b">
+        <num>(b)</num>
+        <p>two</p>
+      </item>
+    </blockList>
+  </content>
+</subsection>'
+    end
+
+    it 'should handle empty subsections' do
+      node = parse(:section, <<EOS
+        1. Section
+        (1)
+        (2)
+        next line
+        (3) third
+EOS
+                  )
+      to_xml(node).should == '<section id="section-1">
+  <num>1.</num>
+  <heading>Section</heading>
+  <subsection id="section-1.1">
+    <num>(1)</num>
+    <content>
+      <p/>
+    </content>
+  </subsection>
+  <subsection id="section-1.2">
+    <num>(2)</num>
+    <content>
+      <p>next line</p>
+    </content>
+  </subsection>
+  <subsection id="section-1.3">
+    <num>(3)</num>
+    <content>
+      <p>third</p>
+    </content>
+  </subsection>
+</section>'
+    end
+
     it 'should handle a blocklist that dives straight into another list' do
       node = parse(:subsection, <<EOS
         (1) here's my really cool list,
@@ -605,6 +662,41 @@ EOS
       </item>
       <item id="1.list1.b">
         <num>(b)</num>
+        <p/>
+      </item>
+      <item id="1.list1.i">
+        <num>(i)</num>
+        <p>single</p>
+      </item>
+      <item id="1.list1.ii">
+        <num>(ii)</num>
+        <p>double</p>
+      </item>
+    </blockList>
+  </content>
+</subsection>'
+    end
+
+    it 'should handle a blocklist with empty elements' do
+      node = parse(:subsection, <<EOS
+        (1) here's my really cool list,
+        (a)
+        (b) (i) single
+        (ii) double
+EOS
+                  )
+      to_xml(node, "", 1).should == '<subsection id="1">
+  <num>(1)</num>
+  <content>
+    <p>here\'s my really cool list,</p>
+    <blockList id="1.list1">
+      <item id="1.list1.a">
+        <num>(a)</num>
+        <p/>
+      </item>
+      <item id="1.list1.b">
+        <num>(b)</num>
+        <p/>
       </item>
       <item id="1.list1.i">
         <num>(i)</num>
@@ -720,6 +812,33 @@ EOS
     <p>(b) (i) single</p>
   </content>
 </subsection>'
+    end
+
+    it 'should ignore block elements mid-subsection' do
+      node = parse :body, <<EOS
+1. Section
+
+(2) Schedule 1 is cool.
+(3) Part 1
+EOS
+      to_xml(node).should == '<body>
+  <section id="section-1">
+    <num>1.</num>
+    <heading>Section</heading>
+    <subsection id="section-1.2">
+      <num>(2)</num>
+      <content>
+        <p>Schedule 1 is cool.</p>
+      </content>
+    </subsection>
+    <subsection id="section-1.3">
+      <num>(3)</num>
+      <content>
+        <p>Part 1</p>
+      </content>
+    </subsection>
+  </section>
+</body>'
     end
   end
 
@@ -1404,6 +1523,48 @@ EOS
       </blockList>
     </content>
   </paragraph>
+</section>'
+    end
+
+    it 'should handle empty subsections and empty lines' do
+      node = parse :section, <<EOS
+1. Section
+
+(1)
+
+something
+
+(2) Schedule 1
+
+(a) Part 1
+
+(b) thing
+EOS
+      to_xml(node, "").should == '<section id="section-1">
+  <num>1.</num>
+  <heading>Section</heading>
+  <subsection id="section-1.1">
+    <num>(1)</num>
+    <content>
+      <p>something</p>
+    </content>
+  </subsection>
+  <subsection id="section-1.2">
+    <num>(2)</num>
+    <content>
+      <p>Schedule 1</p>
+      <blockList id="section-1.2.list1">
+        <item id="section-1.2.list1.a">
+          <num>(a)</num>
+          <p>Part 1</p>
+        </item>
+        <item id="section-1.2.list1.b">
+          <num>(b)</num>
+          <p>thing</p>
+        </item>
+      </blockList>
+    </content>
+  </subsection>
 </section>'
     end
 
@@ -2133,6 +2294,27 @@ EOS
     <p>|}</p>
   </content>
 </paragraph>'
+    end
+
+    it 'should allow a table as part of a subsection' do
+      node = parse :subsection, <<EOS
+(1) {|
+| foo
+|}
+EOS
+
+      to_xml(node, '', 0).should == '<subsection id="1">
+  <num>(1)</num>
+  <content>
+    <table id="1.table0">
+      <tr>
+        <td>
+          <p>foo</p>
+        </td>
+      </tr>
+    </table>
+  </content>
+</subsection>'
     end
   end
 

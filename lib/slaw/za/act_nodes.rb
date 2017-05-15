@@ -267,10 +267,18 @@ module Slaw
           id = idprefix + num.gsub(/[()]/, '')
           idprefix = id + "."
 
+          kids = children.elements
+          kids = [first_child] + kids if first_child and !first_child.empty?
+
           b.subsection(id: id) { |b|
             b.num(num)
             b.content { |b|
-              children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+              if kids.empty?
+                # schema requires a non-empty content element
+                b.p
+              else
+                kids.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+              end
             }
           }
         end
@@ -333,7 +341,9 @@ module Slaw
         def to_xml(b, idprefix)
           b.item(id: idprefix + num.gsub(/[()]/, '')) { |b|
             b.num(num)
-            b.p { |b| item_content.clauses.to_xml(b, idprefix) } if respond_to? :item_content and item_content.respond_to? :clauses
+            b.p { |b|
+              item_content.clauses.to_xml(b, idprefix) if respond_to? :item_content and item_content.respond_to? :clauses
+            }
           }
         end
       end
