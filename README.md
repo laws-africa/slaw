@@ -218,6 +218,10 @@ Akoma Ntoso `component` elements at the end of the XML document, with a name of 
 
 ## Changelog
 
+### 0.13.1
+
+* Smarter un-break lines
+
 ### 0.13.0
 
 * FIX allow Schedule, Part and other headings at the start of blocklist and subsections

@@ -47,7 +47,7 @@ module Slaw
       def scrub(s)
         # we often get this unicode codepoint in the string, nuke it
         s.gsub([65532].pack('U*'), '')\
-         .gsub("", '')
+         .gsub(/\n*/, '')
       end
 
       # change weird quotes to normal ones
@@ -135,8 +135,12 @@ module Slaw
       def unbreak_lines(s)
         lines = s.split(/\n/)
         output = []
-        start_re = /^\s*[a-z]/
-        end_re   = /[a-z0-9]\s*$/
+
+        # set of regex matcher pairs, one for the prev line, one for the current line
+        matchers = [
+          [/[a-z0-9]$/, /^\s*[a-z]/],  # line ends with and starst with lowercase
+          [/;$/, /^\s*(and|or)/],      # ends with ; then and/or on new line
+        ]
 
         prev = nil
         lines.each_with_index do |line, i|
@@ -144,8 +148,16 @@ module Slaw
             output << line
           else
             prev = output[-1]
+            unbreak = false
 
-            if line =~ start_re and prev =~ end_re
+            for prev_re, curr_re in matchers
+              if prev =~ prev_re and line =~ curr_re
+                unbreak = true
+                break
+              end
+            end
+
+            if unbreak
               output[-1] = prev + ' ' + line
             else
               output << line
