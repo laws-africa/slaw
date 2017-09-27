@@ -278,4 +278,31 @@ EOS
     end
   end
 
+  #-------------------------------------------------------------------------------
+  # images
+
+  describe 'images' do
+    it 'should handle a simple image' do
+      node = parse :block_paragraphs, <<EOS
+      Hello ![title](media/foo.png) friend.
+EOS
+      to_xml(node, "").should == '<paragraph id="paragraph-0">
+  <content>
+    <p>Hello <img src="media/foo.png" alt="title"/> friend.</p>
+  </content>
+</paragraph>'
+    end
+
+    it 'should work many on a line' do
+      node = parse :block_paragraphs, <<EOS
+      Hello ![title](media/foo.png) friend and ![](media/bar.png) a second.
+EOS
+      to_xml(node, "").should == '<paragraph id="paragraph-0">
+  <content>
+    <p>Hello <img src="media/foo.png" alt="title"/> friend and <img src="media/bar.png"/> a second.</p>
+  </content>
+</paragraph>'
+    end
+  end
+
 end

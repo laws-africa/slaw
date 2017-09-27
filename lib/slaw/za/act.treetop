@@ -210,13 +210,22 @@ module Slaw
 
       # one or more words, allowing inline elements
       rule clauses
-        (remark / ref / [^\n])+
+        (remark / image / ref / [^\n])+
         <Clauses>
       end
 
       rule remark
         '[[' content:(!']]' .)+ ']]'
         <Remark>
+      end
+
+      rule image
+        # images like markdown
+        # eg. ![title text](image url)
+        #
+        # the title text is optional, but the enclosing square brackets aren't
+        '![' content:(!'](' [^\n])* '](' href:([^)\n]+) ')'
+        <Image>
       end
 
       rule ref
