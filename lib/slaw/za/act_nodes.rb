@@ -312,6 +312,14 @@ module Slaw
         end
       end
 
+      class Image < Treetop::Runtime::SyntaxNode
+        def to_xml(b, idprefix)
+          attrs = {src: href.text_value}
+          attrs[:alt] = content.text_value unless content.text_value.empty?
+          b.img(attrs)
+        end
+      end
+
       class Ref < Treetop::Runtime::SyntaxNode
         def to_xml(b, idprefix)
           b.ref(content.text_value, href: href.text_value)
