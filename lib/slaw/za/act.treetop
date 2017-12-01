@@ -215,7 +215,7 @@ module Slaw
       end
 
       rule remark
-        '[[' content:(!']]' .)+ ']]'
+        '[[' content:(ref / (!']]' .))+ ']]'
         <Remark>
       end
 

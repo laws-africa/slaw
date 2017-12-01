@@ -308,7 +308,17 @@ module Slaw
 
       class Remark < Treetop::Runtime::SyntaxNode
         def to_xml(b, idprefix)
-          b.remark('[' + content.text_value + ']', status: 'editorial')
+          b.remark(status: 'editorial') do |b|
+            b << '['
+            for e in content.elements
+              if e.respond_to? :to_xml
+                e.to_xml(b, idprefix)
+              else
+                b << e.text_value
+              end
+            end
+            b << ']'
+          end
         end
       end
 

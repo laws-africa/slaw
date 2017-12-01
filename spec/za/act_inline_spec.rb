@@ -276,6 +276,21 @@ EOS
   </content>
 </paragraph>'
     end
+
+    it 'should handle a link in an inline remark' do
+      node = parse :block_paragraphs, <<EOS
+      This statement has [[a [link in](/foo/bar) a remark]]
+      This statement has [[[a link in](/foo/bar) a remark]]
+      This statement has [[a [link in a remark](/foo/bar)]]
+EOS
+      to_xml(node, "").should == '<paragraph id="paragraph-0">
+  <content>
+    <p>This statement has <remark status="editorial">[a <ref href="/foo/bar">link in</ref> a remark]</remark></p>
+    <p>This statement has <remark status="editorial">[<ref href="/foo/bar">a link in</ref> a remark]</remark></p>
+    <p>This statement has <remark status="editorial">[a <ref href="/foo/bar">link in a remark</ref>]</remark></p>
+  </content>
+</paragraph>'
+    end
   end
 
   #-------------------------------------------------------------------------------
