@@ -218,6 +218,10 @@ Akoma Ntoso `component` elements at the end of the XML document, with a name of 
 
 ## Changelog
 
+### 0.14.1
+
+* Support links in remarks
+
 ### 0.14.0
 
 * Support inline image tags, using Markdown syntax: \![alt text](image url)
