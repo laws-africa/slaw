@@ -11,6 +11,12 @@ describe Slaw::Parse::Cleanser do
     end
   end
 
+  describe '#expand_tabs' do
+    it 'should expand nbsp' do
+      subject.expand_tabs("foo \u00A0bar").should == "foo  bar"
+    end
+  end
+
   describe '#unbreak_lines' do
     it 'should unbreak simple lines' do
       subject.unbreak_lines("""

@@ -218,6 +218,10 @@ Akoma Ntoso `component` elements at the end of the XML document, with a name of 
 
 ## Changelog
 
+### 0.14.2
+
+* Convert non-breaking space (\xA0) to space
+
 ### 0.14.1
 
 * Support links in remarks

@@ -57,7 +57,8 @@ module Slaw
 
       # tabs to spaces
       def expand_tabs(s)
-        s.gsub(/\t/, ' ')
+        s.gsub(/\t/, ' ')\
+         .gsub("\u00A0", ' ') # non-breaking space
       end
 
       # Try to remove boilerplate lines found in many files, such as page numbers.
