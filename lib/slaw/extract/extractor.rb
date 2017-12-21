@@ -28,6 +28,8 @@ module Slaw
         case mimetype && mimetype.type
         when 'application/pdf'
           extract_from_pdf(filename)
+        when 'text/html', nil
+          extract_from_html(filename)
         when 'text/plain', nil
           extract_from_text(filename)
         else
@@ -78,6 +80,10 @@ module Slaw
         File.read(filename)
       end
 
+      def extract_from_html(filename)
+        html_to_text(File.read(filename))
+      end
+
       # Extract text from +filename+ by sending it to apache tika
       # http://tika.apache.org/
       def extract_via_tika(filename)
@@ -87,9 +93,19 @@ module Slaw
         require 'slaw/extract/yomu_patch'
         logger.info("Using Tika to get text from #{filename}. You need a JVM installed for this.")
 
-        text = Yomu.text_from_file(filename)
-        logger.info("Tika returned #{text.length} bytes")
-        text
+        html = Yomu.text_from_file(filename)
+        logger.info("Tika returned #{html.length} bytes")
+        # transform html into text
+        html_to_text(html)
+      end
+
+      def html_to_text(html)
+        here = File.dirname(__FILE__)
+        xslt = Nokogiri::XSLT(File.open(File.join([here, 'html_to_akn_text.xsl'])))
+
+        text = xslt.transform(Nokogiri::HTML(html)).to_s
+        # remove XML encoding at top
+        text.sub(/^<\?xml [^>]*>/, '')
       end
 
       def remove_pdf_password(filename)
