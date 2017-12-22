@@ -28,17 +28,8 @@
 
   <xsl:template match="table">
     <xsl:text>{| </xsl:text>
-
-    <!-- attributes -->
-    <xsl:for-each select="@*[local-name()!='id']">
-      <xsl:value-of select="local-name(.)" />
-      <xsl:text>="</xsl:text>
-      <xsl:value-of select="." />
-      <xsl:text>" </xsl:text>
-    </xsl:for-each>
     <xsl:text>
 |-</xsl:text>
-
     <xsl:apply-templates />
     <xsl:text>
 |}
@@ -65,8 +56,8 @@
     </xsl:choose>
 
     <!-- attributes -->
-    <xsl:if test="@*">
-      <xsl:for-each select="@*">
+    <xsl:if test="@rowspan|@colspan">
+      <xsl:for-each select="@rowspan|@colspan">
         <xsl:value-of select="local-name(.)" />
         <xsl:text>="</xsl:text>
         <xsl:value-of select="." />
