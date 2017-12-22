@@ -218,6 +218,10 @@ Akoma Ntoso `component` elements at the end of the XML document, with a name of 
 
 ## Changelog
 
+### 0.15.1
+
+* Ignore non-AKN compatible table attributes
+
 ### 0.15.0
 
 * Support tables in many non-PDF documents (eg. Word documents) by converting to HTML and then to Akoma Ntoso
