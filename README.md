@@ -28,10 +28,10 @@ Or install it with:
 
     $ gem install slaw
 
-To run PDF extraction you will also need [xpdf](http://www.foolabs.com/xpdf/) and
+To run PDF extraction you will also need [poppler's pdftotext](https://poppler.freedesktop.org/).
 If you're on a Mac, you can use:
 
-    $ brew install xpdf
+    $ brew install poppler
 
 You may also need Ghostscript to remove password protection from PDF files. This is
 installed by default on most systems (including Mac). On Ubuntu you can use:

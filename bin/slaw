@@ -22,6 +22,7 @@ class SlawCLI < Thor
   option :id_prefix, type: :string, desc: "Prefix to be used when generating ID elements when parsing a fragment."
   option :section_number_position, enum: ['before-title', 'after-title', 'guess'], desc: "Where do section titles come in relation to the section number? Default: before-title"
   option :reformat, type: :boolean, desc: "Reformat common formatting issues to make grammar matching better. Default: true for PDF files, false otherwise"
+  option :crop, type: :string, desc: "Crop box for PDF files, as 'left,top,width,height'."
   def parse(name)
     logging
 
@@ -31,6 +32,13 @@ class SlawCLI < Thor
 
     Slaw::Extract::Extractor.pdftotext_path = options[:pdftotext] if options[:pdftotext]
     extractor = Slaw::Extract::Extractor.new
+
+    if options[:crop]
+      extractor.cropbox = options[:crop].split(',').map(&:to_i)
+      if extractor.cropbox.length != 4
+        raise Thor::Error.new("--crop requires four comma-separated integers")
+      end
+    end
 
     case options[:input]
     when 'pdf'

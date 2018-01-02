@@ -17,6 +17,8 @@ module Slaw
 
       @@pdftotext_path = "pdftotext"
 
+      attr_accessor :cropbox
+
       # Extract text from a file.
       #
       # @param filename [String] filename to extract from
@@ -73,7 +75,14 @@ module Slaw
       #
       # @return [Array<String>] command and params to execute
       def pdf_to_text_cmd(filename)
-        [Extractor.pdftotext_path, "-enc", "UTF-8", filename, "-"]
+        cmd = [Extractor.pdftotext_path, "-enc", "UTF-8", "-nopgbrk"]
+
+        if @cropbox
+          # left, top, width, height
+          cmd += "-x -y -W -H".split.zip(@cropbox.map(&:to_s)).flatten
+        end
+
+        cmd + [filename, "-"]
       end
 
       def extract_from_text(filename)
