@@ -218,6 +218,10 @@ Akoma Ntoso `component` elements at the end of the XML document, with a name of 
 
 ## Changelog
 
+### 0.16.0
+
+* Support --crop for PDFs. Requires [poppler](https://poppler.freedesktop.org/) pdftotex, not xpdf.
+
 ### 0.15.2
 
 * Update nokogiri to ~> 1.8.1
