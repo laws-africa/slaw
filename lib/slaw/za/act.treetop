@@ -171,17 +171,39 @@ module Slaw
         ('(' letter_ordinal ')') / dotted_number_3
       end
 
+      ##########
+      # wikimedia-style tables
+
       rule table
-        space? table_start eol? (!table_end content eol)* table_end eol
+        space? table_start table_row? table_body table_end
         <Table>
       end
 
       rule table_start
-        space? '{|'
+        '{|' style:table_style? eol
       end
 
       rule table_end
-        space? '|}'
+        '|}' eol
+      end
+
+      rule table_body
+        (table_cell / table_row)*
+      end
+
+      rule table_row
+        '|-' '-'* style:table_style? eol
+      end
+
+      rule table_cell
+        ('|' / '!') style:table_style? clauses  /
+      end
+
+      rule table_style
+        attrs:(space? [a-z-_]* '=' (
+                                    ('"' (!'"' .)* '"') /
+                                    ("'" (!"'" .)* "'"))
+              )* space? '|'
       end
 
       ##########
