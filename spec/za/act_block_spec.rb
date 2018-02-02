@@ -1894,7 +1894,7 @@ EOS
     it 'should parse basic tables' do
       node = parse :table, <<EOS
 {|
-| r1c1
+! r1c1
 | r1c2
 |-
 | r2c1
@@ -1902,10 +1902,27 @@ EOS
 |}
 EOS
 
-      node.text_value.should == "{|\n| r1c1\n| r1c2\n|-\n| r2c1\n| r2c2\n|}\n"
-      to_xml(node, "prefix.").should == '<table id="prefix.table0"><tr><td><p>r1c1</p></td>
+      to_xml(node, "prefix.").should == '<table id="prefix.table0"><tr><th><p>r1c1</p></th>
 <td><p>r1c2</p></td></tr>
 <tr><td><p>r2c1</p></td>
+<td><p>r2c2</p></td></tr></table>'
+    end
+
+    it 'should parse table attributes' do
+      node = parse :table, <<EOS
+{|
+| colspan="2" | r1c1
+|  rowspan="1"  colspan="3" | r1c2
+|-
+|a="b"| r2c1
+|a="b"c="d"  | r2c2
+|}
+EOS
+
+      # node.table_body.elements[0].attribs.attribs.elements[0].name.should == ''
+      to_xml(node, "prefix.").should == '<table id="prefix.table0"><tr><td><p>r1c1</p></td>
+<td colspan="2"><p>r1c2</p></td></tr>
+<tr><td rowspan="1" colspan="3"><p>r2c1</p></td>
 <td><p>r2c2</p></td></tr></table>'
     end
 
@@ -2059,6 +2076,27 @@ EOS
       <tr>
         <td>
           <p>foo</p>
+        </td>
+      </tr>
+    </table>
+  </content>
+</subsection>'
+    end
+
+    it 'should allow links in a table' do
+      node = parse :table, <<EOS
+{|
+| a [link](/a/b) in a table
+|}
+EOS
+
+      to_xml(node, '', 0).should == '<subsection id="1">
+  <num>(1)</num>
+  <content>
+    <table id="1.table0">
+      <tr>
+        <td>
+          <p>a <a href="/a/b">link</a> in a table</p>
         </td>
       </tr>
     </table>

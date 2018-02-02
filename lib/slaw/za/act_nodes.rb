@@ -370,6 +370,36 @@ module Slaw
         def to_xml(b, idprefix, i=0)
           # parse the table using wikicloth
           # strip whitespace at the start of lines, to avoid wikicloth from treating it as PRE
+
+          b.table(id: "#{idprefix}table#{i}") { |b|
+            # we'll gather cells into this row list
+            rows = []
+            cells = []
+
+            for child in table_body.elements
+              if child.is_a? TableCell
+                # cell
+                cells << child
+              else
+                # new row marker
+                rows << cells unless cells.empty?
+                cells = []
+              end
+            end
+            rows << cells unless cells.empty?
+
+            for row in rows
+              b.tr { |tr|
+                for cell in row
+                  cell.to_xml(tr, "")
+                end
+              }
+            end
+          }
+
+          return
+
+
           text = self.text_value.strip.gsub(/^[ \t]+/, '')
           html = WikiCloth::Parser.new({data: text}).to_html
 
@@ -401,6 +431,24 @@ module Slaw
           table.xpath('//text()[last()]').each{ |t| t.content = t.content.rstrip }
 
           b.parent << table
+        end
+      end
+
+      class TableCell < Treetop::Runtime::SyntaxNode
+        def to_xml(b, idprefix)
+          tag = text_value[0] == '!' ? 'th' : 'td'
+
+          attrs = {}
+          if not attribs.empty?
+            for item in attribs.attribs.elements
+              # key=value (strip quotes around value)
+              attrs[item.name.text_value.strip] = item.value.text_value[1..-2]
+            end
+          end
+
+          b.send(tag.to_sym) { |b|
+            b.p(content.text_value.strip, attrs)
+          }
         end
       end
 

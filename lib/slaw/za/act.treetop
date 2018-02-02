@@ -175,16 +175,10 @@ module Slaw
       # wikimedia-style tables
 
       rule table
-        space? table_start table_row? table_body table_end
-        <Table>
-      end
-
-      rule table_start
-        '{|' style:table_style? eol
-      end
-
-      rule table_end
+        space? '{|' eol
+        table_body
         '|}' eol
+        <Table>
       end
 
       rule table_body
@@ -192,18 +186,29 @@ module Slaw
       end
 
       rule table_row
-        '|-' '-'* style:table_style? eol
+        '|-' eol
       end
 
       rule table_cell
-        ('|' / '!') style:table_style? clauses  /
+        # TODO: arbitrary content in cells, including newlines
+        [!|] attribs:table_attribs? content:(space [^\n]+) eol
+        # inlines:table_inline_cell*
+        <TableCell>
       end
 
-      rule table_style
-        attrs:(space? [a-z-_]* '=' (
-                                    ('"' (!'"' .)* '"') /
-                                    ("'" (!"'" .)* "'"))
-              )* space? '|'
+      rule table_inline_cell
+        ('||' / '!!') clauses
+      end
+
+      rule table_attribs
+        space? attribs:(table_attrib+) space? '|'
+      end
+
+      rule table_attrib
+        name:([a-z_-]+) '=' value:(
+                                   ('"' (!'"' .)* '"') /
+                                   ("'" (!"'" .)* "'"))
+        space?
       end
 
       ##########
