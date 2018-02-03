@@ -1,5 +1,3 @@
-require 'wikicloth'
-
 module Slaw
   module ZA
     module Act
@@ -368,9 +366,6 @@ module Slaw
 
       class Table < Treetop::Runtime::SyntaxNode
         def to_xml(b, idprefix, i=0)
-          # parse the table using wikicloth
-          # strip whitespace at the start of lines, to avoid wikicloth from treating it as PRE
-
           b.table(id: "#{idprefix}table#{i}") { |b|
             # we'll gather cells into this row list
             rows = []
@@ -396,41 +391,6 @@ module Slaw
               }
             end
           }
-
-          return
-
-
-          text = self.text_value.strip.gsub(/^[ \t]+/, '')
-          html = WikiCloth::Parser.new({data: text}).to_html
-
-          # we need to strip any surrounding p tags and add
-          # an id to the table
-          html = Nokogiri::HTML(html)
-          table = html.css("table").first
-          table['id'] = "#{idprefix}table#{i}"
-
-          # wrap td and th content in p tags
-          table.css("td, th").each do |cell|
-            p = Nokogiri::XML::Node.new("p", html)
-            p.children = cell.children
-            p.parent = cell
-
-            # replace newlines with <eol>
-            p.search("text()").each do |text|
-              lines = text.content.strip.split(/\n/)
-              text.content = lines.shift
-
-              for line in lines
-                eol = text.add_next_sibling(Nokogiri::XML::Node.new("eol", html))
-                text = eol.add_next_sibling(Nokogiri::XML::Text.new(line, html))
-              end
-            end
-          end
-
-          table.xpath('//text()[1]').each{ |t|      t.content = t.content.lstrip }
-          table.xpath('//text()[last()]').each{ |t| t.content = t.content.rstrip }
-
-          b.parent << table
         end
       end
 
