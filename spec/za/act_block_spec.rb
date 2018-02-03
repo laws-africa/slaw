@@ -1902,28 +1902,89 @@ EOS
 |}
 EOS
 
-      to_xml(node, "prefix.").should == '<table id="prefix.table0"><tr><th><p>r1c1</p></th>
-<td><p>r1c2</p></td></tr>
-<tr><td><p>r2c1</p></td>
-<td><p>r2c2</p></td></tr></table>'
+      to_xml(node, "prefix.").should == '<table id="prefix.table0">
+  <tr>
+    <th>
+      <p>r1c1</p>
+    </th>
+    <td>
+      <p>r1c2</p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p>r2c1</p>
+    </td>
+    <td>
+      <p>r2c2</p>
+    </td>
+  </tr>
+</table>'
+    end
+
+    it 'should handle tables with empty cells' do
+      node = parse :table, <<EOS
+{|
+!
+|
+|-
+|
+
+| 
+|-
+|-
+|}
+EOS
+
+      to_xml(node, "prefix.").should == '<table id="prefix.table0">
+  <tr>
+    <th>
+      <p/>
+    </th>
+    <td>
+      <p/>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p/>
+    </td>
+    <td>
+      <p/>
+    </td>
+  </tr>
+</table>'
     end
 
     it 'should parse table attributes' do
       node = parse :table, <<EOS
 {|
 | colspan="2" | r1c1
-|  rowspan="1"  colspan="3" | r1c2
+|  rowspan="1"  colspan='3' | r1c2
 |-
 |a="b"| r2c1
 |a="b"c="d"  | r2c2
 |}
 EOS
 
-      # node.table_body.elements[0].attribs.attribs.elements[0].name.should == ''
-      to_xml(node, "prefix.").should == '<table id="prefix.table0"><tr><td><p>r1c1</p></td>
-<td colspan="2"><p>r1c2</p></td></tr>
-<tr><td rowspan="1" colspan="3"><p>r2c1</p></td>
-<td><p>r2c2</p></td></tr></table>'
+      to_xml(node, "prefix.").should == '<table id="prefix.table0">
+  <tr>
+    <td colspan="2">
+      <p>r1c1</p>
+    </td>
+    <td rowspan="1" colspan="3">
+      <p>r1c2</p>
+    </td>
+  </tr>
+  <tr>
+    <td a="b">
+      <p>r2c1</p>
+    </td>
+    <td a="b" c="d">
+      <p>r2c2</p>
+    </td>
+  </tr>
+</table>'
     end
 
     it 'should allow newlines in table cells' do
@@ -1946,9 +2007,17 @@ two
 EOS
 
       to_xml(node, "prefix.").should == '<table id="prefix.table0">
-  <tr><td><p>foo<eol/>bar<eol/><eol/>baz</p></td>
-<td><p>one<eol/>two<eol/><eol/>three</p></td>
-<td><p>four</p></td></tr>
+  <tr>
+    <td>
+      <p>foo<eol/>bar<eol/><eol/>baz</p>
+    </td>
+    <td>
+      <p>one<eol/>two<eol/><eol/>three</p>
+    </td>
+    <td>
+      <p>four</p>
+    </td>
+  </tr>
 </table>'
     end
 
@@ -1974,10 +2043,24 @@ EOS
   <paragraph id="section-10.paragraph-0">
     <content>
       <p>Heres a table:</p>
-      <table id="section-10.paragraph-0.table1"><tr><td><p>r1c1</p></td>
-<td><p>r1c2</p></td></tr>
-<tr><td><p>r2c1</p></td>
-<td><p>r2c2</p></td></tr></table>
+      <table id="section-10.paragraph-0.table1">
+        <tr>
+          <td>
+            <p>r1c1</p>
+          </td>
+          <td>
+            <p>r1c2</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p>r2c1</p>
+          </td>
+          <td>
+            <p>r2c2</p>
+          </td>
+        </tr>
+      </table>
     </content>
   </paragraph>
 </section>'
@@ -2032,10 +2115,24 @@ EOS
         <paragraph id="schedule1.paragraph-0">
           <content>
             <p>Heres a table:</p>
-            <table id="schedule1.paragraph-0.table1"><tr><td><p>r1c1</p></td>
-<td><p>r1c2</p></td></tr>
-<tr><td><p>r2c1</p></td>
-<td><p>r2c2</p></td></tr></table>
+            <table id="schedule1.paragraph-0.table1">
+              <tr>
+                <td>
+                  <p>r1c1</p>
+                </td>
+                <td>
+                  <p>r1c2</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>r2c1</p>
+                </td>
+                <td>
+                  <p>r2c2</p>
+                </td>
+              </tr>
+            </table>
           </content>
         </paragraph>
       </article>
@@ -2090,18 +2187,13 @@ EOS
 |}
 EOS
 
-      to_xml(node, '', 0).should == '<subsection id="1">
-  <num>(1)</num>
-  <content>
-    <table id="1.table0">
-      <tr>
-        <td>
-          <p>a <a href="/a/b">link</a> in a table</p>
-        </td>
-      </tr>
-    </table>
-  </content>
-</subsection>'
+      to_xml(node, '', 0).should == '<table id="table0">
+  <tr>
+    <td>
+      <p>a <ref href="/a/b">link</ref> in a table</p>
+    </td>
+  </tr>
+</table>'
     end
   end
 

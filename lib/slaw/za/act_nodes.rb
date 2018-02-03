@@ -446,9 +446,30 @@ module Slaw
             end
           end
 
-          b.send(tag.to_sym) { |b|
-            b.p(content.text_value.strip, attrs)
+          b.send(tag.to_sym, attrs) { |b|
+            b.p { |b|
+              # first line, and the rest
+              lines = [content.line] + content.elements.last.elements.map(&:line)
+
+              lines.each_with_index do |line, i|
+                line.to_xml(b, i, i == lines.length-1)
+              end
+            }
           }
+        end
+      end
+
+      class TableLine < Treetop::Runtime::SyntaxNode
+        # line of table content
+        def to_xml(b, i, tail)
+          clauses.to_xml(b) unless clauses.empty?
+
+          # add trailing newlines.
+          #   for the first line, eat whitespace at the start
+          #   for the last line, eat whitespace at the end
+          if not tail and (i > 0 or not clauses.empty?)
+            eol.text_value.count("\n").times { b.eol }
+          end
         end
       end
 

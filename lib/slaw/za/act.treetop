@@ -182,26 +182,29 @@ module Slaw
       end
 
       rule table_body
-        (table_cell / table_row)*
+        (table_row / table_cell)*
       end
 
       rule table_row
-        '|-' eol
+        '|-' space? eol
       end
 
       rule table_cell
-        # TODO: arbitrary content in cells, including newlines
-        [!|] attribs:table_attribs? content:(space [^\n]+) eol
-        # inlines:table_inline_cell*
+        # don't match end-of-table
+        !'|}'
+        [!|] attribs:table_attribs? space?
+        # first content line, then multiple lines
+        content:(line:table_line (![!|] space? line:table_line)*)
         <TableCell>
       end
 
-      rule table_inline_cell
-        ('||' / '!!') clauses
+      rule table_line
+        clauses:clauses? eol
+        <TableLine>
       end
 
       rule table_attribs
-        space? attribs:(table_attrib+) space? '|'
+        space? attribs:(table_attrib+) '|'
       end
 
       rule table_attrib
