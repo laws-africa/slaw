@@ -321,6 +321,8 @@ EOS
       node = parse :table, <<EOS
 {|
 | a [link](/a/b) in a table
+| [link](/a/b) and
+[[comment]]
 |}
 EOS
 
@@ -328,6 +330,9 @@ EOS
   <tr>
     <td>
       <p>a <ref href="/a/b">link</ref> in a table</p>
+    </td>
+    <td>
+      <p><ref href="/a/b">link</ref> and<eol/><remark status="editorial">[comment]</remark></p>
     </td>
   </tr>
 </table>'
