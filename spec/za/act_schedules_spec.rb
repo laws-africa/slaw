@@ -1,7 +1,5 @@
 # encoding: UTF-8
 
-require 'builder'
-
 require 'slaw'
 
 describe Slaw::ActGenerator do
