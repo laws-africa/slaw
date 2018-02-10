@@ -68,6 +68,21 @@ module Slaw
         postprocess(parse_xml(parse_text(text, parse_options)))
       end
 
+      # Pre-process text just before parsing it using the grammar.
+      #
+      # @param text [String] the text to preprocess
+      # @return [String] text ready to parse
+      def preprocess(text)
+        # our grammar doesn't handle inline table cells; instead, we break
+        # inline cells into block-style cells
+
+        # first, find all the tables
+        text.gsub(/{\|(?!\|}).*?\|}/m) do |table|
+          # on each table line, split inline cells into block cells
+          table.split("\n").map { |line| line.gsub(/(\|\||!!)/) { |m| "\n" + m[0]} }.join("\n")
+        end
+      end
+
       # Parse text into XML. You should still run {#postprocess} on the
       # resulting XML to normalise it.
       #
@@ -76,6 +91,7 @@ module Slaw
       #
       # @return [String] an XML string
       def parse_text(text, parse_options={})
+        text = preprocess(text)
         tree = text_to_syntax_tree(text, parse_options)
         xml_from_syntax_tree(tree)
       end

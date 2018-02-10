@@ -173,6 +173,10 @@ module Slaw
 
       ##########
       # wikimedia-style tables
+      #
+      # this grammar doesn't support inline table cells (eg: | col1 || col2 || col3)
+      # instead, the builder preprocesses tables to break inline cells onto their own
+      # lines, which we do support.
 
       rule table
         space? '{|' eol

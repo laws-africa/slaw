@@ -800,4 +800,44 @@ XML
       )
     end
   end
+
+  describe '#preprocess' do
+    it 'should split inline table cells into block table cells' do
+      text = <<EOS
+foo
+| bar || baz
+
+{|
+| boom || one !! two
+|-
+| three
+|}
+
+xxx
+
+{|
+| colspan="2" | bar || baz
+|}
+EOS
+      subject.preprocess(text).should == <<EOS
+foo
+| bar || baz
+
+{|
+| boom 
+| one 
+! two
+|-
+| three
+|}
+
+xxx
+
+{|
+| colspan="2" | bar 
+| baz
+|}
+EOS
+    end
+  end
 end
