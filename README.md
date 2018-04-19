@@ -218,6 +218,10 @@ Akoma Ntoso `component` elements at the end of the XML document, with a name of 
 
 ## Changelog
 
+### 0.17.1
+
+* Match defined terms in 'definition' section.
+
 ### 0.17.0
 
 * Support links and images inside tables, by parsing tables natively.
