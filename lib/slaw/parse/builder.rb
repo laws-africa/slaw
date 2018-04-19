@@ -266,7 +266,7 @@ module Slaw
         doc.xpath('//a:section', a: NS).select do |section|
           # sections with headings like Definitions
           heading = section.at_xpath('a:heading', a: NS)
-          heading && heading.content =~ /definitions|interpretation/i
+          heading && heading.content =~ /definition|interpretation/i
         end.each do |section|
           # find items like "foo" means blah...
           
