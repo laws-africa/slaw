@@ -218,9 +218,10 @@ Akoma Ntoso `component` elements at the end of the XML document, with a name of 
 
 ## Changelog
 
-### 0.17.1
+### 0.17.2
 
 * Match defined terms in 'definition' section.
+* Updated nokogiri dependency to 1.8.2
 
 ### 0.17.0
 
