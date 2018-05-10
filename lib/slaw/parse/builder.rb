@@ -23,10 +23,11 @@ module Slaw
       include Slaw::Namespace
       include Slaw::Logging
 
-      @@parsers = {}
-
       # Additional hash of options to be provided to the parser when parsing.
       attr_accessor :parse_options
+
+      # The parser to use
+      attr_accessor :parser
 
       # Prefix to use when generating IDs for fragments
       attr_accessor :fragment_id_prefix
@@ -36,26 +37,10 @@ module Slaw
       # Specify either `:parser` or `:grammar_file` and `:grammar_class`.
       #
       # @option opts [Treetop::Runtime::CompiledParser] :parser parser to use
-      # @option opts [String] :grammar_file grammar filename to load a parser from
-      # @option opts [String] :grammar_class name of the class that the grammar will generate
+      # @option opts Hash :parse_options options to parse to the parser
       def initialize(opts={})
-        if opts[:parser]
-          @parser = opts[:parser]
-        elsif opts[:grammar_file] and opts[:grammar_class]
-          if @@parsers[opts[:grammar_class]]
-            # already compiled the grammar, just use it
-            @parser = @@parsers[opts[:grammar_class]]
-          else
-            # load the grammar
-            Treetop.load(opts[:grammar_file])
-            cls = eval(opts[:grammar_class])
-            @parser = cls.new
-          end
-        else
-          raise ArgumentError.new("Specify either :parser or :grammar_file and :grammar_class")
-        end
-
-        @parse_options = {}
+        @parser = opts[:parser]
+        @parse_options = opts[:parse_optiosn] || {}
       end
 
       # Do all the work necessary to parse text into a well-formed XML document.

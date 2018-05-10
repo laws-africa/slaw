@@ -3,6 +3,8 @@
 require 'slaw'
 
 describe Slaw::ActGenerator do
+  subject { Slaw::ActGenerator.new('za') }
+
   def parse(rule, s)
     subject.builder.text_to_syntax_tree(s, {root: rule})
   end
@@ -1897,12 +1899,12 @@ EOS
     it 'should handle a clause with a remark' do
       node = parse :clauses, "simple [[remark]]. text"
       node.text_value.should == "simple [[remark]]. text"
-      node.elements[7].is_a?(Slaw::ZA::Act::Remark).should be_true
+      node.elements[7].is_a?(Slaw::Grammars::ZA::Act::Remark).should be_true
 
       node = parse :clauses, "simple [[remark]][[another]] text"
       node.text_value.should == "simple [[remark]][[another]] text"
-      node.elements[7].is_a?(Slaw::ZA::Act::Remark).should be_true
-      node.elements[7].is_a?(Slaw::ZA::Act::Remark).should be_true
+      node.elements[7].is_a?(Slaw::Grammars::ZA::Act::Remark).should be_true
+      node.elements[7].is_a?(Slaw::Grammars::ZA::Act::Remark).should be_true
     end
   end
 end

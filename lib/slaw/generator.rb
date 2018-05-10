@@ -1,8 +1,6 @@
 module Slaw
   # Base class for generating Act documents
   class ActGenerator
-    Treetop.load(File.dirname(__FILE__) + "/za/act.treetop")
-
     # [Treetop::Runtime::CompiledParser] compiled parser
     attr_accessor :parser
 
@@ -12,11 +10,29 @@ module Slaw
     # The type that will hold the generated document
     attr_accessor :document_class
 
-    def initialize
-      @parser = Slaw::ZA::ActParser.new
+    @@parsers = {}
+
+    def initialize(grammar)
+      @grammar = grammar
+
+      @parser = build_parser
       @builder = Slaw::Parse::Builder.new(parser: @parser)
+      @parser = @builder.parser
       @cleanser = Slaw::Parse::Cleanser.new
       @document_class = Slaw::Act
+    end
+
+    def build_parser
+      unless @@parsers[@grammar]
+        # load the grammar
+        grammar_file = File.dirname(__FILE__) + "/grammars/#{@grammar}/act.treetop"
+        Treetop.load(grammar_file)
+
+        grammar_class = "Slaw::Grammars::#{@grammar.upcase}::ActParser"
+        @@parsers[@grammar] = eval(grammar_class)
+      end
+
+      @parser = @@parsers[@grammar].new
     end
 
     # Generate a Slaw::Act instance from plain text.
@@ -66,8 +82,7 @@ module Slaw
     # Transform an Akoma Ntoso XML document back into a plain-text version
     # suitable for re-parsing back into XML with no loss of structure.
     def text_from_act(doc)
-      here = File.dirname(__FILE__)
-      xslt = Nokogiri::XSLT(File.read(File.join([here, 'za/act_text.xsl'])))
+      xslt = Nokogiri::XSLT(File.read(File.join([File.dirname(__FILE__), "grammars/#{@grammar}/act_text.xsl"])))
       xslt.transform(doc).child.to_xml
     end
   end
