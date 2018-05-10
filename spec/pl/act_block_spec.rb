@@ -266,6 +266,36 @@ EOS
 </section>'
     end
 
+    it 'should handle section with numbered paras' do
+      node = parse :section, <<EOS
+§ 55. 1. Każdą samodzielną myśl ujmuje się w odrębny artykuł.
+2. Artykuł powinien być w miarę możliwości jednozdaniowy.
+3. Jeżeli samodzielną myśl wyraża zespół zdań, dokonuje się podziału artykułu na ustępy. W ustawie określanej jako "kodeks" ustępy oznacza się paragrafami (§).
+EOS
+
+      to_xml(node).should == '<section id="section-55">
+  <num>55.</num>
+  <paragraph id="section-55.paragraph-1">
+    <num>1.</num>
+    <content>
+      <p>Każdą samodzielną myśl ujmuje się w odrębny artykuł.</p>
+    </content>
+  </paragraph>
+  <paragraph id="section-55.paragraph-2">
+    <num>2.</num>
+    <content>
+      <p>Artykuł powinien być w miarę możliwości jednozdaniowy.</p>
+    </content>
+  </paragraph>
+  <paragraph id="section-55.paragraph-3">
+    <num>3.</num>
+    <content>
+      <p>Jeżeli samodzielną myśl wyraża zespół zdań, dokonuje się podziału artykułu na ustępy. W ustawie określanej jako "kodeks" ustępy oznacza się paragrafami (§).</p>
+    </content>
+  </paragraph>
+</section>'
+    end
+
     it 'should handle section with intro, para and points' do
       node = parse :section, <<EOS
 § 54. Podstawową jednostką redakcyjną ustawy jest artykuł.

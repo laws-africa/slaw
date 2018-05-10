@@ -56,7 +56,7 @@ module Slaw
         rule section
           # § 55. foo
           section_prefix whitespace
-          intro:inline_block_element?
+          intro:block_element?
           eol?
           children:(paragraph / point / block_paragraphs)* <Section>
         end
@@ -65,7 +65,7 @@ module Slaw
           # ustęp:
           #  34. ...
           paragraph_prefix space?
-          intro:inline_block_element?
+          intro:block_element?
           eol?
           children:(point / block_paragraphs)* <Paragraph>
         end
@@ -73,7 +73,7 @@ module Slaw
         rule point
           # 12a) aoeuaoeu
           point_prefix whitespace
-          intro:inline_block_element?
+          intro:block_element?
           eol?
           children:block_paragraphs* <Point>
         end
@@ -97,6 +97,14 @@ module Slaw
         # 
         # these are used externally and provide support when parsing just
         # a particular portion of a document
+
+        rule divisions
+          children:division+ <GroupNode>
+        end
+
+        rule subdivisions
+          children:subdivision+ <GroupNode>
+        end
 
         rule chapters
           children:chapter+ <GroupNode>
@@ -221,12 +229,12 @@ module Slaw
         # and is ignored. This allows escaping of section headings, etc.
 
         rule naked_statement
-          space? !(chapter_heading / section_prefix / schedule_title / paragraph_prefix / point_prefix) '\\'? clauses eol
+          space? !(division_heading / subdivision_heading / chapter_heading / section_prefix / schedule_title / paragraph_prefix / point_prefix) '\\'? clauses eol
           <NakedStatement>
         end
 
         rule pre_body_statement
-          space? !(chapter_heading / section_prefix / schedule_title) '\\'? clauses eol
+          space? !(division_heading / subdivision_heading / chapter_heading / section_prefix / schedule_title) '\\'? clauses eol
           <NakedStatement>
         end
 
