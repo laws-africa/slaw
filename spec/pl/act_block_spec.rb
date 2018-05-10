@@ -54,9 +54,8 @@ Podstawową jednostką redakcyjną ustawy jest artykuł.
 
 1. W obrębie artykułu (ustępu) zawierającego wyliczenie wyróżnia się dwie części: wprowadzenie do wyliczenia oraz punkty. Wyliczenie może kończyć się częścią wspólną, odnoszącą się do wszystkich punktów. Po części wspólnej nie dodaje się kolejnej samodzielnej myśli; w razie potrzeby formułuje się ją w kolejnym ustępie.
 2. W obrębie punktów można dokonać dalszego wyliczenia, wprowadzając litery.
-3. W obrębie liter można dokonać kolejnego wyliczenia, wprowadzając tiret.
-4. W obrębie tiret można dokonać kolejnego wyliczenia, wprowadzając podwójne tiret.
 EOS
+
       to_xml(node).should == '<body>
   <paragraph id="paragraph-0">
     <content>
@@ -85,6 +84,24 @@ EOS
           <p>Każdą samodzielną myśl ujmuje się w odrębny artykuł.</p>
         </content>
       </paragraph>
+      <paragraph id="section-55.paragraph-2">
+        <num>2.</num>
+        <content>
+          <p>Artykuł powinien być w miarę możliwości jednozdaniowy.</p>
+        </content>
+      </paragraph>
+      <paragraph id="section-55.paragraph-3">
+        <num>3.</num>
+        <content>
+          <p>Jeżeli samodzielną myśl wyraża zespół zdań, dokonuje się podziału artykułu na ustępy. W ustawie określanej jako "kodeks" ustępy oznacza się paragrafami (§).</p>
+        </content>
+      </paragraph>
+      <paragraph id="section-55.paragraph-4">
+        <num>4.</num>
+        <content>
+          <p>Podział artykułu na ustępy wprowadza się także w przypadku, gdy między zdaniami wyrażającymi samodzielne myśli występują powiązania treściowe, ale treść żadnego z nich nie jest na tyle istotna, aby wydzielić ją w odrębny artykuł.</p>
+        </content>
+      </paragraph>
     </section>
     <section id="section-56">
       <num>56.</num>
@@ -92,7 +109,13 @@ EOS
       <paragraph id="section-56.paragraph-1">
         <num>1.</num>
         <content>
-          <p>Każdą samodzielną myśl ujmuje się w odrębny artykuł.</p>
+          <p>W obrębie artykułu (ustępu) zawierającego wyliczenie wyróżnia się dwie części: wprowadzenie do wyliczenia oraz punkty. Wyliczenie może kończyć się częścią wspólną, odnoszącą się do wszystkich punktów. Po części wspólnej nie dodaje się kolejnej samodzielnej myśli; w razie potrzeby formułuje się ją w kolejnym ustępie.</p>
+        </content>
+      </paragraph>
+      <paragraph id="section-56.paragraph-2">
+        <num>2.</num>
+        <content>
+          <p>W obrębie punktów można dokonać dalszego wyliczenia, wprowadzając litery.</p>
         </content>
       </paragraph>
     </section>
@@ -100,4 +123,97 @@ EOS
 </body>'
     end
   end
+
+  describe 'paragraph' do
+    it 'should handle simple para' do
+      node = parse :paragraph, <<EOS
+1. Każdą samodzielną myśl ujmuje się w odrębny artykuł.
+EOS
+
+      to_xml(node).should == '<paragraph id="paragraph-1">
+  <num>1.</num>
+  <content>
+    <p>Każdą samodzielną myśl ujmuje się w odrębny artykuł.</p>
+  </content>
+</paragraph>'
+    end
+
+    it 'should handle an empty para' do
+      node = parse :paragraph, <<EOS
+1.
+EOS
+
+      to_xml(node).should == '<paragraph id="paragraph-1">
+  <num>1.</num>
+  <content>
+    <p/>
+  </content>
+</paragraph>'
+    end
+  end
+
+  #-------------------------------------------------------------------------------
+  # Divisions
+
+  describe 'divisions' do
+    it 'should handle divisions' do
+      node = parse :division, <<EOS
+DZIAŁ I
+Projekt ustawy
+
+Rozdział 7. Oznaczanie przepisów ustawy i ich systematyzacja
+
+§ 54. Pojęcie artykułu
+
+Podstawową jednostką redakcyjną ustawy jest artykuł.
+EOS
+      to_xml(node).should == '<division id="division-I">
+  <num>I</num>
+  <heading>Projekt ustawy</heading>
+  <chapter id="chapter-7">
+    <num>7</num>
+    <heading>Oznaczanie przepisów ustawy i ich systematyzacja</heading>
+    <section id="section-54">
+      <num>54.</num>
+      <heading>Pojęcie artykułu</heading>
+      <paragraph id="section-54.paragraph-0">
+        <content>
+          <p>Podstawową jednostką redakcyjną ustawy jest artykuł.</p>
+        </content>
+      </paragraph>
+    </section>
+  </chapter>
+</division>'
+    end
+  end
+
+  #-------------------------------------------------------------------------------
+  # Divisions
+
+  describe 'subdivisions' do
+    it 'should handle divisions' do
+      node = parse :subdivision, <<EOS
+ODDZIAŁ I
+Projekt ustawy
+
+§ 54. Pojęcie artykułu
+
+Podstawową jednostką redakcyjną ustawy jest artykuł.
+EOS
+      to_xml(node).should == '<subdivision id="subdivision-I">
+  <num>I</num>
+  <heading>Projekt ustawy</heading>
+  <section id="section-54">
+    <num>54.</num>
+    <heading>Pojęcie artykułu</heading>
+    <paragraph id="section-54.paragraph-0">
+      <content>
+        <p>Podstawową jednostką redakcyjną ustawy jest artykuł.</p>
+      </content>
+    </paragraph>
+  </section>
+</subdivision>'
+    end
+  end
+
 end

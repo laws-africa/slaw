@@ -135,9 +135,9 @@ module Slaw
           end
         end
 
-        class PartHeading < Treetop::Runtime::SyntaxNode
+        class GenericHeading < Treetop::Runtime::SyntaxNode
           def num
-            part_heading_prefix.alphanums.text_value
+            prefix.alphanums.text_value
           end
 
           def title
@@ -149,6 +149,36 @@ module Slaw
           def to_xml(b)
             b.num(num)
             b.heading(title) if title
+          end
+        end
+
+        class Division < Treetop::Runtime::SyntaxNode
+          def num
+            heading.num
+          end
+
+          def to_xml(b, *args)
+            id = "division-#{num}"
+
+            b.division(id: id) { |b|
+              heading.to_xml(b)
+              children.elements.each_with_index { |e, i| e.to_xml(b, id + '.', i) }
+            }
+          end
+        end
+
+        class Subdivision < Treetop::Runtime::SyntaxNode
+          def num
+            heading.num
+          end
+
+          def to_xml(b, *args)
+            id = "subdivision-#{num}"
+
+            b.subdivision(id: id) { |b|
+              heading.to_xml(b)
+              children.elements.each_with_index { |e, i| e.to_xml(b, id + '.', i) }
+            }
           end
         end
 
@@ -160,6 +190,7 @@ module Slaw
           def to_xml(b, *args)
             id = "chapter-#{num}"
 
+            # TODO: do this for the oddzial and zial
             # include a part number in the id if our parent has one
             if parent and parent.parent.is_a?(Part) and parent.parent.num
               id = "part-#{parent.parent.num}.#{id}"
@@ -169,23 +200,6 @@ module Slaw
               heading.to_xml(b)
               children.elements.each_with_index { |e, i| e.to_xml(b, id + '.', i) }
             }
-          end
-        end
-
-        class ChapterHeading < Treetop::Runtime::SyntaxNode
-          def num
-            chapter_heading_prefix.alphanums.text_value
-          end
-
-          def title
-            if heading.text_value and heading.respond_to? :content
-              heading.content.text_value.strip
-            end
-          end
-
-          def to_xml(b)
-            b.num(num)
-            b.heading(title) if title
           end
         end
 
@@ -236,11 +250,22 @@ module Slaw
 
           def to_xml(b, idprefix='', *args)
             id = "#{idprefix}paragraph-#{num}"
+            idprefix = "#{id}."
+
             b.paragraph(id: id) { |b|
               b.num(paragraph_prefix.text_value)
 
-              idprefix = "#{id}."
-              children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+              b.content { |b|
+                kids = children.elements
+                kids = [first_child] + kids if first_child and !first_child.empty?
+
+                if kids.empty?
+                  # schema requires a non-empty content element
+                  b.p
+                else
+                  kids.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+                end
+              }
             }
           end
         end
@@ -261,11 +286,11 @@ module Slaw
 
         class Point < Treetop::Runtime::SyntaxNode
           def num
-            point_prefix.num.text_value
+            point_prefix.text_value
           end
 
           def to_xml(b, idprefix, i)
-            id = idprefix + num.gsub(/[()]/, '')
+            id = idprefix + point_prefix.number_letter
             idprefix = id + "."
 
             kids = children.elements

@@ -32,7 +32,19 @@ module Slaw
         end
 
         rule body
-          children:(chapter / section / paragraph / point / block_paragraphs)+ <Body>
+          children:(division / subdivision / chapter / section / paragraph / point / block_paragraphs)+ <Body>
+        end
+
+        rule division
+          heading:division_heading
+          children:(subdivision / chapter / section / paragraph / point / block_paragraphs)*
+          <Division>
+        end
+
+        rule subdivision
+          heading:subdivision_heading
+          children:(chapter / section / paragraph / point / block_paragraphs)*
+          <Subdivision>
         end
 
         rule chapter
@@ -50,10 +62,15 @@ module Slaw
         rule paragraph
           # ustęp:
           #  34. ...
-          space? paragraph_prefix space? children:block_element* <Paragraph>
+          space? paragraph_prefix space?
+          # eg. 34. foo bar baz
+          first_child:inline_block_element?
+          eol?
+          children:(point / block_paragraphs)* <Paragraph>
         end
 
         rule point
+          # 12a) aoeuaoeu
           space? point_prefix space?
           # eg: (2) (a) foo
           first_child:inline_block_element?
@@ -90,12 +107,26 @@ module Slaw
           children:section+ <GroupNode>
         end
 
+        rule points
+          children:point+ <GroupNode>
+        end
+
         ##########
         # headings
 
+        rule division_heading
+          space? prefix:division_heading_prefix heading:(newline? content)? eol
+          <GenericHeading>
+        end
+
+        rule subdivision_heading
+          space? prefix:subdivision_heading_prefix heading:(newline? content)? eol
+          <GenericHeading>
+        end
+
         rule chapter_heading
-          space? chapter_heading_prefix heading:(newline? content)? eol
-          <ChapterHeading>
+          space? prefix:chapter_heading_prefix heading:(newline? content)? eol
+          <GenericHeading>
         end
 
         rule section_title
@@ -124,13 +155,15 @@ module Slaw
         end
 
         rule block_element
-          (table / blocklist / naked_statement)
+          # XXX: blocklist
+          (table / naked_statement)
         end
 
         # Block elements that don't have to appear at the start of a line.
         # ie. we don't need to guard against the start of a chapter, section, etc.
         rule inline_block_element
-          (table / blocklist / inline_statement)
+          # XXX: blocklist
+          (table / inline_statement)
         end
 
         rule blocklist
@@ -201,7 +234,7 @@ module Slaw
         # and is ignored. This allows escaping of section headings, etc.
 
         rule naked_statement
-          space? !(chapter_heading / section_title / schedule_title / point_prefix) '\\'? clauses eol
+          space? !(chapter_heading / section_title / schedule_title / paragraph_prefix / point_prefix) '\\'? clauses eol
           <NakedStatement>
         end
 
@@ -248,8 +281,16 @@ module Slaw
         ##########
         # prefixes
 
+        rule division_heading_prefix
+          'dzia'i ('ł'/'Ł') space alphanums [ :-]*
+        end
+
+        rule subdivision_heading_prefix
+          'oddzia'i ('ł'/'Ł') space alphanums [ :.-]*
+        end
+
         rule chapter_heading_prefix
-          'rozdział'i space alphanums [ :.-]*
+          'rozdzia'i ('ł'/'Ł') space alphanums [ :.-]*
         end
 
         rule schedule_title_prefix
@@ -267,7 +308,7 @@ module Slaw
         rule point_prefix
           # 1) foo
           # 2A) foo
-          num:(number_letter ')')
+          number_letter ')'
         end
 
         #########
