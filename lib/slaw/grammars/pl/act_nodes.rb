@@ -1,3 +1,5 @@
+require 'slaw/grammars/core_nodes'
+
 module Slaw
   module Grammars
     module PL
@@ -72,20 +74,6 @@ module Slaw
             if schedules.text_value != ""
               schedules.to_xml(b)
             end
-          end
-        end
-
-        class Body < Treetop::Runtime::SyntaxNode
-          def to_xml(b)
-            b.body { |b|
-              children.elements.each_with_index { |e, i| e.to_xml(b, '', i) }
-            }
-          end
-        end
-
-        class GroupNode < Treetop::Runtime::SyntaxNode
-          def to_xml(b, *args)
-            children.elements.each { |e| e.to_xml(b, *args) }
           end
         end
 
@@ -376,75 +364,6 @@ module Slaw
                 item_content.clauses.to_xml(b, idprefix) if respond_to? :item_content and item_content.respond_to? :clauses
               }
             }
-          end
-        end
-
-        class Table < Treetop::Runtime::SyntaxNode
-          def to_xml(b, idprefix, i=0)
-            b.table(id: "#{idprefix}table#{i}") { |b|
-              # we'll gather cells into this row list
-              rows = []
-              cells = []
-
-              for child in table_body.elements
-                if child.is_a? TableCell
-                  # cell
-                  cells << child
-                else
-                  # new row marker
-                  rows << cells unless cells.empty?
-                  cells = []
-                end
-              end
-              rows << cells unless cells.empty?
-
-              for row in rows
-                b.tr { |tr|
-                  for cell in row
-                    cell.to_xml(tr, "")
-                  end
-                }
-              end
-            }
-          end
-        end
-
-        class TableCell < Treetop::Runtime::SyntaxNode
-          def to_xml(b, idprefix)
-            tag = text_value[0] == '!' ? 'th' : 'td'
-
-            attrs = {}
-            if not attribs.empty?
-              for item in attribs.attribs.elements
-                # key=value (strip quotes around value)
-                attrs[item.name.text_value.strip] = item.value.text_value[1..-2]
-              end
-            end
-
-            b.send(tag.to_sym, attrs) { |b|
-              b.p { |b|
-                # first line, and the rest
-                lines = [content.line] + content.elements.last.elements.map(&:line)
-
-                lines.each_with_index do |line, i|
-                  line.to_xml(b, i, i == lines.length-1)
-                end
-              }
-            }
-          end
-        end
-
-        class TableLine < Treetop::Runtime::SyntaxNode
-          # line of table content
-          def to_xml(b, i, tail)
-            clauses.to_xml(b) unless clauses.empty?
-
-            # add trailing newlines.
-            #   for the first line, eat whitespace at the start
-            #   for the last line, eat whitespace at the end
-            if not tail and (i > 0 or not clauses.empty?)
-              eol.text_value.count("\n").times { b.eol }
-            end
           end
         end
 

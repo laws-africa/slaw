@@ -3,6 +3,12 @@
 require 'slaw/parse/grammar_helpers'
 require 'slaw/grammars/za/act_nodes'
 
+require 'slaw/grammars/terminals'
+require 'slaw/grammars/tables'
+require 'slaw/grammars/tables_nodes'
+require 'slaw/grammars/schedules'
+require 'slaw/grammars/schedules_nodes'
+
 module Slaw
   module Grammars
     module ZA
@@ -59,20 +65,6 @@ module Slaw
           # eg: (2)
           eol?
           children:block_element* <Subsection>
-        end
-
-        rule schedules_container
-          schedules:schedules <ScheduleContainer>
-        end
-
-        rule schedules
-          children:schedule+ <GroupNode>
-        end
-
-        rule schedule
-          schedule_title
-          body:body?
-          <Schedule>
         end
 
         ##########
@@ -133,12 +125,6 @@ module Slaw
           #
           # 10. (1) subsection content...
           space !subsection_prefix content eol
-        end
-
-        rule schedule_title
-          space? schedule_title_prefix space? "\""? num:alphanums? "\""? [ \t:.-]* title:(content)?
-          heading:(newline space? content)?
-          eol
         end
 
         ##########
@@ -281,10 +267,6 @@ module Slaw
           'chapter'i space alphanums [ :-]*
         end
 
-        rule schedule_title_prefix
-          'schedule'i 's'i?
-        end
-
         rule section_title_prefix
           number_letter '.'?
         end
@@ -313,82 +295,9 @@ module Slaw
           num:dotted_number_2 '.'? space
         end
 
-        #########
-        ## one line of basic content
-
-        rule content
-          # anything but a newline, followed by a
-          # newline or end of file (without consuming the newline)
-          [^\n]+ &eol
-        end
-
-        ##########
-        # terminals
-
-        # eg. 2, 2A, 2b
-        rule number_letter
-          number letter*
-        end
-
-        rule letter_ordinal
-          letter (letter / digit)*
-        end
-
-        rule dotted_number_3
-          number '.' number ('.' number)+
-        end
-
-        rule dotted_number_2
-          number '.' number
-        end
-
-        rule number
-          digit+
-        end
-
-        rule digit
-          [0-9]
-        end
-
-        rule letter
-          [a-zA-Z]
-        end
-
-        rule alphanums
-          [a-zA-Z0-9]+
-        end
-
-        rule quotes
-          ["“”]
-        end
-        
-        rule non_quotes
-          [^"“”]
-        end
-
-        ##########
-        # whitespace
-
-        rule space
-          [ \t]+
-        end
-
-        rule whitespace
-          [ \t\n]*
-        end
-
-        rule empty_line
-          space? newline
-        end
-
-        rule eol
-          newline
-          empty_line*
-        end
-
-        rule newline
-          "\n"
-        end
+        include Slaw::Grammars::Tables
+        include Slaw::Grammars::Schedules
+        include Slaw::Grammars::Terminals
       end
     end
   end

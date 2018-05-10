@@ -1,0 +1,58 @@
+# encoding: UTF-8
+
+require 'slaw/grammars/terminals'
+
+module Slaw
+  module Grammars
+    grammar Tables
+      ##########
+      # wikimedia-style tables
+      #
+      # this grammar doesn't support inline table cells (eg: | col1 || col2 || col3)
+      # instead, the builder preprocesses tables to break inline cells onto their own
+      # lines, which we do support.
+
+      rule table
+        space? '{|' eol
+        table_body
+        '|}' eol
+        <Table>
+      end
+
+      rule table_body
+        (table_row / table_cell)*
+      end
+
+      rule table_row
+        '|-' space? eol
+      end
+
+      rule table_cell
+        # don't match end-of-table
+        !'|}'
+        [!|] attribs:table_attribs? space?
+        # first content line, then multiple lines
+        content:(line:table_line (![!|] space? line:table_line)*)
+        <TableCell>
+      end
+
+      rule table_line
+        clauses:clauses? eol
+        <TableLine>
+      end
+
+      rule table_attribs
+        space? attribs:(table_attrib+) '|'
+      end
+
+      rule table_attrib
+        name:([a-z_-]+) '=' value:(
+                                   ('"' (!'"' .)* '"') /
+                                   ("'" (!"'" .)* "'"))
+        space?
+      end
+
+      include Terminals
+    end
+  end
+end

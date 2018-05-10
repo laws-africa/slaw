@@ -1,3 +1,5 @@
+require 'slaw/grammars/core_nodes'
+
 module Slaw
   module Grammars
     module ZA
@@ -72,20 +74,6 @@ module Slaw
             if schedules.text_value != ""
               schedules.to_xml(b)
             end
-          end
-        end
-
-        class Body < Treetop::Runtime::SyntaxNode
-          def to_xml(b)
-            b.body { |b|
-              children.elements.each_with_index { |e, i| e.to_xml(b, '', i) }
-            }
-          end
-        end
-
-        class GroupNode < Treetop::Runtime::SyntaxNode
-          def to_xml(b, *args)
-            children.elements.each { |e| e.to_xml(b, *args) }
           end
         end
 
@@ -365,169 +353,6 @@ module Slaw
           end
         end
 
-        class Table < Treetop::Runtime::SyntaxNode
-          def to_xml(b, idprefix, i=0)
-            b.table(id: "#{idprefix}table#{i}") { |b|
-              # we'll gather cells into this row list
-              rows = []
-              cells = []
-
-              for child in table_body.elements
-                if child.is_a? TableCell
-                  # cell
-                  cells << child
-                else
-                  # new row marker
-                  rows << cells unless cells.empty?
-                  cells = []
-                end
-              end
-              rows << cells unless cells.empty?
-
-              for row in rows
-                b.tr { |tr|
-                  for cell in row
-                    cell.to_xml(tr, "")
-                  end
-                }
-              end
-            }
-          end
-        end
-
-        class TableCell < Treetop::Runtime::SyntaxNode
-          def to_xml(b, idprefix)
-            tag = text_value[0] == '!' ? 'th' : 'td'
-
-            attrs = {}
-            if not attribs.empty?
-              for item in attribs.attribs.elements
-                # key=value (strip quotes around value)
-                attrs[item.name.text_value.strip] = item.value.text_value[1..-2]
-              end
-            end
-
-            b.send(tag.to_sym, attrs) { |b|
-              b.p { |b|
-                # first line, and the rest
-                lines = [content.line] + content.elements.last.elements.map(&:line)
-
-                lines.each_with_index do |line, i|
-                  line.to_xml(b, i, i == lines.length-1)
-                end
-              }
-            }
-          end
-        end
-
-        class TableLine < Treetop::Runtime::SyntaxNode
-          # line of table content
-          def to_xml(b, i, tail)
-            clauses.to_xml(b) unless clauses.empty?
-
-            # add trailing newlines.
-            #   for the first line, eat whitespace at the start
-            #   for the last line, eat whitespace at the end
-            if not tail and (i > 0 or not clauses.empty?)
-              eol.text_value.count("\n").times { b.eol }
-            end
-          end
-        end
-
-        class ScheduleContainer < Treetop::Runtime::SyntaxNode
-          def to_xml(b)
-            b.components { |b| 
-              schedules.children.elements.each_with_index { |e, i|
-                e.to_xml(b, "", i+1)
-              }
-            }
-          end
-        end
-
-        class Schedule < Treetop::Runtime::SyntaxNode
-          def num
-            n = schedule_title.num.text_value
-            return (n && !n.empty?) ? n : nil
-          end
-
-          def alias
-            if not schedule_title.title.text_value.blank?
-              schedule_title.title.text_value
-            elsif num
-              "Schedule #{num}"
-            else
-              "Schedule"
-            end
-          end
-
-          def heading
-            if schedule_title.heading.respond_to? :content
-              schedule_title.heading.content.text_value
-            else
-              nil
-            end
-          end
-
-          def to_xml(b, idprefix=nil, i=1)
-            if num
-              n = num
-              component = "schedule#{n}"
-            else
-              n = i
-              # make a component name from the schedule title
-              component = self.alias.downcase().strip().gsub(/[^a-z0-9]/i, '').gsub(/ +/, '')
-            end
-
-            id = "#{idprefix}#{component}"
-
-            b.component(id: "component-#{id}") { |b|
-              b.doc_(name: component) { |b|
-                b.meta { |b|
-                  b.identification(source: "#slaw") { |b|
-                    b.FRBRWork { |b|
-                      b.FRBRthis(value: "#{Act::WORK_URI}/#{component}")
-                      b.FRBRuri(value: Act::WORK_URI)
-                      b.FRBRalias(value: self.alias)
-                      b.FRBRdate(date: '1980-01-01', name: 'Generation')
-                      b.FRBRauthor(href: '#council')
-                      b.FRBRcountry(value: 'za')
-                    }
-                    b.FRBRExpression { |b|
-                      b.FRBRthis(value: "#{Act::EXPRESSION_URI}/#{component}")
-                      b.FRBRuri(value: Act::EXPRESSION_URI)
-                      b.FRBRdate(date: '1980-01-01', name: 'Generation')
-                      b.FRBRauthor(href: '#council')
-                      b.FRBRlanguage(language: 'eng')
-                    }
-                    b.FRBRManifestation { |b|
-                      b.FRBRthis(value: "#{Act::MANIFESTATION_URI}/#{component}")
-                      b.FRBRuri(value: Act::MANIFESTATION_URI)
-                      b.FRBRdate(date: Time.now.strftime('%Y-%m-%d'), name: 'Generation')
-                      b.FRBRauthor(href: '#slaw')
-                    }
-                  }
-                }
-
-                b.mainBody { |b| 
-                  idprefix = "#{id}."
-
-                  # there is no good AKN hierarchy container for schedules, so we
-                  # just use article because we don't use it anywhere else.
-                  b.article(id: id) { |b|
-                    b.heading(heading) if heading
-                    body.children.elements.each_with_index { |e| e.to_xml(b, idprefix, i) } if body.is_a? Body
-                  }
-                }
-              }
-            }
-          end
-        end
-
-        class ScheduleStatement < Treetop::Runtime::SyntaxNode
-          def to_xml(b, idprefix)
-            b.p { |b| clauses.to_xml(b, idprefix) } if clauses
-          end
-        end
       end
     end
   end

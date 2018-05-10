@@ -3,12 +3,16 @@
 require 'slaw/parse/grammar_helpers'
 require 'slaw/grammars/pl/act_nodes'
 
+require 'slaw/grammars/terminals'
+require 'slaw/grammars/tables'
+require 'slaw/grammars/tables_nodes'
+require 'slaw/grammars/schedules'
+require 'slaw/grammars/schedules_nodes'
+
 module Slaw
   module Grammars
     module PL
       grammar Act
-        include Slaw::Parse::GrammarHelpers
-
         ########
         # major containers
 
@@ -78,20 +82,6 @@ module Slaw
           children:block_paragraphs* <Point>
         end
 
-        rule schedules_container
-          schedules:schedules <ScheduleContainer>
-        end
-
-        rule schedules
-          children:schedule+ <GroupNode>
-        end
-
-        rule schedule
-          schedule_title
-          body:body?
-          <Schedule>
-        end
-
         ##########
         # group elements
         # 
@@ -136,12 +126,6 @@ module Slaw
           <GenericHeading>
         end
 
-        rule schedule_title
-          space? schedule_title_prefix space? "\""? num:alphanums? "\""? [ \t:.-]* title:(content)?
-          heading:(newline space? content)?
-          eol
-        end
-
         ##########
         # blocks of content inside containers
 
@@ -173,53 +157,6 @@ module Slaw
 
         rule blocklist_item_prefix
           ('(' letter_ordinal ')') / dotted_number_3
-        end
-
-        ##########
-        # wikimedia-style tables
-        #
-        # this grammar doesn't support inline table cells (eg: | col1 || col2 || col3)
-        # instead, the builder preprocesses tables to break inline cells onto their own
-        # lines, which we do support.
-
-        rule table
-          space? '{|' eol
-          table_body
-          '|}' eol
-          <Table>
-        end
-
-        rule table_body
-          (table_row / table_cell)*
-        end
-
-        rule table_row
-          '|-' space? eol
-        end
-
-        rule table_cell
-          # don't match end-of-table
-          !'|}'
-          [!|] attribs:table_attribs? space?
-          # first content line, then multiple lines
-          content:(line:table_line (![!|] space? line:table_line)*)
-          <TableCell>
-        end
-
-        rule table_line
-          clauses:clauses? eol
-          <TableLine>
-        end
-
-        rule table_attribs
-          space? attribs:(table_attrib+) '|'
-        end
-
-        rule table_attrib
-          name:([a-z_-]+) '=' value:(
-                                     ('"' (!'"' .)* '"') /
-                                     ("'" (!"'" .)* "'"))
-          space?
         end
 
         ##########
@@ -288,10 +225,6 @@ module Slaw
           'rozdzia'i ('ł'/'Ł') space alphanums [ :.-]*
         end
 
-        rule schedule_title_prefix
-          'schedule'i 's'i?
-        end
-
         rule section_prefix
           '§' space alphanums '.'?
         end
@@ -306,82 +239,9 @@ module Slaw
           number_letter ')'
         end
 
-        #########
-        ## one line of basic content
-
-        rule content
-          # anything but a newline, followed by a
-          # newline or end of file (without consuming the newline)
-          [^\n]+ &eol
-        end
-
-        ##########
-        # terminals
-
-        # eg. 2, 2A, 2b
-        rule number_letter
-          number letter*
-        end
-
-        rule letter_ordinal
-          letter (letter / digit)*
-        end
-
-        rule dotted_number_3
-          number '.' number ('.' number)+
-        end
-
-        rule dotted_number_2
-          number '.' number
-        end
-
-        rule number
-          digit+
-        end
-
-        rule digit
-          [0-9]
-        end
-
-        rule letter
-          [a-zA-Z]
-        end
-
-        rule alphanums
-          [a-zA-Z0-9]+
-        end
-
-        rule quotes
-          ["“”]
-        end
-        
-        rule non_quotes
-          [^"“”]
-        end
-
-        ##########
-        # whitespace
-
-        rule space
-          [ \t]+
-        end
-
-        rule whitespace
-          [ \t\n]*
-        end
-
-        rule empty_line
-          space? newline
-        end
-
-        rule eol
-          newline
-          empty_line*
-        end
-
-        rule newline
-          "\n"
-        end
+        include Slaw::Grammars::Tables
+        include Slaw::Grammars::Schedules
+        include Slaw::Grammars::Terminals
       end
     end
   end
