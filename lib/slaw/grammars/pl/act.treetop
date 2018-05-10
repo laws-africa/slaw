@@ -55,28 +55,21 @@ module Slaw
 
         rule section
           # § 55. foo
-          section_title
+          section_prefix whitespace
           children:(paragraph / point / block_paragraphs)* <Section>
         end
 
         rule paragraph
           # ustęp:
           #  34. ...
-          space? paragraph_prefix space?
-          # eg. 34. foo bar baz
-          first_child:inline_block_element?
-          eol?
+          paragraph_prefix whitespace
           children:(point / block_paragraphs)* <Paragraph>
         end
 
         rule point
           # 12a) aoeuaoeu
-          space? point_prefix space?
-          # eg: (2) (a) foo
-          first_child:inline_block_element?
-          # eg: (2)
-          eol?
-          children:block_element* <Point>
+          point_prefix whitespace
+          children:block_paragraphs* <Point>
         end
 
         rule schedules_container
@@ -127,18 +120,6 @@ module Slaw
         rule chapter_heading
           space? prefix:chapter_heading_prefix heading:(newline? content)? eol
           <GenericHeading>
-        end
-
-        rule section_title
-          space? section_title_prefix section_title:section_title_content? eol?
-          <SectionTitle>
-        end
-
-        rule section_title_content
-          # don't match points, eg.
-          #
-          # 10. 1) point content...
-          space !point_prefix content eol
         end
 
         rule schedule_title
@@ -234,12 +215,12 @@ module Slaw
         # and is ignored. This allows escaping of section headings, etc.
 
         rule naked_statement
-          space? !(chapter_heading / section_title / schedule_title / paragraph_prefix / point_prefix) '\\'? clauses eol
+          space? !(chapter_heading / section_prefix / schedule_title / paragraph_prefix / point_prefix) '\\'? clauses eol
           <NakedStatement>
         end
 
         rule pre_body_statement
-          space? !(chapter_heading / section_title / schedule_title) '\\'? clauses eol
+          space? !(chapter_heading / section_prefix / schedule_title) '\\'? clauses eol
           <NakedStatement>
         end
 
@@ -297,7 +278,7 @@ module Slaw
           'schedule'i 's'i?
         end
 
-        rule section_title_prefix
+        rule section_prefix
           '§' space alphanums '.'?
         end
 

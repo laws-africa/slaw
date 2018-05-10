@@ -205,41 +205,23 @@ module Slaw
 
         class Section < Treetop::Runtime::SyntaxNode
           def num
-            section_title.num
-          end
-
-          def title
-            section_title.title
+            section_prefix.alphanums.text_value
           end
 
           def to_xml(b, *args)
             id = "section-#{num}"
+            idprefix = "#{id}."
+
             b.section(id: id) { |b|
               b.num("#{num}.")
-              b.heading(title)
 
-              idprefix = "#{id}."
-
-              children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+              if children.elements.empty?
+                # schema requires a non-empty content element
+                b.content { |b| b.p }
+              else
+                children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+              end
             }
-          end
-        end
-
-        class SectionTitle < Treetop::Runtime::SyntaxNode
-          # a section title of the form:
-          #
-          # 1. Definitions
-          # In this act...
-          #
-          # In this format, the title is optional and the section content may
-          # start where we think the title is.
-
-          def num
-            section_title_prefix.alphanums.text_value
-          end
-
-          def title
-            section_title.empty? ? "" : section_title.content.text_value
           end
         end
 
@@ -250,61 +232,51 @@ module Slaw
 
           def to_xml(b, idprefix='', *args)
             id = "#{idprefix}paragraph-#{num}"
-            idprefix = "#{id}."
+            idprefix = id + "."
 
             b.paragraph(id: id) { |b|
               b.num(paragraph_prefix.text_value)
 
-              b.content { |b|
-                kids = children.elements
-                kids = [first_child] + kids if first_child and !first_child.empty?
-
-                if kids.empty?
-                  # schema requires a non-empty content element
-                  b.p
-                else
-                  kids.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
-                end
-              }
-            }
-          end
-        end
-
-
-        class BlockParagraph < Treetop::Runtime::SyntaxNode
-          def to_xml(b, idprefix='', i=0)
-            id = "#{idprefix}paragraph-0"
-            idprefix = "#{id}."
-
-            b.paragraph(id: id) { |b|
-              b.content { |b|
-                elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
-              }
+              if children.elements.empty?
+                # schema requires a non-empty content element
+                b.content { |b| b.p }
+              else
+                children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+              end
             }
           end
         end
 
         class Point < Treetop::Runtime::SyntaxNode
           def num
-            point_prefix.text_value
+            point_prefix.number_letter.text_value
           end
 
-          def to_xml(b, idprefix, i)
-            id = idprefix + point_prefix.number_letter
+          def to_xml(b, idprefix='', i)
+            id = "#{idprefix}point-#{num}"
             idprefix = id + "."
 
-            kids = children.elements
-            kids = [first_child] + kids if first_child and !first_child.empty?
-
             b.point(id: id) { |b|
-              b.num(num)
+              b.num(point_prefix.text_value)
+
+              if children.elements.empty?
+                # schema requires a non-empty content element
+                b.content { |b| b.p }
+              else
+                children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+              end
+            }
+          end
+        end
+
+        class BlockParagraph < Treetop::Runtime::SyntaxNode
+          def to_xml(b, idprefix='', i=0)
+            id = "#{idprefix}paragraph-0"
+            idprefix = id + "."
+
+            b.paragraph(id: id) { |b|
               b.content { |b|
-                if kids.empty?
-                  # schema requires a non-empty content element
-                  b.p
-                else
-                  kids.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
-                end
+                elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
               }
             }
           end

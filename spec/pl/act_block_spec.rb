@@ -39,20 +39,14 @@ Projekt ustawy
 
 Rozdział 7. Oznaczanie przepisów ustawy i ich systematyzacja
 
-§ 54. Pojęcie artykułu
+§ 54. Podstawową jednostką redakcyjną ustawy jest artykuł.
 
-Podstawową jednostką redakcyjną ustawy jest artykuł.
-
-§ 55. Ustępy
-
-1. Każdą samodzielną myśl ujmuje się w odrębny artykuł.
+§ 55. 1. Każdą samodzielną myśl ujmuje się w odrębny artykuł.
 2. Artykuł powinien być w miarę możliwości jednozdaniowy.
 3. Jeżeli samodzielną myśl wyraża zespół zdań, dokonuje się podziału artykułu na ustępy. W ustawie określanej jako "kodeks" ustępy oznacza się paragrafami (§).
 4. Podział artykułu na ustępy wprowadza się także w przypadku, gdy między zdaniami wyrażającymi samodzielne myśli występują powiązania treściowe, ale treść żadnego z nich nie jest na tyle istotna, aby wydzielić ją w odrębny artykuł.
 
-§ 56. Części arykułu (ustępu)
-
-1. W obrębie artykułu (ustępu) zawierającego wyliczenie wyróżnia się dwie części: wprowadzenie do wyliczenia oraz punkty. Wyliczenie może kończyć się częścią wspólną, odnoszącą się do wszystkich punktów. Po części wspólnej nie dodaje się kolejnej samodzielnej myśli; w razie potrzeby formułuje się ją w kolejnym ustępie.
+§ 56. 1. W obrębie artykułu (ustępu) zawierającego wyliczenie wyróżnia się dwie części: wprowadzenie do wyliczenia oraz punkty. Wyliczenie może kończyć się częścią wspólną, odnoszącą się do wszystkich punktów. Po części wspólnej nie dodaje się kolejnej samodzielnej myśli; w razie potrzeby formułuje się ją w kolejnym ustępie.
 2. W obrębie punktów można dokonać dalszego wyliczenia, wprowadzając litery.
 EOS
 
@@ -68,7 +62,6 @@ EOS
     <heading>Oznaczanie przepisów ustawy i ich systematyzacja</heading>
     <section id="section-54">
       <num>54.</num>
-      <heading>Pojęcie artykułu</heading>
       <paragraph id="section-54.paragraph-0">
         <content>
           <p>Podstawową jednostką redakcyjną ustawy jest artykuł.</p>
@@ -77,7 +70,6 @@ EOS
     </section>
     <section id="section-55">
       <num>55.</num>
-      <heading>Ustępy</heading>
       <paragraph id="section-55.paragraph-1">
         <num>1.</num>
         <content>
@@ -105,7 +97,6 @@ EOS
     </section>
     <section id="section-56">
       <num>56.</num>
-      <heading>Części arykułu (ustępu)</heading>
       <paragraph id="section-56.paragraph-1">
         <num>1.</num>
         <content>
@@ -123,6 +114,67 @@ EOS
 </body>'
     end
   end
+
+  #-------------------------------------------------------------------------------
+  # Divisions
+
+  describe 'divisions' do
+    it 'should handle divisions' do
+      node = parse :division, <<EOS
+DZIAŁ I
+Projekt ustawy
+
+Rozdział 7. Oznaczanie przepisów ustawy i ich systematyzacja
+
+§ 54. Podstawową jednostką redakcyjną ustawy jest artykuł.
+EOS
+      to_xml(node).should == '<division id="division-I">
+  <num>I</num>
+  <heading>Projekt ustawy</heading>
+  <chapter id="chapter-7">
+    <num>7</num>
+    <heading>Oznaczanie przepisów ustawy i ich systematyzacja</heading>
+    <section id="section-54">
+      <num>54.</num>
+      <paragraph id="section-54.paragraph-0">
+        <content>
+          <p>Podstawową jednostką redakcyjną ustawy jest artykuł.</p>
+        </content>
+      </paragraph>
+    </section>
+  </chapter>
+</division>'
+    end
+  end
+
+  #-------------------------------------------------------------------------------
+  # Divisions
+
+  describe 'subdivisions' do
+    it 'should handle divisions' do
+      node = parse :subdivision, <<EOS
+ODDZIAŁ I
+Projekt ustawy
+
+§ 54. Podstawową jednostką redakcyjną ustawy jest artykuł.
+EOS
+      to_xml(node).should == '<subdivision id="subdivision-I">
+  <num>I</num>
+  <heading>Projekt ustawy</heading>
+  <section id="section-54">
+    <num>54.</num>
+    <paragraph id="section-54.paragraph-0">
+      <content>
+        <p>Podstawową jednostką redakcyjną ustawy jest artykuł.</p>
+      </content>
+    </paragraph>
+  </section>
+</subdivision>'
+    end
+  end
+
+  #-------------------------------------------------------------------------------
+  # Paragraph
 
   describe 'paragraph' do
     it 'should handle simple para' do
@@ -150,69 +202,63 @@ EOS
   </content>
 </paragraph>'
     end
-  end
 
-  #-------------------------------------------------------------------------------
-  # Divisions
-
-  describe 'divisions' do
-    it 'should handle divisions' do
-      node = parse :division, <<EOS
-DZIAŁ I
-Projekt ustawy
-
-Rozdział 7. Oznaczanie przepisów ustawy i ich systematyzacja
-
-§ 54. Pojęcie artykułu
-
-Podstawową jednostką redakcyjną ustawy jest artykuł.
+    it 'should handle paragraphs with points' do
+      node = parse :paragraph, <<EOS
+2. W ustawie należy unikać posługiwania się:
+1) określeniami specjalistycznymi, o ile ich użycie nie jest powodowane zapewnieniem należytej precyzji tekstu;
+2) określeniami lub zapożyczeniami obcojęzycznymi, chyba że nie mają dokładnego odpowiednika w języku polskim;
+3) nowo tworzonymi pojęciami lub strukturami językowymi, chyba że w dotychczasowym słownictwie polskim brak jest odpowiedniego określenia.
 EOS
-      to_xml(node).should == '<division id="division-I">
-  <num>I</num>
-  <heading>Projekt ustawy</heading>
-  <chapter id="chapter-7">
-    <num>7</num>
-    <heading>Oznaczanie przepisów ustawy i ich systematyzacja</heading>
-    <section id="section-54">
-      <num>54.</num>
-      <heading>Pojęcie artykułu</heading>
-      <paragraph id="section-54.paragraph-0">
-        <content>
-          <p>Podstawową jednostką redakcyjną ustawy jest artykuł.</p>
-        </content>
-      </paragraph>
-    </section>
-  </chapter>
-</division>'
+
+      to_xml(node).should == '<paragraph id="paragraph-2">
+  <num>2.</num>
+  <paragraph id="paragraph-2.paragraph-0">
+    <content>
+      <p>W ustawie należy unikać posługiwania się:</p>
+    </content>
+  </paragraph>
+  <point id="paragraph-2.point-1">
+    <num>1)</num>
+    <content>
+      <p>określeniami specjalistycznymi, o ile ich użycie nie jest powodowane zapewnieniem należytej precyzji tekstu;</p>
+    </content>
+  </point>
+  <point id="paragraph-2.point-2">
+    <num>2)</num>
+    <content>
+      <p>określeniami lub zapożyczeniami obcojęzycznymi, chyba że nie mają dokładnego odpowiednika w języku polskim;</p>
+    </content>
+  </point>
+  <point id="paragraph-2.point-3">
+    <num>3)</num>
+    <content>
+      <p>nowo tworzonymi pojęciami lub strukturami językowymi, chyba że w dotychczasowym słownictwie polskim brak jest odpowiedniego określenia.</p>
+    </content>
+  </point>
+</paragraph>'
     end
   end
 
   #-------------------------------------------------------------------------------
-  # Divisions
+  # Section
 
-  describe 'subdivisions' do
-    it 'should handle divisions' do
-      node = parse :subdivision, <<EOS
-ODDZIAŁ I
-Projekt ustawy
+  describe 'section' do
+    it 'should handle section with un-numbered para' do
+      node = parse :section, <<EOS
+§ 5.
 
-§ 54. Pojęcie artykułu
-
-Podstawową jednostką redakcyjną ustawy jest artykuł.
+Przepisy ustawy redaguje si´ zwi´êle i syntetycznie, unikajàc nadmiernej szczegó∏owoÊci, a zarazem w sposób, w jaki opisuje si´ typowe sytuacje wyst´pujàce w dziedzinie spraw regulowanych tà ustawà.
 EOS
-      to_xml(node).should == '<subdivision id="subdivision-I">
-  <num>I</num>
-  <heading>Projekt ustawy</heading>
-  <section id="section-54">
-    <num>54.</num>
-    <heading>Pojęcie artykułu</heading>
-    <paragraph id="section-54.paragraph-0">
-      <content>
-        <p>Podstawową jednostką redakcyjną ustawy jest artykuł.</p>
-      </content>
-    </paragraph>
-  </section>
-</subdivision>'
+
+      to_xml(node).should == '<section id="section-5">
+  <num>5.</num>
+  <paragraph id="section-5.paragraph-0">
+    <content>
+      <p>Przepisy ustawy redaguje si´ zwi´êle i syntetycznie, unikajàc nadmiernej szczegó∏owoÊci, a zarazem w sposób, w jaki opisuje si´ typowe sytuacje wyst´pujàce w dziedzinie spraw regulowanych tà ustawà.</p>
+    </content>
+  </paragraph>
+</section>'
     end
   end
 
