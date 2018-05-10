@@ -5,9 +5,8 @@ require 'slaw/grammars/za/act_nodes'
 
 require 'slaw/grammars/terminals'
 require 'slaw/grammars/tables'
-require 'slaw/grammars/tables_nodes'
 require 'slaw/grammars/schedules'
-require 'slaw/grammars/schedules_nodes'
+require 'slaw/grammars/inlines'
 
 module Slaw
   module Grammars
@@ -159,53 +158,6 @@ module Slaw
         end
 
         ##########
-        # wikimedia-style tables
-        #
-        # this grammar doesn't support inline table cells (eg: | col1 || col2 || col3)
-        # instead, the builder preprocesses tables to break inline cells onto their own
-        # lines, which we do support.
-
-        rule table
-          space? '{|' eol
-          table_body
-          '|}' eol
-          <Table>
-        end
-
-        rule table_body
-          (table_row / table_cell)*
-        end
-
-        rule table_row
-          '|-' space? eol
-        end
-
-        rule table_cell
-          # don't match end-of-table
-          !'|}'
-          [!|] attribs:table_attribs? space?
-          # first content line, then multiple lines
-          content:(line:table_line (![!|] space? line:table_line)*)
-          <TableCell>
-        end
-
-        rule table_line
-          clauses:clauses? eol
-          <TableLine>
-        end
-
-        rule table_attribs
-          space? attribs:(table_attrib+) '|'
-        end
-
-        rule table_attrib
-          name:([a-z_-]+) '=' value:(
-                                     ('"' (!'"' .)* '"') /
-                                     ("'" (!"'" .)* "'"))
-          space?
-        end
-
-        ##########
         # statements - single lines of content
         #
         # If a statement starts with a backslash, it's considered to have escaped the subsequent word,
@@ -219,41 +171,6 @@ module Slaw
         rule pre_body_statement
           space? !(chapter_heading / part_heading / section_title / schedule_title) '\\'? clauses eol
           <NakedStatement>
-        end
-
-        rule inline_statement
-          space? '\\'? clauses eol
-          <NakedStatement>
-        end
-
-        ##########
-        # inline content
-
-        # one or more words, allowing inline elements
-        rule clauses
-          (remark / image / ref / [^\n])+
-          <Clauses>
-        end
-
-        rule remark
-          '[[' content:(ref / (!']]' .))+ ']]'
-          <Remark>
-        end
-
-        rule image
-          # images like markdown
-          # eg. ![title text](image url)
-          #
-          # the title text is optional, but the enclosing square brackets aren't
-          '![' content:(!'](' [^\n])* '](' href:([^)\n]+) ')'
-          <Image>
-        end
-
-        rule ref
-          # links like markdown
-          # eg. [link text](link url)
-          '[' content:(!'](' [^\n])+ '](' href:([^)\n]+) ')'
-          <Ref>
         end
 
         ##########
@@ -295,6 +212,7 @@ module Slaw
           num:dotted_number_2 '.'? space
         end
 
+        include Slaw::Grammars::Inlines
         include Slaw::Grammars::Tables
         include Slaw::Grammars::Schedules
         include Slaw::Grammars::Terminals

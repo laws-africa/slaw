@@ -5,9 +5,8 @@ require 'slaw/grammars/pl/act_nodes'
 
 require 'slaw/grammars/terminals'
 require 'slaw/grammars/tables'
-require 'slaw/grammars/tables_nodes'
 require 'slaw/grammars/schedules'
-require 'slaw/grammars/schedules_nodes'
+require 'slaw/grammars/inlines'
 
 module Slaw
   module Grammars
@@ -175,41 +174,6 @@ module Slaw
           <NakedStatement>
         end
 
-        rule inline_statement
-          space? '\\'? clauses eol
-          <NakedStatement>
-        end
-
-        ##########
-        # inline content
-
-        # one or more words, allowing inline elements
-        rule clauses
-          (remark / image / ref / [^\n])+
-          <Clauses>
-        end
-
-        rule remark
-          '[[' content:(ref / (!']]' .))+ ']]'
-          <Remark>
-        end
-
-        rule image
-          # images like markdown
-          # eg. ![title text](image url)
-          #
-          # the title text is optional, but the enclosing square brackets aren't
-          '![' content:(!'](' [^\n])* '](' href:([^)\n]+) ')'
-          <Image>
-        end
-
-        rule ref
-          # links like markdown
-          # eg. [link text](link url)
-          '[' content:(!'](' [^\n])+ '](' href:([^)\n]+) ')'
-          <Ref>
-        end
-
         ##########
         # prefixes
 
@@ -239,6 +203,7 @@ module Slaw
           number_letter ')'
         end
 
+        include Slaw::Grammars::Inlines
         include Slaw::Grammars::Tables
         include Slaw::Grammars::Schedules
         include Slaw::Grammars::Terminals

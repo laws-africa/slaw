@@ -1,0 +1,45 @@
+# encoding: UTF-8
+
+require 'slaw/grammars/terminals'
+require 'slaw/grammars/inlines_nodes'
+
+module Slaw
+  module Grammars
+    grammar Inlines
+      ##########
+      # inline content
+
+      rule inline_statement
+        space? '\\'? clauses eol
+        <NakedStatement>
+      end
+
+      # one or more words, allowing inline elements
+      rule clauses
+        (remark / image / ref / [^\n])+
+        <Clauses>
+      end
+
+      rule remark
+        '[[' content:(ref / (!']]' .))+ ']]'
+        <Remark>
+      end
+
+      rule image
+        # images like markdown
+        # eg. ![title text](image url)
+        #
+        # the title text is optional, but the enclosing square brackets aren't
+        '![' content:(!'](' [^\n])* '](' href:([^)\n]+) ')'
+        <Image>
+      end
+
+      rule ref
+        # links like markdown
+        # eg. [link text](link url)
+        '[' content:(!'](' [^\n])+ '](' href:([^)\n]+) ')'
+        <Ref>
+      end
+    end
+  end
+end

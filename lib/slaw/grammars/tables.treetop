@@ -1,6 +1,7 @@
 # encoding: UTF-8
 
 require 'slaw/grammars/terminals'
+require 'slaw/grammars/tables_nodes'
 
 module Slaw
   module Grammars

@@ -1,5 +1,7 @@
 # encoding: UTF-8
 
+require 'slaw/grammars/schedules_nodes'
+
 module Slaw
   module Grammars
     grammar Schedules
