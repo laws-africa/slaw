@@ -215,12 +215,17 @@ module Slaw
             b.section(id: id) { |b|
               b.num("#{num}.")
 
-              if children.elements.empty?
-                # schema requires a non-empty content element
+              if !intro.empty?
+                if not children.empty?
+                  b.intro { |b| intro.to_xml(b, idprefix) }
+                else
+                  b.content { |b| intro.to_xml(b, idprefix) }
+                end
+              elsif children.empty?
                 b.content { |b| b.p }
-              else
-                children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
               end
+
+              children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
             }
           end
         end
@@ -237,12 +242,17 @@ module Slaw
             b.paragraph(id: id) { |b|
               b.num(paragraph_prefix.text_value)
 
-              if children.elements.empty?
-                # schema requires a non-empty content element
+              if !intro.empty?
+                if not children.empty?
+                  b.intro { |b| intro.to_xml(b, idprefix) }
+                else
+                  b.content { |b| intro.to_xml(b, idprefix) }
+                end
+              elsif children.empty?
                 b.content { |b| b.p }
-              else
-                children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
               end
+
+              children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
             }
           end
         end
@@ -259,12 +269,17 @@ module Slaw
             b.point(id: id) { |b|
               b.num(point_prefix.text_value)
 
-              if children.elements.empty?
-                # schema requires a non-empty content element
+              if !intro.empty?
+                if not children.empty?
+                  b.intro { |b| intro.to_xml(b, idprefix) }
+                else
+                  b.content { |b| intro.to_xml(b, idprefix) }
+                end
+              elsif children.empty?
                 b.content { |b| b.p }
-              else
-                children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
               end
+
+              children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
             }
           end
         end

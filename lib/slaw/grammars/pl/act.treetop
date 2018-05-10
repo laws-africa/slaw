@@ -56,19 +56,25 @@ module Slaw
         rule section
           # § 55. foo
           section_prefix whitespace
+          intro:inline_block_element?
+          eol?
           children:(paragraph / point / block_paragraphs)* <Section>
         end
 
         rule paragraph
           # ustęp:
           #  34. ...
-          paragraph_prefix whitespace
+          paragraph_prefix space?
+          intro:inline_block_element?
+          eol?
           children:(point / block_paragraphs)* <Paragraph>
         end
 
         rule point
           # 12a) aoeuaoeu
           point_prefix whitespace
+          intro:inline_block_element?
+          eol?
           children:block_paragraphs* <Point>
         end
 

@@ -30,10 +30,10 @@ describe Slaw::ActGenerator do
   #-------------------------------------------------------------------------------
   # Basics
 
-  describe 'simple test' do
-    it 'should handle this' do
+  describe 'full test' do
+    it 'should handle a full hierarchy' do
       node = parse :body, <<EOS
-DZIA¸ I
+DZIAŁ I
 
 Projekt ustawy
 
@@ -51,66 +51,66 @@ Rozdział 7. Oznaczanie przepisów ustawy i ich systematyzacja
 EOS
 
       to_xml(node).should == '<body>
-  <paragraph id="paragraph-0">
-    <content>
-      <p>DZIA¸ I</p>
-      <p>Projekt ustawy</p>
-    </content>
-  </paragraph>
-  <chapter id="chapter-7">
-    <num>7</num>
-    <heading>Oznaczanie przepisów ustawy i ich systematyzacja</heading>
-    <section id="section-54">
-      <num>54.</num>
-      <paragraph id="section-54.paragraph-0">
+  <division id="division-I">
+    <num>I</num>
+    <paragraph id="division-I.paragraph-0">
+      <content>
+        <p>Projekt ustawy</p>
+      </content>
+    </paragraph>
+    <chapter id="chapter-7">
+      <num>7</num>
+      <heading>Oznaczanie przepisów ustawy i ich systematyzacja</heading>
+      <section id="section-54">
+        <num>54.</num>
         <content>
           <p>Podstawową jednostką redakcyjną ustawy jest artykuł.</p>
         </content>
-      </paragraph>
-    </section>
-    <section id="section-55">
-      <num>55.</num>
-      <paragraph id="section-55.paragraph-1">
-        <num>1.</num>
-        <content>
-          <p>Każdą samodzielną myśl ujmuje się w odrębny artykuł.</p>
-        </content>
-      </paragraph>
-      <paragraph id="section-55.paragraph-2">
-        <num>2.</num>
-        <content>
-          <p>Artykuł powinien być w miarę możliwości jednozdaniowy.</p>
-        </content>
-      </paragraph>
-      <paragraph id="section-55.paragraph-3">
-        <num>3.</num>
-        <content>
-          <p>Jeżeli samodzielną myśl wyraża zespół zdań, dokonuje się podziału artykułu na ustępy. W ustawie określanej jako "kodeks" ustępy oznacza się paragrafami (§).</p>
-        </content>
-      </paragraph>
-      <paragraph id="section-55.paragraph-4">
-        <num>4.</num>
-        <content>
-          <p>Podział artykułu na ustępy wprowadza się także w przypadku, gdy między zdaniami wyrażającymi samodzielne myśli występują powiązania treściowe, ale treść żadnego z nich nie jest na tyle istotna, aby wydzielić ją w odrębny artykuł.</p>
-        </content>
-      </paragraph>
-    </section>
-    <section id="section-56">
-      <num>56.</num>
-      <paragraph id="section-56.paragraph-1">
-        <num>1.</num>
-        <content>
-          <p>W obrębie artykułu (ustępu) zawierającego wyliczenie wyróżnia się dwie części: wprowadzenie do wyliczenia oraz punkty. Wyliczenie może kończyć się częścią wspólną, odnoszącą się do wszystkich punktów. Po części wspólnej nie dodaje się kolejnej samodzielnej myśli; w razie potrzeby formułuje się ją w kolejnym ustępie.</p>
-        </content>
-      </paragraph>
-      <paragraph id="section-56.paragraph-2">
-        <num>2.</num>
-        <content>
-          <p>W obrębie punktów można dokonać dalszego wyliczenia, wprowadzając litery.</p>
-        </content>
-      </paragraph>
-    </section>
-  </chapter>
+      </section>
+      <section id="section-55">
+        <num>55.</num>
+        <paragraph id="section-55.paragraph-1">
+          <num>1.</num>
+          <content>
+            <p>Każdą samodzielną myśl ujmuje się w odrębny artykuł.</p>
+          </content>
+        </paragraph>
+        <paragraph id="section-55.paragraph-2">
+          <num>2.</num>
+          <content>
+            <p>Artykuł powinien być w miarę możliwości jednozdaniowy.</p>
+          </content>
+        </paragraph>
+        <paragraph id="section-55.paragraph-3">
+          <num>3.</num>
+          <content>
+            <p>Jeżeli samodzielną myśl wyraża zespół zdań, dokonuje się podziału artykułu na ustępy. W ustawie określanej jako "kodeks" ustępy oznacza się paragrafami (§).</p>
+          </content>
+        </paragraph>
+        <paragraph id="section-55.paragraph-4">
+          <num>4.</num>
+          <content>
+            <p>Podział artykułu na ustępy wprowadza się także w przypadku, gdy między zdaniami wyrażającymi samodzielne myśli występują powiązania treściowe, ale treść żadnego z nich nie jest na tyle istotna, aby wydzielić ją w odrębny artykuł.</p>
+          </content>
+        </paragraph>
+      </section>
+      <section id="section-56">
+        <num>56.</num>
+        <paragraph id="section-56.paragraph-1">
+          <num>1.</num>
+          <content>
+            <p>W obrębie artykułu (ustępu) zawierającego wyliczenie wyróżnia się dwie części: wprowadzenie do wyliczenia oraz punkty. Wyliczenie może kończyć się częścią wspólną, odnoszącą się do wszystkich punktów. Po części wspólnej nie dodaje się kolejnej samodzielnej myśli; w razie potrzeby formułuje się ją w kolejnym ustępie.</p>
+          </content>
+        </paragraph>
+        <paragraph id="section-56.paragraph-2">
+          <num>2.</num>
+          <content>
+            <p>W obrębie punktów można dokonać dalszego wyliczenia, wprowadzając litery.</p>
+          </content>
+        </paragraph>
+      </section>
+    </chapter>
+  </division>
 </body>'
     end
   end
@@ -136,11 +136,9 @@ EOS
     <heading>Oznaczanie przepisów ustawy i ich systematyzacja</heading>
     <section id="section-54">
       <num>54.</num>
-      <paragraph id="section-54.paragraph-0">
-        <content>
-          <p>Podstawową jednostką redakcyjną ustawy jest artykuł.</p>
-        </content>
-      </paragraph>
+      <content>
+        <p>Podstawową jednostką redakcyjną ustawy jest artykuł.</p>
+      </content>
     </section>
   </chapter>
 </division>'
@@ -151,7 +149,7 @@ EOS
   # Divisions
 
   describe 'subdivisions' do
-    it 'should handle divisions' do
+    it 'should handle subdivisions' do
       node = parse :subdivision, <<EOS
 ODDZIAŁ I
 Projekt ustawy
@@ -163,11 +161,9 @@ EOS
   <heading>Projekt ustawy</heading>
   <section id="section-54">
     <num>54.</num>
-    <paragraph id="section-54.paragraph-0">
-      <content>
-        <p>Podstawową jednostką redakcyjną ustawy jest artykuł.</p>
-      </content>
-    </paragraph>
+    <content>
+      <p>Podstawową jednostką redakcyjną ustawy jest artykuł.</p>
+    </content>
   </section>
 </subdivision>'
     end
@@ -213,11 +209,9 @@ EOS
 
       to_xml(node).should == '<paragraph id="paragraph-2">
   <num>2.</num>
-  <paragraph id="paragraph-2.paragraph-0">
-    <content>
-      <p>W ustawie należy unikać posługiwania się:</p>
-    </content>
-  </paragraph>
+  <intro>
+    <p>W ustawie należy unikać posługiwania się:</p>
+  </intro>
   <point id="paragraph-2.point-1">
     <num>1)</num>
     <content>
@@ -253,11 +247,57 @@ EOS
 
       to_xml(node).should == '<section id="section-5">
   <num>5.</num>
-  <paragraph id="section-5.paragraph-0">
+  <content>
+    <p>Przepisy ustawy redaguje si´ zwi´êle i syntetycznie, unikajàc nadmiernej szczegó∏owoÊci, a zarazem w sposób, w jaki opisuje si´ typowe sytuacje wyst´pujàce w dziedzinie spraw regulowanych tà ustawà.</p>
+  </content>
+</section>'
+    end
+
+    it 'should handle section with numbered para on the same line' do
+      node = parse :section, <<EOS
+§ 54. Podstawową jednostką redakcyjną ustawy jest artykuł.
+EOS
+
+      to_xml(node).should == '<section id="section-54">
+  <num>54.</num>
+  <content>
+    <p>Podstawową jednostką redakcyjną ustawy jest artykuł.</p>
+  </content>
+</section>'
+    end
+
+    it 'should handle section with intro, para and points' do
+      node = parse :section, <<EOS
+§ 54. Podstawową jednostką redakcyjną ustawy jest artykuł.
+
+Something here
+
+1) a point
+2) second point
+EOS
+
+      to_xml(node).should == '<section id="section-54">
+  <num>54.</num>
+  <intro>
+    <p>Podstawową jednostką redakcyjną ustawy jest artykuł.</p>
+  </intro>
+  <paragraph id="section-54.paragraph-0">
     <content>
-      <p>Przepisy ustawy redaguje si´ zwi´êle i syntetycznie, unikajàc nadmiernej szczegó∏owoÊci, a zarazem w sposób, w jaki opisuje si´ typowe sytuacje wyst´pujàce w dziedzinie spraw regulowanych tà ustawà.</p>
+      <p>Something here</p>
     </content>
   </paragraph>
+  <point id="section-54.point-1">
+    <num>1)</num>
+    <content>
+      <p>a point</p>
+    </content>
+  </point>
+  <point id="section-54.point-2">
+    <num>2)</num>
+    <content>
+      <p>second point</p>
+    </content>
+  </point>
 </section>'
     end
   end
