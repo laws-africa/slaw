@@ -116,6 +116,73 @@ EOS
   end
 
   #-------------------------------------------------------------------------------
+  # Articles
+
+  describe 'articles' do
+    it 'should handle articles' do
+      node = parse :article, <<EOS
+Art. 1. Ustawa reguluje opodatkowanie podatkiem dochodowym dochodów osób fizycznych
+EOS
+      to_xml(node).should == '<article id="article-1">
+  <num>1.</num>
+  <content>
+    <p>Ustawa reguluje opodatkowanie podatkiem dochodowym dochodów osób fizycznych</p>
+  </content>
+</article>'
+    end
+
+    it 'should handle consecutive articles' do
+      node = parse :body, <<EOS
+Art. 1. Ustawa reguluje opodatkowanie podatkiem dochodowym dochodów osób fizycznych
+Art. 2. Something else
+EOS
+      to_xml(node).should == '<body>
+  <article id="article-1">
+    <num>1.</num>
+    <content>
+      <p>Ustawa reguluje opodatkowanie podatkiem dochodowym dochodów osób fizycznych</p>
+    </content>
+  </article>
+  <article id="article-2">
+    <num>2.</num>
+    <content>
+      <p>Something else</p>
+    </content>
+  </article>
+</body>'
+    end
+
+    it 'should handle nested content' do
+      node = parse :article, <<EOS
+Art. 2. 1. Przepisów ustawy nie stosuje się do:
+1) przychodów z działalności rolniczej, z wyjątkiem przychodów z działów specjalnych produkcji rolnej;
+2) przychodów z gospodarki leśnej w rozumieniu ustawy o lasach;
+EOS
+      to_xml(node).should == '<article id="article-2">
+  <num>2.</num>
+  <paragraph id="article-2.paragraph-1">
+    <num>1.</num>
+    <intro>
+      <p>Przepisów ustawy nie stosuje się do:</p>
+    </intro>
+    <point id="article-2.paragraph-1.point-1">
+      <num>1)</num>
+      <content>
+        <p>przychodów z działalności rolniczej, z wyjątkiem przychodów z działów specjalnych produkcji rolnej;</p>
+      </content>
+    </point>
+    <point id="article-2.paragraph-1.point-2">
+      <num>2)</num>
+      <content>
+        <p>przychodów z gospodarki leśnej w rozumieniu ustawy o lasach;</p>
+      </content>
+    </point>
+  </paragraph>
+</article>'
+    end
+  end
+
+  #-------------------------------------------------------------------------------
   # Divisions
 
   describe 'divisions' do

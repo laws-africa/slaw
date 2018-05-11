@@ -191,6 +191,33 @@ module Slaw
           end
         end
 
+        class Article < Treetop::Runtime::SyntaxNode
+          def num
+            article_prefix.number_letter.text_value
+          end
+
+          def to_xml(b, *args)
+            id = "article-#{num}"
+            idprefix = "#{id}."
+
+            b.article(id: id) { |b|
+              b.num("#{num}.")
+
+              if !intro.empty?
+                if not children.empty?
+                  b.intro { |b| intro.to_xml(b, idprefix) }
+                else
+                  b.content { |b| intro.to_xml(b, idprefix) }
+                end
+              elsif children.empty?
+                b.content { |b| b.p }
+              end
+
+              children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+            }
+          end
+        end
+
         class Section < Treetop::Runtime::SyntaxNode
           def num
             section_prefix.alphanums.text_value
@@ -220,7 +247,7 @@ module Slaw
 
         class Paragraph < Treetop::Runtime::SyntaxNode
           def num
-            paragraph_prefix.alphanums.text_value
+            paragraph_prefix.number_letter.text_value
           end
 
           def to_xml(b, idprefix='', *args)
