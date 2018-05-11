@@ -12,6 +12,8 @@ module Slaw
   module Grammars
     module PL
       grammar Act
+        include Slaw::Parse::GrammarHelpers
+
         ########
         # major containers
 
@@ -101,6 +103,10 @@ module Slaw
 
         rule sections
           children:section+ <GroupNode>
+        end
+
+        rule paragraphs
+          children:paragraph+ <GroupNode>
         end
 
         rule points

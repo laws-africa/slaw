@@ -1,5 +1,4 @@
 require 'slaw/grammars/core_nodes'
-require 'slaw/grammars/inlines_nodes'
 
 module Slaw
   module Grammars
