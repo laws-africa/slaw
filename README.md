@@ -8,7 +8,7 @@ Slaw allows you to:
 
 1. extract plain text from PDFs and clean up that text
 2. parse plain text and transform it into an Akoma Ntoso Act XML document
-3. render the XML document into HTML
+3. unparse Akoma Ntoso XML into text that can be parsed backed into Akoma Ntoso.
 
 Slaw is lightweight because it wraps around a Nokogiri XML representation of
 the parsed document. It provides some support methods for manipulating these
@@ -61,7 +61,7 @@ formats.
 
 The grammar cannot catch some subtleties of an act or by-law -- such as nested list numbering --
 so Slaw performs some post-processing on the XML produced by the parser. In particular,
-it nests lists correctly and looks for specially defined terms and their occurrences in the document.
+it nests lists correctly.
 
 ## Quick Start
 
@@ -217,6 +217,13 @@ Akoma Ntoso `component` elements at the end of the XML document, with a name of 
 5. Create new Pull Request
 
 ## Changelog
+
+### 1.0.0
+
+* Improved support for other legal traditions / grammars.
+* Add Polish legal tradition grammar.
+* Slaw no longer does too much introspection of a parsed document, since that can be so tradition-dependent.
+* Remove definition linking, Slaw no longer supports it.
 
 ### 0.17.2
 
