@@ -272,6 +272,33 @@ module Slaw
           end
         end
 
+        class Litera < Treetop::Runtime::SyntaxNode
+          def num
+            litera_prefix.letters.text_value
+          end
+
+          def to_xml(b, idprefix='', i)
+            id = "#{idprefix}list-#{num}"
+            idprefix = id + "."
+
+            b.list(id: id) { |b|
+              b.num(litera_prefix.text_value)
+
+              if !intro.empty?
+                if not children.empty?
+                  b.intro { |b| intro.to_xml(b, idprefix) }
+                else
+                  b.content { |b| intro.to_xml(b, idprefix) }
+                end
+              elsif children.empty?
+                b.content { |b| b.p }
+              end
+
+              children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+            }
+          end
+        end
+
         class BlockParagraph < Treetop::Runtime::SyntaxNode
           def to_xml(b, idprefix='', i=0)
             id = "#{idprefix}paragraph-0"

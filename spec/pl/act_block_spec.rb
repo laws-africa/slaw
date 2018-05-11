@@ -146,7 +146,7 @@ EOS
   end
 
   #-------------------------------------------------------------------------------
-  # Divisions
+  # Subdivisions
 
   describe 'subdivisions' do
     it 'should handle subdivisions' do
@@ -329,6 +329,53 @@ EOS
     </content>
   </point>
 </section>'
+    end
+  end
+
+  #-------------------------------------------------------------------------------
+  # Point
+
+  describe 'point' do
+    it 'should handle basic point' do
+      node = parse :point, <<EOS
+1) szczegółowy tryb i terminy rozpatrywania wniosków o udzielenie finansowego wsparcia;
+EOS
+
+      to_xml(node, 'prefix.', 0).should == '<point id="prefix.point-1">
+  <num>1)</num>
+  <content>
+    <p>szczegółowy tryb i terminy rozpatrywania wniosków o udzielenie finansowego wsparcia;</p>
+  </content>
+</point>'
+    end
+
+    it 'should handle points with litera' do
+      node = parse :point, <<EOS
+1) dokumenty potwierdzające prawo własności albo prawo użytkowania wieczystego nieruchomości, której dotyczy przedsięwzięcie albo na której położony jest budynek, którego budowę, remont lub przebudowę zamierza się przepro- wadzić w ramach realizacji przedsięwzięcia, w tym:
+
+a) oryginał albo potwierdzoną za zgodność z oryginałem kopię wypisu i wyrysu z rejestru gruntów wszystkich dzia- łek ewidencyjnych, na których realizowane jest przedsięwzięcie, wydanego nie wcześniej niż 3 miesiące przed dniem złożenia wniosku, oraz
+
+b) numer księgi wieczystej;
+EOS
+
+      to_xml(node, 'prefix.', 0).should == '<point id="prefix.point-1">
+  <num>1)</num>
+  <intro>
+    <p>dokumenty potwierdzające prawo własności albo prawo użytkowania wieczystego nieruchomości, której dotyczy przedsięwzięcie albo na której położony jest budynek, którego budowę, remont lub przebudowę zamierza się przepro- wadzić w ramach realizacji przedsięwzięcia, w tym:</p>
+  </intro>
+  <list id="prefix.point-1.list-a">
+    <num>a)</num>
+    <content>
+      <p>oryginał albo potwierdzoną za zgodność z oryginałem kopię wypisu i wyrysu z rejestru gruntów wszystkich dzia- łek ewidencyjnych, na których realizowane jest przedsięwzięcie, wydanego nie wcześniej niż 3 miesiące przed dniem złożenia wniosku, oraz</p>
+    </content>
+  </list>
+  <list id="prefix.point-1.list-b">
+    <num>b)</num>
+    <content>
+      <p>numer księgi wieczystej;</p>
+    </content>
+  </list>
+</point>'
     end
   end
 

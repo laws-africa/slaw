@@ -37,24 +37,24 @@ module Slaw
         end
 
         rule body
-          children:(division / subdivision / chapter / section / paragraph / point / block_paragraphs)+ <Body>
+          children:(division / subdivision / chapter / section / paragraph / point / litera / block_paragraphs)+ <Body>
         end
 
         rule division
           heading:division_heading
-          children:(subdivision / chapter / section / paragraph / point / block_paragraphs)*
+          children:(subdivision / chapter / section / paragraph / point / litera / block_paragraphs)*
           <Division>
         end
 
         rule subdivision
           heading:subdivision_heading
-          children:(chapter / section / paragraph / point / block_paragraphs)*
+          children:(chapter / section / paragraph / point / litera / block_paragraphs)*
           <Subdivision>
         end
 
         rule chapter
           heading:chapter_heading
-          children:(section / paragraph / point / block_paragraphs)*
+          children:(section / paragraph / point / litera / block_paragraphs)*
           <Chapter>
         end
 
@@ -63,7 +63,7 @@ module Slaw
           section_prefix whitespace
           intro:block_element?
           eol?
-          children:(paragraph / point / block_paragraphs)* <Section>
+          children:(paragraph / point / litera / block_paragraphs)* <Section>
         end
 
         rule paragraph
@@ -72,7 +72,7 @@ module Slaw
           paragraph_prefix space?
           intro:block_element?
           eol?
-          children:(point / block_paragraphs)* <Paragraph>
+          children:(point / litera / block_paragraphs)* <Paragraph>
         end
 
         rule point
@@ -80,7 +80,15 @@ module Slaw
           point_prefix whitespace
           intro:block_element?
           eol?
-          children:block_paragraphs* <Point>
+          children:(litera / block_paragraphs)* <Point>
+        end
+
+        rule litera
+          # a) aoeuaoeu
+          litera_prefix whitespace
+          intro:block_element?
+          eol?
+          children:block_paragraphs* <Litera>
         end
 
         ##########
@@ -171,7 +179,7 @@ module Slaw
         # and is ignored. This allows escaping of section headings, etc.
 
         rule naked_statement
-          space? !(division_heading / subdivision_heading / chapter_heading / section_prefix / schedule_title / paragraph_prefix / point_prefix) '\\'? clauses eol
+          space? !(division_heading / subdivision_heading / chapter_heading / section_prefix / schedule_title / paragraph_prefix / point_prefix / litera_prefix) '\\'? clauses eol
           <NakedStatement>
         end
 
@@ -207,6 +215,12 @@ module Slaw
           # 1) foo
           # 2A) foo
           number_letter ')'
+        end
+
+        rule litera_prefix
+          # a) foo
+          # bb) foo
+          letters:letter+ ')'
         end
 
         include Slaw::Grammars::Inlines
