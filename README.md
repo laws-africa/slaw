@@ -223,6 +223,7 @@ Akoma Ntoso `component` elements at the end of the XML document, with a name of 
 * Improved support for other legal traditions / grammars.
 * Add Polish legal tradition grammar.
 * Slaw no longer does too much introspection of a parsed document, since that can be so tradition-dependent.
+* Move reformatting out of Slaw since it's tradition-dependent.
 * Remove definition linking, Slaw no longer supports it.
 
 ### 0.17.2
