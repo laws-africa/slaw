@@ -37,24 +37,24 @@ module Slaw
         end
 
         rule body
-          children:(division / subdivision / chapter / article / section / paragraph / point / litera / block_paragraphs)+ <Body>
+          children:(division / subdivision / chapter / article / section / paragraph / point / litera / indents / block_paragraphs)+ <Body>
         end
 
         rule division
           heading:division_heading
-          children:(subdivision / chapter / article / section / paragraph / point / litera / block_paragraphs)*
+          children:(subdivision / chapter / article / section / paragraph / point / litera / indents / block_paragraphs)*
           <Division>
         end
 
         rule subdivision
           heading:subdivision_heading
-          children:(chapter / article / section / paragraph / point / litera / block_paragraphs)*
+          children:(chapter / article / section / paragraph / point / litera / indents / block_paragraphs)*
           <Subdivision>
         end
 
         rule chapter
           heading:chapter_heading
-          children:(article / section / paragraph / point / litera / block_paragraphs)*
+          children:(article / section / paragraph / point / litera / indents / block_paragraphs)*
           <Chapter>
         end
 
@@ -62,22 +62,22 @@ module Slaw
           # Art. 55. 1. something
           article_prefix whitespace
           intro:block_element? eol?
-          children:(section / paragraph / point / litera / block_paragraphs)* <Article>
+          children:(section / paragraph / point / litera / indents / block_paragraphs)* <Article>
         end
 
         rule section
           # § 55. foo
           section_prefix whitespace
           intro:block_element? eol?
-          children:(paragraph / point / litera / block_paragraphs)* <Section>
+          children:(paragraph / point / litera / indents / block_paragraphs)* <Section>
         end
 
         rule paragraph
           # ustęp:
           #  34. ...
-          paragraph_prefix space?
+          paragraph_prefix whitespace
           intro:block_element? eol?
-          children:(point / litera / block_paragraphs)* <Paragraph>
+          children:(point / litera / indents / block_paragraphs)* <Paragraph>
         end
 
         rule point
@@ -85,14 +85,24 @@ module Slaw
           # 12a) aoeuaoeu
           point_prefix whitespace
           intro:block_element? eol?
-          children:(litera / block_paragraphs)* <Point>
+          children:(litera / indents / block_paragraphs)* <Point>
         end
 
         rule litera
           # a) aoeuaoeu
           litera_prefix whitespace
           intro:block_element? eol?
-          children:block_paragraphs* <Litera>
+          children:(indents / block_paragraphs)* <Litera>
+        end
+
+        rule indents
+          # - foo
+          # - bar
+          children:indent_item+ <Indents>
+        end
+
+        rule indent_item
+          indent_prefix item_content:inline_block_element? eol? <IndentItem>
         end
 
         ##########
@@ -155,29 +165,13 @@ module Slaw
         end
 
         rule block_element
-          # XXX: blocklist
-          (table / naked_statement)
+          table / naked_statement
         end
 
         # Block elements that don't have to appear at the start of a line.
         # ie. we don't need to guard against the start of a chapter, section, etc.
         rule inline_block_element
-          # XXX: blocklist
-          (table / inline_statement)
-        end
-
-        rule blocklist
-          blocklist_item+ <Blocklist>
-        end
-
-        rule blocklist_item
-          # TODO: this whitespace should probably be space, to allow empty blocklist items followed by plain text
-          space? blocklist_item_prefix whitespace item_content:(!blocklist_item_prefix clauses:clauses? eol)? eol?
-          <BlocklistItem>
-        end
-
-        rule blocklist_item_prefix
-          ('(' letter_ordinal ')') / dotted_number_3
+          table / inline_statement
         end
 
         ##########
@@ -187,7 +181,7 @@ module Slaw
         # and is ignored. This allows escaping of section headings, etc.
 
         rule naked_statement
-          space? !(division_heading / subdivision_heading / chapter_heading / article_prefix / section_prefix / schedule_title / paragraph_prefix / point_prefix / litera_prefix) '\\'? clauses eol
+          space? !(division_heading / subdivision_heading / chapter_heading / article_prefix / section_prefix / schedule_title / paragraph_prefix / point_prefix / litera_prefix / indent_prefix) '\\'? clauses eol
           <NakedStatement>
         end
 
@@ -233,6 +227,10 @@ module Slaw
           # a) foo
           # bb) foo
           letters:letter+ ')'
+        end
+
+        rule indent_prefix
+          '-' space
         end
 
         include Slaw::Grammars::Inlines

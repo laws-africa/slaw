@@ -446,4 +446,119 @@ EOS
     end
   end
 
+  #-------------------------------------------------------------------------------
+  # Litera
+
+  describe 'litera' do
+
+    it 'should handle litera with indents' do
+      node = parse :litera, <<EOS
+b) liczby:
+- tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
+- mieszkań chronionych,
+- lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,
+- tymczasowych pomieszczeń,
+- miejsc w noclegowniach, schroniskach dla bezdomnych i ogrzewalniach,
+EOS
+      to_xml(node, 'prefix.', 0).should == '<list id="prefix.list-b">
+  <num>b)</num>
+  <intro>
+    <p>liczby:</p>
+  </intro>
+  <list id="prefix.list-b.list-0">
+    <indent id="prefix.list-b.list-0.indent-0">
+      <content>
+        <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
+      </content>
+    </indent>
+    <indent id="prefix.list-b.list-0.indent-1">
+      <content>
+        <p>mieszkań chronionych,</p>
+      </content>
+    </indent>
+    <indent id="prefix.list-b.list-0.indent-2">
+      <content>
+        <p>lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,</p>
+      </content>
+    </indent>
+    <indent id="prefix.list-b.list-0.indent-3">
+      <content>
+        <p>tymczasowych pomieszczeń,</p>
+      </content>
+    </indent>
+    <indent id="prefix.list-b.list-0.indent-4">
+      <content>
+        <p>miejsc w noclegowniach, schroniskach dla bezdomnych i ogrzewalniach,</p>
+      </content>
+    </indent>
+  </list>
+</list>'
+    end
+  end
+
+  #-------------------------------------------------------------------------------
+  # Indent
+
+  describe 'indent' do
+    it 'should handle basic indent' do
+      node = parse :indents, <<EOS
+- tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
+EOS
+
+      to_xml(node, 'prefix.', 0).should == '<list id="prefix.list-0">
+  <indent id="prefix.list-0.indent-0">
+    <content>
+      <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
+    </content>
+  </indent>
+</list>'
+    end
+
+    it 'should handle empty indents' do
+      node = parse :indents, <<EOS
+- 
+- 
+EOS
+
+      to_xml(node, 'prefix.', 0).should == '<list id="prefix.list-0">
+  <indent id="prefix.list-0.indent-0">
+    <content>
+      <p/>
+    </content>
+  </indent>
+  <indent id="prefix.list-0.indent-1">
+    <content>
+      <p/>
+    </content>
+  </indent>
+</list>'
+    end
+
+    it 'should handle multiple indent items' do
+      node = parse :indents, <<EOS
+- tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
+- mieszkań chronionych,
+- lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,
+EOS
+
+      to_xml(node, 'prefix.', 0).should == '<list id="prefix.list-0">
+  <indent id="prefix.list-0.indent-0">
+    <content>
+      <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
+    </content>
+  </indent>
+  <indent id="prefix.list-0.indent-1">
+    <content>
+      <p>mieszkań chronionych,</p>
+    </content>
+  </indent>
+  <indent id="prefix.list-0.indent-2">
+    <content>
+      <p>lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,</p>
+    </content>
+  </indent>
+</list>'
+    end
+  end
+
 end

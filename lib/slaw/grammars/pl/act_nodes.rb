@@ -339,31 +339,30 @@ module Slaw
           end
         end
 
-        class Blocklist < Treetop::Runtime::SyntaxNode
-          # Render a block list to xml. If a block is given,
-          # yield to it a builder to insert a listIntroduction node
-          def to_xml(b, idprefix, i=0, &block)
-            id = idprefix + "list#{i}"
+        class Indents < Treetop::Runtime::SyntaxNode
+          # Render a list of indent items.
+          def to_xml(b, idprefix, i=0)
+            id = idprefix + "list-#{i}"
             idprefix = id + '.'
 
-            b.blockList(id: id) { |b|
-              b.listIntroduction { |b| yield b } if block_given?
-
-              elements.each { |e| e.to_xml(b, idprefix) }
+            b.list(id: id) { |b|
+              children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
             }
           end
         end
 
-        class BlocklistItem < Treetop::Runtime::SyntaxNode
-          def num
-            blocklist_item_prefix.text_value
-          end
+        class IndentItem < Treetop::Runtime::SyntaxNode
+          def to_xml(b, idprefix, i)
+            id = idprefix + "indent-#{i}"
+            idprefix = id + '.'
 
-          def to_xml(b, idprefix)
-            b.item(id: idprefix + num.gsub(/[()]/, '')) { |b|
-              b.num(num)
-              b.p { |b|
-                item_content.clauses.to_xml(b, idprefix) if respond_to? :item_content and item_content.respond_to? :clauses
+            b.indent(id: id) { |b|
+              b.content { |b|
+                if not item_content.empty?
+                  item_content.to_xml(b, idprefix)
+                else
+                  b.p
+                end
               }
             }
           end

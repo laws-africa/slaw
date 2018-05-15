@@ -47,7 +47,8 @@ module Slaw
       def scrub(s)
         # we often get this unicode codepoint in the string, nuke it
         s.gsub([65532].pack('U*'), '')\
-         .gsub(/\n*/, '')
+         .gsub(/\n*/, '')\
+         .gsub(/–/, '-')
       end
 
       # change weird quotes to normal ones
