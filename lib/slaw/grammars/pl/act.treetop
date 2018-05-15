@@ -61,14 +61,14 @@ module Slaw
         rule article
           # Art. 55. 1. something
           article_prefix whitespace
-          intro:block_element? eol?
+          intro:block_element?
           children:(section / paragraph / point / litera / indents / block_paragraphs)* <Article>
         end
 
         rule section
           # § 55. foo
           section_prefix whitespace
-          intro:block_element? eol?
+          intro:block_element?
           children:(paragraph / point / litera / indents / block_paragraphs)* <Section>
         end
 
@@ -76,7 +76,7 @@ module Slaw
           # ustęp:
           #  34. ...
           paragraph_prefix whitespace
-          intro:block_element? eol?
+          intro:block_element?
           children:(point / litera / indents / block_paragraphs)* <Paragraph>
         end
 
@@ -84,14 +84,14 @@ module Slaw
           # 12) aoeuaoeu
           # 12a) aoeuaoeu
           point_prefix whitespace
-          intro:block_element? eol?
+          intro:block_element?
           children:(litera / indents / block_paragraphs)* <Point>
         end
 
         rule litera
           # a) aoeuaoeu
           litera_prefix whitespace
-          intro:block_element? eol?
+          intro:block_element?
           children:(indents / block_paragraphs)* <Litera>
         end
 
