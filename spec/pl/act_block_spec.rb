@@ -53,11 +53,11 @@ EOS
       to_xml(node).should == '<body>
   <division id="division-I">
     <num>I</num>
-    <paragraph id="division-I.paragraph-0">
+    <subparagraph id="division-I.subparagraph-0">
       <content>
         <p>Projekt ustawy</p>
       </content>
-    </paragraph>
+    </subparagraph>
     <chapter id="chapter-7">
       <num>7</num>
       <heading>Oznaczanie przepisów ustawy i ich systematyzacja</heading>
@@ -378,11 +378,11 @@ EOS
   <intro>
     <p>Podstawową jednostką redakcyjną ustawy jest artykuł.</p>
   </intro>
-  <paragraph id="section-54.paragraph-0">
+  <subparagraph id="section-54.subparagraph-0">
     <content>
       <p>Something here</p>
     </content>
-  </paragraph>
+  </subparagraph>
   <point id="section-54.point-1">
     <num>1)</num>
     <content>

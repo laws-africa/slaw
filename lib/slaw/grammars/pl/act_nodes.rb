@@ -328,10 +328,10 @@ module Slaw
 
         class BlockParagraph < Treetop::Runtime::SyntaxNode
           def to_xml(b, idprefix='', i=0)
-            id = "#{idprefix}paragraph-0"
+            id = "#{idprefix}subparagraph-0"
             idprefix = id + "."
 
-            b.paragraph(id: id) { |b|
+            b.subparagraph(id: id) { |b|
               b.content { |b|
                 elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
               }
