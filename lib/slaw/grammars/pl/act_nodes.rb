@@ -191,7 +191,35 @@ module Slaw
           end
         end
 
-        class Article < Treetop::Runtime::SyntaxNode
+        class BlockWithIntroAndChildren < Treetop::Runtime::SyntaxNode
+          def intro_node
+            if intro.elements.length >= 1
+              el = intro.elements[0]
+
+              if el.respond_to? :intro_inline
+                el.intro_inline
+              elsif el.respond_to? :intro_block
+                el.intro_block
+              end
+            end
+          end
+
+          def intro_and_children_xml(b, idprefix)
+            if intro_node and !intro_node.empty?
+              if not children.empty?
+                b.intro { |b| intro_node.to_xml(b, idprefix) }
+              else
+                b.content { |b| intro_node.to_xml(b, idprefix) }
+              end
+            elsif children.empty?
+              b.content { |b| b.p }
+            end
+
+            children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+          end
+        end
+
+        class Article < BlockWithIntroAndChildren
           def num
             article_prefix.number_letter.text_value
           end
@@ -202,23 +230,12 @@ module Slaw
 
             b.article(id: id) { |b|
               b.num("#{num}.")
-
-              if !intro.empty?
-                if not children.empty?
-                  b.intro { |b| intro.to_xml(b, idprefix) }
-                else
-                  b.content { |b| intro.to_xml(b, idprefix) }
-                end
-              elsif children.empty?
-                b.content { |b| b.p }
-              end
-
-              children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+              intro_and_children_xml(b, idprefix)
             }
           end
         end
 
-        class Section < Treetop::Runtime::SyntaxNode
+        class Section < BlockWithIntroAndChildren
           def num
             section_prefix.alphanums.text_value
           end
@@ -229,23 +246,12 @@ module Slaw
 
             b.section(id: id) { |b|
               b.num("#{num}.")
-
-              if !intro.empty?
-                if not children.empty?
-                  b.intro { |b| intro.to_xml(b, idprefix) }
-                else
-                  b.content { |b| intro.to_xml(b, idprefix) }
-                end
-              elsif children.empty?
-                b.content { |b| b.p }
-              end
-
-              children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+              intro_and_children_xml(b, idprefix)
             }
           end
         end
 
-        class Paragraph < Treetop::Runtime::SyntaxNode
+        class Paragraph < BlockWithIntroAndChildren
           def num
             paragraph_prefix.number_letter.text_value
           end
@@ -256,23 +262,12 @@ module Slaw
 
             b.paragraph(id: id) { |b|
               b.num(paragraph_prefix.text_value)
-
-              if !intro.empty?
-                if not children.empty?
-                  b.intro { |b| intro.to_xml(b, idprefix) }
-                else
-                  b.content { |b| intro.to_xml(b, idprefix) }
-                end
-              elsif children.empty?
-                b.content { |b| b.p }
-              end
-
-              children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+              intro_and_children_xml(b, idprefix)
             }
           end
         end
 
-        class Point < Treetop::Runtime::SyntaxNode
+        class Point < BlockWithIntroAndChildren
           def num
             point_prefix.number_letter.text_value
           end
@@ -283,23 +278,12 @@ module Slaw
 
             b.point(id: id) { |b|
               b.num(point_prefix.text_value)
-
-              if !intro.empty?
-                if not children.empty?
-                  b.intro { |b| intro.to_xml(b, idprefix) }
-                else
-                  b.content { |b| intro.to_xml(b, idprefix) }
-                end
-              elsif children.empty?
-                b.content { |b| b.p }
-              end
-
-              children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+              intro_and_children_xml(b, idprefix)
             }
           end
         end
 
-        class Litera < Treetop::Runtime::SyntaxNode
+        class Litera < BlockWithIntroAndChildren
           def num
             litera_prefix.letters.text_value
           end
@@ -310,18 +294,7 @@ module Slaw
 
             b.list(id: id) { |b|
               b.num(litera_prefix.text_value)
-
-              if !intro.empty?
-                if not children.empty?
-                  b.intro { |b| intro.to_xml(b, idprefix) }
-                else
-                  b.content { |b| intro.to_xml(b, idprefix) }
-                end
-              elsif children.empty?
-                b.content { |b| b.p }
-              end
-
-              children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+              intro_and_children_xml(b, idprefix)
             }
           end
         end

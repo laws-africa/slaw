@@ -59,39 +59,35 @@ module Slaw
         end
 
         rule article
-          # Art. 55. 1. something
-          article_prefix whitespace
-          intro:block_element?
+          # Art. 55. some optional text
+          # 1. first paragraph etc.
+          article_prefix intro
           children:(section / paragraph / point / litera / indents / block_paragraphs)* <Article>
         end
 
         rule section
           # § 55. foo
-          section_prefix whitespace
-          intro:block_element?
+          section_prefix intro
           children:(paragraph / point / litera / indents / block_paragraphs)* <Section>
         end
 
         rule paragraph
           # ustęp:
           #  34. ...
-          paragraph_prefix whitespace
-          intro:block_element?
+          paragraph_prefix intro
           children:(point / litera / indents / block_paragraphs)* <Paragraph>
         end
 
         rule point
           # 12) aoeuaoeu
           # 12a) aoeuaoeu
-          point_prefix whitespace
-          intro:block_element?
+          point_prefix intro
           children:(litera / indents / block_paragraphs)* <Point>
         end
 
         rule litera
           # a) aoeuaoeu
-          litera_prefix whitespace
-          intro:block_element?
+          litera_prefix intro
           children:(indents / block_paragraphs)* <Litera>
         end
 
@@ -103,6 +99,10 @@ module Slaw
 
         rule indent_item
           indent_prefix item_content:inline_block_element? eol? <IndentItem>
+        end
+
+        rule intro
+          (intro_inline:inline_block_element / (eol intro_block:block_element))? eol?
         end
 
         ##########
@@ -241,4 +241,3 @@ module Slaw
     end
   end
 end
-

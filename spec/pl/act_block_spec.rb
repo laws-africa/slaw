@@ -41,12 +41,14 @@ Rozdział 7. Oznaczanie przepisów ustawy i ich systematyzacja
 
 § 54. Podstawową jednostką redakcyjną ustawy jest artykuł.
 
-§ 55. 1. Każdą samodzielną myśl ujmuje się w odrębny artykuł.
+§ 55.
+1. Każdą samodzielną myśl ujmuje się w odrębny artykuł.
 2. Artykuł powinien być w miarę możliwości jednozdaniowy.
 3. Jeżeli samodzielną myśl wyraża zespół zdań, dokonuje się podziału artykułu na ustępy. W ustawie określanej jako "kodeks" ustępy oznacza się paragrafami (§).
 4. Podział artykułu na ustępy wprowadza się także w przypadku, gdy między zdaniami wyrażającymi samodzielne myśli występują powiązania treściowe, ale treść żadnego z nich nie jest na tyle istotna, aby wydzielić ją w odrębny artykuł.
 
-§ 56. 1. W obrębie artykułu (ustępu) zawierającego wyliczenie wyróżnia się dwie części: wprowadzenie do wyliczenia oraz punkty. Wyliczenie może kończyć się częścią wspólną, odnoszącą się do wszystkich punktów. Po części wspólnej nie dodaje się kolejnej samodzielnej myśli; w razie potrzeby formułuje się ją w kolejnym ustępie.
+§ 56.
+1. W obrębie artykułu (ustępu) zawierającego wyliczenie wyróżnia się dwie części: wprowadzenie do wyliczenia oraz punkty. Wyliczenie może kończyć się częścią wspólną, odnoszącą się do wszystkich punktów. Po części wspólnej nie dodaje się kolejnej samodzielnej myśli; w razie potrzeby formułuje się ją w kolejnym ustępie.
 2. W obrębie punktów można dokonać dalszego wyliczenia, wprowadzając litery.
 EOS
 
@@ -131,6 +133,20 @@ EOS
 </article>'
     end
 
+    it 'should handle articles with blank lines' do
+      node = parse :article, <<EOS
+Art. 1.
+
+Ustawa reguluje opodatkowanie podatkiem dochodowym dochodów osób fizycznych
+EOS
+      to_xml(node).should == '<article id="article-1">
+  <num>1.</num>
+  <content>
+    <p>Ustawa reguluje opodatkowanie podatkiem dochodowym dochodów osób fizycznych</p>
+  </content>
+</article>'
+    end
+
     it 'should handle consecutive articles' do
       node = parse :body, <<EOS
 Art. 1. Ustawa reguluje opodatkowanie podatkiem dochodowym dochodów osób fizycznych
@@ -154,7 +170,8 @@ EOS
 
     it 'should handle nested content' do
       node = parse :article, <<EOS
-Art. 2. 1. Przepisów ustawy nie stosuje się do:
+Art. 2.
+1. Przepisów ustawy nie stosuje się do:
 1) przychodów z działalności rolniczej, z wyjątkiem przychodów z działów specjalnych produkcji rolnej;
 2) przychodów z gospodarki leśnej w rozumieniu ustawy o lasach;
 EOS
@@ -266,6 +283,21 @@ EOS
 </paragraph>'
     end
 
+    it 'should handle a para with whitespace' do
+      node = parse :paragraph, <<EOS
+1.
+
+foo bar
+EOS
+
+      to_xml(node).should == '<paragraph id="paragraph-1">
+  <num>1.</num>
+  <content>
+    <p>foo bar</p>
+  </content>
+</paragraph>'
+    end
+
     it 'should handle paragraphs with points' do
       node = parse :paragraph, <<EOS
 2. W ustawie należy unikać posługiwania się:
@@ -295,6 +327,33 @@ EOS
     <num>3)</num>
     <content>
       <p>nowo tworzonymi pojęciami lub strukturami językowymi, chyba że w dotychczasowym słownictwie polskim brak jest odpowiedniego określenia.</p>
+    </content>
+  </point>
+</paragraph>'
+    end
+
+    it 'should not get confused by points with articles' do
+      node = parse :paragraph, <<EOS
+2. W ustawie należy unikać posługiwania się:
+1) art. 1
+2) art. 2
+EOS
+
+      to_xml(node).should == '<paragraph id="paragraph-2">
+  <num>2.</num>
+  <intro>
+    <p>W ustawie należy unikać posługiwania się:</p>
+  </intro>
+  <point id="paragraph-2.point-1">
+    <num>1)</num>
+    <content>
+      <p>art. 1</p>
+    </content>
+  </point>
+  <point id="paragraph-2.point-2">
+    <num>2)</num>
+    <content>
+      <p>art. 2</p>
     </content>
   </point>
 </paragraph>'
@@ -335,7 +394,8 @@ EOS
 
     it 'should handle section with numbered paras' do
       node = parse :section, <<EOS
-§ 55. 1. Każdą samodzielną myśl ujmuje się w odrębny artykuł.
+§ 55.
+1. Każdą samodzielną myśl ujmuje się w odrębny artykuł.
 2. Artykuł powinien być w miarę możliwości jednozdaniowy.
 3. Jeżeli samodzielną myśl wyraża zespół zdań, dokonuje się podziału artykułu na ustępy. W ustawie określanej jako "kodeks" ustępy oznacza się paragrafami (§).
 EOS
@@ -354,6 +414,26 @@ EOS
       <p>Artykuł powinien być w miarę możliwości jednozdaniowy.</p>
     </content>
   </paragraph>
+  <paragraph id="section-55.paragraph-3">
+    <num>3.</num>
+    <content>
+      <p>Jeżeli samodzielną myśl wyraża zespół zdań, dokonuje się podziału artykułu na ustępy. W ustawie określanej jako "kodeks" ustępy oznacza się paragrafami (§).</p>
+    </content>
+  </paragraph>
+</section>'
+    end
+
+    it 'should not confuse section content with block elements' do
+      node = parse :section, <<EOS
+§ 55. 1. Każdą samodzielną myśl ujmuje się w odrębny artykuł.
+3. Jeżeli samodzielną myśl wyraża zespół zdań, dokonuje się podziału artykułu na ustępy. W ustawie określanej jako "kodeks" ustępy oznacza się paragrafami (§).
+EOS
+
+      to_xml(node).should == '<section id="section-55">
+  <num>55.</num>
+  <intro>
+    <p>1. Każdą samodzielną myśl ujmuje się w odrębny artykuł.</p>
+  </intro>
   <paragraph id="section-55.paragraph-3">
     <num>3.</num>
     <content>
@@ -395,6 +475,19 @@ EOS
       <p>second point</p>
     </content>
   </point>
+</section>'
+    end
+
+    it 'should not get confused by sections with articles' do
+      node = parse :section, <<EOS
+§ 54. Art 1. is changed...
+EOS
+
+      to_xml(node).should == '<section id="section-54">
+  <num>54.</num>
+  <content>
+    <p>Art 1. is changed...</p>
+  </content>
 </section>'
     end
   end
