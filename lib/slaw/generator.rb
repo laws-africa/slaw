@@ -7,9 +7,6 @@ module Slaw
     # [Slaw::Parse::Builder] builder used by the generator
     attr_accessor :builder
 
-    # The type that will hold the generated document
-    attr_accessor :document_class
-
     @@parsers = {}
 
     def initialize(grammar)
@@ -19,7 +16,6 @@ module Slaw
       @builder = Slaw::Parse::Builder.new(parser: @parser)
       @parser = @builder.parser
       @cleanser = Slaw::Parse::Cleanser.new
-      @document_class = Slaw::Act
     end
 
     def build_parser
@@ -39,11 +35,9 @@ module Slaw
     #
     # @param text [String] plain text
     #
-    # @return [Slaw::Act] the resulting act
+    # @return [Nokogiri::Document] the resulting xml
     def generate_from_text(text)
-      act = @document_class.new
-      act.doc = @builder.parse_and_process_text(cleanup(text))
-      act
+      @builder.parse_and_process_text(cleanup(text))
     end
 
     # Run basic cleanup on text, such as ensuring clean newlines

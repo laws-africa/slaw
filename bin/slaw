@@ -90,8 +90,9 @@ class SlawCLI < Thor
   end
 
   desc "unparse FILE", "Unparse FILE from Akoma Ntoso XML back into text suitable for re-parsing"
+  option :grammar, type: :string, desc: "Grammar name (usually a two-letter country code). Default is za."
   def unparse(name)
-    generator = Slaw::ActGenerator.new
+    generator = Slaw::ActGenerator.new(options[:grammar] || 'za')
 
     doc = File.open(name, 'r') { |f| doc = generator.builder.parse_xml(f.read) }
     puts generator.text_from_act(doc)
