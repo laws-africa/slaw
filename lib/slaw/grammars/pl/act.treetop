@@ -230,7 +230,8 @@ module Slaw
         end
 
         rule indent_prefix
-          '-' space
+          # these are two different dash characters
+          '–' / '-' space
         end
 
         include Slaw::Grammars::Inlines

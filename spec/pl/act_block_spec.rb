@@ -607,6 +607,26 @@ EOS
 </list>'
     end
 
+    it 'should handle indents with different dash characters' do
+      node = parse :indents, <<EOS
+– foo
+- bar
+EOS
+
+      to_xml(node, 'prefix.', 0).should == '<list id="prefix.list-0">
+  <indent id="prefix.list-0.indent-0">
+    <content>
+      <p>foo</p>
+    </content>
+  </indent>
+  <indent id="prefix.list-0.indent-1">
+    <content>
+      <p>bar</p>
+    </content>
+  </indent>
+</list>'
+    end
+
     it 'should handle empty indents' do
       node = parse :indents, <<EOS
 - 

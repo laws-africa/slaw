@@ -35,8 +35,7 @@ module Slaw
       def scrub(s)
         # we often get this unicode codepoint in the string, nuke it
         s.gsub([65532].pack('U*'), '')\
-         .gsub(/\n*/, '')\
-         .gsub(/–/, '-')
+         .gsub(/\n*/, '')
       end
 
       # tabs to spaces
