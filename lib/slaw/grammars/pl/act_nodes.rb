@@ -289,10 +289,10 @@ module Slaw
           end
 
           def to_xml(b, idprefix='', i)
-            id = "#{idprefix}list-#{num}"
+            id = "#{idprefix}alinea-#{num}"
             idprefix = id + "."
 
-            b.list(id: id) { |b|
+            b.alinea(id: id) { |b|
               b.num(litera_prefix.text_value)
               intro_and_children_xml(b, idprefix)
             }

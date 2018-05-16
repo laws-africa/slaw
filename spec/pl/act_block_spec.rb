@@ -523,18 +523,18 @@ EOS
   <intro>
     <p>dokumenty potwierdzające prawo własności albo prawo użytkowania wieczystego nieruchomości, której dotyczy przedsięwzięcie albo na której położony jest budynek, którego budowę, remont lub przebudowę zamierza się przepro- wadzić w ramach realizacji przedsięwzięcia, w tym:</p>
   </intro>
-  <list id="prefix.point-1.list-a">
+  <alinea id="prefix.point-1.alinea-a">
     <num>a)</num>
     <content>
       <p>oryginał albo potwierdzoną za zgodność z oryginałem kopię wypisu i wyrysu z rejestru gruntów wszystkich dzia- łek ewidencyjnych, na których realizowane jest przedsięwzięcie, wydanego nie wcześniej niż 3 miesiące przed dniem złożenia wniosku, oraz</p>
     </content>
-  </list>
-  <list id="prefix.point-1.list-b">
+  </alinea>
+  <alinea id="prefix.point-1.alinea-b">
     <num>b)</num>
     <content>
       <p>numer księgi wieczystej;</p>
     </content>
-  </list>
+  </alinea>
 </point>'
     end
   end
@@ -553,39 +553,39 @@ b) liczby:
 - tymczasowych pomieszczeń,
 - miejsc w noclegowniach, schroniskach dla bezdomnych i ogrzewalniach,
 EOS
-      to_xml(node, 'prefix.', 0).should == '<list id="prefix.list-b">
+      to_xml(node, 'prefix.', 0).should == '<alinea id="prefix.alinea-b">
   <num>b)</num>
   <intro>
     <p>liczby:</p>
   </intro>
-  <list id="prefix.list-b.list-0">
-    <indent id="prefix.list-b.list-0.indent-0">
+  <list id="prefix.alinea-b.list-0">
+    <indent id="prefix.alinea-b.list-0.indent-0">
       <content>
         <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
       </content>
     </indent>
-    <indent id="prefix.list-b.list-0.indent-1">
+    <indent id="prefix.alinea-b.list-0.indent-1">
       <content>
         <p>mieszkań chronionych,</p>
       </content>
     </indent>
-    <indent id="prefix.list-b.list-0.indent-2">
+    <indent id="prefix.alinea-b.list-0.indent-2">
       <content>
         <p>lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,</p>
       </content>
     </indent>
-    <indent id="prefix.list-b.list-0.indent-3">
+    <indent id="prefix.alinea-b.list-0.indent-3">
       <content>
         <p>tymczasowych pomieszczeń,</p>
       </content>
     </indent>
-    <indent id="prefix.list-b.list-0.indent-4">
+    <indent id="prefix.alinea-b.list-0.indent-4">
       <content>
         <p>miejsc w noclegowniach, schroniskach dla bezdomnych i ogrzewalniach,</p>
       </content>
     </indent>
   </list>
-</list>'
+</alinea>'
     end
   end
 
