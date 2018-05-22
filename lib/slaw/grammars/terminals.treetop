@@ -1,0 +1,84 @@
+# encoding: UTF-8
+
+module Slaw
+  module Grammars
+    grammar Terminals
+      #########
+      ## one line of basic content
+
+      rule content
+        # anything but a newline, followed by a
+        # newline or end of file (without consuming the newline)
+        [^\n]+ &eol
+      end
+
+      ##########
+      # terminals
+
+      # eg. 2, 2A, 2b
+      rule number_letter
+        number letter*
+      end
+
+      rule letter_ordinal
+        letter (letter / digit)*
+      end
+
+      rule dotted_number_3
+        number '.' number ('.' number)+
+      end
+
+      rule dotted_number_2
+        number '.' number
+      end
+
+      rule number
+        digit+
+      end
+
+      rule digit
+        [0-9]
+      end
+
+      rule letter
+        [a-zA-Z]
+      end
+
+      rule alphanums
+        [a-zA-Z0-9]+
+      end
+
+      rule quotes
+        ["“”]
+      end
+      
+      rule non_quotes
+        [^"“”]
+      end
+
+      ##########
+      # whitespace
+
+      rule space
+        [ \t]+
+      end
+
+      rule whitespace
+        [ \t\n]*
+      end
+
+      rule empty_line
+        space? newline
+      end
+
+      rule eol
+        newline
+        empty_line*
+      end
+
+      rule newline
+        "\n"
+      end
+    end
+  end
+end

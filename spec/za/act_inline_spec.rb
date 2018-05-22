@@ -3,6 +3,8 @@
 require 'slaw'
 
 describe Slaw::ActGenerator do
+  subject { Slaw::ActGenerator.new('za') }
+
   def parse(rule, s)
     subject.builder.text_to_syntax_tree(s, {root: rule})
   end

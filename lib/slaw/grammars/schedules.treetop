@@ -1,0 +1,33 @@
+# encoding: UTF-8
+
+require 'slaw/grammars/schedules_nodes'
+
+module Slaw
+  module Grammars
+    grammar Schedules
+      rule schedules_container
+        schedules:schedules <ScheduleContainer>
+      end
+
+      rule schedules
+        children:schedule+ <GroupNode>
+      end
+
+      rule schedule
+        schedule_title
+        body:body?
+        <Schedule>
+      end
+
+      rule schedule_title
+        space? schedule_title_prefix space? "\""? num:alphanums? "\""? [ \t:.-]* title:(content)?
+        heading:(newline space? content)?
+        eol
+      end
+
+      rule schedule_title_prefix
+        'schedule'i 's'i?
+      end
+    end
+  end
+end

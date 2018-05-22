@@ -4,6 +4,8 @@ require 'spec_helper'
 require 'slaw'
 
 describe Slaw::ActGenerator do
+  subject { Slaw::ActGenerator.new('za') }
+
   describe 'guess_section_number_after_title' do
     context 'section number after title' do
       it 'should work' do
