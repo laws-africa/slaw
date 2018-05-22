@@ -47,8 +47,6 @@ class SlawCLI < Thor
     generator = Slaw::ActGenerator.new(options[:grammar] || 'za')
 
     if options[:fragment]
-      generator.document_class = Slaw::Fragment
-
       fragment = options[:fragment]
       fragment = case fragment.downcase
                  when 'akomantoso'

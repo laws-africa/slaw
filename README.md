@@ -83,7 +83,7 @@ and parser.
 
 ## Changelog
 
-### 1.0.0
+### 1.0.1
 
 * Improved support for other legal traditions / grammars.
 * Add Polish legal tradition grammar.
