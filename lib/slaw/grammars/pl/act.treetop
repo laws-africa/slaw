@@ -111,32 +111,28 @@ module Slaw
         # these are used externally and provide support when parsing just
         # a particular portion of a document
 
-        rule divisions
-          children:division+ <GroupNode>
-        end
-
-        rule subdivisions
-          children:subdivision+ <GroupNode>
+        rule articles
+          children:article+ <GroupNode>
         end
 
         rule chapters
           children:chapter+ <GroupNode>
         end
 
-        rule articles
-          children:article+ <GroupNode>
-        end
-
-        rule sections
-          children:section+ <GroupNode>
+        rule divisions
+          children:division+ <GroupNode>
         end
 
         rule paragraphs
           children:paragraph+ <GroupNode>
         end
 
-        rule points
-          children:point+ <GroupNode>
+        rule sections
+          children:section+ <GroupNode>
+        end
+
+        rule subdivisions
+          children:subdivision+ <GroupNode>
         end
 
         ##########
