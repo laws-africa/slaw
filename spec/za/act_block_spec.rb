@@ -1339,6 +1339,36 @@ EOS
   </paragraph>
 </section>'
     end
+
+    it 'should not clash with dotted subsections' do
+      node = parse :section, <<EOS
+3. Types of informal trading
+3.1
+Informal trading may include, amongst others:-
+3.1.1 street trading;
+3.1.2 trading in pedestrian malls;
+EOS
+      to_xml(node, '').should == '<section id="section-3">
+  <num>3.</num>
+  <heading>Types of informal trading</heading>
+  <subsection id="section-3.3.1">
+    <num>3.1</num>
+    <content>
+      <p>Informal trading may include, amongst others:-</p>
+      <blockList id="section-3.3.1.list1">
+        <item id="section-3.3.1.list1.3.1.1">
+          <num>3.1.1</num>
+          <p>street trading;</p>
+        </item>
+        <item id="section-3.3.1.list1.3.1.2">
+          <num>3.1.2</num>
+          <p>trading in pedestrian malls;</p>
+        </item>
+      </blockList>
+    </content>
+  </subsection>
+</section>'
+    end
   end
 
   #-------------------------------------------------------------------------------

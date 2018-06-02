@@ -209,7 +209,7 @@ module Slaw
           # of the number to catch this case.
           num:('(' number_letter ')')
           /
-          num:dotted_number_2 '.'? space
+          num:dotted_number_2 '.'? (space / newline)
         end
 
         include Slaw::Grammars::Inlines
