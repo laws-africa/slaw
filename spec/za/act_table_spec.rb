@@ -337,6 +337,26 @@ EOS
   </tr>
 </table>'
     end
+
+    it 'should manage entities in a table' do
+      node = parse :table, <<EOS
+{|
+| a > b
+| c & d
+|}
+EOS
+
+      to_xml(node, '', 0).should == '<table id="table0">
+  <tr>
+    <td>
+      <p>a &gt; b</p>
+    </td>
+    <td>
+      <p>c &amp; d</p>
+    </td>
+  </tr>
+</table>'
+    end
   end
 
 end
