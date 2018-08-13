@@ -76,10 +76,13 @@ and parser.
 ## Contributing
 
 1. Fork it at http://github.com/longhotsummer/slaw/fork
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+2. Install dependencies: `bundle install`
+3. Create your feature branch: `git checkout -b my-new-feature`
+4. Write great code!
+5. Run tests: `rspec`
+6. Commit your changes: `git commit -am 'Add some feature'`
+7. Push to the branch: `git push origin my-new-feature`
+8. Create a new Pull Request
 
 ## Changelog
 
