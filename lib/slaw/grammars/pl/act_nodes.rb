@@ -218,50 +218,88 @@ module Slaw
             children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
           end
         end
-
-        class Article < BlockWithIntroAndChildren
+        
+        class StatuteLevel0 < BlockWithIntroAndChildren
           def num
-            article_prefix.number_letter.text_value
+            (statute_level0_unit_prefix.number_letter.text_value +
+              (statute_level0_unit_prefix.superscript.respond_to?('number_letter') ?
+                ("^" + statute_level0_unit_prefix.superscript.number_letter.text_value) : ""))      
           end
-
-          def to_xml(b, *args)
-            id = "article-#{num}"
-            idprefix = "#{id}."
-
-            b.article(id: id) { |b|
-              b.num("#{num}.")
-              intro_and_children_xml(b, idprefix)
-            }
-          end
-        end
-
-        class Section < BlockWithIntroAndChildren
-          def num
-            section_prefix.alphanums.text_value
-          end
-
+  
           def to_xml(b, *args)
             id = "section-#{num}"
             idprefix = "#{id}."
-
-            b.section(id: id) { |b|
-              b.num("#{num}.")
+  
+            b.section(id: id, lawtype: "statute") { |b|
+              b.num("#{num}")
               intro_and_children_xml(b, idprefix)
             }
           end
         end
-
-        class Paragraph < BlockWithIntroAndChildren
+        
+        class OrdinanceLevel0 < BlockWithIntroAndChildren
           def num
-            paragraph_prefix.number_letter.text_value
+            (ordinance_level0_unit_prefix.number_letter.text_value +
+              (ordinance_level0_unit_prefix.superscript.respond_to?('number_letter') ?
+                ("^" + ordinance_level0_unit_prefix.superscript.number_letter.text_value) : ""))      
           end
-
+  
+          def to_xml(b, *args)
+            id = "section-#{num}"
+            idprefix = "#{id}."
+  
+            b.section(id: id, lawtype: "ordinance") { |b|
+              b.num("#{num}")
+              intro_and_children_xml(b, idprefix)
+            }
+          end
+        end
+        
+        # TODO: Add superscript possibility for units lower than level 0.
+        
+        class NoncodeStatuteLevel1 < BlockWithIntroAndChildren
+          def num
+            noncode_statute_level1_unit_prefix.number_letter.text_value
+          end
+  
           def to_xml(b, idprefix='', *args)
-            id = "#{idprefix}paragraph-#{num}"
-            idprefix = id + "."
+            id = "#{idprefix}subsection-#{num}"
+            idprefix = "#{id}."            
+              
+            b.subsection(id: id, type: "noncode") { |b|
+              b.num("#{num}")
+              intro_and_children_xml(b, idprefix)
+            }
+          end
+        end
+        
+      class CodeStatuteLevel1 < BlockWithIntroAndChildren
+        def num
+          code_statute_level1_unit_prefix.number_letter.text_value
+        end
 
-            b.paragraph(id: id) { |b|
-              b.num(paragraph_prefix.text_value)
+        def to_xml(b, idprefix='', *args)
+          id = "#{idprefix}subsection-#{num}"
+          idprefix = "#{id}."            
+            
+          b.subsection(id: id, type: "code") { |b|
+            b.num("#{num}.")
+            intro_and_children_xml(b, idprefix)
+          }
+        end
+      end        
+        
+        class OrdinanceLevel1 < BlockWithIntroAndChildren
+          def num
+            ordinance_level1_unit_prefix.number_letter.text_value
+          end
+  
+          def to_xml(b, idprefix='', *args)
+            id = "#{idprefix}subsection-#{num}"
+            idprefix = "#{id}."
+  
+            b.subsection(id: id) { |b|
+              b.num("#{num}")
               intro_and_children_xml(b, idprefix)
             }
           end
@@ -283,9 +321,9 @@ module Slaw
           end
         end
 
-        class Litera < BlockWithIntroAndChildren
+        class LetterUnit < BlockWithIntroAndChildren
           def num
-            litera_prefix.letters.text_value
+            letter_prefix.letters.text_value
           end
 
           def to_xml(b, idprefix='', i)
@@ -293,7 +331,7 @@ module Slaw
             idprefix = id + "."
 
             b.alinea(id: id) { |b|
-              b.num(litera_prefix.text_value)
+              b.num(letter_prefix.text_value)
               intro_and_children_xml(b, idprefix)
             }
           end
@@ -312,7 +350,7 @@ module Slaw
           end
         end
 
-        class Indents < Treetop::Runtime::SyntaxNode
+        class Tiret < Treetop::Runtime::SyntaxNode
           # Render a list of indent items.
           def to_xml(b, idprefix, i=0)
             id = idprefix + "list-#{i}"

@@ -1,5 +1,66 @@
 # encoding: UTF-8
 
+###################################
+# Note on Polish law terminology. #
+###################################
+#
+# It is very easy to get confused about Polish law logical units
+# and their English translations. Because of this, here is how we do it:
+# 
+# Laws can be either "normative" or "executive". Normative are primary legislation, given by the
+# parliament, and they leave some less important details undecided, to be filled in by the 
+# executive branch (ministers). Ministers issue executive law, which are secondary legislation, 
+# and fill out these details.
+#
+# A piece of Polish normative law is called "ustawa", which we translate as "statute".
+# A piece of Polish executive law is called "rozporządzenie", which we translate as "ordinance".
+#
+# Now, moving on to internal divisions of laws, there are differences b/n "ustawa" 
+# and "rozporządzenie", but each has a "main" unit, and units above and below it. For clarity,
+# let's call the main unit in each as being "at level 0", then its subdivisions as "at level 1",
+# then its subdivisions as "at level 2", etc. We can call higher units (containing multiple
+# main units), as "at level -1", "at level -2", etc.
+#
+# Internal divisions of "ustawa":
+# - Level 0 is "artykuł", denoted "Art. <number here>.", e.g. "Art. 123."
+# - Level 1 is "ustęp", denoted "<number here>.", e.g. "5.".
+# - There's a few more sub-levels ("punkt", "litera", "tiret"), identical as for "rozporządzenie".
+# - Exception: for important "ustawa" laws called "kodeks" (= code), "ustęp" is 
+#   denoted "§<number here>.", e.g. "§123."
+#
+# Internal divisions of "rozporządzenie":
+# - Level 0 is "paragraf", denoted "§<number here>.", e.g. "§123."
+# - Level 1 is "ustęp", denoted "<number here>.", e.g. "5."
+# - There's a few more sub-levels ("punkt", "litera", "tiret"), identical as for "ustawa".
+#
+# Here are issues of possible confusion:
+# - "Ustawa" and "rozporządzenie" call level 0 unit differently.
+# - In "ustawa", there are two alternative ways of denoting level 1 unit.
+# - "§" may denote level 0 (in "rozporządzenie") or level 1 (in "ustawa" called "kodeks") units.
+# - Many sources translate "ustęp" (level 1) as "paragraph". This is very confusing
+#   for "rozporządzenie", because its level 0 is called "paragraf" in Polish.
+# - In Polish, the character "§" itself is called "paragraf". (In English, "section sign".)
+#
+# Because of all this, I think it's extremely important to be careful and very clear with naming.
+# To avoid confusion as much as possible, I think it's prudent to avoid English "article", 
+# "paragraph" and "section", and instead use "levels", together with type of law, statute or 
+# ordinance. We can go back to direct translation at level 2 and below, because they are the
+# same for both types of law, and have non-confusing equivalents in English.
+#
+# So, we adopt the following translation:
+# - artykuł = statute level 0 unit
+# - paragraf = ordinance level 0 unit
+# - ustęp in "ustawa" denoted by numbers = noncode statute level 1 unit
+# - ustęp in "ustawa" denoted by "§" = code statute level 1 unit
+# - ustęp in "rozporządzenie" = ordinance level 1 unit
+# - punkt = point
+# - litera = letter
+# - tiret = tiret
+# - podwójne tiret = double tiret
+# - potrójne tiret = triple tiret
+#
+# TODO: Spell out the entire hierarchy, not just the bits where statutes and ordinances differ.
+
 require 'slaw/parse/grammar_helpers'
 require 'slaw/grammars/pl/act_nodes'
 
@@ -37,64 +98,133 @@ module Slaw
         end
 
         rule body
-          children:(division / subdivision / chapter / article / section / paragraph / point / litera / indents / block_paragraphs)+ <Body>
+          children:(division / subdivision / chapter / statute_level0_unit / ordinance_level0_unit / block_paragraphs)+ <Body>
         end
 
         rule division
           heading:division_heading
-          children:(subdivision / chapter / article / section / paragraph / point / litera / indents / block_paragraphs)*
+          children:(subdivision / chapter / statute_level0_unit / ordinance_level0_unit / block_paragraphs)*
           <Division>
         end
 
         rule subdivision
           heading:subdivision_heading
-          children:(chapter / article / section / paragraph / point / litera / indents / block_paragraphs)*
+          children:(chapter / statute_level0_unit / ordinance_level0_unit)*
           <Subdivision>
         end
 
         rule chapter
           heading:chapter_heading
-          children:(article / section / paragraph / point / litera / indents / block_paragraphs)*
+          children:(statute_level0_unit / ordinance_level0_unit)*
           <Chapter>
         end
-
-        rule article
-          # Art. 55. some optional text
-          # 1. first paragraph etc.
-          article_prefix intro
-          children:(section / paragraph / point / litera / indents / block_paragraphs)* <Article>
+                
+        rule statute_level0_unit
+          # Either:
+          #     Art. 55. This is some text. This is some text. This is
+          #     some text. This is some text.
+          # Or:
+          #     Art. 55.
+          #     1. This is some text.
+          #     2. This is some text.
+          # Or:
+          #     Art. 55.
+          #     §1. This is some text.
+          #     §2. This is some text.         
+          # Or:
+          #     Art. 55. This is some text. This is some text. This is
+          #     some text:
+          #     1) This is some text.
+          #     2) This is some text.
+          #     - This is optional "wrap-up" text.
+          statute_level0_unit_prefix intro
+          children:(noncode_statute_level1_unit / code_statute_level1_unit / point / block_paragraphs)* <StatuteLevel0>
         end
-
-        rule section
-          # § 55. foo
-          section_prefix intro
-          children:(paragraph / point / litera / indents / block_paragraphs)* <Section>
+        
+        rule ordinance_level0_unit
+          # Either:
+          #     §55. This is some text. This is some text. This is
+          #     some text. This is some text.
+          # Or:
+          #     §55.
+          #     1. This is some text.
+          #     2. This is some text.
+          # Or:
+          #     §55. This is some text. This is some text. This is
+          #     some text:
+          #     1) This is some text.
+          #     2) This is some text.
+          #     - This is optional "wrap-up" text.
+          ordinance_level0_unit_prefix intro
+          children:(ordinance_level1_unit / point / block_paragraphs)* <OrdinanceLevel0>
         end
-
-        rule paragraph
-          # ustęp:
-          #  34. ...
-          paragraph_prefix intro
-          children:(point / litera / indents / block_paragraphs)* <Paragraph>
+        
+        # TODO: After adding the distinction in level1_units b/n "noncode statute", "code statute"
+        # and "ordinance", I realized that "noncode" and "code" will be sufficient. Reduce that
+        # to these.
+        
+        rule noncode_statute_level1_unit
+          # Either:
+          #     123. This is some text. This is some text. This is
+          #     some text. This is some text.
+          # Or:
+          #     123. This is some text. This is some text. This is
+          #     some text:
+          #     1) This is some text.
+          #     2) This is some text.
+          #     - This is optional "wrap-up" text.
+          noncode_statute_level1_unit_prefix intro
+          children:(point / block_paragraphs)* <NoncodeStatuteLevel1>
+        end
+        
+        rule code_statute_level1_unit
+          # Either:
+          #     §123. This is some text. This is some text. This is
+          #     some text. This is some text.     
+          # Or:
+          #     §123. This is some text. This is some text. This is
+          #     some text:
+          #     1) This is some text.
+          #     2) This is some text.
+          #     - This is optional "wrap-up" text.
+          code_statute_level1_unit_prefix intro
+          children:(point / block_paragraphs)* <CodeStatuteLevel1>
+        end        
+        
+        rule ordinance_level1_unit
+          # Either:
+          #     123. This is some text. This is some text. This is
+          #     some text. This is some text.
+          # Or:
+          #     123. This is some text. This is some text. This is
+          #     some text:
+          #     1) This is some text.
+          #     2) This is some text.
+          #     - This is optional "wrap-up" text.
+          ordinance_level1_unit_prefix intro
+          children:(point / block_paragraphs)* <OrdinanceLevel1>     
         end
 
         rule point
           # 12) aoeuaoeu
           # 12a) aoeuaoeu
           point_prefix intro
-          children:(litera / indents / block_paragraphs)* <Point>
+          children:(letter_unit / block_paragraphs)* <Point>
         end
 
-        rule litera
+        rule letter_unit
           # a) aoeuaoeu
-          litera_prefix intro
-          children:(indents / block_paragraphs)* <Litera>
+          letter_prefix intro
+          children:(tiret / block_paragraphs)* <LetterUnit>
         end
+        
+        # TODO: Full handling of tirets and indented dash sections. So far, they have 
+        # @@INDENT@@ prepended to them, but we don't process that info yet.
 
-        rule indents
+        rule tiret
           # - foo
           # - bar
-          children:indent_item+ <Indents>
+          children:indent_item+ <Tiret>
         end
 
         rule indent_item
@@ -177,13 +307,19 @@ module Slaw
         # and is ignored. This allows escaping of section headings, etc.
 
         rule naked_statement
-          space? !(division_heading / subdivision_heading / chapter_heading / article_prefix / section_prefix / schedule_title / paragraph_prefix / point_prefix / litera_prefix / indent_prefix) '\\'? clauses eol
+          space? !(division_heading / subdivision_heading / chapter_heading / statute_level0_unit_prefix / ordinance_level0_unit_prefix / noncode_statute_level1_unit_prefix / code_statute_level1_unit_prefix / ordinance_level1_unit_prefix / schedule_title / point_prefix / letter_prefix / indent_prefix) '\\'? clauses eol
           <NakedStatement>
         end
 
         rule pre_body_statement
-          space? !(division_heading / subdivision_heading / chapter_heading / article_prefix / section_prefix / schedule_title) '\\'? clauses eol
+          space? !(division_heading / subdivision_heading / chapter_heading / statute_level0_unit_prefix / ordinance_level0_unit_prefix / noncode_statute_level1_unit_prefix / code_statute_level1_unit_prefix / ordinance_level1_unit_prefix / schedule_title) '\\'? clauses eol
           <NakedStatement>
+        end
+        
+        # I can't find a way to put OPTIONAL superscript inside the "_prefix" rules so I make
+        # it non-optional there and instead give an empty string alternative here.
+        rule superscript
+          (('@@SUPERSCRIPT@@' number_letter '##SUPERSCRIPT##') / '')
         end
 
         ##########
@@ -201,16 +337,26 @@ module Slaw
           'rozdzia'i ('ł'/'Ł') space alphanums [ :.-]*
         end
 
-        rule article_prefix
-          ('Art.'i / ('Artyku'i 'ł'/'Ł')) space number_letter '.'?
+        rule statute_level0_unit_prefix
+          ('Art.'i / ('Artyku'i 'ł'/'Ł')) space number_letter superscript '.'
         end
+        
+        rule ordinance_level0_unit_prefix
+          '§' space number_letter superscript '.'
+        end        
 
-        rule section_prefix
-          '§' space alphanums '.'?
+	# TODO: Add superscript possibility for units lower than level 0.
+
+        rule noncode_statute_level1_unit_prefix
+          number_letter '.' 
         end
-
-        rule paragraph_prefix
-          number_letter '.'
+        
+        rule code_statute_level1_unit_prefix
+          '§' space number_letter '.'
+        end        
+        
+        rule ordinance_level1_unit_prefix
+          number_letter '.' 
         end
 
         rule point_prefix
@@ -219,7 +365,7 @@ module Slaw
           number_letter ')'
         end
 
-        rule litera_prefix
+        rule letter_prefix
           # a) foo
           # bb) foo
           letters:letter+ ')'
