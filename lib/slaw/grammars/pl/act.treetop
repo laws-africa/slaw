@@ -118,7 +118,7 @@ module Slaw
           children:(statute_level0_unit / ordinance_level0_unit)*
           <Chapter>
         end
-                
+
         rule statute_level0_unit
           # Either:
           #     Art. 55. This is some text. This is some text. This is
@@ -130,7 +130,7 @@ module Slaw
           # Or:
           #     Art. 55.
           #     §1. This is some text.
-          #     §2. This is some text.         
+          #     §2. This is some text.
           # Or:
           #     Art. 55. This is some text. This is some text. This is
           #     some text:
@@ -140,7 +140,7 @@ module Slaw
           statute_level0_unit_prefix intro
           children:(noncode_statute_level1_unit / code_statute_level1_unit / point / block_paragraphs)* <StatuteLevel0>
         end
-        
+
         rule ordinance_level0_unit
           # Either:
           #     §55. This is some text. This is some text. This is
@@ -158,11 +158,11 @@ module Slaw
           ordinance_level0_unit_prefix intro
           children:(ordinance_level1_unit / point / block_paragraphs)* <OrdinanceLevel0>
         end
-        
+
         # TODO: After adding the distinction in level1_units b/n "noncode statute", "code statute"
         # and "ordinance", I realized that "noncode" and "code" will be sufficient. Reduce that
         # to these.
-        
+
         rule noncode_statute_level1_unit
           # Either:
           #     123. This is some text. This is some text. This is
@@ -176,11 +176,11 @@ module Slaw
           noncode_statute_level1_unit_prefix intro
           children:(point / block_paragraphs)* <NoncodeStatuteLevel1>
         end
-        
+
         rule code_statute_level1_unit
           # Either:
           #     §123. This is some text. This is some text. This is
-          #     some text. This is some text.     
+          #     some text. This is some text.
           # Or:
           #     §123. This is some text. This is some text. This is
           #     some text:
@@ -189,8 +189,8 @@ module Slaw
           #     - This is optional "wrap-up" text.
           code_statute_level1_unit_prefix intro
           children:(point / block_paragraphs)* <CodeStatuteLevel1>
-        end        
-        
+        end
+
         rule ordinance_level1_unit
           # Either:
           #     123. This is some text. This is some text. This is
@@ -202,7 +202,7 @@ module Slaw
           #     2) This is some text.
           #     - This is optional "wrap-up" text.
           ordinance_level1_unit_prefix intro
-          children:(point / block_paragraphs)* <OrdinanceLevel1>     
+          children:(point / block_paragraphs)* <OrdinanceLevel1>
         end
 
         rule point
@@ -217,8 +217,8 @@ module Slaw
           letter_prefix intro
           children:(tiret / block_paragraphs)* <LetterUnit>
         end
-        
-        # TODO: Full handling of tirets and indented dash sections. So far, they have 
+
+        # TODO: Full handling of tirets and indented dash sections. So far, they have
         # @@INDENT@@ prepended to them, but we don't process that info yet.
 
         rule tiret
@@ -315,7 +315,7 @@ module Slaw
           space? !(division_heading / subdivision_heading / chapter_heading / statute_level0_unit_prefix / ordinance_level0_unit_prefix / noncode_statute_level1_unit_prefix / code_statute_level1_unit_prefix / ordinance_level1_unit_prefix / schedule_title) '\\'? clauses eol
           <NakedStatement>
         end
-        
+
         # I can't find a way to put OPTIONAL superscript inside the "_prefix" rules so I make
         # it non-optional there and instead give an empty string alternative here.
         rule superscript
@@ -340,23 +340,23 @@ module Slaw
         rule statute_level0_unit_prefix
           ('Art.'i / ('Artyku'i 'ł'/'Ł')) space number_letter superscript '.'
         end
-        
+
         rule ordinance_level0_unit_prefix
           '§' space number_letter superscript '.'
-        end        
+        end
 
-	# TODO: Add superscript possibility for units lower than level 0.
+        # TODO: Add superscript possibility for units lower than level 0.
 
         rule noncode_statute_level1_unit_prefix
-          number_letter '.' 
+          number_letter '.'
         end
-        
+
         rule code_statute_level1_unit_prefix
           '§' space number_letter '.'
-        end        
-        
+        end
+
         rule ordinance_level1_unit_prefix
-          number_letter '.' 
+          number_letter '.'
         end
 
         rule point_prefix

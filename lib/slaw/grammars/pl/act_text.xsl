@@ -77,7 +77,7 @@
     <xsl:call-template name="newline"/>
     <xsl:apply-templates select="./*[not(self::a:num) and not(self::a:heading)]" />
   </xsl:template>
-  
+
   <xsl:template match="a:section[@lawtype='statute']">
     <xsl:text>Art. </xsl:text>
     <xsl:value-of select="a:num" />
@@ -103,7 +103,7 @@
     </xsl:if>
     <xsl:apply-templates select="./*[not(self::a:num)]" />
   </xsl:template>
-  
+
   <xsl:template match="a:subsection[@type='code']">
     <xsl:text>§</xsl:text>
     <xsl:value-of select="a:num" />
@@ -264,11 +264,11 @@
   <xsl:template match="*">
     <xsl:text/><xsl:apply-templates /><xsl:text/>
   </xsl:template>
-  
+
   <!-- Helper template to avoid unindented </xsl:text> tags, making the file hard to read. -->
   <xsl:template name="newline">
     <xsl:text>
 </xsl:text>
   </xsl:template>
-  
+
 </xsl:stylesheet>

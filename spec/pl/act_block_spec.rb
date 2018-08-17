@@ -52,7 +52,7 @@ Rozdział 7. Oznaczanie przepisów ustawy i ich systematyzacja
 2. W obrębie punktów można dokonać dalszego wyliczenia, wprowadzając litery.
 EOS
 
-      to_xml(node).should == 
+      to_xml(node).should ==
 '<body>
   <division id="division-I">
     <num>I</num>
@@ -126,7 +126,7 @@ EOS
       node = parse :statute_level0_unit, <<EOS
 Art. 1. Ustawa reguluje opodatkowanie podatkiem dochodowym dochodów osób fizycznych
 EOS
-      to_xml(node).should == 
+      to_xml(node).should ==
 '<section id="section-1" lawtype="statute">
   <num>1</num>
   <content>
@@ -141,7 +141,7 @@ Art. 1.
 
 Ustawa reguluje opodatkowanie podatkiem dochodowym dochodów osób fizycznych
 EOS
-      to_xml(node).should == 
+      to_xml(node).should ==
 '<section id="section-1" lawtype="statute">
   <num>1</num>
   <content>
@@ -155,7 +155,7 @@ EOS
 Art. 1. Ustawa reguluje opodatkowanie podatkiem dochodowym dochodów osób fizycznych
 Art. 2. Something else
 EOS
-      to_xml(node).should == 
+      to_xml(node).should ==
 '<body>
   <section id="section-1" lawtype="statute">
     <num>1</num>
@@ -179,7 +179,7 @@ Art. 2.
 1) przychodów z działalności rolniczej, z wyjątkiem przychodów z działów specjalnych produkcji rolnej;
 2) przychodów z gospodarki leśnej w rozumieniu ustawy o lasach;
 EOS
-      to_xml(node).should == 
+      to_xml(node).should ==
 '<section id="section-2" lawtype="statute">
   <num>2</num>
   <subsection id="section-2.subsection-1" type="noncode">
@@ -202,20 +202,19 @@ EOS
   </subsection>
 </section>'
     end
-    
+
     it 'ENTITY VARIATION: With superscript number.' do
       node = parse :statute_level0_unit, <<EOS
 Art. 123@@SUPERSCRIPT@@456##SUPERSCRIPT##. Ustawa reguluje opodatkowanie podatkiem dochodowym dochodów osób fizycznych
 EOS
-      to_xml(node).should == 
+      to_xml(node).should ==
 '<section id="section-123^456" lawtype="statute">
   <num>123^456</num>
   <content>
     <p>Ustawa reguluje opodatkowanie podatkiem dochodowym dochodów osób fizycznych</p>
   </content>
 </section>'
-    end    
-    
+    end
   end
 
   #-------------------------------------------------------------------------------
@@ -231,7 +230,7 @@ Rozdział 7. Oznaczanie przepisów ustawy i ich systematyzacja
 
 § 54. Podstawową jednostką redakcyjną ustawy jest artykuł.
 EOS
-      to_xml(node).should == 
+      to_xml(node).should ==
 '<division id="division-I">
   <num>I</num>
   <heading>Projekt ustawy</heading>
@@ -260,7 +259,7 @@ Projekt ustawy
 
 § 54. Podstawową jednostką redakcyjną ustawy jest artykuł.
 EOS
-      to_xml(node).should == 
+      to_xml(node).should ==
 '<subdivision id="subdivision-I">
   <num>I</num>
   <heading>Projekt ustawy</heading>
@@ -283,7 +282,7 @@ EOS
 1. Każdą samodzielną myśl ujmuje się w odrębny artykuł.
 EOS
 
-      to_xml(node).should == 
+      to_xml(node).should ==
 '<subsection id="subsection-1" type="noncode">
   <num>1</num>
   <content>
@@ -297,7 +296,7 @@ EOS
 1.
 EOS
 
-      to_xml(node).should == 
+      to_xml(node).should ==
 '<subsection id="subsection-1" type="noncode">
   <num>1</num>
   <content>
@@ -313,7 +312,7 @@ EOS
 foo bar
 EOS
 
-      to_xml(node).should == 
+      to_xml(node).should ==
 '<subsection id="subsection-1" type="noncode">
   <num>1</num>
   <content>
@@ -330,7 +329,7 @@ EOS
 3) nowo tworzonymi pojęciami lub strukturami językowymi, chyba że w dotychczasowym słownictwie polskim brak jest odpowiedniego określenia.
 EOS
 
-      to_xml(node).should == 
+      to_xml(node).should ==
 '<subsection id="subsection-2" type="noncode">
   <num>2</num>
   <intro>
@@ -364,7 +363,7 @@ EOS
 2) art. 2
 EOS
 
-      to_xml(node).should == 
+      to_xml(node).should ==
 '<subsection id="subsection-2" type="noncode">
   <num>2</num>
   <intro>
@@ -397,7 +396,7 @@ EOS
 Przepisy ustawy redaguje się zwięźle i syntetycznie, unikając nadmiernej szczegółowości, a zarazem w sposób, w jaki opisuje się typowe sytuacje występujące w dziedzinie spraw regulowanych tą ustawą.
 EOS
 
-      to_xml(node).should == 
+      to_xml(node).should ==
 '<section id="section-5" lawtype="ordinance">
   <num>5</num>
   <content>
@@ -411,7 +410,7 @@ EOS
 § 54. Podstawową jednostką redakcyjną ustawy jest artykuł.
 EOS
 
-      to_xml(node).should == 
+      to_xml(node).should ==
 '<section id="section-54" lawtype="ordinance">
   <num>54</num>
   <content>
@@ -428,7 +427,7 @@ EOS
 3. Jeżeli samodzielną myśl wyraża zespół zdań, dokonuje się podziału artykułu na ustępy. W ustawie określanej jako "kodeks" ustępy oznacza się paragrafami (§).
 EOS
 
-      to_xml(node).should == 
+      to_xml(node).should ==
 '<section id="section-55" lawtype="ordinance">
   <num>55</num>
   <subsection id="section-55.subsection-1">
@@ -458,7 +457,7 @@ EOS
 3. Jeżeli samodzielną myśl wyraża zespół zdań, dokonuje się podziału artykułu na ustępy. W ustawie określanej jako "kodeks" ustępy oznacza się paragrafami (§).
 EOS
 
-      to_xml(node).should == 
+      to_xml(node).should ==
 '<section id="section-55" lawtype="ordinance">
   <num>55</num>
   <intro>
@@ -483,7 +482,7 @@ Something here
 2) second point
 EOS
 
-      to_xml(node).should == 
+      to_xml(node).should ==
 '<section id="section-54" lawtype="ordinance">
   <num>54</num>
   <intro>
@@ -514,7 +513,7 @@ EOS
 § 54. Art 1. is changed...
 EOS
 
-      to_xml(node).should == 
+      to_xml(node).should ==
 '<section id="section-54" lawtype="ordinance">
   <num>54</num>
   <content>
@@ -522,13 +521,13 @@ EOS
   </content>
 </section>'
     end
-    
+
     it 'ENTITY VARIATION: With superscript.' do
       node = parse :ordinance_level0_unit, <<EOS
 § 5c@@SUPERSCRIPT@@6a##SUPERSCRIPT##. Przepisy ustawy redaguje się zwięźle i syntetycznie, unikając nadmiernej szczegółowości, a zarazem w sposób, w jaki opisuje się typowe sytuacje występujące w dziedzinie spraw regulowanych tą ustawą.
 EOS
 
-      to_xml(node).should == 
+      to_xml(node).should ==
 '<section id="section-5c^6a" lawtype="ordinance">
   <num>5c^6a</num>
   <content>
@@ -547,7 +546,7 @@ EOS
 1) szczegółowy tryb i terminy rozpatrywania wniosków o udzielenie finansowego wsparcia;
 EOS
 
-      to_xml(node, 'prefix.', 0).should == 
+      to_xml(node, 'prefix.', 0).should ==
 '<point id="prefix.point-1">
   <num>1)</num>
   <content>
@@ -565,7 +564,7 @@ a) oryginał albo potwierdzoną za zgodność z oryginałem kopię wypisu i 
 b) numer księgi wieczystej;
 EOS
 
-      to_xml(node, 'prefix.', 0).should == 
+      to_xml(node, 'prefix.', 0).should ==
 '<point id="prefix.point-1">
   <num>1)</num>
   <intro>
@@ -601,7 +600,7 @@ b) liczby:
 - tymczasowych pomieszczeń,
 - miejsc w noclegowniach, schroniskach dla bezdomnych i ogrzewalniach,
 EOS
-      to_xml(node, 'prefix.', 0).should == 
+      to_xml(node, 'prefix.', 0).should ==
 '<alinea id="prefix.alinea-b">
   <num>b)</num>
   <intro>
@@ -647,7 +646,7 @@ EOS
 - tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
 EOS
 
-      to_xml(node, 'prefix.', 0).should == 
+      to_xml(node, 'prefix.', 0).should ==
 '<list id="prefix.list-0">
   <indent id="prefix.list-0.indent-0">
     <content>
@@ -663,7 +662,7 @@ EOS
 - bar
 EOS
 
-      to_xml(node, 'prefix.', 0).should == 
+      to_xml(node, 'prefix.', 0).should ==
 '<list id="prefix.list-0">
   <indent id="prefix.list-0.indent-0">
     <content>
@@ -684,7 +683,7 @@ EOS
 - 
 EOS
 
-      to_xml(node, 'prefix.', 0).should == 
+      to_xml(node, 'prefix.', 0).should ==
 '<list id="prefix.list-0">
   <indent id="prefix.list-0.indent-0">
     <content>
@@ -706,7 +705,7 @@ EOS
 - lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,
 EOS
 
-      to_xml(node, 'prefix.', 0).should == 
+      to_xml(node, 'prefix.', 0).should ==
 '<list id="prefix.list-0">
   <indent id="prefix.list-0.indent-0">
     <content>

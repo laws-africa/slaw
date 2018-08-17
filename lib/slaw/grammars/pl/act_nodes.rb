@@ -218,61 +218,61 @@ module Slaw
             children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
           end
         end
-        
+
         class StatuteLevel0 < BlockWithIntroAndChildren
           def num
             (statute_level0_unit_prefix.number_letter.text_value +
               (statute_level0_unit_prefix.superscript.respond_to?('number_letter') ?
-                ("^" + statute_level0_unit_prefix.superscript.number_letter.text_value) : ""))      
+                ("^" + statute_level0_unit_prefix.superscript.number_letter.text_value) : ""))
           end
-  
+
           def to_xml(b, *args)
             id = "section-#{num}"
             idprefix = "#{id}."
-  
+
             b.section(id: id, lawtype: "statute") { |b|
               b.num("#{num}")
               intro_and_children_xml(b, idprefix)
             }
           end
         end
-        
+
         class OrdinanceLevel0 < BlockWithIntroAndChildren
           def num
             (ordinance_level0_unit_prefix.number_letter.text_value +
               (ordinance_level0_unit_prefix.superscript.respond_to?('number_letter') ?
-                ("^" + ordinance_level0_unit_prefix.superscript.number_letter.text_value) : ""))      
+                ("^" + ordinance_level0_unit_prefix.superscript.number_letter.text_value) : ""))
           end
-  
+
           def to_xml(b, *args)
             id = "section-#{num}"
             idprefix = "#{id}."
-  
+
             b.section(id: id, lawtype: "ordinance") { |b|
               b.num("#{num}")
               intro_and_children_xml(b, idprefix)
             }
           end
         end
-        
+
         # TODO: Add superscript possibility for units lower than level 0.
-        
+
         class NoncodeStatuteLevel1 < BlockWithIntroAndChildren
           def num
             noncode_statute_level1_unit_prefix.number_letter.text_value
           end
-  
+
           def to_xml(b, idprefix='', *args)
             id = "#{idprefix}subsection-#{num}"
-            idprefix = "#{id}."            
-              
+            idprefix = "#{id}."
+
             b.subsection(id: id, type: "noncode") { |b|
               b.num("#{num}")
               intro_and_children_xml(b, idprefix)
             }
           end
         end
-        
+
       class CodeStatuteLevel1 < BlockWithIntroAndChildren
         def num
           code_statute_level1_unit_prefix.number_letter.text_value
@@ -280,24 +280,24 @@ module Slaw
 
         def to_xml(b, idprefix='', *args)
           id = "#{idprefix}subsection-#{num}"
-          idprefix = "#{id}."            
-            
+          idprefix = "#{id}."
+
           b.subsection(id: id, type: "code") { |b|
             b.num("#{num}.")
             intro_and_children_xml(b, idprefix)
           }
         end
-      end        
-        
+      end
+
         class OrdinanceLevel1 < BlockWithIntroAndChildren
           def num
             ordinance_level1_unit_prefix.number_letter.text_value
           end
-  
+
           def to_xml(b, idprefix='', *args)
             id = "#{idprefix}subsection-#{num}"
             idprefix = "#{id}."
-  
+
             b.subsection(id: id) { |b|
               b.num("#{num}")
               intro_and_children_xml(b, idprefix)
