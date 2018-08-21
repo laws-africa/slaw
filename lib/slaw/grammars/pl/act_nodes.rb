@@ -215,7 +215,9 @@ module Slaw
               b.content { |b| b.p }
             end
 
-            children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+            children.elements.each_with_index { |e, i|
+              e.to_xml(b, idprefix, i)
+            }
           end
         end
 
@@ -335,7 +337,6 @@ module Slaw
         end
 
         class Tiret < Treetop::Runtime::SyntaxNode
-          # Render a list of indent items.
           def to_xml(b, idprefix, i=0)
             id = idprefix + "list-#{i}"
             idprefix = id + '.'
@@ -346,7 +347,31 @@ module Slaw
           end
         end
 
-        class IndentItem < Treetop::Runtime::SyntaxNode
+        class DashedWrapUpForPoints < Treetop::Runtime::SyntaxNode
+          def to_xml(b, idprefix, i)
+            b.wrapUp() { |b|
+              if not content.empty?
+                content.to_xml(b, "")
+              else
+                b.p
+              end
+            }
+          end
+        end
+        
+        class DashedWrapUpForLetters < Treetop::Runtime::SyntaxNode
+          def to_xml(b, idprefix, i)
+            b.wrapUp() { |b|
+              if not content.empty?
+                content.to_xml(b, "")
+              else
+                b.p
+              end
+            }
+          end
+        end
+
+        class TiretItem < Treetop::Runtime::SyntaxNode
           def to_xml(b, idprefix, i)
             id = idprefix + "indent-#{i}"
             idprefix = id + '.'

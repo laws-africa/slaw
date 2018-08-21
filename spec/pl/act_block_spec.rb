@@ -121,7 +121,7 @@ EOS
   #-------------------------------------------------------------------------------
   # Statute level 0 units
 
-  describe 'ENTITY: Statute level 0 units ("artykuł").' do
+  describe 'ENTITY: Statute level 0 unit (Polish "artykuł").' do
     it 'ENTITY VARIATION: Basic one-line.' do
       node = parse :statute_level0_unit, <<EOS
 Art. 1. Ustawa reguluje opodatkowanie podatkiem dochodowym dochodów osób fizycznych
@@ -276,7 +276,7 @@ EOS
   #-------------------------------------------------------------------------------
   # Noncode level 1 units.
 
-  describe 'ENTITY: Noncode level 1 units ("ustęp").' do
+  describe 'ENTITY: Noncode level 1 unit (Polish "ustęp").' do
     it 'ENTITY VARIATION: Basic one-line.' do
       node = parse :noncode_level1_unit, <<EOS
 1. Każdą samodzielną myśl ujmuje się w odrębny artykuł.
@@ -388,7 +388,7 @@ EOS
   #-------------------------------------------------------------------------------
   # Ordinance level 0 units.
 
-  describe 'ENTITY: Ordinance level 0 units ("paragraf").' do
+  describe 'ENTITY: Ordinance level 0 unit (Polish "paragraf").' do
     it 'ENTITY VARIATION: Basic with newline.' do
       node = parse :ordinance_level0_unit, <<EOS
 § 5.
@@ -538,10 +538,230 @@ EOS
   end
 
   #-------------------------------------------------------------------------------
-  # Point
+  # Dashed wrap-up for points
+  
+  describe 'ENTITY: Dashed section appearing immediately after a list of points.' do
+    it 'ENTITY VARIATION: In statute level 0' do
+      node = parse :statute_level0_unit, <<EOS
+Art. 1. The following rights:
+1) the right to X
+2) the right to Y
+@@INDENT0@@– shall not be abrogated
+EOS
 
-  describe 'point' do
-    it 'should handle basic point' do
+      to_xml(node).should ==
+'<section id="section-1" lawtype="statute">
+  <num>1</num>
+  <intro>
+    <p>The following rights:</p>
+  </intro>
+  <point id="section-1.point-1">
+    <num>1)</num>
+    <content>
+      <p>the right to X</p>
+    </content>
+  </point>
+  <point id="section-1.point-2">
+    <num>2)</num>
+    <content>
+      <p>the right to Y</p>
+    </content>
+  </point>
+  <wrapUp>
+    <p>shall not be abrogated</p>
+  </wrapUp>
+</section>'
+    end
+
+    it 'ENTITY VARIATION: In ordinance level 0' do
+      node = parse :ordinance_level0_unit, <<EOS
+§ 1. The following rights:
+1) the right to X
+2) the right to Y
+@@INDENT0@@– shall not be abrogated
+EOS
+
+      to_xml(node).should ==
+'<section id="section-1" lawtype="ordinance">
+  <num>1</num>
+  <intro>
+    <p>The following rights:</p>
+  </intro>
+  <point id="section-1.point-1">
+    <num>1)</num>
+    <content>
+      <p>the right to X</p>
+    </content>
+  </point>
+  <point id="section-1.point-2">
+    <num>2)</num>
+    <content>
+      <p>the right to Y</p>
+    </content>
+  </point>
+  <wrapUp>
+    <p>shall not be abrogated</p>
+  </wrapUp>
+</section>'
+    end
+
+    it 'ENTITY VARIATION: In noncode level 1' do
+      node = parse :noncode_level1_unit, <<EOS
+1. The following rights:
+1) the right to X
+2) the right to Y
+@@INDENT0@@– shall not be abrogated
+EOS
+
+      to_xml(node).should ==
+'<subsection id="subsection-1" type="noncode">
+  <num>1</num>
+  <intro>
+    <p>The following rights:</p>
+  </intro>
+  <point id="subsection-1.point-1">
+    <num>1)</num>
+    <content>
+      <p>the right to X</p>
+    </content>
+  </point>
+  <point id="subsection-1.point-2">
+    <num>2)</num>
+    <content>
+      <p>the right to Y</p>
+    </content>
+  </point>
+  <wrapUp>
+    <p>shall not be abrogated</p>
+  </wrapUp>
+</subsection>'
+    end
+
+    it 'ENTITY VARIATION: In code level 1' do
+      node = parse :code_level1_unit, <<EOS
+§ 1. The following rights:
+1) the right to X
+2) the right to Y
+@@INDENT0@@– shall not be abrogated
+EOS
+
+      to_xml(node).should ==
+'<subsection id="subsection-1" type="code">
+  <num>1</num>
+  <intro>
+    <p>The following rights:</p>
+  </intro>
+  <point id="subsection-1.point-1">
+    <num>1)</num>
+    <content>
+      <p>the right to X</p>
+    </content>
+  </point>
+  <point id="subsection-1.point-2">
+    <num>2)</num>
+    <content>
+      <p>the right to Y</p>
+    </content>
+  </point>
+  <wrapUp>
+    <p>shall not be abrogated</p>
+  </wrapUp>
+</subsection>'
+    end
+    
+    it 'ENTITY VARIATION: Exceptionally (and incorrectly), lawmakers use letters at level 1.' do
+      node = parse :noncode_level1_unit, <<EOS
+1. The following rights:
+a) the right to X
+b) the right to Y
+@@INDENT0@@– shall not be abrogated
+EOS
+
+      to_xml(node).should ==
+'<subsection id="subsection-1" type="noncode">
+  <num>1</num>
+  <intro>
+    <p>The following rights:</p>
+  </intro>
+  <alinea id="subsection-1.alinea-a">
+    <num>a)</num>
+    <content>
+      <p>the right to X</p>
+    </content>
+  </alinea>
+  <alinea id="subsection-1.alinea-b">
+    <num>b)</num>
+    <content>
+      <p>the right to Y</p>
+    </content>
+  </alinea>
+  <wrapUp>
+    <p>shall not be abrogated</p>
+  </wrapUp>
+</subsection>'
+    end    
+  end
+  
+  #-------------------------------------------------------------------------------
+  # Dashed wrap-up for letters
+    
+  describe 'ENTITY: Dashed section appearing immediately after a list of letters.' do
+    it 'ENTITY VARIATION: Basic' do
+      node = parse :statute_level0_unit, <<EOS
+Art. 1. The following rights:
+1) right of passage:
+a) through the town square,
+b) through the town marketplace
+@@INDENT1@@– assuming it is Sunday
+2) the right to Y
+@@INDENT0@@– shall not be abrogated.
+EOS
+
+      to_xml(node).should ==
+'<section id="section-1" lawtype="statute">
+  <num>1</num>
+  <intro>
+    <p>The following rights:</p>
+  </intro>
+  <point id="section-1.point-1">
+    <num>1)</num>
+    <intro>
+      <p>right of passage:</p>
+    </intro>
+    <alinea id="section-1.point-1.alinea-a">
+      <num>a)</num>
+      <content>
+        <p>through the town square,</p>
+      </content>
+    </alinea>
+    <alinea id="section-1.point-1.alinea-b">
+      <num>b)</num>
+      <content>
+        <p>through the town marketplace</p>
+      </content>
+    </alinea>
+    <wrapUp>
+      <p>assuming it is Sunday</p>
+    </wrapUp>
+  </point>
+  <point id="section-1.point-2">
+    <num>2)</num>
+    <content>
+      <p>the right to Y</p>
+    </content>
+  </point>
+  <wrapUp>
+    <p>shall not be abrogated.</p>
+  </wrapUp>
+</section>'
+    end
+  end
+
+  #-------------------------------------------------------------------------------
+  # Points
+
+  describe 'ENTITY: Point (Polish "punkt").' do
+    it 'ENTITY VARIATION: Basic.' do
       node = parse :point, <<EOS
 1) szczegółowy tryb i terminy rozpatrywania wniosków o udzielenie finansowego wsparcia;
 EOS
@@ -555,7 +775,7 @@ EOS
 </point>'
     end
 
-    it 'should handle points with litera' do
+    it 'ENTITY VARIATION: With letters underneath.' do
       node = parse :point, <<EOS
 1) dokumenty potwierdzające prawo własności albo prawo użytkowania wieczystego nieruchomości, której dotyczy przedsięwzięcie albo na której położony jest budynek, którego budowę, remont lub przebudowę zamierza się przepro- wadzić w ramach realizacji przedsięwzięcia, w tym:
 
@@ -587,18 +807,18 @@ EOS
   end
 
   #-------------------------------------------------------------------------------
-  # Litera
+  # Letters
 
-  describe 'litera' do
+  describe 'ENTITY: Letter (Polish "litera").' do
 
-    it 'should handle litera with indents' do
+    it 'ENTITY VARIATION: With tirets underneath.' do
       node = parse :letter_unit, <<EOS
 b) liczby:
-- tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
-- mieszkań chronionych,
-- lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,
-- tymczasowych pomieszczeń,
-- miejsc w noclegowniach, schroniskach dla bezdomnych i ogrzewalniach,
+@@INDENT2@@– tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
+@@INDENT2@@– mieszkań chronionych,
+@@INDENT2@@– lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,
+@@INDENT2@@– tymczasowych pomieszczeń,
+@@INDENT2@@– miejsc w noclegowniach, schroniskach dla bezdomnych i ogrzewalniach,
 EOS
       to_xml(node, 'prefix.', 0).should ==
 '<alinea id="prefix.alinea-b">
@@ -638,12 +858,12 @@ EOS
   end
 
   #-------------------------------------------------------------------------------
-  # Indent
+  # Tirets
 
-  describe 'indent' do
-    it 'should handle basic indent' do
+  describe 'ENTITY: Tirets.' do
+    it 'ENTITY VARIATION: Basic.' do
       node = parse :tiret, <<EOS
-- tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
+@@INDENT2@@– tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
 EOS
 
       to_xml(node, 'prefix.', 0).should ==
@@ -656,31 +876,10 @@ EOS
 </list>'
     end
 
-    it 'should handle indents with different dash characters' do
+    it 'ENTITY VARIATION: Empty.' do
       node = parse :tiret, <<EOS
-– foo
-- bar
-EOS
-
-      to_xml(node, 'prefix.', 0).should ==
-'<list id="prefix.list-0">
-  <indent id="prefix.list-0.indent-0">
-    <content>
-      <p>foo</p>
-    </content>
-  </indent>
-  <indent id="prefix.list-0.indent-1">
-    <content>
-      <p>bar</p>
-    </content>
-  </indent>
-</list>'
-    end
-
-    it 'should handle empty indents' do
-      node = parse :tiret, <<EOS
-- 
-- 
+@@INDENT2@@– 
+@@INDENT2@@– 
 EOS
 
       to_xml(node, 'prefix.', 0).should ==
@@ -698,11 +897,11 @@ EOS
 </list>'
     end
 
-    it 'should handle multiple indent items' do
+    it 'ENTITY VARIATION: Multiple.' do
       node = parse :tiret, <<EOS
-- tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
-- mieszkań chronionych,
-- lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,
+@@INDENT2@@– tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
+@@INDENT2@@– mieszkań chronionych,
+@@INDENT2@@– lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,
 EOS
 
       to_xml(node, 'prefix.', 0).should ==

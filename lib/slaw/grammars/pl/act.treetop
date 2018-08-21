@@ -137,7 +137,7 @@ module Slaw
           #     2) This is some text.
           #     - This is optional "wrap-up" text.
           statute_level0_unit_prefix intro
-          children:(noncode_level1_unit / code_level1_unit / point / block_paragraphs)* <StatuteLevel0>
+          children:(noncode_level1_unit / code_level1_unit / point / dashed_wrapup_for_points / block_paragraphs)* <StatuteLevel0>
         end
 
         rule ordinance_level0_unit
@@ -155,7 +155,7 @@ module Slaw
           #     2) This is some text.
           #     - This is optional "wrap-up" text.
           ordinance_level0_unit_prefix intro
-          children:(noncode_level1_unit / point / block_paragraphs)* <OrdinanceLevel0>
+          children:(noncode_level1_unit / point / dashed_wrapup_for_points / block_paragraphs)* <OrdinanceLevel0>
         end
 
         rule noncode_level1_unit
@@ -175,7 +175,7 @@ module Slaw
           #     a) This is some text.
           #     b) This is some text.
           noncode_level1_unit_prefix intro
-          children:(point / letter_unit / block_paragraphs)* <NoncodeLevel1>
+          children:(point / letter_unit / dashed_wrapup_for_points / block_paragraphs)* <NoncodeLevel1>
         end
 
         rule code_level1_unit
@@ -195,14 +195,14 @@ module Slaw
           #     a) This is some text.
           #     b) This is some text.
           code_level1_unit_prefix intro
-          children:(point / letter_unit / block_paragraphs)* <CodeLevel1>
+          children:(point / letter_unit / dashed_wrapup_for_points / block_paragraphs)* <CodeLevel1>
         end
 
         rule point
           # 12) aoeuaoeu
           # 12a) aoeuaoeu
           point_prefix intro
-          children:(letter_unit / block_paragraphs)* <Point>
+          children:(letter_unit / dashed_wrapup_for_letters / block_paragraphs)* <Point>
         end
 
         rule letter_unit
@@ -211,17 +211,26 @@ module Slaw
           children:(tiret / block_paragraphs)* <LetterUnit>
         end
 
-        # TODO: Full handling of tirets and indented dash sections. So far, they have
-        # @@INDENT@@ prepended to them, but we don't process that info yet.
-
         rule tiret
-          # - foo
-          # - bar
-          children:indent_item+ <Tiret>
+          # – foo
+          # – bar
+          children:tiret_item+ <Tiret>
         end
 
-        rule indent_item
-          indent_prefix item_content:inline_block_element? eol? <IndentItem>
+        # TODO: It should be something like content:('–' space inline_block_element) in rules
+        # for dashed sections below, in order for the dash to display in output. Slaw gets
+        # confused when I put it like this though...
+
+        rule dashed_wrapup_for_points
+          '@@INDENT0@@' '–' space content:inline_block_element <DashedWrapUpForPoints>
+        end
+
+        rule dashed_wrapup_for_letters
+          '@@INDENT1@@' '–' space content:inline_block_element <DashedWrapUpForLetters>
+        end
+
+        rule tiret_item
+          tiret_prefix item_content:inline_block_element? eol? <TiretItem>
         end
 
         rule intro
@@ -280,7 +289,7 @@ module Slaw
         # blocks of content inside containers
 
         rule block_paragraphs
-          block_element+ <BlockParagraph>
+           block_element+ <BlockParagraph>
         end
 
         rule block_element
@@ -300,7 +309,7 @@ module Slaw
         # and is ignored. This allows escaping of section headings, etc.
 
         rule naked_statement
-          space? !(division_heading / subdivision_heading / chapter_heading / statute_level0_unit_prefix / ordinance_level0_unit_prefix / noncode_level1_unit_prefix / code_level1_unit_prefix / schedule_title / point_prefix / letter_prefix / indent_prefix) '\\'? clauses eol
+          space? !(division_heading / subdivision_heading / chapter_heading / statute_level0_unit_prefix / ordinance_level0_unit_prefix / noncode_level1_unit_prefix / code_level1_unit_prefix / schedule_title / point_prefix / letter_prefix / tiret_prefix / '@@INDENT') '\\'? clauses eol
           <NakedStatement>
         end
 
@@ -360,9 +369,9 @@ module Slaw
           letters:letter+ ')'
         end
 
-        rule indent_prefix
-          # these are two different dash characters
-          '–' / '-' space
+        rule tiret_prefix
+          # Polish law seems to only use '–' for tirets, not '-'.
+          '@@INDENT2@@–' space
         end
 
         include Slaw::Grammars::Inlines
