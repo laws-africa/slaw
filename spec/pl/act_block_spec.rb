@@ -72,25 +72,25 @@ EOS
       </section>
       <section id="section-55" lawtype="ordinance">
         <num>55</num>
-        <subsection id="section-55.subsection-1">
+        <subsection id="section-55.subsection-1" type="noncode">
           <num>1</num>
           <content>
             <p>Każdą samodzielną myśl ujmuje się w odrębny artykuł.</p>
           </content>
         </subsection>
-        <subsection id="section-55.subsection-2">
+        <subsection id="section-55.subsection-2" type="noncode">
           <num>2</num>
           <content>
             <p>Artykuł powinien być w miarę możliwości jednozdaniowy.</p>
           </content>
         </subsection>
-        <subsection id="section-55.subsection-3">
+        <subsection id="section-55.subsection-3" type="noncode">
           <num>3</num>
           <content>
             <p>Jeżeli samodzielną myśl wyraża zespół zdań, dokonuje się podziału artykułu na ustępy. W ustawie określanej jako "kodeks" ustępy oznacza się paragrafami (§).</p>
           </content>
         </subsection>
-        <subsection id="section-55.subsection-4">
+        <subsection id="section-55.subsection-4" type="noncode">
           <num>4</num>
           <content>
             <p>Podział artykułu na ustępy wprowadza się także w przypadku, gdy między zdaniami wyrażającymi samodzielne myśli występują powiązania treściowe, ale treść żadnego z nich nie jest na tyle istotna, aby wydzielić ją w odrębny artykuł.</p>
@@ -99,13 +99,13 @@ EOS
       </section>
       <section id="section-56" lawtype="ordinance">
         <num>56</num>
-        <subsection id="section-56.subsection-1">
+        <subsection id="section-56.subsection-1" type="noncode">
           <num>1</num>
           <content>
             <p>W obrębie artykułu (ustępu) zawierającego wyliczenie wyróżnia się dwie części: wprowadzenie do wyliczenia oraz punkty. Wyliczenie może kończyć się częścią wspólną, odnoszącą się do wszystkich punktów. Po części wspólnej nie dodaje się kolejnej samodzielnej myśli; w razie potrzeby formułuje się ją w kolejnym ustępie.</p>
           </content>
         </subsection>
-        <subsection id="section-56.subsection-2">
+        <subsection id="section-56.subsection-2" type="noncode">
           <num>2</num>
           <content>
             <p>W obrębie punktów można dokonać dalszego wyliczenia, wprowadzając litery.</p>
@@ -274,11 +274,11 @@ EOS
   end
 
   #-------------------------------------------------------------------------------
-  # Ordinance level 1 units, or equivalently, statute level 1 units NOT using '§' sign.
+  # Noncode level 1 units.
 
-  describe 'ENTITY: Ordinance level 1 units / Statute level 1 units NOT using "§" sign ("ustęp").' do
+  describe 'ENTITY: Noncode level 1 units ("ustęp").' do
     it 'ENTITY VARIATION: Basic one-line.' do
-      node = parse :noncode_statute_level1_unit, <<EOS
+      node = parse :noncode_level1_unit, <<EOS
 1. Każdą samodzielną myśl ujmuje się w odrębny artykuł.
 EOS
 
@@ -292,7 +292,7 @@ EOS
     end
 
     it 'ENTITY VARIATION: Empty.' do
-      node = parse :noncode_statute_level1_unit, <<EOS
+      node = parse :noncode_level1_unit, <<EOS
 1.
 EOS
 
@@ -306,7 +306,7 @@ EOS
     end
 
     it 'ENTITY VARIATION: With whitespace and newlines.' do
-      node = parse :noncode_statute_level1_unit, <<EOS
+      node = parse :noncode_level1_unit, <<EOS
 1.
 
 foo bar
@@ -322,7 +322,7 @@ EOS
     end
 
     it 'ENTITY VARIATION: With nested points.' do
-      node = parse :noncode_statute_level1_unit, <<EOS
+      node = parse :noncode_level1_unit, <<EOS
 2. W ustawie należy unikać posługiwania się:
 1) określeniami specjalistycznymi, o ile ich użycie nie jest powodowane zapewnieniem należytej precyzji tekstu;
 2) określeniami lub zapożyczeniami obcojęzycznymi, chyba że nie mają dokładnego odpowiednika w języku polskim;
@@ -357,7 +357,7 @@ EOS
     end
 
     it 'ENTITY VARIATION: Containing nested points which refer to "artykuł"s.' do
-      node = parse :noncode_statute_level1_unit, <<EOS
+      node = parse :noncode_level1_unit, <<EOS
 2. W ustawie należy unikać posługiwania się:
 1) art. 1
 2) art. 2
@@ -430,19 +430,19 @@ EOS
       to_xml(node).should ==
 '<section id="section-55" lawtype="ordinance">
   <num>55</num>
-  <subsection id="section-55.subsection-1">
+  <subsection id="section-55.subsection-1" type="noncode">
     <num>1</num>
     <content>
       <p>Każdą samodzielną myśl ujmuje się w odrębny artykuł.</p>
     </content>
   </subsection>
-  <subsection id="section-55.subsection-2">
+  <subsection id="section-55.subsection-2" type="noncode">
     <num>2</num>
     <content>
       <p>Artykuł powinien być w miarę możliwości jednozdaniowy.</p>
     </content>
   </subsection>
-  <subsection id="section-55.subsection-3">
+  <subsection id="section-55.subsection-3" type="noncode">
     <num>3</num>
     <content>
       <p>Jeżeli samodzielną myśl wyraża zespół zdań, dokonuje się podziału artykułu na ustępy. W ustawie określanej jako "kodeks" ustępy oznacza się paragrafami (§).</p>
@@ -463,7 +463,7 @@ EOS
   <intro>
     <p>1. Każdą samodzielną myśl ujmuje się w odrębny artykuł.</p>
   </intro>
-  <subsection id="section-55.subsection-3">
+  <subsection id="section-55.subsection-3" type="noncode">
     <num>3</num>
     <content>
       <p>Jeżeli samodzielną myśl wyraża zespół zdań, dokonuje się podziału artykułu na ustępy. W ustawie określanej jako "kodeks" ustępy oznacza się paragrafami (§).</p>

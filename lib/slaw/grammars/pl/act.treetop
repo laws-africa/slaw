@@ -8,8 +8,8 @@
 # and their English translations. Because of this, here is how we do it:
 # 
 # Laws can be either "normative" or "executive". Normative are primary legislation, given by the
-# parliament, and they leave some less important details undecided, to be filled in by the 
-# executive branch (ministers). Ministers issue executive law, which are secondary legislation, 
+# parliament, and they leave some less important details undecided, to be filled in by the
+# executive branch (ministers). Ministers issue executive law, which are secondary legislation,
 # and fill out these details.
 #
 # A piece of Polish normative law is called "ustawa", which we translate as "statute".
@@ -42,17 +42,16 @@
 # - In Polish, the character "§" itself is called "paragraf". (In English, "section sign".)
 #
 # Because of all this, I think it's extremely important to be careful and very clear with naming.
-# To avoid confusion as much as possible, I think it's prudent to avoid English "article", 
-# "paragraph" and "section", and instead use "levels", together with type of law, statute or 
+# To avoid confusion as much as possible, I think it's prudent to avoid English "article",
+# "paragraph" and "section", and instead use "levels", together with type of law, statute or
 # ordinance. We can go back to direct translation at level 2 and below, because they are the
 # same for both types of law, and have non-confusing equivalents in English.
 #
 # So, we adopt the following translation:
 # - artykuł = statute level 0 unit
 # - paragraf = ordinance level 0 unit
-# - ustęp in "ustawa" denoted by numbers = noncode statute level 1 unit
-# - ustęp in "ustawa" denoted by "§" = code statute level 1 unit
-# - ustęp in "rozporządzenie" = ordinance level 1 unit
+# - ustęp in "rozporządzenie", or in "ustawa" denoted by numbers = noncode level 1 unit
+# - ustęp in "ustawa" denoted by "§" = code level 1 unit
 # - punkt = point
 # - litera = letter
 # - tiret = tiret
@@ -138,7 +137,7 @@ module Slaw
           #     2) This is some text.
           #     - This is optional "wrap-up" text.
           statute_level0_unit_prefix intro
-          children:(noncode_statute_level1_unit / code_statute_level1_unit / point / block_paragraphs)* <StatuteLevel0>
+          children:(noncode_level1_unit / code_level1_unit / point / block_paragraphs)* <StatuteLevel0>
         end
 
         rule ordinance_level0_unit
@@ -156,14 +155,10 @@ module Slaw
           #     2) This is some text.
           #     - This is optional "wrap-up" text.
           ordinance_level0_unit_prefix intro
-          children:(ordinance_level1_unit / point / block_paragraphs)* <OrdinanceLevel0>
+          children:(noncode_level1_unit / point / block_paragraphs)* <OrdinanceLevel0>
         end
 
-        # TODO: After adding the distinction in level1_units b/n "noncode statute", "code statute"
-        # and "ordinance", I realized that "noncode" and "code" will be sufficient. Reduce that
-        # to these.
-
-        rule noncode_statute_level1_unit
+        rule noncode_level1_unit
           # Either:
           #     123. This is some text. This is some text. This is
           #     some text. This is some text.
@@ -173,11 +168,17 @@ module Slaw
           #     1) This is some text.
           #     2) This is some text.
           #     - This is optional "wrap-up" text.
-          noncode_statute_level1_unit_prefix intro
-          children:(point / block_paragraphs)* <NoncodeStatuteLevel1>
+          # Or (exception found e.g. in "Ustawa z dnia 15 lutego 1992 r. o podatku dochodowym 
+          # od osób prawnych", in art. 16, ust. 3f as of 21/8/18):
+          #     123. This is some text. This is some text. This is
+          #     some text:
+          #     a) This is some text.
+          #     b) This is some text.
+          noncode_level1_unit_prefix intro
+          children:(point / letter_unit / block_paragraphs)* <NoncodeLevel1>
         end
 
-        rule code_statute_level1_unit
+        rule code_level1_unit
           # Either:
           #     §123. This is some text. This is some text. This is
           #     some text. This is some text.
@@ -187,22 +188,14 @@ module Slaw
           #     1) This is some text.
           #     2) This is some text.
           #     - This is optional "wrap-up" text.
-          code_statute_level1_unit_prefix intro
-          children:(point / block_paragraphs)* <CodeStatuteLevel1>
-        end
-
-        rule ordinance_level1_unit
-          # Either:
-          #     123. This is some text. This is some text. This is
-          #     some text. This is some text.
-          # Or:
+          # Or (exception found e.g. in "Ustawa z dnia 15 lutego 1992 r. o podatku dochodowym 
+          # od osób prawnych", in art. 16, ust. 3f as of 21/8/18):
           #     123. This is some text. This is some text. This is
           #     some text:
-          #     1) This is some text.
-          #     2) This is some text.
-          #     - This is optional "wrap-up" text.
-          ordinance_level1_unit_prefix intro
-          children:(point / block_paragraphs)* <OrdinanceLevel1>
+          #     a) This is some text.
+          #     b) This is some text.
+          code_level1_unit_prefix intro
+          children:(point / letter_unit / block_paragraphs)* <CodeLevel1>
         end
 
         rule point
@@ -307,12 +300,12 @@ module Slaw
         # and is ignored. This allows escaping of section headings, etc.
 
         rule naked_statement
-          space? !(division_heading / subdivision_heading / chapter_heading / statute_level0_unit_prefix / ordinance_level0_unit_prefix / noncode_statute_level1_unit_prefix / code_statute_level1_unit_prefix / ordinance_level1_unit_prefix / schedule_title / point_prefix / letter_prefix / indent_prefix) '\\'? clauses eol
+          space? !(division_heading / subdivision_heading / chapter_heading / statute_level0_unit_prefix / ordinance_level0_unit_prefix / noncode_level1_unit_prefix / code_level1_unit_prefix / schedule_title / point_prefix / letter_prefix / indent_prefix) '\\'? clauses eol
           <NakedStatement>
         end
 
         rule pre_body_statement
-          space? !(division_heading / subdivision_heading / chapter_heading / statute_level0_unit_prefix / ordinance_level0_unit_prefix / noncode_statute_level1_unit_prefix / code_statute_level1_unit_prefix / ordinance_level1_unit_prefix / schedule_title) '\\'? clauses eol
+          space? !(division_heading / subdivision_heading / chapter_heading / statute_level0_unit_prefix / ordinance_level0_unit_prefix / noncode_level1_unit_prefix / code_level1_unit_prefix / schedule_title) '\\'? clauses eol
           <NakedStatement>
         end
 
@@ -347,16 +340,12 @@ module Slaw
 
         # TODO: Add superscript possibility for units lower than level 0.
 
-        rule noncode_statute_level1_unit_prefix
+        rule noncode_level1_unit_prefix
           number_letter '.'
         end
 
-        rule code_statute_level1_unit_prefix
+        rule code_level1_unit_prefix
           '§' space number_letter '.'
-        end
-
-        rule ordinance_level1_unit_prefix
-          number_letter '.'
         end
 
         rule point_prefix

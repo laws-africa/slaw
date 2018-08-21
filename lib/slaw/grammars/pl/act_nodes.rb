@@ -257,9 +257,9 @@ module Slaw
 
         # TODO: Add superscript possibility for units lower than level 0.
 
-        class NoncodeStatuteLevel1 < BlockWithIntroAndChildren
+        class NoncodeLevel1 < BlockWithIntroAndChildren
           def num
-            noncode_statute_level1_unit_prefix.number_letter.text_value
+            noncode_level1_unit_prefix.number_letter.text_value
           end
 
           def to_xml(b, idprefix='', *args)
@@ -273,32 +273,16 @@ module Slaw
           end
         end
 
-      class CodeStatuteLevel1 < BlockWithIntroAndChildren
-        def num
-          code_statute_level1_unit_prefix.number_letter.text_value
-        end
-
-        def to_xml(b, idprefix='', *args)
-          id = "#{idprefix}subsection-#{num}"
-          idprefix = "#{id}."
-
-          b.subsection(id: id, type: "code") { |b|
-            b.num("#{num}.")
-            intro_and_children_xml(b, idprefix)
-          }
-        end
-      end
-
-        class OrdinanceLevel1 < BlockWithIntroAndChildren
+        class CodeLevel1 < BlockWithIntroAndChildren
           def num
-            ordinance_level1_unit_prefix.number_letter.text_value
+            code_level1_unit_prefix.number_letter.text_value
           end
-
+  
           def to_xml(b, idprefix='', *args)
             id = "#{idprefix}subsection-#{num}"
             idprefix = "#{id}."
-
-            b.subsection(id: id) { |b|
+  
+            b.subsection(id: id, type: "code") { |b|
               b.num("#{num}")
               intro_and_children_xml(b, idprefix)
             }
