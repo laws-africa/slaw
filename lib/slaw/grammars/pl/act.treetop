@@ -74,8 +74,11 @@ module Slaw
       grammar Act
         include Slaw::Parse::GrammarHelpers
 
-        ########
-        # major containers
+
+
+        ####################
+        # MAJOR CONTAINERS #
+        ####################
 
         rule act
           empty_line*
@@ -235,66 +238,11 @@ module Slaw
           children:triple_tiret_item+ <TripleTiret>
         end
 
-        # TODO: It should be something like content:('–' space inline_block_element) in rules
-        # for dashed sections below, in order for the dash to display in output. Slaw gets
-        # confused when I put it like this though...
 
-        rule dashed_wrapup_for_points
-          '@@INDENT0@@' '–' space content:inline_block_element <DashedWrapUpForPoints>
-        end
 
-        rule dashed_wrapup_for_letters
-          '@@INDENT1@@' '–' space content:inline_block_element <DashedWrapUpForLetters>
-        end
-
-        rule tiret_item
-          tiret_prefix item_content:inline_block_element? eol? <TiretItem>
-        end
-
-        rule double_tiret_item
-          double_tiret_prefix item_content:inline_block_element? eol? <DoubleTiretItem>
-        end
-
-        rule triple_tiret_item
-          triple_tiret_prefix item_content:inline_block_element? eol? <TripleTiretItem>
-        end
-
-        rule intro
-          (intro_inline:inline_block_element / (eol intro_block:block_element))? eol?
-        end
-
-        ##########
-        # group elements
-        # 
-        # these are used externally and provide support when parsing just
-        # a particular portion of a document
-
-        rule articles
-          children:article+ <GroupNode>
-        end
-
-        rule chapters
-          children:chapter+ <GroupNode>
-        end
-
-        rule divisions
-          children:division+ <GroupNode>
-        end
-
-        rule paragraphs
-          children:paragraph+ <GroupNode>
-        end
-
-        rule sections
-          children:section+ <GroupNode>
-        end
-
-        rule subdivisions
-          children:subdivision+ <GroupNode>
-        end
-
-        ##########
-        # headings
+        #########################
+        # HEADINGS AND PREFIXES #
+        #########################
 
         rule division_heading
           space? prefix:division_heading_prefix heading:(newline? content)? eol
@@ -310,55 +258,6 @@ module Slaw
           space? prefix:chapter_heading_prefix heading:(newline? content)? eol
           <GenericHeading>
         end
-
-        ##########
-        # blocks of content inside containers
-
-        rule block_paragraphs
-           block_element+ <BlockParagraph>
-        end
-
-        rule block_element
-          table / naked_statement
-        end
-
-        # Block elements that don't have to appear at the start of a line.
-        # ie. we don't need to guard against the start of a chapter, section, etc.
-        rule inline_block_element
-          table / inline_statement
-        end
-
-        ##########
-        # statements - single lines of content
-        #
-        # If a statement starts with a backslash, it's considered to have escaped the subsequent
-        # word, and is ignored. This allows escaping of section headings, etc.
-
-        rule naked_statement
-          space? !(division_heading / subdivision_heading / chapter_heading 
-              / statute_level0_unit_prefix / ordinance_level0_unit_prefix 
-              / noncode_level1_unit_prefix / code_level1_unit_prefix / schedule_title 
-              / point_prefix / letter_prefix / tiret_prefix / double_tiret_prefix 
-              / triple_tiret_prefix / '@@INDENT') '\\'? clauses eol
-          <NakedStatement>
-        end
-
-        rule pre_body_statement
-          space? !(division_heading / subdivision_heading / chapter_heading 
-              / statute_level0_unit_prefix / ordinance_level0_unit_prefix 
-              / noncode_level1_unit_prefix / code_level1_unit_prefix 
-              / schedule_title) '\\'? clauses eol
-          <NakedStatement>
-        end
-
-        # I can't find a way to put OPTIONAL superscript inside the "_prefix" rules so I make
-        # it non-optional there and instead give an empty string alternative here.
-        rule superscript
-          (('@@SUPERSCRIPT@@' number_letter '##SUPERSCRIPT##') / '')
-        end
-
-        ##########
-        # prefixes
 
         rule division_heading_prefix
           'dzia'i ('ł'/'Ł') space alphanums [ :-]*
@@ -416,6 +315,94 @@ module Slaw
           # Polish law seems to only use '–' for tirets, not '-'.
           '@@INDENT4@@–' space '–' space '–' space
         end
+
+
+
+        #####################
+        # HELPER CONTAINERS #
+        #####################
+
+        # TODO: It should be something like content:('–' space inline_block_element) in rules
+        # for dashed sections below, in order for the dash to display in output. Slaw gets
+        # confused when I put it like this though...
+
+        rule dashed_wrapup_for_points
+          '@@INDENT0@@' '–' space content:inline_block_element <DashedWrapUpForPoints>
+        end
+
+        rule dashed_wrapup_for_letters
+          '@@INDENT1@@' '–' space content:inline_block_element <DashedWrapUpForLetters>
+        end
+
+        rule tiret_item
+          tiret_prefix item_content:inline_block_element? eol? <TiretItem>
+        end
+
+        rule double_tiret_item
+          double_tiret_prefix item_content:inline_block_element? eol? <DoubleTiretItem>
+        end
+
+        rule triple_tiret_item
+          triple_tiret_prefix item_content:inline_block_element? eol? <TripleTiretItem>
+        end
+
+        rule intro
+          (intro_inline:inline_block_element / (eol intro_block:block_element))? eol?
+        end
+
+
+
+        #######################################
+        # BLOCKS OF CONTENT INSIDE CONTAINERS #
+        #######################################
+
+        rule block_paragraphs
+           block_element+ <BlockParagraph>
+        end
+
+        rule block_element
+          table / naked_statement
+        end
+
+        # Block elements that don't have to appear at the start of a line.
+        # ie. we don't need to guard against the start of a chapter, section, etc.
+        rule inline_block_element
+          table / inline_statement
+        end
+
+
+
+        ########################################
+        # STATEMENTS - SINGLE LINES OF CONTENT #
+        ########################################
+        
+        # If a statement starts with a backslash, it's considered to have escaped the subsequent
+        # word, and is ignored. This allows escaping of section headings, etc.
+
+        rule naked_statement
+          space? !(division_heading / subdivision_heading / chapter_heading 
+              / statute_level0_unit_prefix / ordinance_level0_unit_prefix 
+              / noncode_level1_unit_prefix / code_level1_unit_prefix / schedule_title 
+              / point_prefix / letter_prefix / tiret_prefix / double_tiret_prefix 
+              / triple_tiret_prefix / '@@INDENT') '\\'? clauses eol
+          <NakedStatement>
+        end
+
+        rule pre_body_statement
+          space? !(division_heading / subdivision_heading / chapter_heading 
+              / statute_level0_unit_prefix / ordinance_level0_unit_prefix 
+              / noncode_level1_unit_prefix / code_level1_unit_prefix 
+              / schedule_title) '\\'? clauses eol
+          <NakedStatement>
+        end
+
+        # I can't find a way to put OPTIONAL superscript inside the "_prefix" rules so I make
+        # it non-optional there and instead give an empty string alternative here.
+        rule superscript
+          (('@@SUPERSCRIPT@@' number_letter '##SUPERSCRIPT##') / '')
+        end
+
+
 
         include Slaw::Grammars::Inlines
         include Slaw::Grammars::Tables

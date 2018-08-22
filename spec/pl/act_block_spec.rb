@@ -27,6 +27,8 @@ describe Slaw::ActGenerator do
     b.doc.root.to_xml(encoding: 'UTF-8')
   end
 
+
+
   #-------------------------------------------------------------------------------
   # Multiple law unit hierarchy levels.
 
@@ -173,8 +175,69 @@ EOS
   </section>
 </body>'
     end
-
   end
+
+
+
+  #-------------------------------------------------------------------------------
+  # Divisions
+
+  describe 'divisions' do
+    it 'should handle divisions' do
+      node = parse :division, <<EOS
+DZIAŁ I
+Projekt ustawy
+
+Rozdział 7. Oznaczanie przepisów ustawy i ich systematyzacja
+
+§ 54. Podstawową jednostką redakcyjną ustawy jest artykuł.
+EOS
+      to_xml(node).should ==
+'<division id="division-I">
+  <num>I</num>
+  <heading>Projekt ustawy</heading>
+  <chapter id="chapter-7">
+    <num>7</num>
+    <heading>Oznaczanie przepisów ustawy i ich systematyzacja</heading>
+    <section id="section-54" refersTo="ordinance">
+      <num>54</num>
+      <content>
+        <p>Podstawową jednostką redakcyjną ustawy jest artykuł.</p>
+      </content>
+    </section>
+  </chapter>
+</division>'
+    end
+  end
+
+
+
+  #-------------------------------------------------------------------------------
+  # Subdivisions
+
+  describe 'subdivisions' do
+    it 'should handle subdivisions' do
+      node = parse :subdivision, <<EOS
+ODDZIAŁ I
+Projekt ustawy
+
+§ 54. Podstawową jednostką redakcyjną ustawy jest artykuł.
+EOS
+      to_xml(node).should ==
+'<subdivision id="subdivision-I">
+  <num>I</num>
+  <heading>Projekt ustawy</heading>
+  <section id="section-54" refersTo="ordinance">
+    <num>54</num>
+    <content>
+      <p>Podstawową jednostką redakcyjną ustawy jest artykuł.</p>
+    </content>
+  </section>
+</subdivision>'
+    end
+  end
+
+
 
   #-------------------------------------------------------------------------------
   # Statute level 0 units
@@ -275,173 +338,7 @@ EOS
     end
   end
 
-  #-------------------------------------------------------------------------------
-  # Divisions
 
-  describe 'divisions' do
-    it 'should handle divisions' do
-      node = parse :division, <<EOS
-DZIAŁ I
-Projekt ustawy
-
-Rozdział 7. Oznaczanie przepisów ustawy i ich systematyzacja
-
-§ 54. Podstawową jednostką redakcyjną ustawy jest artykuł.
-EOS
-      to_xml(node).should ==
-'<division id="division-I">
-  <num>I</num>
-  <heading>Projekt ustawy</heading>
-  <chapter id="chapter-7">
-    <num>7</num>
-    <heading>Oznaczanie przepisów ustawy i ich systematyzacja</heading>
-    <section id="section-54" refersTo="ordinance">
-      <num>54</num>
-      <content>
-        <p>Podstawową jednostką redakcyjną ustawy jest artykuł.</p>
-      </content>
-    </section>
-  </chapter>
-</division>'
-    end
-  end
-
-  #-------------------------------------------------------------------------------
-  # Subdivisions
-
-  describe 'subdivisions' do
-    it 'should handle subdivisions' do
-      node = parse :subdivision, <<EOS
-ODDZIAŁ I
-Projekt ustawy
-
-§ 54. Podstawową jednostką redakcyjną ustawy jest artykuł.
-EOS
-      to_xml(node).should ==
-'<subdivision id="subdivision-I">
-  <num>I</num>
-  <heading>Projekt ustawy</heading>
-  <section id="section-54" refersTo="ordinance">
-    <num>54</num>
-    <content>
-      <p>Podstawową jednostką redakcyjną ustawy jest artykuł.</p>
-    </content>
-  </section>
-</subdivision>'
-    end
-  end
-
-  #-------------------------------------------------------------------------------
-  # Noncode level 1 units.
-
-  describe 'ENTITY: Noncode level 1 unit (Polish "ustęp").' do
-    it 'ENTITY VARIATION: Basic one-line.' do
-      node = parse :noncode_level1_unit, <<EOS
-1. Każdą samodzielną myśl ujmuje się w odrębny artykuł.
-EOS
-
-      to_xml(node).should ==
-'<subsection id="subsection-1" refersTo="noncode_level1_unit">
-  <num>1</num>
-  <content>
-    <p>Każdą samodzielną myśl ujmuje się w odrębny artykuł.</p>
-  </content>
-</subsection>'
-    end
-
-    it 'ENTITY VARIATION: Empty.' do
-      node = parse :noncode_level1_unit, <<EOS
-1.
-EOS
-
-      to_xml(node).should ==
-'<subsection id="subsection-1" refersTo="noncode_level1_unit">
-  <num>1</num>
-  <content>
-    <p/>
-  </content>
-</subsection>'
-    end
-
-    it 'ENTITY VARIATION: With whitespace and newlines.' do
-      node = parse :noncode_level1_unit, <<EOS
-1.
-
-foo bar
-EOS
-
-      to_xml(node).should ==
-'<subsection id="subsection-1" refersTo="noncode_level1_unit">
-  <num>1</num>
-  <content>
-    <p>foo bar</p>
-  </content>
-</subsection>'
-    end
-
-    it 'ENTITY VARIATION: With nested points.' do
-      node = parse :noncode_level1_unit, <<EOS
-2. W ustawie należy unikać posługiwania się:
-1) określeniami specjalistycznymi, o ile ich użycie nie jest powodowane zapewnieniem należytej precyzji tekstu;
-2) określeniami lub zapożyczeniami obcojęzycznymi, chyba że nie mają dokładnego odpowiednika w języku polskim;
-3) nowo tworzonymi pojęciami lub strukturami językowymi, chyba że w dotychczasowym słownictwie polskim brak jest odpowiedniego określenia.
-EOS
-
-      to_xml(node).should ==
-'<subsection id="subsection-2" refersTo="noncode_level1_unit">
-  <num>2</num>
-  <intro>
-    <p>W ustawie należy unikać posługiwania się:</p>
-  </intro>
-  <point id="subsection-2.point-1" refersTo="point_unit">
-    <num>1)</num>
-    <content>
-      <p>określeniami specjalistycznymi, o ile ich użycie nie jest powodowane zapewnieniem należytej precyzji tekstu;</p>
-    </content>
-  </point>
-  <point id="subsection-2.point-2" refersTo="point_unit">
-    <num>2)</num>
-    <content>
-      <p>określeniami lub zapożyczeniami obcojęzycznymi, chyba że nie mają dokładnego odpowiednika w języku polskim;</p>
-    </content>
-  </point>
-  <point id="subsection-2.point-3" refersTo="point_unit">
-    <num>3)</num>
-    <content>
-      <p>nowo tworzonymi pojęciami lub strukturami językowymi, chyba że w dotychczasowym słownictwie polskim brak jest odpowiedniego określenia.</p>
-    </content>
-  </point>
-</subsection>'
-    end
-
-    it 'ENTITY VARIATION: Containing nested points which refer to "artykuł"s.' do
-      node = parse :noncode_level1_unit, <<EOS
-2. W ustawie należy unikać posługiwania się:
-1) art. 1
-2) art. 2
-EOS
-
-      to_xml(node).should ==
-'<subsection id="subsection-2" refersTo="noncode_level1_unit">
-  <num>2</num>
-  <intro>
-    <p>W ustawie należy unikać posługiwania się:</p>
-  </intro>
-  <point id="subsection-2.point-1" refersTo="point_unit">
-    <num>1)</num>
-    <content>
-      <p>art. 1</p>
-    </content>
-  </point>
-  <point id="subsection-2.point-2" refersTo="point_unit">
-    <num>2)</num>
-    <content>
-      <p>art. 2</p>
-    </content>
-  </point>
-</subsection>'
-    end
-  end
 
   #-------------------------------------------------------------------------------
   # Ordinance level 0 units.
@@ -594,6 +491,436 @@ EOS
 </section>'
     end
   end
+
+
+
+  #-------------------------------------------------------------------------------
+  # Noncode level 1 units.
+
+  describe 'ENTITY: Noncode level 1 unit (Polish "ustęp").' do
+    it 'ENTITY VARIATION: Basic one-line.' do
+      node = parse :noncode_level1_unit, <<EOS
+1. Każdą samodzielną myśl ujmuje się w odrębny artykuł.
+EOS
+
+      to_xml(node).should ==
+'<subsection id="subsection-1" refersTo="noncode_level1_unit">
+  <num>1</num>
+  <content>
+    <p>Każdą samodzielną myśl ujmuje się w odrębny artykuł.</p>
+  </content>
+</subsection>'
+    end
+
+    it 'ENTITY VARIATION: Empty.' do
+      node = parse :noncode_level1_unit, <<EOS
+1.
+EOS
+
+      to_xml(node).should ==
+'<subsection id="subsection-1" refersTo="noncode_level1_unit">
+  <num>1</num>
+  <content>
+    <p/>
+  </content>
+</subsection>'
+    end
+
+    it 'ENTITY VARIATION: With whitespace and newlines.' do
+      node = parse :noncode_level1_unit, <<EOS
+1.
+
+foo bar
+EOS
+
+      to_xml(node).should ==
+'<subsection id="subsection-1" refersTo="noncode_level1_unit">
+  <num>1</num>
+  <content>
+    <p>foo bar</p>
+  </content>
+</subsection>'
+    end
+
+    it 'ENTITY VARIATION: With nested points.' do
+      node = parse :noncode_level1_unit, <<EOS
+2. W ustawie należy unikać posługiwania się:
+1) określeniami specjalistycznymi, o ile ich użycie nie jest powodowane zapewnieniem należytej precyzji tekstu;
+2) określeniami lub zapożyczeniami obcojęzycznymi, chyba że nie mają dokładnego odpowiednika w języku polskim;
+3) nowo tworzonymi pojęciami lub strukturami językowymi, chyba że w dotychczasowym słownictwie polskim brak jest odpowiedniego określenia.
+EOS
+
+      to_xml(node).should ==
+'<subsection id="subsection-2" refersTo="noncode_level1_unit">
+  <num>2</num>
+  <intro>
+    <p>W ustawie należy unikać posługiwania się:</p>
+  </intro>
+  <point id="subsection-2.point-1" refersTo="point_unit">
+    <num>1)</num>
+    <content>
+      <p>określeniami specjalistycznymi, o ile ich użycie nie jest powodowane zapewnieniem należytej precyzji tekstu;</p>
+    </content>
+  </point>
+  <point id="subsection-2.point-2" refersTo="point_unit">
+    <num>2)</num>
+    <content>
+      <p>określeniami lub zapożyczeniami obcojęzycznymi, chyba że nie mają dokładnego odpowiednika w języku polskim;</p>
+    </content>
+  </point>
+  <point id="subsection-2.point-3" refersTo="point_unit">
+    <num>3)</num>
+    <content>
+      <p>nowo tworzonymi pojęciami lub strukturami językowymi, chyba że w dotychczasowym słownictwie polskim brak jest odpowiedniego określenia.</p>
+    </content>
+  </point>
+</subsection>'
+    end
+
+    it 'ENTITY VARIATION: Containing nested points which refer to "artykuł"s.' do
+      node = parse :noncode_level1_unit, <<EOS
+2. W ustawie należy unikać posługiwania się:
+1) art. 1
+2) art. 2
+EOS
+
+      to_xml(node).should ==
+'<subsection id="subsection-2" refersTo="noncode_level1_unit">
+  <num>2</num>
+  <intro>
+    <p>W ustawie należy unikać posługiwania się:</p>
+  </intro>
+  <point id="subsection-2.point-1" refersTo="point_unit">
+    <num>1)</num>
+    <content>
+      <p>art. 1</p>
+    </content>
+  </point>
+  <point id="subsection-2.point-2" refersTo="point_unit">
+    <num>2)</num>
+    <content>
+      <p>art. 2</p>
+    </content>
+  </point>
+</subsection>'
+    end
+  end
+
+
+
+  #-------------------------------------------------------------------------------
+  # Points
+
+  describe 'ENTITY: Point (Polish "punkt").' do
+    it 'ENTITY VARIATION: Basic.' do
+      node = parse :point, <<EOS
+1) szczegółowy tryb i terminy rozpatrywania wniosków o udzielenie finansowego wsparcia;
+EOS
+
+      to_xml(node, 'prefix.', 0).should ==
+'<point id="prefix.point-1" refersTo="point_unit">
+  <num>1)</num>
+  <content>
+    <p>szczegółowy tryb i terminy rozpatrywania wniosków o udzielenie finansowego wsparcia;</p>
+  </content>
+</point>'
+    end
+
+    it 'ENTITY VARIATION: With letters underneath.' do
+      node = parse :point, <<EOS
+1) dokumenty potwierdzające prawo własności albo prawo użytkowania wieczystego nieruchomości, której dotyczy przedsięwzięcie albo na której położony jest budynek, którego budowę, remont lub przebudowę zamierza się przepro- wadzić w ramach realizacji przedsięwzięcia, w tym:
+
+a) oryginał albo potwierdzoną za zgodność z oryginałem kopię wypisu i wyrysu z rejestru gruntów wszystkich dzia- łek ewidencyjnych, na których realizowane jest przedsięwzięcie, wydanego nie wcześniej niż 3 miesiące przed dniem złożenia wniosku, oraz
+
+b) numer księgi wieczystej;
+EOS
+
+      to_xml(node, 'prefix.', 0).should ==
+'<point id="prefix.point-1" refersTo="point_unit">
+  <num>1)</num>
+  <intro>
+    <p>dokumenty potwierdzające prawo własności albo prawo użytkowania wieczystego nieruchomości, której dotyczy przedsięwzięcie albo na której położony jest budynek, którego budowę, remont lub przebudowę zamierza się przepro- wadzić w ramach realizacji przedsięwzięcia, w tym:</p>
+  </intro>
+  <point id="prefix.point-1.point-a" refersTo="letter_unit">
+    <num>a)</num>
+    <content>
+      <p>oryginał albo potwierdzoną za zgodność z oryginałem kopię wypisu i wyrysu z rejestru gruntów wszystkich dzia- łek ewidencyjnych, na których realizowane jest przedsięwzięcie, wydanego nie wcześniej niż 3 miesiące przed dniem złożenia wniosku, oraz</p>
+    </content>
+  </point>
+  <point id="prefix.point-1.point-b" refersTo="letter_unit">
+    <num>b)</num>
+    <content>
+      <p>numer księgi wieczystej;</p>
+    </content>
+  </point>
+</point>'
+    end
+  end
+
+
+
+  #-------------------------------------------------------------------------------
+  # Letters
+
+  describe 'ENTITY: Letter (Polish "litera").' do
+
+    it 'ENTITY VARIATION: With tirets underneath.' do
+      node = parse :letter_unit, <<EOS
+b) liczby:
+@@INDENT2@@– tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
+@@INDENT2@@– mieszkań chronionych,
+@@INDENT2@@– lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,
+@@INDENT2@@– tymczasowych pomieszczeń,
+@@INDENT2@@– miejsc w noclegowniach, schroniskach dla bezdomnych i ogrzewalniach,
+EOS
+      to_xml(node, 'prefix.', 0).should ==
+'<point id="prefix.point-b" refersTo="letter_unit">
+  <num>b)</num>
+  <intro>
+    <p>liczby:</p>
+  </intro>
+  <list id="prefix.point-b.list-0">
+    <indent id="prefix.point-b.list-0.indent-0" refersTo="single_tiret">
+      <content>
+        <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
+      </content>
+    </indent>
+    <indent id="prefix.point-b.list-0.indent-1" refersTo="single_tiret">
+      <content>
+        <p>mieszkań chronionych,</p>
+      </content>
+    </indent>
+    <indent id="prefix.point-b.list-0.indent-2" refersTo="single_tiret">
+      <content>
+        <p>lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,</p>
+      </content>
+    </indent>
+    <indent id="prefix.point-b.list-0.indent-3" refersTo="single_tiret">
+      <content>
+        <p>tymczasowych pomieszczeń,</p>
+      </content>
+    </indent>
+    <indent id="prefix.point-b.list-0.indent-4" refersTo="single_tiret">
+      <content>
+        <p>miejsc w noclegowniach, schroniskach dla bezdomnych i ogrzewalniach,</p>
+      </content>
+    </indent>
+  </list>
+</point>'
+    end
+  end
+
+
+
+  #-------------------------------------------------------------------------------
+  # Tirets
+
+  describe 'ENTITY: Tirets.' do
+    it 'ENTITY VARIATION: Basic.' do
+      node = parse :tiret, <<EOS
+@@INDENT2@@– tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
+EOS
+
+      to_xml(node, 'prefix.', 0).should ==
+'<list id="prefix.list-0">
+  <indent id="prefix.list-0.indent-0" refersTo="single_tiret">
+    <content>
+      <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
+    </content>
+  </indent>
+</list>'
+    end
+
+    it 'ENTITY VARIATION: Empty.' do
+      node = parse :tiret, <<EOS
+@@INDENT2@@– 
+@@INDENT2@@– 
+EOS
+
+      to_xml(node, 'prefix.', 0).should ==
+'<list id="prefix.list-0">
+  <indent id="prefix.list-0.indent-0" refersTo="single_tiret">
+    <content>
+      <p/>
+    </content>
+  </indent>
+  <indent id="prefix.list-0.indent-1" refersTo="single_tiret">
+    <content>
+      <p/>
+    </content>
+  </indent>
+</list>'
+    end
+
+    it 'ENTITY VARIATION: Multiple.' do
+      node = parse :tiret, <<EOS
+@@INDENT2@@– tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
+@@INDENT2@@– mieszkań chronionych,
+@@INDENT2@@– lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,
+EOS
+
+      to_xml(node, 'prefix.', 0).should ==
+'<list id="prefix.list-0">
+  <indent id="prefix.list-0.indent-0" refersTo="single_tiret">
+    <content>
+      <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
+    </content>
+  </indent>
+  <indent id="prefix.list-0.indent-1" refersTo="single_tiret">
+    <content>
+      <p>mieszkań chronionych,</p>
+    </content>
+  </indent>
+  <indent id="prefix.list-0.indent-2" refersTo="single_tiret">
+    <content>
+      <p>lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,</p>
+    </content>
+  </indent>
+</list>'
+    end
+  end
+
+
+
+  #-------------------------------------------------------------------------------
+  # Double tirets
+
+  describe 'ENTITY: Double tirets.' do
+    it 'ENTITY VARIATION: Basic.' do
+      node = parse :double_tiret, <<EOS
+@@INDENT3@@– – tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
+EOS
+
+      to_xml(node, 'prefix.', 0).should ==
+'<list id="prefix.list-0">
+  <indent id="prefix.list-0.indent-0" refersTo="double_tiret">
+    <content>
+      <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
+    </content>
+  </indent>
+</list>'
+    end
+
+    it 'ENTITY VARIATION: Empty.' do
+      node = parse :double_tiret, <<EOS
+@@INDENT3@@– – 
+@@INDENT3@@– – 
+EOS
+
+      to_xml(node, 'prefix.', 0).should ==
+'<list id="prefix.list-0">
+  <indent id="prefix.list-0.indent-0" refersTo="double_tiret">
+    <content>
+      <p/>
+    </content>
+  </indent>
+  <indent id="prefix.list-0.indent-1" refersTo="double_tiret">
+    <content>
+      <p/>
+    </content>
+  </indent>
+</list>'
+    end
+
+    it 'ENTITY VARIATION: Multiple.' do
+      node = parse :double_tiret, <<EOS
+@@INDENT3@@– – tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
+@@INDENT3@@– – mieszkań chronionych,
+@@INDENT3@@– – lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,
+EOS
+
+      to_xml(node, 'prefix.', 0).should ==
+'<list id="prefix.list-0">
+  <indent id="prefix.list-0.indent-0" refersTo="double_tiret">
+    <content>
+      <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
+    </content>
+  </indent>
+  <indent id="prefix.list-0.indent-1" refersTo="double_tiret">
+    <content>
+      <p>mieszkań chronionych,</p>
+    </content>
+  </indent>
+  <indent id="prefix.list-0.indent-2" refersTo="double_tiret">
+    <content>
+      <p>lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,</p>
+    </content>
+  </indent>
+</list>'
+    end
+  end
+
+
+
+  #-------------------------------------------------------------------------------
+  # Triple tirets
+
+  describe 'ENTITY: Triple tirets.' do
+    it 'ENTITY VARIATION: Basic.' do
+      node = parse :triple_tiret, <<EOS
+@@INDENT4@@– – – tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
+EOS
+
+      to_xml(node, 'prefix.', 0).should ==
+'<list id="prefix.list-0">
+  <indent id="prefix.list-0.indent-0" refersTo="triple_tiret">
+    <content>
+      <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
+    </content>
+  </indent>
+</list>'
+    end
+
+    it 'ENTITY VARIATION: Empty.' do
+      node = parse :triple_tiret, <<EOS
+@@INDENT4@@– – – 
+@@INDENT4@@– – – 
+EOS
+
+      to_xml(node, 'prefix.', 0).should ==
+'<list id="prefix.list-0">
+  <indent id="prefix.list-0.indent-0" refersTo="triple_tiret">
+    <content>
+      <p/>
+    </content>
+  </indent>
+  <indent id="prefix.list-0.indent-1" refersTo="triple_tiret">
+    <content>
+      <p/>
+    </content>
+  </indent>
+</list>'
+    end
+
+    it 'ENTITY VARIATION: Multiple.' do
+      node = parse :triple_tiret, <<EOS
+@@INDENT4@@– – – tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
+@@INDENT4@@– – – mieszkań chronionych,
+@@INDENT4@@– – – lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,
+EOS
+
+      to_xml(node, 'prefix.', 0).should ==
+'<list id="prefix.list-0">
+  <indent id="prefix.list-0.indent-0" refersTo="triple_tiret">
+    <content>
+      <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
+    </content>
+  </indent>
+  <indent id="prefix.list-0.indent-1" refersTo="triple_tiret">
+    <content>
+      <p>mieszkań chronionych,</p>
+    </content>
+  </indent>
+  <indent id="prefix.list-0.indent-2" refersTo="triple_tiret">
+    <content>
+      <p>lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,</p>
+    </content>
+  </indent>
+</list>'
+    end
+  end
+
+
 
   #-------------------------------------------------------------------------------
   # Dashed wrap-up for points
@@ -759,7 +1086,9 @@ EOS
 </subsection>'
     end    
   end
-  
+
+
+
   #-------------------------------------------------------------------------------
   # Dashed wrap-up for letters
     
@@ -814,309 +1143,5 @@ EOS
 </section>'
     end
   end
-
-  #-------------------------------------------------------------------------------
-  # Points
-
-  describe 'ENTITY: Point (Polish "punkt").' do
-    it 'ENTITY VARIATION: Basic.' do
-      node = parse :point, <<EOS
-1) szczegółowy tryb i terminy rozpatrywania wniosków o udzielenie finansowego wsparcia;
-EOS
-
-      to_xml(node, 'prefix.', 0).should ==
-'<point id="prefix.point-1" refersTo="point_unit">
-  <num>1)</num>
-  <content>
-    <p>szczegółowy tryb i terminy rozpatrywania wniosków o udzielenie finansowego wsparcia;</p>
-  </content>
-</point>'
-    end
-
-    it 'ENTITY VARIATION: With letters underneath.' do
-      node = parse :point, <<EOS
-1) dokumenty potwierdzające prawo własności albo prawo użytkowania wieczystego nieruchomości, której dotyczy przedsięwzięcie albo na której położony jest budynek, którego budowę, remont lub przebudowę zamierza się przepro- wadzić w ramach realizacji przedsięwzięcia, w tym:
-
-a) oryginał albo potwierdzoną za zgodność z oryginałem kopię wypisu i wyrysu z rejestru gruntów wszystkich dzia- łek ewidencyjnych, na których realizowane jest przedsięwzięcie, wydanego nie wcześniej niż 3 miesiące przed dniem złożenia wniosku, oraz
-
-b) numer księgi wieczystej;
-EOS
-
-      to_xml(node, 'prefix.', 0).should ==
-'<point id="prefix.point-1" refersTo="point_unit">
-  <num>1)</num>
-  <intro>
-    <p>dokumenty potwierdzające prawo własności albo prawo użytkowania wieczystego nieruchomości, której dotyczy przedsięwzięcie albo na której położony jest budynek, którego budowę, remont lub przebudowę zamierza się przepro- wadzić w ramach realizacji przedsięwzięcia, w tym:</p>
-  </intro>
-  <point id="prefix.point-1.point-a" refersTo="letter_unit">
-    <num>a)</num>
-    <content>
-      <p>oryginał albo potwierdzoną za zgodność z oryginałem kopię wypisu i wyrysu z rejestru gruntów wszystkich dzia- łek ewidencyjnych, na których realizowane jest przedsięwzięcie, wydanego nie wcześniej niż 3 miesiące przed dniem złożenia wniosku, oraz</p>
-    </content>
-  </point>
-  <point id="prefix.point-1.point-b" refersTo="letter_unit">
-    <num>b)</num>
-    <content>
-      <p>numer księgi wieczystej;</p>
-    </content>
-  </point>
-</point>'
-    end
-  end
-
-  #-------------------------------------------------------------------------------
-  # Letters
-
-  describe 'ENTITY: Letter (Polish "litera").' do
-
-    it 'ENTITY VARIATION: With tirets underneath.' do
-      node = parse :letter_unit, <<EOS
-b) liczby:
-@@INDENT2@@– tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
-@@INDENT2@@– mieszkań chronionych,
-@@INDENT2@@– lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,
-@@INDENT2@@– tymczasowych pomieszczeń,
-@@INDENT2@@– miejsc w noclegowniach, schroniskach dla bezdomnych i ogrzewalniach,
-EOS
-      to_xml(node, 'prefix.', 0).should ==
-'<point id="prefix.point-b" refersTo="letter_unit">
-  <num>b)</num>
-  <intro>
-    <p>liczby:</p>
-  </intro>
-  <list id="prefix.point-b.list-0">
-    <indent id="prefix.point-b.list-0.indent-0" refersTo="single_tiret">
-      <content>
-        <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
-      </content>
-    </indent>
-    <indent id="prefix.point-b.list-0.indent-1" refersTo="single_tiret">
-      <content>
-        <p>mieszkań chronionych,</p>
-      </content>
-    </indent>
-    <indent id="prefix.point-b.list-0.indent-2" refersTo="single_tiret">
-      <content>
-        <p>lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,</p>
-      </content>
-    </indent>
-    <indent id="prefix.point-b.list-0.indent-3" refersTo="single_tiret">
-      <content>
-        <p>tymczasowych pomieszczeń,</p>
-      </content>
-    </indent>
-    <indent id="prefix.point-b.list-0.indent-4" refersTo="single_tiret">
-      <content>
-        <p>miejsc w noclegowniach, schroniskach dla bezdomnych i ogrzewalniach,</p>
-      </content>
-    </indent>
-  </list>
-</point>'
-    end
-  end
-
-  #-------------------------------------------------------------------------------
-  # Tirets
-
-  describe 'ENTITY: Tirets.' do
-    it 'ENTITY VARIATION: Basic.' do
-      node = parse :tiret, <<EOS
-@@INDENT2@@– tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
-EOS
-
-      to_xml(node, 'prefix.', 0).should ==
-'<list id="prefix.list-0">
-  <indent id="prefix.list-0.indent-0" refersTo="single_tiret">
-    <content>
-      <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
-    </content>
-  </indent>
-</list>'
-    end
-
-    it 'ENTITY VARIATION: Empty.' do
-      node = parse :tiret, <<EOS
-@@INDENT2@@– 
-@@INDENT2@@– 
-EOS
-
-      to_xml(node, 'prefix.', 0).should ==
-'<list id="prefix.list-0">
-  <indent id="prefix.list-0.indent-0" refersTo="single_tiret">
-    <content>
-      <p/>
-    </content>
-  </indent>
-  <indent id="prefix.list-0.indent-1" refersTo="single_tiret">
-    <content>
-      <p/>
-    </content>
-  </indent>
-</list>'
-    end
-
-    it 'ENTITY VARIATION: Multiple.' do
-      node = parse :tiret, <<EOS
-@@INDENT2@@– tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
-@@INDENT2@@– mieszkań chronionych,
-@@INDENT2@@– lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,
-EOS
-
-      to_xml(node, 'prefix.', 0).should ==
-'<list id="prefix.list-0">
-  <indent id="prefix.list-0.indent-0" refersTo="single_tiret">
-    <content>
-      <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
-    </content>
-  </indent>
-  <indent id="prefix.list-0.indent-1" refersTo="single_tiret">
-    <content>
-      <p>mieszkań chronionych,</p>
-    </content>
-  </indent>
-  <indent id="prefix.list-0.indent-2" refersTo="single_tiret">
-    <content>
-      <p>lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,</p>
-    </content>
-  </indent>
-</list>'
-    end
-  end
   
-  #-------------------------------------------------------------------------------
-  # Double tirets
-
-  describe 'ENTITY: Double tirets.' do
-    it 'ENTITY VARIATION: Basic.' do
-      node = parse :double_tiret, <<EOS
-@@INDENT3@@– – tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
-EOS
-
-      to_xml(node, 'prefix.', 0).should ==
-'<list id="prefix.list-0">
-  <indent id="prefix.list-0.indent-0" refersTo="double_tiret">
-    <content>
-      <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
-    </content>
-  </indent>
-</list>'
-    end
-
-    it 'ENTITY VARIATION: Empty.' do
-      node = parse :double_tiret, <<EOS
-@@INDENT3@@– – 
-@@INDENT3@@– – 
-EOS
-
-      to_xml(node, 'prefix.', 0).should ==
-'<list id="prefix.list-0">
-  <indent id="prefix.list-0.indent-0" refersTo="double_tiret">
-    <content>
-      <p/>
-    </content>
-  </indent>
-  <indent id="prefix.list-0.indent-1" refersTo="double_tiret">
-    <content>
-      <p/>
-    </content>
-  </indent>
-</list>'
-    end
-
-    it 'ENTITY VARIATION: Multiple.' do
-      node = parse :double_tiret, <<EOS
-@@INDENT3@@– – tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
-@@INDENT3@@– – mieszkań chronionych,
-@@INDENT3@@– – lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,
-EOS
-
-      to_xml(node, 'prefix.', 0).should ==
-'<list id="prefix.list-0">
-  <indent id="prefix.list-0.indent-0" refersTo="double_tiret">
-    <content>
-      <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
-    </content>
-  </indent>
-  <indent id="prefix.list-0.indent-1" refersTo="double_tiret">
-    <content>
-      <p>mieszkań chronionych,</p>
-    </content>
-  </indent>
-  <indent id="prefix.list-0.indent-2" refersTo="double_tiret">
-    <content>
-      <p>lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,</p>
-    </content>
-  </indent>
-</list>'
-    end
-  end
-  
-  #-------------------------------------------------------------------------------
-  # Triple tirets
-
-  describe 'ENTITY: Triple tirets.' do
-    it 'ENTITY VARIATION: Basic.' do
-      node = parse :triple_tiret, <<EOS
-@@INDENT4@@– – – tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
-EOS
-
-      to_xml(node, 'prefix.', 0).should ==
-'<list id="prefix.list-0">
-  <indent id="prefix.list-0.indent-0" refersTo="triple_tiret">
-    <content>
-      <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
-    </content>
-  </indent>
-</list>'
-    end
-
-    it 'ENTITY VARIATION: Empty.' do
-      node = parse :triple_tiret, <<EOS
-@@INDENT4@@– – – 
-@@INDENT4@@– – – 
-EOS
-
-      to_xml(node, 'prefix.', 0).should ==
-'<list id="prefix.list-0">
-  <indent id="prefix.list-0.indent-0" refersTo="triple_tiret">
-    <content>
-      <p/>
-    </content>
-  </indent>
-  <indent id="prefix.list-0.indent-1" refersTo="triple_tiret">
-    <content>
-      <p/>
-    </content>
-  </indent>
-</list>'
-    end
-
-    it 'ENTITY VARIATION: Multiple.' do
-      node = parse :triple_tiret, <<EOS
-@@INDENT4@@– – – tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
-@@INDENT4@@– – – mieszkań chronionych,
-@@INDENT4@@– – – lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,
-EOS
-
-      to_xml(node, 'prefix.', 0).should ==
-'<list id="prefix.list-0">
-  <indent id="prefix.list-0.indent-0" refersTo="triple_tiret">
-    <content>
-      <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
-    </content>
-  </indent>
-  <indent id="prefix.list-0.indent-1" refersTo="triple_tiret">
-    <content>
-      <p>mieszkań chronionych,</p>
-    </content>
-  </indent>
-  <indent id="prefix.list-0.indent-2" refersTo="triple_tiret">
-    <content>
-      <p>lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,</p>
-    </content>
-  </indent>
-</list>'
-    end
-  end
-
 end
