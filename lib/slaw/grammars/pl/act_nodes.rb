@@ -328,7 +328,7 @@ module Slaw
             id = "#{idprefix}point-#{num}"
             idprefix = id + "."
 
-            b.point(id: id) { |b|
+            b.point(id: id, refersTo: "point_unit") { |b|
               b.num(point_prefix.text_value)
               intro_and_children_xml(b, idprefix)
             }
@@ -341,10 +341,10 @@ module Slaw
           end
 
           def to_xml(b, idprefix='', i)
-            id = "#{idprefix}alinea-#{num}"
+            id = "#{idprefix}point-#{num}"
             idprefix = id + "."
 
-            b.alinea(id: id) { |b|
+            b.point(id: id, refersTo: "letter_unit") { |b|
               b.num(letter_prefix.text_value)
               intro_and_children_xml(b, idprefix)
             }
