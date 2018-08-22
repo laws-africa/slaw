@@ -136,30 +136,30 @@ EOS
       <intro>
         <p>Aaa aaa</p>
       </intro>
-      <point id="section-123.subsection-456.point-789">
+      <point id="section-123.subsection-456.point-789" refersTo="point_unit">
         <num>789)</num>
         <intro>
           <p>Bbb bbb</p>
         </intro>
-        <alinea id="section-123.subsection-456.point-789.alinea-abc">
+        <point id="section-123.subsection-456.point-789.point-abc" refersTo="letter_unit">
           <num>abc)</num>
           <intro>
             <p>Ccc ccc</p>
           </intro>
-          <list id="section-123.subsection-456.point-789.alinea-abc.list-0">
-            <indent id="section-123.subsection-456.point-789.alinea-abc.list-0.indent-0" refersTo="single_tiret">
+          <list id="section-123.subsection-456.point-789.point-abc.list-0">
+            <indent id="section-123.subsection-456.point-789.point-abc.list-0.indent-0" refersTo="single_tiret">
               <content>
                 <p>Ddd ddd</p>
               </content>
             </indent>
-            <list id="section-123.subsection-456.point-789.alinea-abc.list-0.list-1">
-              <indent id="section-123.subsection-456.point-789.alinea-abc.list-0.list-1.indent-0" refersTo="double_tiret">
+            <list id="section-123.subsection-456.point-789.point-abc.list-0.list-1">
+              <indent id="section-123.subsection-456.point-789.point-abc.list-0.list-1.indent-0" refersTo="double_tiret">
                 <content>
                   <p>Eee eee</p>
                 </content>
               </indent>
-              <list id="section-123.subsection-456.point-789.alinea-abc.list-0.list-1.list-1">
-                <indent id="section-123.subsection-456.point-789.alinea-abc.list-0.list-1.list-1.indent-0" refersTo="triple_tiret">
+              <list id="section-123.subsection-456.point-789.point-abc.list-0.list-1.list-1">
+                <indent id="section-123.subsection-456.point-789.point-abc.list-0.list-1.list-1.indent-0" refersTo="triple_tiret">
                   <content>
                     <p>Fff fff</p>
                   </content>
@@ -167,7 +167,7 @@ EOS
               </list>
             </list>
           </list>
-        </alinea>
+        </point>
       </point>
     </subsection>
   </section>
@@ -245,13 +245,13 @@ EOS
     <intro>
       <p>Przepisów ustawy nie stosuje się do:</p>
     </intro>
-    <point id="section-2.subsection-1.point-1">
+    <point id="section-2.subsection-1.point-1" refersTo="point_unit">
       <num>1)</num>
       <content>
         <p>przychodów z działalności rolniczej, z wyjątkiem przychodów z działów specjalnych produkcji rolnej;</p>
       </content>
     </point>
-    <point id="section-2.subsection-1.point-2">
+    <point id="section-2.subsection-1.point-2" refersTo="point_unit">
       <num>2)</num>
       <content>
         <p>przychodów z gospodarki leśnej w rozumieniu ustawy o lasach;</p>
@@ -393,19 +393,19 @@ EOS
   <intro>
     <p>W ustawie należy unikać posługiwania się:</p>
   </intro>
-  <point id="subsection-2.point-1">
+  <point id="subsection-2.point-1" refersTo="point_unit">
     <num>1)</num>
     <content>
       <p>określeniami specjalistycznymi, o ile ich użycie nie jest powodowane zapewnieniem należytej precyzji tekstu;</p>
     </content>
   </point>
-  <point id="subsection-2.point-2">
+  <point id="subsection-2.point-2" refersTo="point_unit">
     <num>2)</num>
     <content>
       <p>określeniami lub zapożyczeniami obcojęzycznymi, chyba że nie mają dokładnego odpowiednika w języku polskim;</p>
     </content>
   </point>
-  <point id="subsection-2.point-3">
+  <point id="subsection-2.point-3" refersTo="point_unit">
     <num>3)</num>
     <content>
       <p>nowo tworzonymi pojęciami lub strukturami językowymi, chyba że w dotychczasowym słownictwie polskim brak jest odpowiedniego określenia.</p>
@@ -427,13 +427,13 @@ EOS
   <intro>
     <p>W ustawie należy unikać posługiwania się:</p>
   </intro>
-  <point id="subsection-2.point-1">
+  <point id="subsection-2.point-1" refersTo="point_unit">
     <num>1)</num>
     <content>
       <p>art. 1</p>
     </content>
   </point>
-  <point id="subsection-2.point-2">
+  <point id="subsection-2.point-2" refersTo="point_unit">
     <num>2)</num>
     <content>
       <p>art. 2</p>
@@ -551,13 +551,13 @@ EOS
       <p>Something here</p>
     </content>
   </subparagraph>
-  <point id="section-54.point-1">
+  <point id="section-54.point-1" refersTo="point_unit">
     <num>1)</num>
     <content>
       <p>a point</p>
     </content>
   </point>
-  <point id="section-54.point-2">
+  <point id="section-54.point-2" refersTo="point_unit">
     <num>2)</num>
     <content>
       <p>second point</p>
@@ -613,13 +613,13 @@ EOS
   <intro>
     <p>The following rights:</p>
   </intro>
-  <point id="section-1.point-1">
+  <point id="section-1.point-1" refersTo="point_unit">
     <num>1)</num>
     <content>
       <p>the right to X</p>
     </content>
   </point>
-  <point id="section-1.point-2">
+  <point id="section-1.point-2" refersTo="point_unit">
     <num>2)</num>
     <content>
       <p>the right to Y</p>
@@ -645,13 +645,13 @@ EOS
   <intro>
     <p>The following rights:</p>
   </intro>
-  <point id="section-1.point-1">
+  <point id="section-1.point-1" refersTo="point_unit">
     <num>1)</num>
     <content>
       <p>the right to X</p>
     </content>
   </point>
-  <point id="section-1.point-2">
+  <point id="section-1.point-2" refersTo="point_unit">
     <num>2)</num>
     <content>
       <p>the right to Y</p>
@@ -677,13 +677,13 @@ EOS
   <intro>
     <p>The following rights:</p>
   </intro>
-  <point id="subsection-1.point-1">
+  <point id="subsection-1.point-1" refersTo="point_unit">
     <num>1)</num>
     <content>
       <p>the right to X</p>
     </content>
   </point>
-  <point id="subsection-1.point-2">
+  <point id="subsection-1.point-2" refersTo="point_unit">
     <num>2)</num>
     <content>
       <p>the right to Y</p>
@@ -709,13 +709,13 @@ EOS
   <intro>
     <p>The following rights:</p>
   </intro>
-  <point id="subsection-1.point-1">
+  <point id="subsection-1.point-1" refersTo="point_unit">
     <num>1)</num>
     <content>
       <p>the right to X</p>
     </content>
   </point>
-  <point id="subsection-1.point-2">
+  <point id="subsection-1.point-2" refersTo="point_unit">
     <num>2)</num>
     <content>
       <p>the right to Y</p>
@@ -741,18 +741,18 @@ EOS
   <intro>
     <p>The following rights:</p>
   </intro>
-  <alinea id="subsection-1.alinea-a">
+  <point id="subsection-1.point-a" refersTo="letter_unit">
     <num>a)</num>
     <content>
       <p>the right to X</p>
     </content>
-  </alinea>
-  <alinea id="subsection-1.alinea-b">
+  </point>
+  <point id="subsection-1.point-b" refersTo="letter_unit">
     <num>b)</num>
     <content>
       <p>the right to Y</p>
     </content>
-  </alinea>
+  </point>
   <wrapUp>
     <p>shall not be abrogated</p>
   </wrapUp>
@@ -781,28 +781,28 @@ EOS
   <intro>
     <p>The following rights:</p>
   </intro>
-  <point id="section-1.point-1">
+  <point id="section-1.point-1" refersTo="point_unit">
     <num>1)</num>
     <intro>
       <p>right of passage:</p>
     </intro>
-    <alinea id="section-1.point-1.alinea-a">
+    <point id="section-1.point-1.point-a" refersTo="letter_unit">
       <num>a)</num>
       <content>
         <p>through the town square,</p>
       </content>
-    </alinea>
-    <alinea id="section-1.point-1.alinea-b">
+    </point>
+    <point id="section-1.point-1.point-b" refersTo="letter_unit">
       <num>b)</num>
       <content>
         <p>through the town marketplace</p>
       </content>
-    </alinea>
+    </point>
     <wrapUp>
       <p>assuming it is Sunday</p>
     </wrapUp>
   </point>
-  <point id="section-1.point-2">
+  <point id="section-1.point-2" refersTo="point_unit">
     <num>2)</num>
     <content>
       <p>the right to Y</p>
@@ -825,7 +825,7 @@ EOS
 EOS
 
       to_xml(node, 'prefix.', 0).should ==
-'<point id="prefix.point-1">
+'<point id="prefix.point-1" refersTo="point_unit">
   <num>1)</num>
   <content>
     <p>szczegółowy tryb i terminy rozpatrywania wniosków o udzielenie finansowego wsparcia;</p>
@@ -843,23 +843,23 @@ b) numer księgi wieczystej;
 EOS
 
       to_xml(node, 'prefix.', 0).should ==
-'<point id="prefix.point-1">
+'<point id="prefix.point-1" refersTo="point_unit">
   <num>1)</num>
   <intro>
     <p>dokumenty potwierdzające prawo własności albo prawo użytkowania wieczystego nieruchomości, której dotyczy przedsięwzięcie albo na której położony jest budynek, którego budowę, remont lub przebudowę zamierza się przepro- wadzić w ramach realizacji przedsięwzięcia, w tym:</p>
   </intro>
-  <alinea id="prefix.point-1.alinea-a">
+  <point id="prefix.point-1.point-a" refersTo="letter_unit">
     <num>a)</num>
     <content>
       <p>oryginał albo potwierdzoną za zgodność z oryginałem kopię wypisu i wyrysu z rejestru gruntów wszystkich dzia- łek ewidencyjnych, na których realizowane jest przedsięwzięcie, wydanego nie wcześniej niż 3 miesiące przed dniem złożenia wniosku, oraz</p>
     </content>
-  </alinea>
-  <alinea id="prefix.point-1.alinea-b">
+  </point>
+  <point id="prefix.point-1.point-b" refersTo="letter_unit">
     <num>b)</num>
     <content>
       <p>numer księgi wieczystej;</p>
     </content>
-  </alinea>
+  </point>
 </point>'
     end
   end
@@ -879,39 +879,39 @@ b) liczby:
 @@INDENT2@@– miejsc w noclegowniach, schroniskach dla bezdomnych i ogrzewalniach,
 EOS
       to_xml(node, 'prefix.', 0).should ==
-'<alinea id="prefix.alinea-b">
+'<point id="prefix.point-b" refersTo="letter_unit">
   <num>b)</num>
   <intro>
     <p>liczby:</p>
   </intro>
-  <list id="prefix.alinea-b.list-0">
-    <indent id="prefix.alinea-b.list-0.indent-0" refersTo="single_tiret">
+  <list id="prefix.point-b.list-0">
+    <indent id="prefix.point-b.list-0.indent-0" refersTo="single_tiret">
       <content>
         <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
       </content>
     </indent>
-    <indent id="prefix.alinea-b.list-0.indent-1" refersTo="single_tiret">
+    <indent id="prefix.point-b.list-0.indent-1" refersTo="single_tiret">
       <content>
         <p>mieszkań chronionych,</p>
       </content>
     </indent>
-    <indent id="prefix.alinea-b.list-0.indent-2" refersTo="single_tiret">
+    <indent id="prefix.point-b.list-0.indent-2" refersTo="single_tiret">
       <content>
         <p>lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,</p>
       </content>
     </indent>
-    <indent id="prefix.alinea-b.list-0.indent-3" refersTo="single_tiret">
+    <indent id="prefix.point-b.list-0.indent-3" refersTo="single_tiret">
       <content>
         <p>tymczasowych pomieszczeń,</p>
       </content>
     </indent>
-    <indent id="prefix.alinea-b.list-0.indent-4" refersTo="single_tiret">
+    <indent id="prefix.point-b.list-0.indent-4" refersTo="single_tiret">
       <content>
         <p>miejsc w noclegowniach, schroniskach dla bezdomnych i ogrzewalniach,</p>
       </content>
     </indent>
   </list>
-</alinea>'
+</point>'
     end
   end
 

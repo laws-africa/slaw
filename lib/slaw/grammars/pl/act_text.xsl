@@ -144,7 +144,7 @@
   </xsl:template>
 
   <!-- numbered lists -->
-  <xsl:template match="a:item | a:alinea | a:point">
+  <xsl:template match="a:item | a:point">
     <xsl:value-of select="./a:num" />
     <xsl:text> </xsl:text>
     <xsl:apply-templates select="./*[not(self::a:num)]" />
