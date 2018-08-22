@@ -347,6 +347,28 @@ module Slaw
           end
         end
 
+        class DoubleTiret < Treetop::Runtime::SyntaxNode
+          def to_xml(b, idprefix, i=0)
+            id = idprefix + "list-#{i}"
+            idprefix = id + '.'
+  
+            b.list(id: id) { |b|
+              children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+            }
+          end
+        end
+
+        class TripleTiret < Treetop::Runtime::SyntaxNode
+          def to_xml(b, idprefix, i=0)
+            id = idprefix + "list-#{i}"
+            idprefix = id + '.'
+  
+            b.list(id: id) { |b|
+              children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+            }
+          end
+        end
+
         class DashedWrapUpForPoints < Treetop::Runtime::SyntaxNode
           def to_xml(b, idprefix, i)
             b.wrapUp() { |b|
@@ -376,7 +398,41 @@ module Slaw
             id = idprefix + "indent-#{i}"
             idprefix = id + '.'
 
-            b.indent(id: id) { |b|
+            b.indent(id: id, type: "single") { |b|
+              b.content { |b|
+                if not item_content.empty?
+                  item_content.to_xml(b, idprefix)
+                else
+                  b.p
+                end
+              }
+            }
+          end
+        end
+
+        class DoubleTiretItem < Treetop::Runtime::SyntaxNode
+          def to_xml(b, idprefix, i)
+            id = idprefix + "indent-#{i}"
+            idprefix = id + '.'
+  
+            b.indent(id: id, type: "double") { |b|
+              b.content { |b|
+                if not item_content.empty?
+                  item_content.to_xml(b, idprefix)
+                else
+                  b.p
+                end
+              }
+            }
+          end
+        end
+  
+        class TripleTiretItem < Treetop::Runtime::SyntaxNode
+          def to_xml(b, idprefix, i)
+            id = idprefix + "indent-#{i}"
+            idprefix = id + '.'
+  
+            b.indent(id: id, type: "triple") { |b|
               b.content { |b|
                 if not item_content.empty?
                   item_content.to_xml(b, idprefix)
