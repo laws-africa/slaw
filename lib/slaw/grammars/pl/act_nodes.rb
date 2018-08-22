@@ -25,8 +25,36 @@ module Slaw
               write_identification(b)
 
               b.references(source: "#this") {
-                b.TLCOrganization(id: 'slaw', href: 'https://github.com/longhotsummer/slaw', showAs: "Slaw")
-                b.TLCOrganization(id: 'council', href: '/ontology/organization/za/council', showAs: "Council")
+                # Define various Poland-specific distinctions to augment AKN-provided law
+                # hierarchy units. We put references to these in "refersTo" attribute.
+                # 
+                # For example, AKN suggest representing both the Polish "punkt" (= point) and
+                # "litera" (= letter) as <point>. To clearly preserve the distinction
+                # between them, we put them in AKN as <point refersTo="point_unit"> and
+                # <point refersTo="letter_unit">.
+                #
+                # See https://groups.google.com/forum/?fromgroups=#!topic/akomantoso-xml/7sW5HtZbPcs
+                # for discussion.
+                b.TLCConcept(id: "statute", href: '/akn/ontology/concept/pl/statute',
+                  showAs: "statute", eId: "statute")
+                b.TLCConcept(id: "ordinance", href: '/akn/ontology/concept/pl/ordinance',
+                  showAs: "ordinance", eId: "ordinance")
+                b.TLCConcept(id: "noncode_level1_unit", 
+                  href: '/akn/ontology/concept/pl/noncode_level1_unit',
+                  showAs: "noncode_level1_unit", eId: "noncode_level1_unit")
+                b.TLCConcept(id: "code_level1_unit", 
+                  href: '/akn/ontology/concept/pl/code_level1_unit',
+                  showAs: "code_level1_unit", eId: "code_level1_unit")
+                b.TLCConcept(id: "point_unit", href: '/akn/ontology/concept/pl/point_unit',
+                  showAs: "point_unit", eId: "point_unit")
+                b.TLCConcept(id: "letter_unit", href: '/akn/ontology/concept/pl/letter_unit',
+                  showAs: "letter_unit", eId: "letter_unit")
+                b.TLCConcept(id: "single_tiret", href: '/akn/ontology/concept/pl/single_tiret',
+                  showAs: "single_tiret", eId: "single_tiret")
+                b.TLCConcept(id: "double_tiret", href: '/akn/ontology/concept/pl/double_tiret',
+                  showAs: "double_tiret", eId: "double_tiret")
+                b.TLCConcept(id: "triple_tiret", href: '/akn/ontology/concept/pl/triple_tiret',
+                  showAs: "triple_tiret", eId: "triple_tiret")
               }
             }
           end
@@ -232,7 +260,7 @@ module Slaw
             id = "section-#{num}"
             idprefix = "#{id}."
 
-            b.section(id: id, lawtype: "statute") { |b|
+            b.section(id: id, refersTo: "statute") { |b|
               b.num("#{num}")
               intro_and_children_xml(b, idprefix)
             }
@@ -250,7 +278,7 @@ module Slaw
             id = "section-#{num}"
             idprefix = "#{id}."
 
-            b.section(id: id, lawtype: "ordinance") { |b|
+            b.section(id: id, refersTo: "ordinance") { |b|
               b.num("#{num}")
               intro_and_children_xml(b, idprefix)
             }
@@ -268,7 +296,7 @@ module Slaw
             id = "#{idprefix}subsection-#{num}"
             idprefix = "#{id}."
 
-            b.subsection(id: id, type: "noncode") { |b|
+            b.subsection(id: id, refersTo: "noncode_level1_unit") { |b|
               b.num("#{num}")
               intro_and_children_xml(b, idprefix)
             }
@@ -284,7 +312,7 @@ module Slaw
             id = "#{idprefix}subsection-#{num}"
             idprefix = "#{id}."
   
-            b.subsection(id: id, type: "code") { |b|
+            b.subsection(id: id, refersTo: "code_level1_unit") { |b|
               b.num("#{num}")
               intro_and_children_xml(b, idprefix)
             }
@@ -398,7 +426,7 @@ module Slaw
             id = idprefix + "indent-#{i}"
             idprefix = id + '.'
 
-            b.indent(id: id, type: "single") { |b|
+            b.indent(id: id, refersTo: "single_tiret") { |b|
               b.content { |b|
                 if not item_content.empty?
                   item_content.to_xml(b, idprefix)
@@ -415,7 +443,7 @@ module Slaw
             id = idprefix + "indent-#{i}"
             idprefix = id + '.'
   
-            b.indent(id: id, type: "double") { |b|
+            b.indent(id: id, refersTo: "double_tiret") { |b|
               b.content { |b|
                 if not item_content.empty?
                   item_content.to_xml(b, idprefix)
@@ -432,7 +460,7 @@ module Slaw
             id = idprefix + "indent-#{i}"
             idprefix = id + '.'
   
-            b.indent(id: id, type: "triple") { |b|
+            b.indent(id: id, refersTo: "triple_tiret") { |b|
               b.content { |b|
                 if not item_content.empty?
                   item_content.to_xml(b, idprefix)
