@@ -97,12 +97,14 @@ module Slaw
         end
 
         rule body
-          children:(division / subdivision / chapter / statute_level0_unit / ordinance_level0_unit / block_paragraphs)+ <Body>
+          children:(division / subdivision / chapter / statute_level0_unit / ordinance_level0_unit 
+              / block_paragraphs)+ <Body>
         end
 
         rule division
           heading:division_heading
-          children:(subdivision / chapter / statute_level0_unit / ordinance_level0_unit / block_paragraphs)*
+          children:(subdivision / chapter / statute_level0_unit / ordinance_level0_unit 
+              / block_paragraphs)*
           <Division>
         end
 
@@ -137,7 +139,8 @@ module Slaw
           #     2) This is some text.
           #     - This is optional "wrap-up" text.
           statute_level0_unit_prefix intro
-          children:(noncode_level1_unit / code_level1_unit / point / dashed_wrapup_for_points / block_paragraphs)* <StatuteLevel0>
+          children:(noncode_level1_unit / code_level1_unit / point / dashed_wrapup_for_points 
+              / block_paragraphs)* <StatuteLevel0>
         end
 
         rule ordinance_level0_unit
@@ -155,7 +158,8 @@ module Slaw
           #     2) This is some text.
           #     - This is optional "wrap-up" text.
           ordinance_level0_unit_prefix intro
-          children:(noncode_level1_unit / point / dashed_wrapup_for_points / block_paragraphs)* <OrdinanceLevel0>
+          children:(noncode_level1_unit / point / dashed_wrapup_for_points / block_paragraphs)* 
+          <OrdinanceLevel0>
         end
 
         rule noncode_level1_unit
@@ -175,7 +179,8 @@ module Slaw
           #     a) This is some text.
           #     b) This is some text.
           noncode_level1_unit_prefix intro
-          children:(point / letter_unit / dashed_wrapup_for_points / block_paragraphs)* <NoncodeLevel1>
+          children:(point / letter_unit / dashed_wrapup_for_points / block_paragraphs)* 
+          <NoncodeLevel1>
         end
 
         rule code_level1_unit
@@ -195,7 +200,8 @@ module Slaw
           #     a) This is some text.
           #     b) This is some text.
           code_level1_unit_prefix intro
-          children:(point / letter_unit / dashed_wrapup_for_points / block_paragraphs)* <CodeLevel1>
+          children:(point / letter_unit / dashed_wrapup_for_points / block_paragraphs)* 
+          <CodeLevel1>
         end
 
         rule point
@@ -325,16 +331,23 @@ module Slaw
         ##########
         # statements - single lines of content
         #
-        # If a statement starts with a backslash, it's considered to have escaped the subsequent word,
-        # and is ignored. This allows escaping of section headings, etc.
+        # If a statement starts with a backslash, it's considered to have escaped the subsequent
+        # word, and is ignored. This allows escaping of section headings, etc.
 
         rule naked_statement
-          space? !(division_heading / subdivision_heading / chapter_heading / statute_level0_unit_prefix / ordinance_level0_unit_prefix / noncode_level1_unit_prefix / code_level1_unit_prefix / schedule_title / point_prefix / letter_prefix / tiret_prefix / double_tiret_prefix / triple_tiret_prefix / '@@INDENT') '\\'? clauses eol
+          space? !(division_heading / subdivision_heading / chapter_heading 
+              / statute_level0_unit_prefix / ordinance_level0_unit_prefix 
+              / noncode_level1_unit_prefix / code_level1_unit_prefix / schedule_title 
+              / point_prefix / letter_prefix / tiret_prefix / double_tiret_prefix 
+              / triple_tiret_prefix / '@@INDENT') '\\'? clauses eol
           <NakedStatement>
         end
 
         rule pre_body_statement
-          space? !(division_heading / subdivision_heading / chapter_heading / statute_level0_unit_prefix / ordinance_level0_unit_prefix / noncode_level1_unit_prefix / code_level1_unit_prefix / schedule_title) '\\'? clauses eol
+          space? !(division_heading / subdivision_heading / chapter_heading 
+              / statute_level0_unit_prefix / ordinance_level0_unit_prefix 
+              / noncode_level1_unit_prefix / code_level1_unit_prefix 
+              / schedule_title) '\\'? clauses eol
           <NakedStatement>
         end
 
