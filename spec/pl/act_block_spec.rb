@@ -64,48 +64,48 @@ EOS
     <chapter id="chapter-7">
       <num>7</num>
       <heading>Oznaczanie przepisów ustawy i ich systematyzacja</heading>
-      <section id="section-54" lawtype="ordinance">
+      <section id="section-54" refersTo="ordinance">
         <num>54</num>
         <content>
           <p>Podstawową jednostką redakcyjną ustawy jest artykuł.</p>
         </content>
       </section>
-      <section id="section-55" lawtype="ordinance">
+      <section id="section-55" refersTo="ordinance">
         <num>55</num>
-        <subsection id="section-55.subsection-1" type="noncode">
+        <subsection id="section-55.subsection-1" refersTo="noncode_level1_unit">
           <num>1</num>
           <content>
             <p>Każdą samodzielną myśl ujmuje się w odrębny artykuł.</p>
           </content>
         </subsection>
-        <subsection id="section-55.subsection-2" type="noncode">
+        <subsection id="section-55.subsection-2" refersTo="noncode_level1_unit">
           <num>2</num>
           <content>
             <p>Artykuł powinien być w miarę możliwości jednozdaniowy.</p>
           </content>
         </subsection>
-        <subsection id="section-55.subsection-3" type="noncode">
+        <subsection id="section-55.subsection-3" refersTo="noncode_level1_unit">
           <num>3</num>
           <content>
             <p>Jeżeli samodzielną myśl wyraża zespół zdań, dokonuje się podziału artykułu na ustępy. W ustawie określanej jako "kodeks" ustępy oznacza się paragrafami (§).</p>
           </content>
         </subsection>
-        <subsection id="section-55.subsection-4" type="noncode">
+        <subsection id="section-55.subsection-4" refersTo="noncode_level1_unit">
           <num>4</num>
           <content>
             <p>Podział artykułu na ustępy wprowadza się także w przypadku, gdy między zdaniami wyrażającymi samodzielne myśli występują powiązania treściowe, ale treść żadnego z nich nie jest na tyle istotna, aby wydzielić ją w odrębny artykuł.</p>
           </content>
         </subsection>
       </section>
-      <section id="section-56" lawtype="ordinance">
+      <section id="section-56" refersTo="ordinance">
         <num>56</num>
-        <subsection id="section-56.subsection-1" type="noncode">
+        <subsection id="section-56.subsection-1" refersTo="noncode_level1_unit">
           <num>1</num>
           <content>
             <p>W obrębie artykułu (ustępu) zawierającego wyliczenie wyróżnia się dwie części: wprowadzenie do wyliczenia oraz punkty. Wyliczenie może kończyć się częścią wspólną, odnoszącą się do wszystkich punktów. Po części wspólnej nie dodaje się kolejnej samodzielnej myśli; w razie potrzeby formułuje się ją w kolejnym ustępie.</p>
           </content>
         </subsection>
-        <subsection id="section-56.subsection-2" type="noncode">
+        <subsection id="section-56.subsection-2" refersTo="noncode_level1_unit">
           <num>2</num>
           <content>
             <p>W obrębie punktów można dokonać dalszego wyliczenia, wprowadzając litery.</p>
@@ -129,9 +129,9 @@ abc) Ccc ccc
 EOS
       to_xml(node).should ==
 '<body>
-  <section id="section-123" lawtype="statute">
+  <section id="section-123" refersTo="statute">
     <num>123</num>
-    <subsection id="section-123.subsection-456" type="noncode">
+    <subsection id="section-123.subsection-456" refersTo="noncode_level1_unit">
       <num>456</num>
       <intro>
         <p>Aaa aaa</p>
@@ -147,19 +147,19 @@ EOS
             <p>Ccc ccc</p>
           </intro>
           <list id="section-123.subsection-456.point-789.alinea-abc.list-0">
-            <indent id="section-123.subsection-456.point-789.alinea-abc.list-0.indent-0" type="single">
+            <indent id="section-123.subsection-456.point-789.alinea-abc.list-0.indent-0" refersTo="single_tiret">
               <content>
                 <p>Ddd ddd</p>
               </content>
             </indent>
             <list id="section-123.subsection-456.point-789.alinea-abc.list-0.list-1">
-              <indent id="section-123.subsection-456.point-789.alinea-abc.list-0.list-1.indent-0" type="double">
+              <indent id="section-123.subsection-456.point-789.alinea-abc.list-0.list-1.indent-0" refersTo="double_tiret">
                 <content>
                   <p>Eee eee</p>
                 </content>
               </indent>
               <list id="section-123.subsection-456.point-789.alinea-abc.list-0.list-1.list-1">
-                <indent id="section-123.subsection-456.point-789.alinea-abc.list-0.list-1.list-1.indent-0" type="triple">
+                <indent id="section-123.subsection-456.point-789.alinea-abc.list-0.list-1.list-1.indent-0" refersTo="triple_tiret">
                   <content>
                     <p>Fff fff</p>
                   </content>
@@ -185,7 +185,7 @@ EOS
 Art. 1. Ustawa reguluje opodatkowanie podatkiem dochodowym dochodów osób fizycznych
 EOS
       to_xml(node).should ==
-'<section id="section-1" lawtype="statute">
+'<section id="section-1" refersTo="statute">
   <num>1</num>
   <content>
     <p>Ustawa reguluje opodatkowanie podatkiem dochodowym dochodów osób fizycznych</p>
@@ -200,7 +200,7 @@ Art. 1.
 Ustawa reguluje opodatkowanie podatkiem dochodowym dochodów osób fizycznych
 EOS
       to_xml(node).should ==
-'<section id="section-1" lawtype="statute">
+'<section id="section-1" refersTo="statute">
   <num>1</num>
   <content>
     <p>Ustawa reguluje opodatkowanie podatkiem dochodowym dochodów osób fizycznych</p>
@@ -215,13 +215,13 @@ Art. 2. Something else
 EOS
       to_xml(node).should ==
 '<body>
-  <section id="section-1" lawtype="statute">
+  <section id="section-1" refersTo="statute">
     <num>1</num>
     <content>
       <p>Ustawa reguluje opodatkowanie podatkiem dochodowym dochodów osób fizycznych</p>
     </content>
   </section>
-  <section id="section-2" lawtype="statute">
+  <section id="section-2" refersTo="statute">
     <num>2</num>
     <content>
       <p>Something else</p>
@@ -238,9 +238,9 @@ Art. 2.
 2) przychodów z gospodarki leśnej w rozumieniu ustawy o lasach;
 EOS
       to_xml(node).should ==
-'<section id="section-2" lawtype="statute">
+'<section id="section-2" refersTo="statute">
   <num>2</num>
-  <subsection id="section-2.subsection-1" type="noncode">
+  <subsection id="section-2.subsection-1" refersTo="noncode_level1_unit">
     <num>1</num>
     <intro>
       <p>Przepisów ustawy nie stosuje się do:</p>
@@ -266,7 +266,7 @@ EOS
 Art. 123@@SUPERSCRIPT@@456##SUPERSCRIPT##. Ustawa reguluje opodatkowanie podatkiem dochodowym dochodów osób fizycznych
 EOS
       to_xml(node).should ==
-'<section id="section-123^456" lawtype="statute">
+'<section id="section-123^456" refersTo="statute">
   <num>123^456</num>
   <content>
     <p>Ustawa reguluje opodatkowanie podatkiem dochodowym dochodów osób fizycznych</p>
@@ -295,7 +295,7 @@ EOS
   <chapter id="chapter-7">
     <num>7</num>
     <heading>Oznaczanie przepisów ustawy i ich systematyzacja</heading>
-    <section id="section-54" lawtype="ordinance">
+    <section id="section-54" refersTo="ordinance">
       <num>54</num>
       <content>
         <p>Podstawową jednostką redakcyjną ustawy jest artykuł.</p>
@@ -321,7 +321,7 @@ EOS
 '<subdivision id="subdivision-I">
   <num>I</num>
   <heading>Projekt ustawy</heading>
-  <section id="section-54" lawtype="ordinance">
+  <section id="section-54" refersTo="ordinance">
     <num>54</num>
     <content>
       <p>Podstawową jednostką redakcyjną ustawy jest artykuł.</p>
@@ -341,7 +341,7 @@ EOS
 EOS
 
       to_xml(node).should ==
-'<subsection id="subsection-1" type="noncode">
+'<subsection id="subsection-1" refersTo="noncode_level1_unit">
   <num>1</num>
   <content>
     <p>Każdą samodzielną myśl ujmuje się w odrębny artykuł.</p>
@@ -355,7 +355,7 @@ EOS
 EOS
 
       to_xml(node).should ==
-'<subsection id="subsection-1" type="noncode">
+'<subsection id="subsection-1" refersTo="noncode_level1_unit">
   <num>1</num>
   <content>
     <p/>
@@ -371,7 +371,7 @@ foo bar
 EOS
 
       to_xml(node).should ==
-'<subsection id="subsection-1" type="noncode">
+'<subsection id="subsection-1" refersTo="noncode_level1_unit">
   <num>1</num>
   <content>
     <p>foo bar</p>
@@ -388,7 +388,7 @@ EOS
 EOS
 
       to_xml(node).should ==
-'<subsection id="subsection-2" type="noncode">
+'<subsection id="subsection-2" refersTo="noncode_level1_unit">
   <num>2</num>
   <intro>
     <p>W ustawie należy unikać posługiwania się:</p>
@@ -422,7 +422,7 @@ EOS
 EOS
 
       to_xml(node).should ==
-'<subsection id="subsection-2" type="noncode">
+'<subsection id="subsection-2" refersTo="noncode_level1_unit">
   <num>2</num>
   <intro>
     <p>W ustawie należy unikać posługiwania się:</p>
@@ -455,7 +455,7 @@ Przepisy ustawy redaguje się zwięźle i syntetycznie, unikając nadmiernej szc
 EOS
 
       to_xml(node).should ==
-'<section id="section-5" lawtype="ordinance">
+'<section id="section-5" refersTo="ordinance">
   <num>5</num>
   <content>
     <p>Przepisy ustawy redaguje się zwięźle i syntetycznie, unikając nadmiernej szczegółowości, a zarazem w sposób, w jaki opisuje się typowe sytuacje występujące w dziedzinie spraw regulowanych tą ustawą.</p>
@@ -469,7 +469,7 @@ EOS
 EOS
 
       to_xml(node).should ==
-'<section id="section-54" lawtype="ordinance">
+'<section id="section-54" refersTo="ordinance">
   <num>54</num>
   <content>
     <p>Podstawową jednostką redakcyjną ustawy jest artykuł.</p>
@@ -486,21 +486,21 @@ EOS
 EOS
 
       to_xml(node).should ==
-'<section id="section-55" lawtype="ordinance">
+'<section id="section-55" refersTo="ordinance">
   <num>55</num>
-  <subsection id="section-55.subsection-1" type="noncode">
+  <subsection id="section-55.subsection-1" refersTo="noncode_level1_unit">
     <num>1</num>
     <content>
       <p>Każdą samodzielną myśl ujmuje się w odrębny artykuł.</p>
     </content>
   </subsection>
-  <subsection id="section-55.subsection-2" type="noncode">
+  <subsection id="section-55.subsection-2" refersTo="noncode_level1_unit">
     <num>2</num>
     <content>
       <p>Artykuł powinien być w miarę możliwości jednozdaniowy.</p>
     </content>
   </subsection>
-  <subsection id="section-55.subsection-3" type="noncode">
+  <subsection id="section-55.subsection-3" refersTo="noncode_level1_unit">
     <num>3</num>
     <content>
       <p>Jeżeli samodzielną myśl wyraża zespół zdań, dokonuje się podziału artykułu na ustępy. W ustawie określanej jako "kodeks" ustępy oznacza się paragrafami (§).</p>
@@ -516,12 +516,12 @@ EOS
 EOS
 
       to_xml(node).should ==
-'<section id="section-55" lawtype="ordinance">
+'<section id="section-55" refersTo="ordinance">
   <num>55</num>
   <intro>
     <p>1. Każdą samodzielną myśl ujmuje się w odrębny artykuł.</p>
   </intro>
-  <subsection id="section-55.subsection-3" type="noncode">
+  <subsection id="section-55.subsection-3" refersTo="noncode_level1_unit">
     <num>3</num>
     <content>
       <p>Jeżeli samodzielną myśl wyraża zespół zdań, dokonuje się podziału artykułu na ustępy. W ustawie określanej jako "kodeks" ustępy oznacza się paragrafami (§).</p>
@@ -541,7 +541,7 @@ Something here
 EOS
 
       to_xml(node).should ==
-'<section id="section-54" lawtype="ordinance">
+'<section id="section-54" refersTo="ordinance">
   <num>54</num>
   <intro>
     <p>Podstawową jednostką redakcyjną ustawy jest artykuł.</p>
@@ -572,7 +572,7 @@ EOS
 EOS
 
       to_xml(node).should ==
-'<section id="section-54" lawtype="ordinance">
+'<section id="section-54" refersTo="ordinance">
   <num>54</num>
   <content>
     <p>Art 1. is changed...</p>
@@ -586,7 +586,7 @@ EOS
 EOS
 
       to_xml(node).should ==
-'<section id="section-5c^6a" lawtype="ordinance">
+'<section id="section-5c^6a" refersTo="ordinance">
   <num>5c^6a</num>
   <content>
     <p>Przepisy ustawy redaguje się zwięźle i syntetycznie, unikając nadmiernej szczegółowości, a zarazem w sposób, w jaki opisuje się typowe sytuacje występujące w dziedzinie spraw regulowanych tą ustawą.</p>
@@ -608,7 +608,7 @@ Art. 1. The following rights:
 EOS
 
       to_xml(node).should ==
-'<section id="section-1" lawtype="statute">
+'<section id="section-1" refersTo="statute">
   <num>1</num>
   <intro>
     <p>The following rights:</p>
@@ -640,7 +640,7 @@ EOS
 EOS
 
       to_xml(node).should ==
-'<section id="section-1" lawtype="ordinance">
+'<section id="section-1" refersTo="ordinance">
   <num>1</num>
   <intro>
     <p>The following rights:</p>
@@ -672,7 +672,7 @@ EOS
 EOS
 
       to_xml(node).should ==
-'<subsection id="subsection-1" type="noncode">
+'<subsection id="subsection-1" refersTo="noncode_level1_unit">
   <num>1</num>
   <intro>
     <p>The following rights:</p>
@@ -704,7 +704,7 @@ EOS
 EOS
 
       to_xml(node).should ==
-'<subsection id="subsection-1" type="code">
+'<subsection id="subsection-1" refersTo="code_level1_unit">
   <num>1</num>
   <intro>
     <p>The following rights:</p>
@@ -736,7 +736,7 @@ b) the right to Y
 EOS
 
       to_xml(node).should ==
-'<subsection id="subsection-1" type="noncode">
+'<subsection id="subsection-1" refersTo="noncode_level1_unit">
   <num>1</num>
   <intro>
     <p>The following rights:</p>
@@ -776,7 +776,7 @@ b) through the town marketplace
 EOS
 
       to_xml(node).should ==
-'<section id="section-1" lawtype="statute">
+'<section id="section-1" refersTo="statute">
   <num>1</num>
   <intro>
     <p>The following rights:</p>
@@ -885,27 +885,27 @@ EOS
     <p>liczby:</p>
   </intro>
   <list id="prefix.alinea-b.list-0">
-    <indent id="prefix.alinea-b.list-0.indent-0" type="single">
+    <indent id="prefix.alinea-b.list-0.indent-0" refersTo="single_tiret">
       <content>
         <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
       </content>
     </indent>
-    <indent id="prefix.alinea-b.list-0.indent-1" type="single">
+    <indent id="prefix.alinea-b.list-0.indent-1" refersTo="single_tiret">
       <content>
         <p>mieszkań chronionych,</p>
       </content>
     </indent>
-    <indent id="prefix.alinea-b.list-0.indent-2" type="single">
+    <indent id="prefix.alinea-b.list-0.indent-2" refersTo="single_tiret">
       <content>
         <p>lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,</p>
       </content>
     </indent>
-    <indent id="prefix.alinea-b.list-0.indent-3" type="single">
+    <indent id="prefix.alinea-b.list-0.indent-3" refersTo="single_tiret">
       <content>
         <p>tymczasowych pomieszczeń,</p>
       </content>
     </indent>
-    <indent id="prefix.alinea-b.list-0.indent-4" type="single">
+    <indent id="prefix.alinea-b.list-0.indent-4" refersTo="single_tiret">
       <content>
         <p>miejsc w noclegowniach, schroniskach dla bezdomnych i ogrzewalniach,</p>
       </content>
@@ -926,7 +926,7 @@ EOS
 
       to_xml(node, 'prefix.', 0).should ==
 '<list id="prefix.list-0">
-  <indent id="prefix.list-0.indent-0" type="single">
+  <indent id="prefix.list-0.indent-0" refersTo="single_tiret">
     <content>
       <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
     </content>
@@ -942,12 +942,12 @@ EOS
 
       to_xml(node, 'prefix.', 0).should ==
 '<list id="prefix.list-0">
-  <indent id="prefix.list-0.indent-0" type="single">
+  <indent id="prefix.list-0.indent-0" refersTo="single_tiret">
     <content>
       <p/>
     </content>
   </indent>
-  <indent id="prefix.list-0.indent-1" type="single">
+  <indent id="prefix.list-0.indent-1" refersTo="single_tiret">
     <content>
       <p/>
     </content>
@@ -964,17 +964,17 @@ EOS
 
       to_xml(node, 'prefix.', 0).should ==
 '<list id="prefix.list-0">
-  <indent id="prefix.list-0.indent-0" type="single">
+  <indent id="prefix.list-0.indent-0" refersTo="single_tiret">
     <content>
       <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
     </content>
   </indent>
-  <indent id="prefix.list-0.indent-1" type="single">
+  <indent id="prefix.list-0.indent-1" refersTo="single_tiret">
     <content>
       <p>mieszkań chronionych,</p>
     </content>
   </indent>
-  <indent id="prefix.list-0.indent-2" type="single">
+  <indent id="prefix.list-0.indent-2" refersTo="single_tiret">
     <content>
       <p>lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,</p>
     </content>
@@ -994,7 +994,7 @@ EOS
 
       to_xml(node, 'prefix.', 0).should ==
 '<list id="prefix.list-0">
-  <indent id="prefix.list-0.indent-0" type="double">
+  <indent id="prefix.list-0.indent-0" refersTo="double_tiret">
     <content>
       <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
     </content>
@@ -1010,12 +1010,12 @@ EOS
 
       to_xml(node, 'prefix.', 0).should ==
 '<list id="prefix.list-0">
-  <indent id="prefix.list-0.indent-0" type="double">
+  <indent id="prefix.list-0.indent-0" refersTo="double_tiret">
     <content>
       <p/>
     </content>
   </indent>
-  <indent id="prefix.list-0.indent-1" type="double">
+  <indent id="prefix.list-0.indent-1" refersTo="double_tiret">
     <content>
       <p/>
     </content>
@@ -1032,17 +1032,17 @@ EOS
 
       to_xml(node, 'prefix.', 0).should ==
 '<list id="prefix.list-0">
-  <indent id="prefix.list-0.indent-0" type="double">
+  <indent id="prefix.list-0.indent-0" refersTo="double_tiret">
     <content>
       <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
     </content>
   </indent>
-  <indent id="prefix.list-0.indent-1" type="double">
+  <indent id="prefix.list-0.indent-1" refersTo="double_tiret">
     <content>
       <p>mieszkań chronionych,</p>
     </content>
   </indent>
-  <indent id="prefix.list-0.indent-2" type="double">
+  <indent id="prefix.list-0.indent-2" refersTo="double_tiret">
     <content>
       <p>lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,</p>
     </content>
@@ -1062,7 +1062,7 @@ EOS
 
       to_xml(node, 'prefix.', 0).should ==
 '<list id="prefix.list-0">
-  <indent id="prefix.list-0.indent-0" type="triple">
+  <indent id="prefix.list-0.indent-0" refersTo="triple_tiret">
     <content>
       <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
     </content>
@@ -1078,12 +1078,12 @@ EOS
 
       to_xml(node, 'prefix.', 0).should ==
 '<list id="prefix.list-0">
-  <indent id="prefix.list-0.indent-0" type="triple">
+  <indent id="prefix.list-0.indent-0" refersTo="triple_tiret">
     <content>
       <p/>
     </content>
   </indent>
-  <indent id="prefix.list-0.indent-1" type="triple">
+  <indent id="prefix.list-0.indent-1" refersTo="triple_tiret">
     <content>
       <p/>
     </content>
@@ -1100,17 +1100,17 @@ EOS
 
       to_xml(node, 'prefix.', 0).should ==
 '<list id="prefix.list-0">
-  <indent id="prefix.list-0.indent-0" type="triple">
+  <indent id="prefix.list-0.indent-0" refersTo="triple_tiret">
     <content>
       <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
     </content>
   </indent>
-  <indent id="prefix.list-0.indent-1" type="triple">
+  <indent id="prefix.list-0.indent-1" refersTo="triple_tiret">
     <content>
       <p>mieszkań chronionych,</p>
     </content>
   </indent>
-  <indent id="prefix.list-0.indent-2" type="triple">
+  <indent id="prefix.list-0.indent-2" refersTo="triple_tiret">
     <content>
       <p>lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,</p>
     </content>
