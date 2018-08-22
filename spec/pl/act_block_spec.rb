@@ -28,10 +28,10 @@ describe Slaw::ActGenerator do
   end
 
   #-------------------------------------------------------------------------------
-  # Basics
+  # Multiple law unit hierarchy levels.
 
-  describe 'full test' do
-    it 'should handle a full hierarchy' do
+  describe 'ENTITY: Multiple law unit hierarchy levels.' do
+    it 'ENTITY VARIATION: Ordinance.' do
       node = parse :body, <<EOS
 DZIAŁ I
 
@@ -116,6 +116,64 @@ EOS
   </division>
 </body>'
     end
+
+    it 'ENTITY VARIATION: Noncode statute, all levels.' do
+      node = parse :body, <<EOS
+Art. 123.
+456. Aaa aaa
+789) Bbb bbb
+abc) Ccc ccc
+@@INDENT2@@– Ddd ddd
+@@INDENT3@@– – Eee eee
+@@INDENT4@@– – – Fff fff
+EOS
+      to_xml(node).should ==
+'<body>
+  <section id="section-123" lawtype="statute">
+    <num>123</num>
+    <subsection id="section-123.subsection-456" type="noncode">
+      <num>456</num>
+      <intro>
+        <p>Aaa aaa</p>
+      </intro>
+      <point id="section-123.subsection-456.point-789">
+        <num>789)</num>
+        <intro>
+          <p>Bbb bbb</p>
+        </intro>
+        <alinea id="section-123.subsection-456.point-789.alinea-abc">
+          <num>abc)</num>
+          <intro>
+            <p>Ccc ccc</p>
+          </intro>
+          <list id="section-123.subsection-456.point-789.alinea-abc.list-0">
+            <indent id="section-123.subsection-456.point-789.alinea-abc.list-0.indent-0" type="single">
+              <content>
+                <p>Ddd ddd</p>
+              </content>
+            </indent>
+            <list id="section-123.subsection-456.point-789.alinea-abc.list-0.list-1">
+              <indent id="section-123.subsection-456.point-789.alinea-abc.list-0.list-1.indent-0" type="double">
+                <content>
+                  <p>Eee eee</p>
+                </content>
+              </indent>
+              <list id="section-123.subsection-456.point-789.alinea-abc.list-0.list-1.list-1">
+                <indent id="section-123.subsection-456.point-789.alinea-abc.list-0.list-1.list-1.indent-0" type="triple">
+                  <content>
+                    <p>Fff fff</p>
+                  </content>
+                </indent>
+              </list>
+            </list>
+          </list>
+        </alinea>
+      </point>
+    </subsection>
+  </section>
+</body>'
+    end
+
   end
 
   #-------------------------------------------------------------------------------
@@ -827,27 +885,27 @@ EOS
     <p>liczby:</p>
   </intro>
   <list id="prefix.alinea-b.list-0">
-    <indent id="prefix.alinea-b.list-0.indent-0">
+    <indent id="prefix.alinea-b.list-0.indent-0" type="single">
       <content>
         <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
       </content>
     </indent>
-    <indent id="prefix.alinea-b.list-0.indent-1">
+    <indent id="prefix.alinea-b.list-0.indent-1" type="single">
       <content>
         <p>mieszkań chronionych,</p>
       </content>
     </indent>
-    <indent id="prefix.alinea-b.list-0.indent-2">
+    <indent id="prefix.alinea-b.list-0.indent-2" type="single">
       <content>
         <p>lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,</p>
       </content>
     </indent>
-    <indent id="prefix.alinea-b.list-0.indent-3">
+    <indent id="prefix.alinea-b.list-0.indent-3" type="single">
       <content>
         <p>tymczasowych pomieszczeń,</p>
       </content>
     </indent>
-    <indent id="prefix.alinea-b.list-0.indent-4">
+    <indent id="prefix.alinea-b.list-0.indent-4" type="single">
       <content>
         <p>miejsc w noclegowniach, schroniskach dla bezdomnych i ogrzewalniach,</p>
       </content>
@@ -868,7 +926,7 @@ EOS
 
       to_xml(node, 'prefix.', 0).should ==
 '<list id="prefix.list-0">
-  <indent id="prefix.list-0.indent-0">
+  <indent id="prefix.list-0.indent-0" type="single">
     <content>
       <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
     </content>
@@ -884,12 +942,12 @@ EOS
 
       to_xml(node, 'prefix.', 0).should ==
 '<list id="prefix.list-0">
-  <indent id="prefix.list-0.indent-0">
+  <indent id="prefix.list-0.indent-0" type="single">
     <content>
       <p/>
     </content>
   </indent>
-  <indent id="prefix.list-0.indent-1">
+  <indent id="prefix.list-0.indent-1" type="single">
     <content>
       <p/>
     </content>
@@ -906,17 +964,153 @@ EOS
 
       to_xml(node, 'prefix.', 0).should ==
 '<list id="prefix.list-0">
-  <indent id="prefix.list-0.indent-0">
+  <indent id="prefix.list-0.indent-0" type="single">
     <content>
       <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
     </content>
   </indent>
-  <indent id="prefix.list-0.indent-1">
+  <indent id="prefix.list-0.indent-1" type="single">
     <content>
       <p>mieszkań chronionych,</p>
     </content>
   </indent>
-  <indent id="prefix.list-0.indent-2">
+  <indent id="prefix.list-0.indent-2" type="single">
+    <content>
+      <p>lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,</p>
+    </content>
+  </indent>
+</list>'
+    end
+  end
+  
+  #-------------------------------------------------------------------------------
+  # Double tirets
+
+  describe 'ENTITY: Double tirets.' do
+    it 'ENTITY VARIATION: Basic.' do
+      node = parse :double_tiret, <<EOS
+@@INDENT3@@– – tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
+EOS
+
+      to_xml(node, 'prefix.', 0).should ==
+'<list id="prefix.list-0">
+  <indent id="prefix.list-0.indent-0" type="double">
+    <content>
+      <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
+    </content>
+  </indent>
+</list>'
+    end
+
+    it 'ENTITY VARIATION: Empty.' do
+      node = parse :double_tiret, <<EOS
+@@INDENT3@@– – 
+@@INDENT3@@– – 
+EOS
+
+      to_xml(node, 'prefix.', 0).should ==
+'<list id="prefix.list-0">
+  <indent id="prefix.list-0.indent-0" type="double">
+    <content>
+      <p/>
+    </content>
+  </indent>
+  <indent id="prefix.list-0.indent-1" type="double">
+    <content>
+      <p/>
+    </content>
+  </indent>
+</list>'
+    end
+
+    it 'ENTITY VARIATION: Multiple.' do
+      node = parse :double_tiret, <<EOS
+@@INDENT3@@– – tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
+@@INDENT3@@– – mieszkań chronionych,
+@@INDENT3@@– – lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,
+EOS
+
+      to_xml(node, 'prefix.', 0).should ==
+'<list id="prefix.list-0">
+  <indent id="prefix.list-0.indent-0" type="double">
+    <content>
+      <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
+    </content>
+  </indent>
+  <indent id="prefix.list-0.indent-1" type="double">
+    <content>
+      <p>mieszkań chronionych,</p>
+    </content>
+  </indent>
+  <indent id="prefix.list-0.indent-2" type="double">
+    <content>
+      <p>lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,</p>
+    </content>
+  </indent>
+</list>'
+    end
+  end
+  
+  #-------------------------------------------------------------------------------
+  # Triple tirets
+
+  describe 'ENTITY: Triple tirets.' do
+    it 'ENTITY VARIATION: Basic.' do
+      node = parse :triple_tiret, <<EOS
+@@INDENT4@@– – – tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
+EOS
+
+      to_xml(node, 'prefix.', 0).should ==
+'<list id="prefix.list-0">
+  <indent id="prefix.list-0.indent-0" type="triple">
+    <content>
+      <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
+    </content>
+  </indent>
+</list>'
+    end
+
+    it 'ENTITY VARIATION: Empty.' do
+      node = parse :triple_tiret, <<EOS
+@@INDENT4@@– – – 
+@@INDENT4@@– – – 
+EOS
+
+      to_xml(node, 'prefix.', 0).should ==
+'<list id="prefix.list-0">
+  <indent id="prefix.list-0.indent-0" type="triple">
+    <content>
+      <p/>
+    </content>
+  </indent>
+  <indent id="prefix.list-0.indent-1" type="triple">
+    <content>
+      <p/>
+    </content>
+  </indent>
+</list>'
+    end
+
+    it 'ENTITY VARIATION: Multiple.' do
+      node = parse :triple_tiret, <<EOS
+@@INDENT4@@– – – tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,
+@@INDENT4@@– – – mieszkań chronionych,
+@@INDENT4@@– – – lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,
+EOS
+
+      to_xml(node, 'prefix.', 0).should ==
+'<list id="prefix.list-0">
+  <indent id="prefix.list-0.indent-0" type="triple">
+    <content>
+      <p>tworzonych lokali wchodzących w skład mieszkaniowego zasobu gminy,</p>
+    </content>
+  </indent>
+  <indent id="prefix.list-0.indent-1" type="triple">
+    <content>
+      <p>mieszkań chronionych,</p>
+    </content>
+  </indent>
+  <indent id="prefix.list-0.indent-2" type="triple">
     <content>
       <p>lokali mieszkalnych powstających z udziałem gminy albo związku międzygminnego w wyniku realizacji przedsięwzięć, o których mowa w art. 5 ust. 1 i art. 5a ust. 1 ustawy,</p>
     </content>

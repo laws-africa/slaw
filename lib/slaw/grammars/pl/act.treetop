@@ -214,7 +214,19 @@ module Slaw
         rule tiret
           # – foo
           # – bar
-          children:tiret_item+ <Tiret>
+          children:(tiret_item / double_tiret)+ <Tiret>
+        end
+
+        rule double_tiret
+          # – – foo
+          # – – bar
+          children:(double_tiret_item / triple_tiret)+ <DoubleTiret>
+        end
+
+        rule triple_tiret
+          # – – – foo
+          # – – – bar
+          children:triple_tiret_item+ <TripleTiret>
         end
 
         # TODO: It should be something like content:('–' space inline_block_element) in rules
@@ -231,6 +243,14 @@ module Slaw
 
         rule tiret_item
           tiret_prefix item_content:inline_block_element? eol? <TiretItem>
+        end
+
+        rule double_tiret_item
+          double_tiret_prefix item_content:inline_block_element? eol? <DoubleTiretItem>
+        end
+
+        rule triple_tiret_item
+          triple_tiret_prefix item_content:inline_block_element? eol? <TripleTiretItem>
         end
 
         rule intro
@@ -309,7 +329,7 @@ module Slaw
         # and is ignored. This allows escaping of section headings, etc.
 
         rule naked_statement
-          space? !(division_heading / subdivision_heading / chapter_heading / statute_level0_unit_prefix / ordinance_level0_unit_prefix / noncode_level1_unit_prefix / code_level1_unit_prefix / schedule_title / point_prefix / letter_prefix / tiret_prefix / '@@INDENT') '\\'? clauses eol
+          space? !(division_heading / subdivision_heading / chapter_heading / statute_level0_unit_prefix / ordinance_level0_unit_prefix / noncode_level1_unit_prefix / code_level1_unit_prefix / schedule_title / point_prefix / letter_prefix / tiret_prefix / double_tiret_prefix / triple_tiret_prefix / '@@INDENT') '\\'? clauses eol
           <NakedStatement>
         end
 
@@ -372,6 +392,16 @@ module Slaw
         rule tiret_prefix
           # Polish law seems to only use '–' for tirets, not '-'.
           '@@INDENT2@@–' space
+        end
+
+        rule double_tiret_prefix
+          # Polish law seems to only use '–' for tirets, not '-'.
+          '@@INDENT3@@–' space '–' space
+        end
+
+        rule triple_tiret_prefix
+          # Polish law seems to only use '–' for tirets, not '-'.
+          '@@INDENT4@@–' space '–' space '–' space
         end
 
         include Slaw::Grammars::Inlines
