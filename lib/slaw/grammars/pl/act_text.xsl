@@ -36,6 +36,12 @@
     <xsl:value-of select="$value"/>
   </xsl:template>
 
+
+  
+  <!-- ################ -->
+  <!-- MAJOR CONTAINERS -->
+  <!-- ################ -->
+
   <xsl:template match="a:act">
     <xsl:apply-templates select="a:coverPage" />
     <xsl:apply-templates select="a:preface" />
@@ -111,6 +117,21 @@
     <xsl:apply-templates select="./*[not(self::a:num)]" />
   </xsl:template>
 
+  <xsl:template match="a:list">
+    <xsl:if test="a:intro != ''">
+      <xsl:value-of select="a:intro" />
+      <xsl:call-template name="newline"/>
+      <xsl:call-template name="newline"/>
+    </xsl:if>
+    <xsl:apply-templates select="./*[not(self::a:intro)]" />
+  </xsl:template>
+
+  <xsl:template match="a:item | a:point">
+    <xsl:value-of select="./a:num" />
+    <xsl:text> </xsl:text>
+    <xsl:apply-templates select="./*[not(self::a:num)]" />
+  </xsl:template>
+
   <xsl:template match="a:indent[@refersTo='single_tiret']">
     <xsl:value-of select="a:num" />
     <xsl:text>- </xsl:text>
@@ -129,6 +150,12 @@
     <xsl:apply-templates select="./*[not(self::a:num)]" />
   </xsl:template>
 
+
+
+  <!-- ############ -->
+  <!-- OTHER THINGS -->
+  <!-- ############ -->
+
   <!-- these are block elements and have a newline at the end -->
   <xsl:template match="a:heading">
     <xsl:apply-templates />
@@ -141,22 +168,6 @@
     <!-- p tags must end with a newline -->
     <xsl:call-template name="newline"/>
     <xsl:call-template name="newline"/>
-  </xsl:template>
-
-  <!-- numbered lists -->
-  <xsl:template match="a:item | a:point">
-    <xsl:value-of select="./a:num" />
-    <xsl:text> </xsl:text>
-    <xsl:apply-templates select="./*[not(self::a:num)]" />
-  </xsl:template>
-
-  <xsl:template match="a:list">
-    <xsl:if test="a:intro != ''">
-      <xsl:value-of select="a:intro" />
-      <xsl:call-template name="newline"/>
-      <xsl:call-template name="newline"/>
-    </xsl:if>
-    <xsl:apply-templates select="./*[not(self::a:intro)]" />
   </xsl:template>
 
   <!-- first text nodes of these elems must be escaped if they have special chars -->
