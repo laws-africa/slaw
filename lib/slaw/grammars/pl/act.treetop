@@ -89,9 +89,7 @@ module Slaw
         end
 
         rule preface
-          !'PREAMBLE'
-          ('PREFACE'i space? eol)?
-          statements:(!'PREAMBLE' pre_body_statement)* <Preface>
+          signature act_type act_date act_title <Preface>
         end
 
         rule preamble
@@ -321,6 +319,27 @@ module Slaw
         #####################
         # HELPER CONTAINERS #
         #####################
+
+        rule signature
+          ('Dz.U.' / 'M.P.') space digit digit digit digit space ('Nr' space number)? space?  
+              'poz.' space number space?
+        end
+
+        rule act_type
+          ('U' space? 'S' space? 'T' space? 'A' space? 'W' space? 'A' 
+              / 'R' space? 'O' space? 'Z' space? 'P' space? 'O' space? 'R' space? 'Z' space?
+              'Ą' space? 'D' space? 'Z' space? 'E' space? 'N' space? 'I' space? 'E') space?
+        end
+
+        rule act_date
+          'z dnia' space number space ('stycznia' / 'lutego' / 'marca' / 'kwietnia' / 'maja' 
+              / 'czerwca' / 'lipca' / 'sierpnia' / 'września' / 'października' / 'listopada' 
+              / 'grudnia') space digit digit digit digit space 'r.' space?
+        end
+
+        rule act_title
+          statements:(pre_body_statement)*
+        end
 
         # TODO: It should be something like content:('–' space inline_block_element) in rules
         # for dashed sections below, in order for the dash to display in output. Slaw gets

@@ -263,16 +263,32 @@ module Slaw
         end
 
         class Preface < Treetop::Runtime::SyntaxNode
-          def to_xml(b, *args)
-            if text_value != ""
+          def to_xml(b, *args)            
               b.preface { |b|
-                statements.elements.each { |element|
-                  for e in element.elements
-                    e.to_xml(b, "") if e.is_a? Slaw::Grammars::Inlines::NakedStatement
+                b.docNumber { |b|
+                  signature.elements.each { |element|
+                    b << element.text_value
+                  }
+                }
+                b.docType { |b|
+                  if act_type.text_value.delete(" ") == "USTAWA"
+                    b << "statute"
+                  end
+                  if act_type.text_value.delete(" ") == "ROZPORZĄDZENIE"
+                    b << "ordinance"
                   end
                 }
+                b.docDate { |b|
+                  act_date.elements.each { |element|
+                    b << element.text_value
+                  }
+                }
+                b.docTitle { |b|
+                  act_title.statements.elements.each { |element|
+                    element.to_xml(b, "")
+                  }
+                }
               }
-            end
           end
         end
 
