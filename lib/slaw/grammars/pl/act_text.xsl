@@ -1,4 +1,9 @@
 <?xml version="1.0"?>
+
+<!-- ############################## -->
+<!-- I DON'T THINK WE USE THIS FILE -->
+<!-- ############################## -->
+
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
   xmlns:a="http://www.akomantoso.org/2.0"
   exclude-result-prefixes="a">
@@ -28,9 +33,7 @@
                   starts-with($numprefix, 'N)') or
                   starts-with($numprefix, 'NN)') or
                   starts-with($numprefix, 'N.') or
-                  starts-with($numprefix, 'NN.') or
-                  starts-with($numprefix, '-') or
-                  starts-with($numprefix, '–')">
+                  starts-with($numprefix, 'NN.')">
       <xsl:text>\</xsl:text>
     </xsl:if>
     <xsl:value-of select="$value"/>
@@ -132,21 +135,31 @@
     <xsl:apply-templates select="./*[not(self::a:num)]" />
   </xsl:template>
 
+  <xsl:template match="a:wrapUp[@refersTo='wrap_up_for_points']">
+    <xsl:text>@@INDENT0@@</xsl:text>
+    <xsl:apply-templates select="./*[not(self::a:num)]" />
+  </xsl:template>
+
+  <xsl:template match="a:wrapUp[@refersTo='wrap_up_for_letters']">
+    <xsl:text>@@INDENT1@@</xsl:text>
+    <xsl:apply-templates select="./*[not(self::a:num)]" />
+  </xsl:template>
+
   <xsl:template match="a:indent[@refersTo='single_tiret']">
     <xsl:value-of select="a:num" />
-    <xsl:text>- </xsl:text>
+    <xsl:text>@@INDENT2@@– </xsl:text>
     <xsl:apply-templates select="./*[not(self::a:num)]" />
   </xsl:template>
 
   <xsl:template match="a:indent[@refersTo='double_tiret']">
     <xsl:value-of select="a:num" />
-    <xsl:text>- - </xsl:text>
+    <xsl:text>@@INDENT3@@– – </xsl:text>
     <xsl:apply-templates select="./*[not(self::a:num)]" />
   </xsl:template>
 
   <xsl:template match="a:indent[@refersTo='triple_tiret']">
     <xsl:value-of select="a:num" />
-    <xsl:text>- - - </xsl:text>
+    <xsl:text>@@INDENT4@@– – – </xsl:text>
     <xsl:apply-templates select="./*[not(self::a:num)]" />
   </xsl:template>
 

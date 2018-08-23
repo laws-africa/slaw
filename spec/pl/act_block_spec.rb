@@ -970,8 +970,9 @@ EOS
       <p>the right to Y</p>
     </content>
   </point>
-  <wrapUp>
-    <p>shall not be abrogated</p>
+  <wrapUp refersTo="wrap_up_for_points">
+    <p>– shall not be abrogated
+</p>
   </wrapUp>
 </section>'
     end
@@ -1002,8 +1003,9 @@ EOS
       <p>the right to Y</p>
     </content>
   </point>
-  <wrapUp>
-    <p>shall not be abrogated</p>
+  <wrapUp refersTo="wrap_up_for_points">
+    <p>– shall not be abrogated
+</p>
   </wrapUp>
 </section>'
     end
@@ -1034,8 +1036,9 @@ EOS
       <p>the right to Y</p>
     </content>
   </point>
-  <wrapUp>
-    <p>shall not be abrogated</p>
+  <wrapUp refersTo="wrap_up_for_points">
+    <p>– shall not be abrogated
+</p>
   </wrapUp>
 </subsection>'
     end
@@ -1066,8 +1069,9 @@ EOS
       <p>the right to Y</p>
     </content>
   </point>
-  <wrapUp>
-    <p>shall not be abrogated</p>
+  <wrapUp refersTo="wrap_up_for_points">
+    <p>– shall not be abrogated
+</p>
   </wrapUp>
 </subsection>'
     end
@@ -1098,8 +1102,9 @@ EOS
       <p>the right to Y</p>
     </content>
   </point>
-  <wrapUp>
-    <p>shall not be abrogated</p>
+  <wrapUp refersTo="wrap_up_for_points">
+    <p>– shall not be abrogated
+</p>
   </wrapUp>
 </subsection>'
     end    
@@ -1145,8 +1150,9 @@ EOS
         <p>through the town marketplace</p>
       </content>
     </point>
-    <wrapUp>
-      <p>assuming it is Sunday</p>
+    <wrapUp refersTo="wrap_up_for_letters">
+      <p>– assuming it is Sunday
+</p>
     </wrapUp>
   </point>
   <point id="section-1.point-2" refersTo="point_unit">
@@ -1155,8 +1161,9 @@ EOS
       <p>the right to Y</p>
     </content>
   </point>
-  <wrapUp>
-    <p>shall not be abrogated.</p>
+  <wrapUp refersTo="wrap_up_for_points">
+    <p>– shall not be abrogated.
+</p>
   </wrapUp>
 </section>'
     end

@@ -206,6 +206,12 @@ module Slaw
                   showAs: "point_unit", eId: "point_unit")
                 b.TLCConcept(id: "letter_unit", href: '/akn/ontology/concept/pl/letter_unit',
                   showAs: "letter_unit", eId: "letter_unit")
+                b.TLCConcept(id: "wrap_up_for_points",
+                  href: '/akn/ontology/concept/pl/wrap_up_for_points',
+                  showAs: "wrap_up_for_points", eId: "wrap_up_for_points")
+                b.TLCConcept(id: "wrap_up_for_letters",
+                  href: '/akn/ontology/concept/pl/wrap_up_for_letters',
+                  showAs: "wrap_up_for_letters", eId: "wrap_up_for_letters")
                 b.TLCConcept(id: "single_tiret", href: '/akn/ontology/concept/pl/single_tiret',
                   showAs: "single_tiret", eId: "single_tiret")
                 b.TLCConcept(id: "double_tiret", href: '/akn/ontology/concept/pl/double_tiret',
@@ -518,24 +524,20 @@ module Slaw
 
         class DashedWrapUpForPoints < Treetop::Runtime::SyntaxNode
           def to_xml(b, idprefix, i)
-            b.wrapUp() { |b|
-              if not content.empty?
-                content.to_xml(b, "")
-              else
-                b.p
-              end
+            b.wrapUp(refersTo: 'wrap_up_for_points') { |b|
+              b.p() { |b|
+                 dashed_wrapup_content.elements.each { |e| b << e.text_value }
+              }
             }
           end
         end
         
         class DashedWrapUpForLetters < Treetop::Runtime::SyntaxNode
           def to_xml(b, idprefix, i)
-            b.wrapUp() { |b|
-              if not content.empty?
-                content.to_xml(b, "")
-              else
-                b.p
-              end
+            b.wrapUp(refersTo: 'wrap_up_for_letters') { |b|
+              b.p() { |b|
+                 dashed_wrapup_content.elements.each { |e| b << e.text_value }
+              }
             }
           end
         end
