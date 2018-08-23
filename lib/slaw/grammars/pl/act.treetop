@@ -341,16 +341,16 @@ module Slaw
           statements:(pre_body_statement)*
         end
 
-        # TODO: It should be something like content:('–' space inline_block_element) in rules
-        # for dashed sections below, in order for the dash to display in output. Slaw gets
-        # confused when I put it like this though...
-
         rule dashed_wrapup_for_points
-          '@@INDENT0@@' '–' space content:inline_block_element <DashedWrapUpForPoints>
+          '@@INDENT0@@' dashed_wrapup_content <DashedWrapUpForPoints>
         end
 
         rule dashed_wrapup_for_letters
-          '@@INDENT1@@' '–' space content:inline_block_element <DashedWrapUpForLetters>
+          '@@INDENT1@@' dashed_wrapup_content <DashedWrapUpForLetters>
+        end
+        
+        rule dashed_wrapup_content
+          '–' space inline_block_element
         end
 
         rule tiret_item
