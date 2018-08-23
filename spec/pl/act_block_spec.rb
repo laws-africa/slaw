@@ -27,7 +27,25 @@ describe Slaw::ActGenerator do
     b.doc.root.to_xml(encoding: 'UTF-8')
   end
 
-
+  #-------------------------------------------------------------------------------
+  # Preface.
+  
+describe 'ENTITY: Preface' do
+  it 'ENTITY VARIATION: Basic.' do
+    node = parse :preface, <<EOS
+Dz.U. 2011 Nr 174 poz. 1039 USTAWA z dnia 15 lipca 2011 r. o zawodach pielęgniarki i położnej
+EOS
+    to_xml(node).should ==
+'<preface>
+  <docNumber>Dz.U. 2011 Nr 174 poz. 1039 </docNumber>
+  <docType>statute</docType>
+  <docDate>z dnia 15 lipca 2011 r. </docDate>
+  <docTitle>
+    <p>o zawodach pielęgniarki i położnej</p>
+  </docTitle>
+</preface>'    
+  end
+end
 
   #-------------------------------------------------------------------------------
   # Multiple law unit hierarchy levels.
