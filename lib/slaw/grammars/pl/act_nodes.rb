@@ -17,6 +17,10 @@ module Slaw
           def num
             val = prefix.alphanums.text_value
             case val
+            when "WSTĘPNY" # "wstępny" = "introductory" masculine
+              0
+            when "WSTĘPNA" # "wstępna" = "introductory" feminine
+              0
             when "PIERWSZA"
               1
             when "DRUGA"
@@ -331,26 +335,6 @@ module Slaw
                 }
               }
             end
-          end
-        end
-
-        class Part < Treetop::Runtime::SyntaxNode
-          def num
-            heading.num
-          end
-  
-          def to_xml(b, *args)
-            id = "part-#{num}"
-  
-            # include a chapter number in the id if our parent has one
-            if parent and parent.parent.is_a?(Chapter) and parent.parent.num
-              id = "chapter-#{parent.parent.num}.#{id}"
-            end
-  
-            b.part(id: id) { |b|
-              heading.to_xml(b)
-              children.elements.each_with_index { |e, i| e.to_xml(b, id + '.', i) }
-            }
           end
         end
 
