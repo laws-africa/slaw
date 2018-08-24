@@ -47,7 +47,16 @@
 # ordinance. We can go back to direct translation at level 2 and below, because they are the
 # same for both types of law, and have non-confusing equivalents in English.
 #
+# As regards units higher than the main unit, they have a fairly clear translations, and the
+# only caveat is that the list is longer for statutes, and even longer for code statutes.
+#
 # So, we adopt the following translation:
+# - część = part             - Note: part defined only for statutes which are codes.
+# - księga = book            - Note: part defined only for statutes which are codes.
+# - tytuł = title            - Note: part defined only for statutes.
+# - dział = division
+# - rozdział = chapter
+# - oddział = subdivision
 # - artykuł = statute level 0 unit
 # - paragraf = ordinance level 0 unit
 # - ustęp in "rozporządzenie", or in "ustawa" denoted by numbers = noncode level 1 unit
@@ -58,7 +67,6 @@
 # - podwójne tiret = double tiret
 # - potrójne tiret = triple tiret
 #
-# TODO: Spell out the entire hierarchy, not just the bits where statutes and ordinances differ.
 
 require 'slaw/parse/grammar_helpers'
 require 'slaw/grammars/pl/act_nodes'
