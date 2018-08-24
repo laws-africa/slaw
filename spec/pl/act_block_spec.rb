@@ -81,7 +81,7 @@ EOS
         <p>Projekt ustawy</p>
       </content>
     </subparagraph>
-    <chapter id="chapter-7">
+    <chapter id="division-I.chapter-7">
       <num>7</num>
       <heading>Oznaczanie przepisów ustawy i ich systematyzacja</heading>
       <section id="section-54" refersTo="ordinance">
@@ -139,6 +139,12 @@ EOS
 
     it 'ENTITY VARIATION: Noncode statute, all levels.' do
       node = parse :body, <<EOS
+TYTUŁ XVI
+Xxx
+Dział 987
+Yyy
+Rozdział 654
+Zzz
 Art. 123.
 456. Aaa aaa
 789) Bbb bbb
@@ -149,48 +155,60 @@ abc) Ccc ccc
 EOS
       to_xml(node).should ==
 '<body>
-  <section id="section-123" refersTo="statute">
-    <num>123</num>
-    <subsection id="section-123.subsection-456" refersTo="noncode_level1_unit">
-      <num>456</num>
-      <intro>
-        <p>Aaa aaa</p>
-      </intro>
-      <point id="section-123.subsection-456.point-789" refersTo="point_unit">
-        <num>789)</num>
-        <intro>
-          <p>Bbb bbb</p>
-        </intro>
-        <point id="section-123.subsection-456.point-789.point-abc" refersTo="letter_unit">
-          <num>abc)</num>
-          <intro>
-            <p>Ccc ccc</p>
-          </intro>
-          <list id="section-123.subsection-456.point-789.point-abc.list-0">
-            <indent id="section-123.subsection-456.point-789.point-abc.list-0.indent-0" refersTo="single_tiret">
-              <content>
-                <p>Ddd ddd</p>
-              </content>
-            </indent>
-            <list id="section-123.subsection-456.point-789.point-abc.list-0.list-1">
-              <indent id="section-123.subsection-456.point-789.point-abc.list-0.list-1.indent-0" refersTo="double_tiret">
-                <content>
-                  <p>Eee eee</p>
-                </content>
-              </indent>
-              <list id="section-123.subsection-456.point-789.point-abc.list-0.list-1.list-1">
-                <indent id="section-123.subsection-456.point-789.point-abc.list-0.list-1.list-1.indent-0" refersTo="triple_tiret">
-                  <content>
-                    <p>Fff fff</p>
-                  </content>
-                </indent>
-              </list>
-            </list>
-          </list>
-        </point>
-      </point>
-    </subsection>
-  </section>
+  <title id="title-XVI">
+    <num>XVI</num>
+    <heading>Xxx</heading>
+    <division id="title-XVI.division-987">
+      <num>987</num>
+      <heading>Yyy</heading>
+      <chapter id="title-XVI.division-987.chapter-654">
+        <num>654</num>
+        <heading>Zzz</heading>
+        <section id="section-123" refersTo="statute">
+          <num>123</num>
+          <subsection id="section-123.subsection-456" refersTo="noncode_level1_unit">
+            <num>456</num>
+            <intro>
+              <p>Aaa aaa</p>
+            </intro>
+            <point id="section-123.subsection-456.point-789" refersTo="point_unit">
+              <num>789)</num>
+              <intro>
+                <p>Bbb bbb</p>
+              </intro>
+              <point id="section-123.subsection-456.point-789.point-abc" refersTo="letter_unit">
+                <num>abc)</num>
+                <intro>
+                  <p>Ccc ccc</p>
+                </intro>
+                <list id="section-123.subsection-456.point-789.point-abc.list-0">
+                  <indent id="section-123.subsection-456.point-789.point-abc.list-0.indent-0" refersTo="single_tiret">
+                    <content>
+                      <p>Ddd ddd</p>
+                    </content>
+                  </indent>
+                  <list id="section-123.subsection-456.point-789.point-abc.list-0.list-1">
+                    <indent id="section-123.subsection-456.point-789.point-abc.list-0.list-1.indent-0" refersTo="double_tiret">
+                      <content>
+                        <p>Eee eee</p>
+                      </content>
+                    </indent>
+                    <list id="section-123.subsection-456.point-789.point-abc.list-0.list-1.list-1">
+                      <indent id="section-123.subsection-456.point-789.point-abc.list-0.list-1.list-1.indent-0" refersTo="triple_tiret">
+                        <content>
+                          <p>Fff fff</p>
+                        </content>
+                      </indent>
+                    </list>
+                  </list>
+                </list>
+              </point>
+            </point>
+          </subsection>
+        </section>
+      </chapter>
+    </division>
+  </title>
 </body>'
     end
   end
@@ -214,7 +232,7 @@ EOS
 '<division id="division-I">
   <num>I</num>
   <heading>Projekt ustawy</heading>
-  <chapter id="chapter-7">
+  <chapter id="division-I.chapter-7">
     <num>7</num>
     <heading>Oznaczanie przepisów ustawy i ich systematyzacja</heading>
     <section id="section-54" refersTo="ordinance">
