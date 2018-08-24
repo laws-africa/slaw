@@ -147,6 +147,8 @@ Dział 987
 Yyy
 Rozdział 654
 Zzz
+Oddział 321
+Żżż
 Art. 123.
 456. Aaa aaa
 789) Bbb bbb
@@ -169,48 +171,52 @@ EOS
         <chapter id="book-8.title-XVI.division-987.chapter-654">
           <num>654</num>
           <heading>Zzz</heading>
-          <section id="section-123" refersTo="statute">
-            <num>123</num>
-            <subsection id="section-123.subsection-456" refersTo="noncode_level1_unit">
-              <num>456</num>
-              <intro>
-                <p>Aaa aaa</p>
-              </intro>
-              <point id="section-123.subsection-456.point-789" refersTo="point_unit">
-                <num>789)</num>
+          <subdivision id="book-8.title-XVI.division-987.chapter-654.subdivision-321">
+            <num>321</num>
+            <heading>Żżż</heading>
+            <section id="section-123" refersTo="statute">
+              <num>123</num>
+              <subsection id="section-123.subsection-456" refersTo="noncode_level1_unit">
+                <num>456</num>
                 <intro>
-                  <p>Bbb bbb</p>
+                  <p>Aaa aaa</p>
                 </intro>
-                <point id="section-123.subsection-456.point-789.point-abc" refersTo="letter_unit">
-                  <num>abc)</num>
+                <point id="section-123.subsection-456.point-789" refersTo="point_unit">
+                  <num>789)</num>
                   <intro>
-                    <p>Ccc ccc</p>
+                    <p>Bbb bbb</p>
                   </intro>
-                  <list id="section-123.subsection-456.point-789.point-abc.list-0">
-                    <indent id="section-123.subsection-456.point-789.point-abc.list-0.indent-0" refersTo="single_tiret">
-                      <content>
-                        <p>Ddd ddd</p>
-                      </content>
-                    </indent>
-                    <list id="section-123.subsection-456.point-789.point-abc.list-0.list-1">
-                      <indent id="section-123.subsection-456.point-789.point-abc.list-0.list-1.indent-0" refersTo="double_tiret">
+                  <point id="section-123.subsection-456.point-789.point-abc" refersTo="letter_unit">
+                    <num>abc)</num>
+                    <intro>
+                      <p>Ccc ccc</p>
+                    </intro>
+                    <list id="section-123.subsection-456.point-789.point-abc.list-0">
+                      <indent id="section-123.subsection-456.point-789.point-abc.list-0.indent-0" refersTo="single_tiret">
                         <content>
-                          <p>Eee eee</p>
+                          <p>Ddd ddd</p>
                         </content>
                       </indent>
-                      <list id="section-123.subsection-456.point-789.point-abc.list-0.list-1.list-1">
-                        <indent id="section-123.subsection-456.point-789.point-abc.list-0.list-1.list-1.indent-0" refersTo="triple_tiret">
+                      <list id="section-123.subsection-456.point-789.point-abc.list-0.list-1">
+                        <indent id="section-123.subsection-456.point-789.point-abc.list-0.list-1.indent-0" refersTo="double_tiret">
                           <content>
-                            <p>Fff fff</p>
+                            <p>Eee eee</p>
                           </content>
                         </indent>
+                        <list id="section-123.subsection-456.point-789.point-abc.list-0.list-1.list-1">
+                          <indent id="section-123.subsection-456.point-789.point-abc.list-0.list-1.list-1.indent-0" refersTo="triple_tiret">
+                            <content>
+                              <p>Fff fff</p>
+                            </content>
+                          </indent>
+                        </list>
                       </list>
                     </list>
-                  </list>
+                  </point>
                 </point>
-              </point>
-            </subsection>
-          </section>
+              </subsection>
+            </section>
+          </subdivision>
         </chapter>
       </division>
     </title>

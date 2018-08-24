@@ -386,22 +386,6 @@ module Slaw
           end
         end
 
-        class Subdivision < Treetop::Runtime::SyntaxNode
-          def num
-            heading.num
-          end
-
-          def to_xml(b, idprefix='', *args)
-            id = "#{idprefix}subdivision-#{num}"
-            idprefix = "#{id}."
-
-            b.subdivision(id: id) { |b|
-              heading.to_xml(b)
-              children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
-            }
-          end
-        end
-
         class Chapter < Treetop::Runtime::SyntaxNode
           def num
             heading.num
@@ -411,13 +395,23 @@ module Slaw
             id = "#{idprefix}chapter-#{num}"
             idprefix = "#{id}."
 
-            # TODO: do this for the oddzial and zial
-            # include a part number in the id if our parent has one
-            if parent and parent.parent.is_a?(Part) and parent.parent.num
-              id = "part-#{parent.parent.num}.#{id}"
-            end
-
             b.chapter(id: id) { |b|
+              heading.to_xml(b)
+              children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+            }
+          end
+        end
+
+        class Subdivision < Treetop::Runtime::SyntaxNode
+          def num
+            heading.num
+          end
+  
+          def to_xml(b, idprefix='', *args)
+            id = "#{idprefix}subdivision-#{num}"
+            idprefix = "#{id}."
+  
+            b.subdivision(id: id) { |b|
               heading.to_xml(b)
               children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
             }
