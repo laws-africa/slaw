@@ -109,6 +109,16 @@
     <xsl:apply-templates select="./*[not(self::a:num) and not(self::a:heading)]" />
   </xsl:template>
 
+  <xsl:template match="a:subdivision">
+    <xsl:text>Oddział </xsl:text>
+    <xsl:value-of select="./a:num" />
+    <xsl:text> - </xsl:text>
+    <xsl:value-of select="./a:heading" />
+    <xsl:call-template name="newline"/>
+    <xsl:call-template name="newline"/>
+    <xsl:apply-templates select="./*[not(self::a:num) and not(self::a:heading)]" />
+  </xsl:template>
+
   <xsl:template match="a:section[@refersTo='statute']">
     <xsl:text>Art. </xsl:text>
     <xsl:value-of select="a:num" />
