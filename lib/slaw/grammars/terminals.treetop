@@ -45,7 +45,8 @@ module Slaw
       end
 
       rule alphanums
-        [a-zA-Z0-9]+
+        # These are Polish: ĄąĆćĘęŁłŃńÓóŚśŹźŻż
+        [a-zA-Z0-9ĄąĆćĘęŁłŃńÓóŚśŹźŻż]+
       end
 
       rule quotes

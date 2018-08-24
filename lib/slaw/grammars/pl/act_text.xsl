@@ -23,6 +23,7 @@
     <xsl:if test="$prefix = 'BODY' or
                   $prefix = 'PREAMBLE' or
                   $prefix = 'PREFACE' or
+                  starts-with($prefix, 'KSI') or
                   starts-with($prefix, 'TYTU') or
                   starts-with($prefix, 'ROZDZIA') or
                   starts-with($prefix, 'DZIA') or
@@ -66,6 +67,16 @@
     <xsl:call-template name="newline"/>
     <xsl:call-template name="newline"/>
     <xsl:apply-templates />
+  </xsl:template>
+
+  <xsl:template match="a:book">
+    <xsl:text>KSIĘGA </xsl:text>
+    <xsl:value-of select="./a:num" />
+    <xsl:text> - </xsl:text>
+    <xsl:value-of select="./a:heading" />
+    <xsl:call-template name="newline"/>
+    <xsl:call-template name="newline"/>
+    <xsl:apply-templates select="./*[not(self::a:num) and not(self::a:heading)]" />
   </xsl:template>
 
   <xsl:template match="a:title">

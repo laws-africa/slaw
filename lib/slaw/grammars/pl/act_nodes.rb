@@ -15,7 +15,31 @@ module Slaw
 
         class GenericHeading < Treetop::Runtime::SyntaxNode
           def num
-            prefix.alphanums.text_value
+            val = prefix.alphanums.text_value
+            case val
+            when "PIERWSZA"
+              1
+            when "DRUGA"
+              2
+            when "TRZECIA"
+              3
+            when "CZWARTA"
+              4
+            when "PIĄTA"
+              5
+            when "SZÓSTA"
+              6 
+            when "SIÓDMA"
+              7
+            when "ÓSMA"
+              8
+            when "DZIEWIĄTA"
+              9
+            when "DZIESIĄTA"
+              10
+            else
+              val
+            end              
           end
   
           def title
@@ -330,13 +354,29 @@ module Slaw
           end
         end
 
-        class Title < Treetop::Runtime::SyntaxNode
+        class Book < Treetop::Runtime::SyntaxNode
           def num
             heading.num
           end
   
           def to_xml(b, *args)
-            id = "title-#{num}"
+            id = "book-#{num}"
+            idprefix = "#{id}."
+  
+            b.book(id: id) { |b|
+              heading.to_xml(b)
+              children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+            }
+          end
+        end
+
+        class Title < Treetop::Runtime::SyntaxNode
+          def num
+            heading.num
+          end
+  
+          def to_xml(b, idprefix = '', *args)
+            id = "#{idprefix}title-#{num}"
             idprefix = "#{id}."
   
             b.title(id: id) { |b|
