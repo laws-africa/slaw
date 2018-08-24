@@ -1,5 +1,73 @@
 # encoding: UTF-8
 
+###################################
+# Note on Polish law terminology. #
+###################################
+#
+# It is very easy to get confused about Polish law logical units
+# and their English translations. Because of this, here is how we do it:
+# 
+# Laws can be either "normative" or "executive". Normative are primary legislation, given by the
+# parliament, and they leave some less important details undecided, to be filled in by the
+# executive branch (ministers). Ministers issue executive law, which are secondary legislation,
+# and fill out these details.
+#
+# A piece of Polish normative law is called "ustawa", which we translate as "statute".
+# A piece of Polish executive law is called "rozporządzenie", which we translate as "ordinance".
+#
+# Now, moving on to internal divisions of laws, there are differences b/n "ustawa" 
+# and "rozporządzenie", but each has a "main" unit, and units above and below it. For clarity,
+# let's call the main unit in each as being "at level 0", then its subdivisions as "at level 1",
+# then its subdivisions as "at level 2", etc. We can call higher units (containing multiple
+# main units), as "at level -1", "at level -2", etc.
+#
+# Internal divisions of "ustawa":
+# - Level 0 is "artykuł", denoted "Art. <number here>.", e.g. "Art. 123."
+# - Level 1 is "ustęp", denoted "<number here>.", e.g. "5.".
+# - There's a few more sub-levels ("punkt", "litera", "tiret"), identical as for "rozporządzenie".
+# - Exception: for important "ustawa" laws called "kodeks" (= code), "ustęp" is 
+#   denoted "§<number here>.", e.g. "§123."
+#
+# Internal divisions of "rozporządzenie":
+# - Level 0 is "paragraf", denoted "§<number here>.", e.g. "§123."
+# - Level 1 is "ustęp", denoted "<number here>.", e.g. "5."
+# - There's a few more sub-levels ("punkt", "litera", "tiret"), identical as for "ustawa".
+#
+# Here are issues of possible confusion:
+# - "Ustawa" and "rozporządzenie" call level 0 unit differently.
+# - In "ustawa", there are two alternative ways of denoting level 1 unit.
+# - "§" may denote level 0 (in "rozporządzenie") or level 1 (in "ustawa" called "kodeks") units.
+# - Many sources translate "ustęp" (level 1) as "paragraph". This is very confusing
+#   for "rozporządzenie", because its level 0 is called "paragraf" in Polish.
+# - In Polish, the character "§" itself is called "paragraf". (In English, "section sign".)
+#
+# Because of all this, I think it's extremely important to be careful and very clear with naming.
+# To avoid confusion as much as possible, I think it's prudent to avoid English "article",
+# "paragraph" and "section", and instead use "levels", together with type of law, statute or
+# ordinance. We can go back to direct translation at level 2 and below, because they are the
+# same for both types of law, and have non-confusing equivalents in English.
+#
+# As regards units higher than the main unit, they have a fairly clear translations, and the
+# only caveat is that the list is longer for statutes, and even longer for code statutes.
+#
+# So, we adopt the following translation:
+# - część = part             - Note: part defined only for statutes which are codes.
+# - księga = book            - Note: part defined only for statutes which are codes.
+# - tytuł = title            - Note: part defined only for statutes.
+# - dział = division
+# - rozdział = chapter
+# - oddział = subdivision
+# - artykuł = statute level 0 unit
+# - paragraf = ordinance level 0 unit
+# - ustęp in "rozporządzenie", or in "ustawa" denoted by numbers = noncode level 1 unit
+# - ustęp in "ustawa" denoted by "§" = code level 1 unit
+# - punkt = point
+# - litera = letter
+# - tiret = tiret
+# - podwójne tiret = double tiret
+# - potrójne tiret = triple tiret
+#
+
 require 'slaw/parse/grammar_helpers'
 require 'slaw/grammars/pl/act_nodes'
 
@@ -14,8 +82,11 @@ module Slaw
       grammar Act
         include Slaw::Parse::GrammarHelpers
 
-        ########
-        # major containers
+
+
+        ####################
+        # MAJOR CONTAINERS #
+        ####################
 
         rule act
           empty_line*
@@ -26,9 +97,7 @@ module Slaw
         end
 
         rule preface
-          !'PREAMBLE'
-          ('PREFACE'i space? eol)?
-          statements:(!'PREAMBLE' pre_body_statement)* <Preface>
+          signature act_type act_date act_title <Preface>
         end
 
         rule preamble
@@ -37,114 +106,176 @@ module Slaw
         end
 
         rule body
-          children:(division / subdivision / chapter / article / section / paragraph / point / litera / indents / block_paragraphs)+ <Body>
+          children:(book / title / division / chapter / subdivision / statute_level0_unit
+              / ordinance_level0_unit / block_paragraphs)+ <Body>
+        end
+
+        rule book
+          heading:book_heading
+          children:(title / division / chapter / subdivision / statute_level0_unit
+              / ordinance_level0_unit / block_paragraphs)*
+          <Book>
+        end
+        
+        rule title
+          heading:title_heading
+          children:(division / chapter / subdivision / statute_level0_unit / ordinance_level0_unit 
+              / block_paragraphs)*
+          <Title>
         end
 
         rule division
           heading:division_heading
-          children:(subdivision / chapter / article / section / paragraph / point / litera / indents / block_paragraphs)*
+          children:(chapter / subdivision / statute_level0_unit / ordinance_level0_unit 
+              / block_paragraphs)*
           <Division>
-        end
-
-        rule subdivision
-          heading:subdivision_heading
-          children:(chapter / article / section / paragraph / point / litera / indents / block_paragraphs)*
-          <Subdivision>
         end
 
         rule chapter
           heading:chapter_heading
-          children:(article / section / paragraph / point / litera / indents / block_paragraphs)*
+          children:(subdivision / statute_level0_unit / ordinance_level0_unit)*
           <Chapter>
         end
 
-        rule article
-          # Art. 55. some optional text
-          # 1. first paragraph etc.
-          article_prefix intro
-          children:(section / paragraph / point / litera / indents / block_paragraphs)* <Article>
+        rule subdivision
+          heading:subdivision_heading
+          children:(statute_level0_unit / ordinance_level0_unit)*
+          <Subdivision>
         end
 
-        rule section
-          # § 55. foo
-          section_prefix intro
-          children:(paragraph / point / litera / indents / block_paragraphs)* <Section>
+        rule statute_level0_unit
+          # Either:
+          #     Art. 55. This is some text. This is some text. This is
+          #     some text. This is some text.
+          # Or:
+          #     Art. 55.
+          #     1. This is some text.
+          #     2. This is some text.
+          # Or:
+          #     Art. 55.
+          #     §1. This is some text.
+          #     §2. This is some text.
+          # Or:
+          #     Art. 55. This is some text. This is some text. This is
+          #     some text:
+          #     1) This is some text.
+          #     2) This is some text.
+          #     - This is optional "wrap-up" text.
+          statute_level0_unit_prefix intro
+          children:(noncode_level1_unit / code_level1_unit / point / dashed_wrapup_for_points 
+              / block_paragraphs)* <StatuteLevel0>
         end
 
-        rule paragraph
-          # ustęp:
-          #  34. ...
-          paragraph_prefix intro
-          children:(point / litera / indents / block_paragraphs)* <Paragraph>
+        rule ordinance_level0_unit
+          # Either:
+          #     §55. This is some text. This is some text. This is
+          #     some text. This is some text.
+          # Or:
+          #     §55.
+          #     1. This is some text.
+          #     2. This is some text.
+          # Or:
+          #     §55. This is some text. This is some text. This is
+          #     some text:
+          #     1) This is some text.
+          #     2) This is some text.
+          #     - This is optional "wrap-up" text.
+          ordinance_level0_unit_prefix intro
+          children:(noncode_level1_unit / point / dashed_wrapup_for_points / block_paragraphs)* 
+          <OrdinanceLevel0>
+        end
+
+        rule noncode_level1_unit
+          # Either:
+          #     123. This is some text. This is some text. This is
+          #     some text. This is some text.
+          # Or:
+          #     123. This is some text. This is some text. This is
+          #     some text:
+          #     1) This is some text.
+          #     2) This is some text.
+          #     - This is optional "wrap-up" text.
+          # Or (exception found e.g. in "Ustawa z dnia 15 lutego 1992 r. o podatku dochodowym 
+          # od osób prawnych", in art. 16, ust. 3f as of 21/8/18):
+          #     123. This is some text. This is some text. This is
+          #     some text:
+          #     a) This is some text.
+          #     b) This is some text.
+          noncode_level1_unit_prefix intro
+          children:(point / letter_unit / dashed_wrapup_for_points / block_paragraphs)* 
+          <NoncodeLevel1>
+        end
+
+        rule code_level1_unit
+          # Either:
+          #     §123. This is some text. This is some text. This is
+          #     some text. This is some text.
+          # Or:
+          #     §123. This is some text. This is some text. This is
+          #     some text:
+          #     1) This is some text.
+          #     2) This is some text.
+          #     - This is optional "wrap-up" text.
+          # Or (exception found e.g. in "Ustawa z dnia 15 lutego 1992 r. o podatku dochodowym 
+          # od osób prawnych", in art. 16, ust. 3f as of 21/8/18):
+          #     123. This is some text. This is some text. This is
+          #     some text:
+          #     a) This is some text.
+          #     b) This is some text.
+          code_level1_unit_prefix intro
+          children:(point / letter_unit / dashed_wrapup_for_points / block_paragraphs)* 
+          <CodeLevel1>
         end
 
         rule point
           # 12) aoeuaoeu
           # 12a) aoeuaoeu
           point_prefix intro
-          children:(litera / indents / block_paragraphs)* <Point>
+          children:(letter_unit / dashed_wrapup_for_letters / block_paragraphs)* <Point>
         end
 
-        rule litera
+        rule letter_unit
           # a) aoeuaoeu
-          litera_prefix intro
-          children:(indents / block_paragraphs)* <Litera>
+          letter_prefix intro
+          children:(tiret / block_paragraphs)* <LetterUnit>
         end
 
-        rule indents
-          # - foo
-          # - bar
-          children:indent_item+ <Indents>
+        rule tiret
+          # – foo
+          # – bar
+          children:(tiret_item / double_tiret)+ <Tiret>
         end
 
-        rule indent_item
-          indent_prefix item_content:inline_block_element? eol? <IndentItem>
+        rule double_tiret
+          # – – foo
+          # – – bar
+          children:(double_tiret_item / triple_tiret)+ <DoubleTiret>
         end
 
-        rule intro
-          (intro_inline:inline_block_element / (eol intro_block:block_element))? eol?
+        rule triple_tiret
+          # – – – foo
+          # – – – bar
+          children:triple_tiret_item+ <TripleTiret>
         end
 
-        ##########
-        # group elements
-        # 
-        # these are used externally and provide support when parsing just
-        # a particular portion of a document
 
-        rule articles
-          children:article+ <GroupNode>
-        end
 
-        rule chapters
-          children:chapter+ <GroupNode>
-        end
+        #########################
+        # HEADINGS AND PREFIXES #
+        #########################
 
-        rule divisions
-          children:division+ <GroupNode>
-        end
-
-        rule paragraphs
-          children:paragraph+ <GroupNode>
-        end
-
-        rule sections
-          children:section+ <GroupNode>
-        end
-
-        rule subdivisions
-          children:subdivision+ <GroupNode>
-        end
-
-        ##########
-        # headings
-
-        rule division_heading
-          space? prefix:division_heading_prefix heading:(newline? content)? eol
+        rule book_heading
+          space? prefix:book_heading_prefix heading:(newline? content)? eol
           <GenericHeading>
         end
 
-        rule subdivision_heading
-          space? prefix:subdivision_heading_prefix heading:(newline? content)? eol
+        rule title_heading
+          space? prefix:title_heading_prefix heading:(newline? content)? eol
+          <GenericHeading>
+        end
+
+        rule division_heading
+          space? prefix:division_heading_prefix heading:(newline? content)? eol
           <GenericHeading>
         end
 
@@ -153,11 +284,139 @@ module Slaw
           <GenericHeading>
         end
 
-        ##########
-        # blocks of content inside containers
+        rule subdivision_heading
+          space? prefix:subdivision_heading_prefix heading:(newline? content)? eol
+          <GenericHeading>
+        end
+
+        rule book_heading_prefix
+          'KSI'i ('Ę'/'ę') 'GA'i space alphanums [ :-]*
+        end
+
+        rule title_heading_prefix
+          'TYTUŁ' space alphanums [ :-]*
+        end
+
+        rule division_heading_prefix
+          'dzia'i ('ł'/'Ł') space alphanums [ :-]*
+        end
+
+        rule chapter_heading_prefix
+          'rozdzia'i ('ł'/'Ł') space alphanums [ :.-]*
+        end
+
+        rule subdivision_heading_prefix
+          'oddzia'i ('ł'/'Ł') space alphanums [ :.-]*
+        end
+
+        rule statute_level0_unit_prefix
+          ('Art.'i / ('Artyku'i 'ł'/'Ł')) space number_letter superscript '.'
+        end
+
+        rule ordinance_level0_unit_prefix
+          '§' space number_letter superscript '.'
+        end
+
+        # TODO: Add superscript possibility for units lower than level 0.
+
+        rule noncode_level1_unit_prefix
+          number_letter '.'
+        end
+
+        rule code_level1_unit_prefix
+          '§' space number_letter '.'
+        end
+
+        rule point_prefix
+          # 1) foo
+          # 2A) foo
+          number_letter ')'
+        end
+
+        rule letter_prefix
+          # a) foo
+          # bb) foo
+          letters:letter+ ')'
+        end
+
+        rule tiret_prefix
+          # Polish law seems to only use '–' for tirets, not '-'.
+          '@@INDENT2@@–' space
+        end
+
+        rule double_tiret_prefix
+          # Polish law seems to only use '–' for tirets, not '-'.
+          '@@INDENT3@@–' space '–' space
+        end
+
+        rule triple_tiret_prefix
+          # Polish law seems to only use '–' for tirets, not '-'.
+          '@@INDENT4@@–' space '–' space '–' space
+        end
+
+
+
+        #####################
+        # HELPER CONTAINERS #
+        #####################
+
+        rule signature
+          ('Dz.U.' / 'M.P.') space digit digit digit digit space ('Nr' space number)? space?  
+              'poz.' space number space?
+        end
+
+        rule act_type
+          ('U' space? 'S' space? 'T' space? 'A' space? 'W' space? 'A' 
+              / 'R' space? 'O' space? 'Z' space? 'P' space? 'O' space? 'R' space? 'Z' space?
+              'Ą' space? 'D' space? 'Z' space? 'E' space? 'N' space? 'I' space? 'E') space?
+        end
+
+        rule act_date
+          'z dnia' space number space ('stycznia' / 'lutego' / 'marca' / 'kwietnia' / 'maja' 
+              / 'czerwca' / 'lipca' / 'sierpnia' / 'września' / 'października' / 'listopada' 
+              / 'grudnia') space digit digit digit digit space 'r.' space?
+        end
+
+        rule act_title
+          statements:(pre_body_statement)*
+        end
+
+        rule dashed_wrapup_for_points
+          '@@INDENT0@@' dashed_wrapup_content <DashedWrapUpForPoints>
+        end
+
+        rule dashed_wrapup_for_letters
+          '@@INDENT1@@' dashed_wrapup_content <DashedWrapUpForLetters>
+        end
+        
+        rule dashed_wrapup_content
+          '–' space inline_block_element
+        end
+
+        rule tiret_item
+          tiret_prefix item_content:inline_block_element? eol? <TiretItem>
+        end
+
+        rule double_tiret_item
+          double_tiret_prefix item_content:inline_block_element? eol? <DoubleTiretItem>
+        end
+
+        rule triple_tiret_item
+          triple_tiret_prefix item_content:inline_block_element? eol? <TripleTiretItem>
+        end
+
+        rule intro
+          (intro_inline:inline_block_element / (eol intro_block:block_element))? eol?
+        end
+
+
+
+        #######################################
+        # BLOCKS OF CONTENT INSIDE CONTAINERS #
+        #######################################
 
         rule block_paragraphs
-          block_element+ <BlockParagraph>
+           block_element+ <BlockParagraph>
         end
 
         rule block_element
@@ -170,65 +429,39 @@ module Slaw
           table / inline_statement
         end
 
-        ##########
-        # statements - single lines of content
-        #
-        # If a statement starts with a backslash, it's considered to have escaped the subsequent word,
-        # and is ignored. This allows escaping of section headings, etc.
+
+
+        ########################################
+        # STATEMENTS - SINGLE LINES OF CONTENT #
+        ########################################
+        
+        # If a statement starts with a backslash, it's considered to have escaped the subsequent
+        # word, and is ignored. This allows escaping of section headings, etc.
 
         rule naked_statement
-          space? !(division_heading / subdivision_heading / chapter_heading / article_prefix / section_prefix / schedule_title / paragraph_prefix / point_prefix / litera_prefix / indent_prefix) '\\'? clauses eol
+          space? !(book_heading / title_heading / division_heading / chapter_heading
+              / subdivision_heading / statute_level0_unit_prefix / ordinance_level0_unit_prefix
+              / noncode_level1_unit_prefix / code_level1_unit_prefix / schedule_title
+              / point_prefix / letter_prefix / tiret_prefix / double_tiret_prefix
+              / triple_tiret_prefix / '@@INDENT') '\\'? clauses eol
           <NakedStatement>
         end
 
         rule pre_body_statement
-          space? !(division_heading / subdivision_heading / chapter_heading / article_prefix / section_prefix / schedule_title) '\\'? clauses eol
+          space? !(book_heading / title_heading / division_heading / chapter_heading
+              / subdivision_heading / statute_level0_unit_prefix / ordinance_level0_unit_prefix
+              / noncode_level1_unit_prefix / code_level1_unit_prefix
+              / schedule_title) '\\'? clauses eol
           <NakedStatement>
         end
 
-        ##########
-        # prefixes
-
-        rule division_heading_prefix
-          'dzia'i ('ł'/'Ł') space alphanums [ :-]*
+        # I can't find a way to put OPTIONAL superscript inside the "_prefix" rules so I make
+        # it non-optional there and instead give an empty string alternative here.
+        rule superscript
+          (('@@SUPERSCRIPT@@' number_letter '##SUPERSCRIPT##') / '')
         end
 
-        rule subdivision_heading_prefix
-          'oddzia'i ('ł'/'Ł') space alphanums [ :.-]*
-        end
 
-        rule chapter_heading_prefix
-          'rozdzia'i ('ł'/'Ł') space alphanums [ :.-]*
-        end
-
-        rule article_prefix
-          ('Art.'i / ('Artyku'i 'ł'/'Ł')) space number_letter '.'?
-        end
-
-        rule section_prefix
-          '§' space alphanums '.'?
-        end
-
-        rule paragraph_prefix
-          number_letter '.'
-        end
-
-        rule point_prefix
-          # 1) foo
-          # 2A) foo
-          number_letter ')'
-        end
-
-        rule litera_prefix
-          # a) foo
-          # bb) foo
-          letters:letter+ ')'
-        end
-
-        rule indent_prefix
-          # these are two different dash characters
-          '–' / '-' space
-        end
 
         include Slaw::Grammars::Inlines
         include Slaw::Grammars::Tables
