@@ -98,8 +98,15 @@ module Slaw
         end
 
         rule body
+          children:(title / division / subdivision / chapter / statute_level0_unit
+              / ordinance_level0_unit / block_paragraphs)+ <Body>
+        end
+        
+        rule title
+          heading:title_heading
           children:(division / subdivision / chapter / statute_level0_unit / ordinance_level0_unit 
-              / block_paragraphs)+ <Body>
+              / block_paragraphs)*
+          <Title>
         end
 
         rule division
@@ -242,6 +249,11 @@ module Slaw
         # HEADINGS AND PREFIXES #
         #########################
 
+        rule title_heading
+          space? prefix:title_heading_prefix heading:(newline? content)? eol
+          <GenericHeading>
+        end
+
         rule division_heading
           space? prefix:division_heading_prefix heading:(newline? content)? eol
           <GenericHeading>
@@ -255,6 +267,10 @@ module Slaw
         rule chapter_heading
           space? prefix:chapter_heading_prefix heading:(newline? content)? eol
           <GenericHeading>
+        end
+
+        rule title_heading_prefix
+          'TYTUŁ' space alphanums [ :-]*
         end
 
         rule division_heading_prefix
@@ -399,7 +415,7 @@ module Slaw
         # word, and is ignored. This allows escaping of section headings, etc.
 
         rule naked_statement
-          space? !(division_heading / subdivision_heading / chapter_heading 
+          space? !(title_heading / division_heading / subdivision_heading / chapter_heading 
               / statute_level0_unit_prefix / ordinance_level0_unit_prefix 
               / noncode_level1_unit_prefix / code_level1_unit_prefix / schedule_title 
               / point_prefix / letter_prefix / tiret_prefix / double_tiret_prefix 
@@ -408,7 +424,7 @@ module Slaw
         end
 
         rule pre_body_statement
-          space? !(division_heading / subdivision_heading / chapter_heading 
+          space? !(title_heading / division_heading / subdivision_heading / chapter_heading 
               / statute_level0_unit_prefix / ordinance_level0_unit_prefix 
               / noncode_level1_unit_prefix / code_level1_unit_prefix 
               / schedule_title) '\\'? clauses eol

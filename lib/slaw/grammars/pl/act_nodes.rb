@@ -330,17 +330,34 @@ module Slaw
           end
         end
 
+        class Title < Treetop::Runtime::SyntaxNode
+          def num
+            heading.num
+          end
+  
+          def to_xml(b, *args)
+            id = "title-#{num}"
+            idprefix = "#{id}."
+  
+            b.title(id: id) { |b|
+              heading.to_xml(b)
+              children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+            }
+          end
+        end
+
         class Division < Treetop::Runtime::SyntaxNode
           def num
             heading.num
           end
 
-          def to_xml(b, *args)
-            id = "division-#{num}"
+          def to_xml(b, idprefix = '', *args)
+            id = "#{idprefix}division-#{num}"
+            idprefix = "#{id}."
 
             b.division(id: id) { |b|
               heading.to_xml(b)
-              children.elements.each_with_index { |e, i| e.to_xml(b, id + '.', i) }
+              children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
             }
           end
         end
@@ -350,12 +367,13 @@ module Slaw
             heading.num
           end
 
-          def to_xml(b, *args)
-            id = "subdivision-#{num}"
+          def to_xml(b, idprefix='', *args)
+            id = "#{idprefix}subdivision-#{num}"
+            idprefix = "#{id}."
 
             b.subdivision(id: id) { |b|
               heading.to_xml(b)
-              children.elements.each_with_index { |e, i| e.to_xml(b, id + '.', i) }
+              children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
             }
           end
         end
@@ -365,8 +383,9 @@ module Slaw
             heading.num
           end
 
-          def to_xml(b, *args)
-            id = "chapter-#{num}"
+          def to_xml(b, idprefix='', *args)
+            id = "#{idprefix}chapter-#{num}"
+            idprefix = "#{id}."
 
             # TODO: do this for the oddzial and zial
             # include a part number in the id if our parent has one
@@ -376,7 +395,7 @@ module Slaw
 
             b.chapter(id: id) { |b|
               heading.to_xml(b)
-              children.elements.each_with_index { |e, i| e.to_xml(b, id + '.', i) }
+              children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
             }
           end
         end
