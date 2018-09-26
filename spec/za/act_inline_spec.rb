@@ -320,4 +320,23 @@ EOS
     end
   end
 
+  #-------------------------------------------------------------------------------
+  # inline statements
+
+  context 'inline_statements' do
+    it 'should handle less-than-chars' do
+      node = parse :inline_statement, <<EOS
+Hello 1 < 2 and 3 > 2
+EOS
+      to_xml(node, "").should == '<p>Hello 1 &lt; 2 and 3 &gt; 2</p>'
+    end
+
+    it 'should handle html-like text' do
+      node = parse :inline_statement, <<EOS
+Stuff <between> angles
+EOS
+      to_xml(node, "").should == '<p>Stuff &lt;between&gt; angles</p>'
+    end
+  end
+
 end
