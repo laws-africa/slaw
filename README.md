@@ -86,6 +86,14 @@ and parser.
 
 ## Changelog
 
+### 1.0.3 (26 September 2018)
+
+* FIX bug in all grammars that dropped less-than symbols `<` from input text.
+
+### 1.0.2 (2 June 2018)
+
+* FIX bug in ZA grammar when parsing dotted numbered subsections ending with a newline
+
 ### 1.0.1
 
 * Improved support for other legal traditions / grammars.
