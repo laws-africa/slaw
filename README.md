@@ -86,6 +86,10 @@ and parser.
 
 ## Changelog
 
+### 1.0.4 (5 February 2019)
+
+* SECURITY require Nokogiri 1.8.5 or greater to address https://nvd.nist.gov/vuln/detail/CVE-2018-14404
+
 ### 1.0.3 (26 September 2018)
 
 * FIX bug in all grammars that dropped less-than symbols `<` from input text.
