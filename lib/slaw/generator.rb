@@ -79,8 +79,15 @@ module Slaw
     # Transform an Akoma Ntoso XML document back into a plain-text version
     # suitable for re-parsing back into XML with no loss of structure.
     def text_from_act(doc)
-      xslt = Nokogiri::XSLT(File.read(File.join([File.dirname(__FILE__), "grammars/#{@grammar}/act_text.xsl"])))
-      xslt.transform(doc).child.to_xml
+      # look on the load path for an XSL file for this grammar
+      filename = "/slaw/grammars/#{@grammar}/act_text.xsl"
+
+      if dir = $LOAD_PATH.find { |p| File.exist?(p + filename) }
+        xslt = Nokogiri::XSLT(File.read(dir + filename))
+        xslt.transform(doc).child.to_xml
+      else
+        raise "Unable to find text XSL for grammar #{@grammar}: #{fragment}"
+      end
     end
   end
 end
