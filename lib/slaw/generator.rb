@@ -1,3 +1,6 @@
+require 'polyglot'
+require 'treetop'
+
 module Slaw
   # Base class for generating Act documents
   class ActGenerator
@@ -20,10 +23,10 @@ module Slaw
 
     def build_parser
       unless @@parsers[@grammar]
-        # load the grammar
-        grammar_file = File.dirname(__FILE__) + "/grammars/#{@grammar}/act.treetop"
-        Treetop.load(grammar_file)
-
+        # load the grammar with polyglot and treetop
+        # this will ensure the class below is available
+        # see: http://cjheath.github.io/treetop/using_in_ruby.html
+        require "slaw/grammars/#{@grammar}/act"
         grammar_class = "Slaw::Grammars::#{@grammar.upcase}::ActParser"
         @@parsers[@grammar] = eval(grammar_class)
       end
