@@ -1,6 +1,6 @@
 # Slaw [![Build Status](https://travis-ci.org/longhotsummer/slaw.svg)](http://travis-ci.org/longhotsummer/slaw)
 
-Slaw is a lightweight library for generating Akoma Ntoso 2.0 Act XML from plain text and PDF documents.
+Slaw is a lightweight library for generating Akoma Ntoso 2.0 Act XML from plain text documents.
 It is used to power [Indigo](https://github.com/OpenUpSA/indigo) and uses grammars developed for the legal
 traditions in these countries:
 
@@ -30,19 +30,9 @@ Or install it with:
 
     $ gem install slaw
 
-To run PDF extraction you will also need [poppler's pdftotext](https://poppler.freedesktop.org/).
-If you're on a Mac, you can use:
-
-    $ brew install poppler
-
-You may also need Ghostscript to remove password protection from PDF files. This is
-installed by default on most systems (including Mac). On Ubuntu you can use:
-
-    $ sudo apt-get install ghostscript
-
 The simplest way to use Slaw is via the commandline:
 
-    $ slaw parse myfile.pdf --grammar za
+    $ slaw parse myfile.text --grammar za
 
 ## Overview
 
@@ -50,8 +40,8 @@ Slaw generates Acts in the [Akoma Ntoso](http://www.akomantoso.org) 2.0 XML
 standard for legislative documents. It first parses plain text using a grammar
 and then generates XML from the resulting syntax tree.
 
-Most by-laws in South Africa are available as PDF documents. Slaw therefore has support
-for extracting and cleaning up text from PDFs before parsing it. Extracting text from
+Most by-laws in South Africa are available as PDF documents. You will therefore
+need to extract the text from the PDF first, using a tool like pdftotext.
 PDFs can product oddities (such as oddly wrapped lines) and Slaw has a number of
 rules-of-thumb for correcting these. These rules are based on South African
 by-laws and may not be suitable for all regions.
@@ -94,8 +84,9 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
-### 1.1.0 (?)
+### 2.0.0 (?)
 
+* Remove support for PDFs. Do text extraction from PDFs outside of this library.
 * Support dynamically loading grammars from other gems.
 * Don't change ALL CAPS headings to Sentence Case.
 

@@ -26,8 +26,4 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "log4r", "~> 1.1.10"
   spec.add_runtime_dependency "thor", "~> 0.19.1"
   spec.add_runtime_dependency "mimemagic", "~> 0.2.1"
-  spec.add_runtime_dependency 'yomu', '~> 0.2.2'
-  # anchor twitter-text to avoid bug in 1.14.3
-  # https://github.com/twitter/twitter-text/issues/162
-  spec.add_runtime_dependency 'twitter-text', '~> 1.12.0'
 end
