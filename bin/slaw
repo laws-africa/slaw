@@ -4,8 +4,6 @@ require 'thor'
 require 'slaw'
 
 class SlawCLI < Thor
-  # TODO: support different grammars and locales
-
   # Exit with non-zero exit code on failure.
   # See https://github.com/erikhuda/thor/issues/244
   def self.exit_on_failure?
@@ -15,29 +13,19 @@ class SlawCLI < Thor
   class_option :verbose, type: :boolean, desc: "Display log output on stderr"
 
   desc "parse FILE", "Parse FILE into Akoma Ntoso XML"
-  option :input, enum: ['text', 'pdf'], desc: "Type of input if it can't be determined automatically"
-  option :pdftotext, desc: "Location of the pdftotext binary if not in PATH"
+  option :input, enum: ['text', 'html'], desc: "Type of input if it can't be determined automatically"
   option :fragment, type: :string, desc: "Akoma Ntoso element name that the imported text represents. Support depends on the grammar."
   option :id_prefix, type: :string, desc: "Prefix to be used when generating ID elements when parsing a fragment."
   option :section_number_position, enum: ['before-title', 'after-title', 'guess'], desc: "Where do section titles come in relation to the section number? Default: before-title"
-  option :crop, type: :string, desc: "Crop box for PDF files, as 'left,top,width,height'."
   option :grammar, type: :string, desc: "Grammar name (usually a two-letter country code). Default is za."
   def parse(name)
     logging
 
-    Slaw::Extract::Extractor.pdftotext_path = options[:pdftotext] if options[:pdftotext]
     extractor = Slaw::Extract::Extractor.new
 
-    if options[:crop]
-      extractor.cropbox = options[:crop].split(',').map(&:to_i)
-      if extractor.cropbox.length != 4
-        raise Thor::Error.new("--crop requires four comma-separated integers")
-      end
-    end
-
     case options[:input]
-    when 'pdf'
-      text = extractor.extract_from_pdf(name)
+    when 'html'
+      text = extractor.extract_from_html(name)
     when 'text'
       text = extractor.extract_from_text(name)
     else
