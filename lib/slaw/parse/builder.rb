@@ -151,26 +151,9 @@ module Slaw
       #
       # @return [Nokogiri::XML::Document] the updated document
       def postprocess(doc)
-        normalise_headings(doc)
         adjust_blocklists(doc)
 
         doc
-      end
-
-      # Change CAPCASE headings into Sentence case.
-      #
-      # @param doc [Nokogiri::XML::Document]
-      def normalise_headings(doc)
-        logger.info("Normalising headings")
-
-        nodes = doc.xpath('//a:body//a:heading/text()', a: NS) +
-                doc.xpath('//a:component/a:doc[@name="schedules"]//a:heading/text()', a: NS)
-
-        nodes.each do |heading|
-          if !(heading.content =~ /[a-z]/)
-            heading.content = heading.content.downcase.gsub(/^\w/) { $&.upcase }
-          end
-        end
       end
 
       # Adjust blocklists:

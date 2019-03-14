@@ -715,44 +715,6 @@ XML
     end
   end
 
-  describe '#normalise_headings' do
-    it 'should normalise ALL CAPS headings' do
-      doc = xml2doc(section(<<XML
-          <heading>DEFINITIONS FOR A.B.C.</heading>
-          <content>
-            <p></p>
-          </content>
-XML
-      ))
-      subject.normalise_headings(doc)
-      doc.to_s.should == section(<<XML
-        <heading>Definitions for a.b.c.</heading>
-        <content>
-          <p/>
-        </content>
-XML
-      )
-    end
-
-    it 'should not normalise normal headings' do
-      doc = xml2doc(section(<<XML
-          <heading>Definitions for A.B.C.</heading>
-          <content>
-            <p></p>
-          </content>
-XML
-      ))
-      subject.normalise_headings(doc)
-      doc.to_s.should == section(<<XML
-        <heading>Definitions for A.B.C.</heading>
-        <content>
-          <p/>
-        </content>
-XML
-      )
-    end
-  end
-
   describe '#preprocess' do
     it 'should split inline table cells into block table cells' do
       text = <<EOS

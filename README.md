@@ -97,6 +97,7 @@ You can create your own grammar by creating a gem that provides these files and 
 ### 1.1.0 (?)
 
 * Support dynamically loading grammars from other gems.
+* Don't change ALL CAPS headings to Sentence Case.
 
 ### 1.0.4 (5 February 2019)
 
