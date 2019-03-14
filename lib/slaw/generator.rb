@@ -32,6 +32,9 @@ module Slaw
       end
 
       @parser = @@parsers[@grammar].new
+      @parser.root = :act
+
+      @parser
     end
 
     # Generate a Slaw::Act instance from plain text.

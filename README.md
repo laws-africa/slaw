@@ -77,6 +77,7 @@ and parser.
 
 Slaw can dynamically load your custom Treetop grammars. When called with ``--grammar xy``, Slaw
 tries to require `slaw/grammars/xy/act` and instantiate the parser class ``Slaw::Grammars::XY::ActParser``.
+Slaw always uses the rule `act` as the root of the parser.
 
 You can create your own grammar by creating a gem that provides these files and classes.
 
