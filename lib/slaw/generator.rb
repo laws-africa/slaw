@@ -1,3 +1,6 @@
+require 'polyglot'
+require 'treetop'
+
 module Slaw
   # Base class for generating Act documents
   class ActGenerator
@@ -20,15 +23,18 @@ module Slaw
 
     def build_parser
       unless @@parsers[@grammar]
-        # load the grammar
-        grammar_file = File.dirname(__FILE__) + "/grammars/#{@grammar}/act.treetop"
-        Treetop.load(grammar_file)
-
+        # load the grammar with polyglot and treetop
+        # this will ensure the class below is available
+        # see: http://cjheath.github.io/treetop/using_in_ruby.html
+        require "slaw/grammars/#{@grammar}/act"
         grammar_class = "Slaw::Grammars::#{@grammar.upcase}::ActParser"
         @@parsers[@grammar] = eval(grammar_class)
       end
 
       @parser = @@parsers[@grammar].new
+      @parser.root = :act
+
+      @parser
     end
 
     # Generate a Slaw::Act instance from plain text.
@@ -76,8 +82,15 @@ module Slaw
     # Transform an Akoma Ntoso XML document back into a plain-text version
     # suitable for re-parsing back into XML with no loss of structure.
     def text_from_act(doc)
-      xslt = Nokogiri::XSLT(File.read(File.join([File.dirname(__FILE__), "grammars/#{@grammar}/act_text.xsl"])))
-      xslt.transform(doc).child.to_xml
+      # look on the load path for an XSL file for this grammar
+      filename = "/slaw/grammars/#{@grammar}/act_text.xsl"
+
+      if dir = $LOAD_PATH.find { |p| File.exist?(p + filename) }
+        xslt = Nokogiri::XSLT(File.read(dir + filename))
+        xslt.transform(doc).child.to_xml
+      else
+        raise "Unable to find text XSL for grammar #{@grammar}: #{fragment}"
+      end
     end
   end
 end

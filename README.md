@@ -63,6 +63,14 @@ tree, the nodes of which know how to serialize themselves in XML format.
 Supporting formats from other country's legal traditions probably requires creating a new grammar
 and parser.
 
+## Adding your own grammar
+
+Slaw can dynamically load your custom Treetop grammars. When called with ``--grammar xy``, Slaw
+tries to require `slaw/grammars/xy/act` and instantiate the parser class ``Slaw::Grammars::XY::ActParser``.
+Slaw always uses the rule `act` as the root of the parser.
+
+You can create your own grammar by creating a gem that provides these files and classes.
+
 ## Contributing
 
 1. Fork it at http://github.com/longhotsummer/slaw/fork
@@ -79,6 +87,8 @@ and parser.
 ### 2.0.0 (?)
 
 * Remove support for PDFs. Do text extraction from PDFs outside of this library.
+* Support dynamically loading grammars from other gems.
+* Don't change ALL CAPS headings to Sentence Case.
 
 ### 1.0.4 (5 February 2019)
 
