@@ -84,7 +84,7 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
-### 2.0.1 (18 March 2019)
+### 2.1.0 (18 March 2019)
 
 * Make subclassing preface statements easier
 
