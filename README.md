@@ -84,7 +84,11 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
-### 2.0.0 (?)
+### 2.0.1 (18 March 2019)
+
+* Make subclassing preface statements easier
+
+### 2.0.0 (15 March 2019)
 
 * Remove support for PDFs. Do text extraction from PDFs outside of this library.
 * Support dynamically loading grammars from other gems.
