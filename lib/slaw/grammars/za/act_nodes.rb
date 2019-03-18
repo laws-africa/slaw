@@ -83,7 +83,7 @@ module Slaw
               b.preface { |b|
                 statements.elements.each { |element|
                   for e in element.elements
-                    e.to_xml(b, "") if e.is_a? Slaw::Grammars::Inlines::NakedStatement
+                    e.to_xml(b, "") if e.respond_to? :to_xml
                   end
                 }
               }
