@@ -228,5 +228,27 @@ three
 
 '
     end
+
+    it 'should unparse schedules correctly' do
+      doc = subject.generate_from_text(<<EOS
+1. Something
+
+Schedule - First Schedule [[remark]]
+Subheading [[another]]
+
+Subject to approval in terms of this By-Law.
+EOS
+)
+      s = subject.text_from_act(doc)
+      s.should == '1. Something
+
+SCHEDULE - First Schedule [[remark]]
+Subheading [[another]]
+
+
+Subject to approval in terms of this By-Law.
+
+'
+    end
   end
 end
