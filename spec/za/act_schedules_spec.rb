@@ -69,7 +69,8 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <article id="schedule">
+      <hcontainer id="schedule" name="schedule">
+        <heading>Schedule</heading>
         <paragraph id="schedule.paragraph-0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
@@ -83,7 +84,7 @@ EOS
           <num>2.</num>
           <heading>Bar</heading>
         </section>
-      </article>
+      </hcontainer>
     </mainBody>
   </doc>
 </component>'
@@ -133,8 +134,9 @@ EOS
         </identification>
       </meta>
       <mainBody>
-        <article id="schedule2">
-          <heading>A Title</heading>
+        <hcontainer id="schedule2" name="schedule">
+          <heading>Schedule 2</heading>
+          <subheading>A Title</subheading>
           <section id="section-1">
             <num>1.</num>
             <heading>Foo</heading>
@@ -143,7 +145,7 @@ EOS
             <num>2.</num>
             <heading>Bar</heading>
           </section>
-        </article>
+        </hcontainer>
       </mainBody>
     </doc>
   </component>
@@ -175,15 +177,16 @@ EOS
         </identification>
       </meta>
       <mainBody>
-        <article id="schedule3">
-          <heading>Another Title</heading>
+        <hcontainer id="schedule3" name="schedule">
+          <heading>Schedule 3</heading>
+          <subheading>Another Title</subheading>
           <paragraph id="schedule3.paragraph-0">
             <content>
               <p>Baz</p>
               <p>Boom</p>
             </content>
           </paragraph>
-        </article>
+        </hcontainer>
       </mainBody>
     </doc>
   </component>
@@ -232,8 +235,9 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <article id="schedule1">
-        <heading>Schedule Heading</heading>
+      <hcontainer id="schedule1" name="schedule">
+        <heading>First Schedule</heading>
+        <subheading>Schedule Heading</subheading>
         <paragraph id="schedule1.paragraph-0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
@@ -247,7 +251,7 @@ EOS
           <num>2.</num>
           <heading>Bar</heading>
         </section>
-      </article>
+      </hcontainer>
     </mainBody>
   </doc>
 </component>'
@@ -292,8 +296,9 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <article id="schedule1">
-        <heading>Schedule Heading</heading>
+      <hcontainer id="schedule1" name="schedule">
+        <heading>First Schedule</heading>
+        <subheading>Schedule Heading</subheading>
         <paragraph id="schedule1.paragraph-0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
@@ -307,7 +312,7 @@ EOS
           <num>2.</num>
           <heading>Bar</heading>
         </section>
-      </article>
+      </hcontainer>
     </mainBody>
   </doc>
 </component>'
@@ -351,7 +356,8 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <article id="firstschedule">
+      <hcontainer id="firstschedule" name="schedule">
+        <heading>First Schedule</heading>
         <paragraph id="firstschedule.paragraph-0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
@@ -365,7 +371,7 @@ EOS
           <num>2.</num>
           <heading>Bar</heading>
         </section>
-      </article>
+      </hcontainer>
     </mainBody>
   </doc>
 </component>'
@@ -411,7 +417,8 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <article id="schedule1">
+      <hcontainer id="schedule1" name="schedule">
+        <heading>Schedule 1</heading>
         <paragraph id="schedule1.paragraph-0">
           <content>
             <p>Other than as is set out hereinbelow, no signs other than locality bound signs, temporary signs including loose portable sign, estate agents signs, newspaper headline posters and posters (the erection of which must comply with the appropriate schedules pertinent thereto) shall be erected on Municipal owned land.</p>
@@ -425,7 +432,7 @@ EOS
           <num>2.</num>
           <heading>Bar</heading>
         </section>
-      </article>
+      </hcontainer>
     </mainBody>
   </doc>
 </component>
@@ -480,8 +487,9 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <article id="schedule1">
-        <heading>Forms</heading>
+      <hcontainer id="schedule1" name="schedule">
+        <heading>Schedule 1</heading>
+        <subheading>Forms</subheading>
         <part id="part-I">
           <num>I</num>
           <heading>Form of authentication statement</heading>
@@ -500,7 +508,7 @@ EOS
             </content>
           </paragraph>
         </part>
-      </article>
+      </hcontainer>
     </mainBody>
   </doc>
 </component>
@@ -557,7 +565,8 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <article id="schedule">
+      <hcontainer id="schedule" name="schedule">
+        <heading>Schedule</heading>
         <paragraph id="schedule.paragraph-0">
           <content>
             <p>Subject to approval in terms of this By-Law.</p>
@@ -565,7 +574,58 @@ EOS
             <p>More stuff</p>
           </content>
         </paragraph>
-      </article>
+      </hcontainer>
+    </mainBody>
+  </doc>
+</component>'
+    end
+
+    it 'should handle rich content in titles and subheandings' do
+      node = parse :schedules, <<EOS
+Schedule - First Schedule [[remark]]
+Subheading [[another]]
+
+Subject to approval in terms of this By-Law.
+EOS
+      s = to_xml(node)
+      today = Time.now.strftime('%Y-%m-%d')
+      s.should == '<component id="component-firstschedule">
+  <doc name="firstschedule">
+    <meta>
+      <identification source="#slaw">
+        <FRBRWork>
+          <FRBRthis value="/za/act/1980/01/firstschedule"/>
+          <FRBRuri value="/za/act/1980/01"/>
+          <FRBRalias value="First Schedule"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRcountry value="za"/>
+        </FRBRWork>
+        <FRBRExpression>
+          <FRBRthis value="/za/act/1980/01/eng@/firstschedule"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRlanguage language="eng"/>
+        </FRBRExpression>
+        <FRBRManifestation>
+          <FRBRthis value="/za/act/1980/01/eng@/firstschedule"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="' + today + '" name="Generation"/>
+          <FRBRauthor href="#slaw"/>
+        </FRBRManifestation>
+      </identification>
+    </meta>
+    <mainBody>
+      <hcontainer id="firstschedule" name="schedule">
+        <heading>First Schedule <remark status="editorial">[remark]</remark></heading>
+        <subheading>Subheading <remark status="editorial">[another]</remark></subheading>
+        <paragraph id="firstschedule.paragraph-0">
+          <content>
+            <p>Subject to approval in terms of this By-Law.</p>
+          </content>
+        </paragraph>
+      </hcontainer>
     </mainBody>
   </doc>
 </component>'

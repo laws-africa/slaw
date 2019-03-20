@@ -169,8 +169,9 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <article id="schedule1">
-        <heading>A Title</heading>
+      <hcontainer id="schedule1" name="schedule">
+        <heading>Schedule 1</heading>
+        <subheading>A Title</subheading>
         <paragraph id="schedule1.paragraph-0">
           <content>
             <p>
@@ -179,7 +180,7 @@ EOS
             <p>Some content</p>
           </content>
         </paragraph>
-      </article>
+      </hcontainer>
     </mainBody>
   </doc>
 </component>'

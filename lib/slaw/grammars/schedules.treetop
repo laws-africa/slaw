@@ -20,8 +20,8 @@ module Slaw
       end
 
       rule schedule_title
-        space? schedule_title_prefix space? "\""? num:alphanums? "\""? [ \t:.-]* title:(content)?
-        heading:(newline space? content)?
+        space? schedule_title_prefix space? "\""? num:alphanums? "\""? [ \t:.-]* title:clauses?
+        subheading:(newline space? clauses)?
         eol
       end
 

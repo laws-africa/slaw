@@ -248,7 +248,8 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <article id="schedule1">
+      <hcontainer id="schedule1" name="schedule">
+        <heading>Schedule 1</heading>
         <paragraph id="schedule1.paragraph-0">
           <content>
             <p>Heres a table:</p>
@@ -272,7 +273,7 @@ EOS
             </table>
           </content>
         </paragraph>
-      </article>
+      </hcontainer>
     </mainBody>
   </doc>
 </component>'

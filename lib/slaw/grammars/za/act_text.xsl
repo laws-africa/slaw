@@ -143,26 +143,45 @@
     </xsl:call-template>
   </xsl:template>
 
-  <!-- components/schedules -->
-  <xsl:template match="a:doc">
-    <xsl:text>Schedule - </xsl:text>
-    <xsl:value-of select="a:meta/a:identification/a:FRBRWork/a:FRBRalias/@value" />
 
-    <xsl:if test="a:mainBody/a:article/a:heading">
+  <!-- components/schedules -->
+  <!-- new-style schedules, "article" elements -->
+  <xsl:template match="a:hcontainer[@name='schedule']">
+    <xsl:text>Schedule - </xsl:text>
+    <xsl:apply-templates select="a:heading" mode="nonewline" />
+    <xsl:text>
+</xsl:text>
+
+    <xsl:if test="a:subheading">
+      <xsl:value-of select="a:subheading" />
       <xsl:text>
 </xsl:text>
-      <xsl:value-of select="a:mainBody/a:article/a:heading" />
     </xsl:if>
 
     <xsl:text>
 
 </xsl:text>
-    <xsl:apply-templates select="a:mainBody" />
+    <xsl:apply-templates select="./*[not(self::a:heading) and not(self::a:subheading)]" />
   </xsl:template>
 
-  <xsl:template match="a:mainBody/a:article/a:heading">
-    <!-- no-op, this is handled by the schedules template above -->
+
+  <!-- old-style schedules, "article" elements -->
+  <xsl:template match="a:doc/a:mainBody/a:article">
+    <xsl:text>Schedule - </xsl:text>
+    <xsl:value-of select="../../a:meta/a:identification/a:FRBRWork/a:FRBRalias/@value" />
+
+    <xsl:if test="a:heading">
+      <xsl:text>
+</xsl:text>
+      <xsl:value-of select="a:heading" />
+    </xsl:if>
+
+    <xsl:text>
+
+</xsl:text>
+    <xsl:apply-templates select="./*[not(self::a:heading)]" />
   </xsl:template>
+
 
   <!-- tables -->
   <xsl:template match="a:table">
