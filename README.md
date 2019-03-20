@@ -84,6 +84,11 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
+### 2.2.0 (18 March 2019)
+
+* Schedules use hcontainer, not article
+* Schedules allow rich content in title and heading
+
 ### 2.1.0 (18 March 2019)
 
 * Make subclassing preface statements easier

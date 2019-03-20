@@ -26,7 +26,8 @@ module Slaw
 
         def alias
           if not schedule_title.title.text_value.blank?
-            schedule_title.title.text_value
+            # plain-text elements only
+            schedule_title.title.elements.select { |x| !x.respond_to? :to_xml }.map { |x| x.text_value }.join('').strip
           elsif num
             "Schedule #{num}"
           else
@@ -34,9 +35,17 @@ module Slaw
           end
         end
 
-        def heading
-          if schedule_title.heading.respond_to? :content
-            schedule_title.heading.content.text_value
+        def title
+          if not schedule_title.title.text_value.blank?
+            schedule_title.title
+          else
+            nil
+          end
+        end
+
+        def subheading
+          if not schedule_title.subheading.text_value.blank?
+            schedule_title.subheading.clauses
           else
             nil
           end
@@ -86,9 +95,14 @@ module Slaw
                 idprefix = "#{id}."
 
                 # there is no good AKN hierarchy container for schedules, so we
-                # just use article because we don't use it anywhere else.
-                b.article(id: id) { |b|
-                  b.heading(heading) if heading
+                # use hcontainer instead
+                b.hcontainer(id: id, name: "schedule") { |b|
+                  if title and title.elements
+                    b.heading { |b| title.to_xml(b, idprefix) }
+                  else
+                    b.heading(self.alias)
+                  end
+                  b.subheading { |b| subheading.to_xml(b, idprefix) } if subheading
                   body.children.elements.each_with_index { |e| e.to_xml(b, idprefix, i) } if body.is_a? Body
                 }
               }
