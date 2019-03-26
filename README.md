@@ -84,6 +84,11 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
+### 2.3.0 (?)
+
+* Inline bold and italics
+* Remarks and references support nested inline elements
+
 ### 2.2.0 (18 March 2019)
 
 * Schedules use hcontainer, not article
