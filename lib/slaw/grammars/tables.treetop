@@ -38,7 +38,7 @@ module Slaw
       end
 
       rule table_line
-        clauses:clauses? eol
+        inline_items:inline_items? eol
         <TableLine>
       end
 

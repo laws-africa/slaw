@@ -84,6 +84,14 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
+### 3.0.0 (?)
+
+* Inline bold and italics
+* Support for CROSSHEADING elements using an empty hcontainer until we support AKN 3.0
+* Support for LONGTITLE in PREFACE
+* Remarks and references support nested inline elements
+* BREAKING: `clauses` rule renamed to `inline_elements` so as not to clash with real AKN clauses
+
 ### 2.2.0 (18 March 2019)
 
 * Schedules use hcontainer, not article

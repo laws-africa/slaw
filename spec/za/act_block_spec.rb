@@ -27,6 +27,10 @@ describe Slaw::ActGenerator do
     b.doc.root.to_xml(encoding: 'UTF-8')
   end
 
+  before(:each) do
+    Slaw::Grammars::ZA::Act::Crossheading.counters.clear
+  end
+
   #-------------------------------------------------------------------------------
   # General body
 
@@ -37,6 +41,8 @@ Some content before the section
 
 1. Section
 Hello there
+
+CROSSHEADING crossheading
 EOS
       to_xml(node).should == '<body>
   <paragraph id="paragraph-0">
@@ -52,6 +58,9 @@ EOS
         <p>Hello there</p>
       </content>
     </paragraph>
+    <hcontainer id="section-1.crossheading-0" name="crossheading">
+      <heading>crossheading</heading>
+    </hcontainer>
   </section>
 </body>'
     end
@@ -63,8 +72,12 @@ Some content before the section
 (a) foo
 (b) bar
 
+CROSSHEADING crossheading
+
 1. Section
 Hello there
+
+CROSSHEADING crossheading
 EOS
       to_xml(node).should == '<body>
   <paragraph id="paragraph-0">
@@ -82,6 +95,9 @@ EOS
       </blockList>
     </content>
   </paragraph>
+  <hcontainer id="crossheading-0" name="crossheading">
+    <heading>crossheading</heading>
+  </hcontainer>
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
@@ -90,6 +106,9 @@ EOS
         <p>Hello there</p>
       </content>
     </paragraph>
+    <hcontainer id="section-1.crossheading-0" name="crossheading">
+      <heading>crossheading</heading>
+    </hcontainer>
   </section>
 </body>'
     end
@@ -98,6 +117,8 @@ EOS
       node = parse :body, <<EOS
 \\1. ignored
 
+\\CROSSHEADING crossheading
+
 1. Section
 \\Chapter 2 ignored
 EOS
@@ -105,6 +126,7 @@ EOS
   <paragraph id="paragraph-0">
     <content>
       <p>1. ignored</p>
+      <p>CROSSHEADING crossheading</p>
     </content>
   </paragraph>
   <section id="section-1">
@@ -172,6 +194,8 @@ EOS
 Chapter 2
 The Chapter Heading
 
+CROSSHEADING crossheading
+
 Some lines at the start of the chapter.
 EOS
       node.num.should == "2"
@@ -179,6 +203,9 @@ EOS
       to_xml(node).should == '<chapter id="chapter-2">
   <num>2</num>
   <heading>The Chapter Heading</heading>
+  <hcontainer id="chapter-2.crossheading-0" name="crossheading">
+    <heading>crossheading</heading>
+  </hcontainer>
   <paragraph id="chapter-2.paragraph-0">
     <content>
       <p>Some lines at the start of the chapter.</p>
@@ -315,12 +342,18 @@ EOS
       node = parse :part, <<EOS
 pART 2
 The Part Heading
+
+CROSSHEADING crossheading
+
 1. Section
 Hello there
 EOS
       to_xml(node).should == '<part id="part-2">
   <num>2</num>
   <heading>The Part Heading</heading>
+  <hcontainer id="part-2.crossheading-0" name="crossheading">
+    <heading>crossheading</heading>
+  </hcontainer>
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
@@ -1927,23 +1960,105 @@ EOS
   end
 
   #-------------------------------------------------------------------------------
-  # clauses
+  # inline_items
 
-  context 'clauses' do
+  context 'inline_items' do
     it 'should handle a simple clause' do
-      node = parse :clauses, "simple text"
+      node = parse :inline_items, "simple text"
       node.text_value.should == "simple text"
     end
 
     it 'should handle a clause with a remark' do
-      node = parse :clauses, "simple [[remark]]. text"
+      node = parse :inline_items, "simple [[remark]]. text"
       node.text_value.should == "simple [[remark]]. text"
       node.elements[7].is_a?(Slaw::Grammars::ZA::Act::Remark).should be_true
 
-      node = parse :clauses, "simple [[remark]][[another]] text"
+      node = parse :inline_items, "simple [[remark]][[another]] text"
       node.text_value.should == "simple [[remark]][[another]] text"
       node.elements[7].is_a?(Slaw::Grammars::ZA::Act::Remark).should be_true
       node.elements[7].is_a?(Slaw::Grammars::ZA::Act::Remark).should be_true
+    end
+  end
+
+  #-------------------------------------------------------------------------------
+  # crossheadings
+
+  context 'crossheadings' do
+    it 'should handle a inline_items in crossheadings' do
+      node = parse :crossheading, "CROSSHEADING something [[remark]] [link](/foo/bar)\n"
+      to_xml(node, '').should == '<hcontainer id="crossheading-0" name="crossheading">
+  <heading>something <remark status="editorial">[remark]</remark> <ref href="/foo/bar">link</ref></heading>
+</hcontainer>'
+    end
+  end
+
+  #-------------------------------------------------------------------------------
+  # longTitle
+
+  context 'longtitle' do
+    it 'should handle a basic longtitle' do
+      node = parse :longtitle, "LONGTITLE something [[remark]] [link](/foo/bar)\n"
+      to_xml(node, '').should == '<longTitle>
+  <p>something <remark status="editorial">[remark]</remark> <ref href="/foo/bar">link</ref></p>
+</longTitle>'
+    end
+
+    it 'should handle a longtitle in a preface' do
+      node = parse :act, <<EOS
+PREFACE
+
+Blah blah
+
+LONGTITLE a long title
+
+\\LONGTITLE escaped
+
+Enacting clause
+
+1. Section
+(1) hello
+EOS
+
+      to_xml(node.preface).should == '<preface>
+  <p>Blah blah</p>
+  <longTitle>
+    <p>a long title</p>
+  </longTitle>
+  <p>LONGTITLE escaped</p>
+  <p>Enacting clause</p>
+</preface>'
+    end
+
+    it 'should ignore a longtitle in preamble' do
+      node = parse :preamble, <<EOS
+PREAMBLE
+
+LONGTITLE a long title
+EOS
+
+      to_xml(node).should == '<preamble>
+  <p>LONGTITLE a long title</p>
+</preamble>'
+    end
+
+    it 'should ignore a longtitle in body' do
+      node = parse :body, <<EOS
+1. Section
+
+LONGTITLE a long title
+EOS
+
+      to_xml(node).should == '<body>
+  <section id="section-1">
+    <num>1.</num>
+    <heading>Section</heading>
+    <paragraph id="section-1.paragraph-0">
+      <content>
+        <p>LONGTITLE a long title</p>
+      </content>
+    </paragraph>
+  </section>
+</body>'
     end
   end
 end

@@ -28,12 +28,12 @@ module Slaw
         rule preface
           !'PREAMBLE'
           ('PREFACE'i space? eol)?
-          statements:(!'PREAMBLE' pre_body_statement)* <Preface>
+          statements:(!'PREAMBLE' preface_statement)* <Preface>
         end
 
         rule preamble
           'PREAMBLE'i space? eol
-          statements:pre_body_statement* <Preamble>
+          statements:preamble_statement* <Preamble>
         end
 
         rule body
@@ -130,6 +130,10 @@ module Slaw
         # blocks of content inside containers
 
         rule block_paragraphs
+          crossheading / block_elements
+        end
+
+        rule block_elements
           block_element+ <BlockParagraph>
         end
 
@@ -149,7 +153,7 @@ module Slaw
 
         rule blocklist_item
           # TODO: this whitespace should probably be space, to allow empty blocklist items followed by plain text
-          space? blocklist_item_prefix whitespace item_content:(!blocklist_item_prefix clauses:clauses? eol)? eol?
+          space? blocklist_item_prefix whitespace item_content:(!blocklist_item_prefix inline_items:inline_items? eol)? eol?
           <BlocklistItem>
         end
 
@@ -164,13 +168,29 @@ module Slaw
         # and is ignored. This allows escaping of section headings, etc.
 
         rule naked_statement
-          space? !(chapter_heading / part_heading / section_title / schedule_title / subsection_prefix) '\\'? clauses eol
+          space? !(chapter_heading / part_heading / section_title / schedule_title / subsection_prefix / crossheading) '\\'? inline_items eol
           <NakedStatement>
         end
 
-        rule pre_body_statement
-          space? !(chapter_heading / part_heading / section_title / schedule_title) '\\'? clauses eol
+        rule preface_statement
+          space? !(chapter_heading / part_heading / section_title / schedule_title)
+          content:(longtitle / ('\\'? inline_items:inline_items eol))
+          <PrefaceStatement>
+        end
+
+        rule preamble_statement
+          space? !(chapter_heading / part_heading / section_title / schedule_title) '\\'? inline_items eol
           <NakedStatement>
+        end
+
+        rule crossheading
+          'CROSSHEADING ' inline_items:inline_items eol
+          <Crossheading>
+        end
+
+        rule longtitle
+          'LONGTITLE ' inline_items:inline_items eol
+          <LongTitle>
         end
 
         ##########

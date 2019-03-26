@@ -27,7 +27,7 @@ module Slaw
         def alias
           if not schedule_title.title.text_value.blank?
             # plain-text elements only
-            schedule_title.title.elements.select { |x| !x.respond_to? :to_xml }.map { |x| x.text_value }.join('').strip
+            schedule_title.title.elements.select { |x| x.instance_of? ::Slaw::Grammars::Inlines::InlineItem }.map { |x| x.text_value }.join('').strip
           elsif num
             "Schedule #{num}"
           else
@@ -45,7 +45,7 @@ module Slaw
 
         def subheading
           if not schedule_title.subheading.text_value.blank?
-            schedule_title.subheading.clauses
+            schedule_title.subheading.inline_items
           else
             nil
           end
@@ -113,7 +113,7 @@ module Slaw
 
       class ScheduleStatement < Treetop::Runtime::SyntaxNode
         def to_xml(b, idprefix)
-          b.p { |b| clauses.to_xml(b, idprefix) } if clauses
+          b.p { |b| inline_items.to_xml(b, idprefix) } if inline_items
         end
       end
     end

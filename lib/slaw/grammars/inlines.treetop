@@ -10,18 +10,23 @@ module Slaw
       # inline content
 
       rule inline_statement
-        space? '\\'? clauses eol
+        space? '\\'? inline_items eol
         <NakedStatement>
       end
 
       # one or more words, allowing inline elements
-      rule clauses
-        (remark / image / ref / [^\n])+
-        <Clauses>
+      # TODO: this is badly named, a better name would be inline_items
+      rule inline_items
+        inline_item+ <InlineItems>
+      end
+
+      rule inline_item
+        remark / image / ref / bold / italics / [^\n]
+        <InlineItem>
       end
 
       rule remark
-        '[[' content:(ref / (!']]' .))+ ']]'
+        '[[' content:(!']]' inline_item)+ ']]'
         <Remark>
       end
 
@@ -34,12 +39,25 @@ module Slaw
         <Image>
       end
 
+      rule bold
+        # **foo**
+        '**' content:(!'**' inline_item)+ '**'
+        <Bold>
+      end
+
+      rule italics
+        # //foo//
+        '//' content:(!'//' inline_item)+ '//'
+        <Italics>
+      end
+
       rule ref
         # links like markdown
         # eg. [link text](link url)
-        '[' content:(!'](' [^\n])+ '](' href:([^)\n]+) ')'
+        '[' content:(!'](' inline_item)+ '](' href:([^)\n]+) ')'
         <Ref>
       end
+
     end
   end
 end

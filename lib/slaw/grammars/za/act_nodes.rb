@@ -91,6 +91,32 @@ module Slaw
           end
         end
 
+        class PrefaceStatement < Treetop::Runtime::SyntaxNode
+          def to_xml(b, idprefix, i=0)
+            if longtitle
+              longtitle.to_xml(b, idprefix)
+            else
+              b.p { |b| inline_items.to_xml(b, idprefix) }
+            end
+          end
+
+          def longtitle
+            self.content if self.content.is_a? LongTitle
+          end
+
+          def inline_items
+            content.inline_items if content.respond_to? :inline_items
+          end
+        end
+
+        class LongTitle < Treetop::Runtime::SyntaxNode
+          def to_xml(b, idprefix, i=0)
+            b.longTitle { |b|
+              b.p { |b| inline_items.to_xml(b, idprefix) }
+            }
+          end
+        end
+
         class Preamble < Treetop::Runtime::SyntaxNode
           def to_xml(b, *args)
             if text_value != ""
@@ -295,12 +321,31 @@ module Slaw
             b.item(id: idprefix + num.gsub(/[()]/, '')) { |b|
               b.num(num)
               b.p { |b|
-                item_content.clauses.to_xml(b, idprefix) if respond_to? :item_content and item_content.respond_to? :clauses
+                item_content.inline_items.to_xml(b, idprefix) if respond_to? :item_content and item_content.respond_to? :inline_items
               }
             }
           end
         end
 
+        class Crossheading < Treetop::Runtime::SyntaxNode
+          @@counters = {}
+
+          def self.counters
+            @@counters
+          end
+
+          def to_xml(b, idprefix, i=0)
+            @@counters[idprefix] ||= -1
+            @@counters[idprefix] += 1
+            id = "#{idprefix}crossheading-#{@@counters[idprefix]}"
+
+            b.hcontainer(id: id, name: 'crossheading') { |b|
+              b.heading { |b|
+                inline_items.to_xml(b, idprefix)
+              }
+            }
+          end
+        end
       end
     end
   end
