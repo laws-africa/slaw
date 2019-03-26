@@ -1,6 +1,7 @@
 # encoding: UTF-8
 
 require 'slaw'
+require 'slaw/grammars/za/act_nodes'
 
 describe Slaw::ActGenerator do
   subject { Slaw::ActGenerator.new('za') }
@@ -25,6 +26,11 @@ describe Slaw::ActGenerator do
     b = ::Nokogiri::XML::Builder.new
     node.to_xml(b, *args)
     b.doc.root.to_xml(encoding: 'UTF-8')
+  end
+
+  before(:each) do
+    Slaw::Grammars::ZA::Act::Crossheading.counters.clear
+    Slaw::Grammars::ZA::Act::BlockElements.counters.clear
   end
 
   describe 'tables' do
@@ -280,7 +286,7 @@ EOS
     end
 
     it 'should ignore an escaped table' do
-      node = parse :block_paragraphs, <<EOS
+      node = parse :block_paragraph, <<EOS
 \\{|
 | r1c1
 | r1c2

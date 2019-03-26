@@ -37,24 +37,24 @@ module Slaw
         end
 
         rule body
-          children:(chapter / part / section / subsection / block_paragraphs)+ <Body>
+          children:(chapter / part / section / subsection / block_paragraph)+ <Body>
         end
 
         rule chapter
           heading:chapter_heading
-          children:(part / section / subsection / block_paragraphs)*
+          children:(part / section / subsection / block_paragraph)*
           <Chapter>
         end
 
         rule part
           heading:part_heading
-          children:(section / subsection / block_paragraphs)*
+          children:(section / subsection / block_paragraph)*
           <Part>
         end
 
         rule section
           section_title
-          children:(subsection / block_paragraphs)* <Section>
+          children:(subsection / block_paragraph)* <Section>
         end
 
         rule subsection
@@ -129,12 +129,15 @@ module Slaw
         ##########
         # blocks of content inside containers
 
-        rule block_paragraphs
+        rule block_paragraph
           crossheading / block_elements
         end
 
+        # Consecutive non-structured content. We allow many elements
+        # here so that we wrap consecutive block elements in one <content> tag,
+        # rather than multiple containers for each.
         rule block_elements
-          block_element+ <BlockParagraph>
+          block_element+ <BlockElements>
         end
 
         rule block_element

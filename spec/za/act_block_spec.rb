@@ -1,6 +1,7 @@
 # encoding: UTF-8
 
 require 'slaw'
+require 'slaw/grammars/za/act_nodes'
 
 describe Slaw::ActGenerator do
   subject { Slaw::ActGenerator.new('za') }
@@ -29,6 +30,7 @@ describe Slaw::ActGenerator do
 
   before(:each) do
     Slaw::Grammars::ZA::Act::Crossheading.counters.clear
+    Slaw::Grammars::ZA::Act::BlockElements.counters.clear
   end
 
   #-------------------------------------------------------------------------------

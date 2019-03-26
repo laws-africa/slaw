@@ -258,9 +258,17 @@ module Slaw
           end
         end
 
-        class BlockParagraph < Treetop::Runtime::SyntaxNode
+        class BlockElements < Treetop::Runtime::SyntaxNode
+          @@counters = {}
+
+          def self.counters
+            @@counters
+          end
+
           def to_xml(b, idprefix='', i=0)
-            id = "#{idprefix}paragraph-0"
+            @@counters[idprefix] ||= -1
+            @@counters[idprefix] += 1
+            id = "#{idprefix}paragraph-#{@@counters[idprefix]}"
             idprefix = "#{id}."
 
             b.paragraph(id: id) { |b|

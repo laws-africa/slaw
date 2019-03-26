@@ -91,6 +91,7 @@ You can create your own grammar by creating a gem that provides these files and 
 * Support for LONGTITLE in PREFACE
 * Remarks and references support nested inline elements
 * BREAKING: `clauses` rule renamed to `inline_elements` so as not to clash with real AKN clauses
+* BREAKING: `block_paragraphs` rule adjusted to be singular to be simpler to understand
 
 ### 2.2.0 (18 March 2019)
 
