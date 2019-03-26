@@ -130,6 +130,10 @@ module Slaw
         # blocks of content inside containers
 
         rule block_paragraphs
+          crossheading / block_elements
+        end
+
+        rule block_elements
           block_element+ <BlockParagraph>
         end
 
@@ -164,13 +168,18 @@ module Slaw
         # and is ignored. This allows escaping of section headings, etc.
 
         rule naked_statement
-          space? !(chapter_heading / part_heading / section_title / schedule_title / subsection_prefix) '\\'? clauses eol
+          space? !(chapter_heading / part_heading / section_title / schedule_title / subsection_prefix / crossheading) '\\'? clauses eol
           <NakedStatement>
         end
 
         rule pre_body_statement
           space? !(chapter_heading / part_heading / section_title / schedule_title) '\\'? clauses eol
           <NakedStatement>
+        end
+
+        rule crossheading
+          'CROSSHEADING ' clauses:clauses eol
+          <Crossheading>
         end
 
         ##########

@@ -301,6 +301,25 @@ module Slaw
           end
         end
 
+        class Crossheading < Treetop::Runtime::SyntaxNode
+          @@counters = {}
+
+          def self.counters
+            @@counters
+          end
+
+          def to_xml(b, idprefix, i=0)
+            @@counters[idprefix] ||= -1
+            @@counters[idprefix] += 1
+            id = "#{idprefix}crossheading-#{@@counters[idprefix]}"
+
+            b.hcontainer(id: id, name: 'crossheading') { |b|
+              b.heading { |b|
+                clauses.to_xml(b, idprefix)
+              }
+            }
+          end
+        end
       end
     end
   end
