@@ -28,12 +28,12 @@ module Slaw
         rule preface
           !'PREAMBLE'
           ('PREFACE'i space? eol)?
-          statements:(!'PREAMBLE' pre_body_statement)* <Preface>
+          statements:(!'PREAMBLE' preface_statement)* <Preface>
         end
 
         rule preamble
           'PREAMBLE'i space? eol
-          statements:pre_body_statement* <Preamble>
+          statements:preamble_statement* <Preamble>
         end
 
         rule body
@@ -172,7 +172,13 @@ module Slaw
           <NakedStatement>
         end
 
-        rule pre_body_statement
+        rule preface_statement
+          space? !(chapter_heading / part_heading / section_title / schedule_title)
+          content:(longtitle / ('\\'? clauses:clauses eol))
+          <PrefaceStatement>
+        end
+
+        rule preamble_statement
           space? !(chapter_heading / part_heading / section_title / schedule_title) '\\'? clauses eol
           <NakedStatement>
         end
@@ -180,6 +186,11 @@ module Slaw
         rule crossheading
           'CROSSHEADING ' clauses:clauses eol
           <Crossheading>
+        end
+
+        rule longtitle
+          'LONGTITLE ' clauses:clauses eol
+          <LongTitle>
         end
 
         ##########

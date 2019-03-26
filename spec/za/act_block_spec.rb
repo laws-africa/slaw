@@ -1991,4 +1991,74 @@ EOS
 </hcontainer>'
     end
   end
+
+  #-------------------------------------------------------------------------------
+  # longTitle
+
+  context 'longtitle' do
+    it 'should handle a basic longtitle' do
+      node = parse :longtitle, "LONGTITLE something [[remark]] [link](/foo/bar)\n"
+      to_xml(node, '').should == '<longTitle>
+  <p>something <remark status="editorial">[remark]</remark> <ref href="/foo/bar">link</ref></p>
+</longTitle>'
+    end
+
+    it 'should handle a longtitle in a preface' do
+      node = parse :act, <<EOS
+PREFACE
+
+Blah blah
+
+LONGTITLE a long title
+
+\\LONGTITLE escaped
+
+Enacting clause
+
+1. Section
+(1) hello
+EOS
+
+      to_xml(node.preface).should == '<preface>
+  <p>Blah blah</p>
+  <longTitle>
+    <p>a long title</p>
+  </longTitle>
+  <p>LONGTITLE escaped</p>
+  <p>Enacting clause</p>
+</preface>'
+    end
+
+    it 'should ignore a longtitle in preamble' do
+      node = parse :preamble, <<EOS
+PREAMBLE
+
+LONGTITLE a long title
+EOS
+
+      to_xml(node).should == '<preamble>
+  <p>LONGTITLE a long title</p>
+</preamble>'
+    end
+
+    it 'should ignore a longtitle in body' do
+      node = parse :body, <<EOS
+1. Section
+
+LONGTITLE a long title
+EOS
+
+      to_xml(node).should == '<body>
+  <section id="section-1">
+    <num>1.</num>
+    <heading>Section</heading>
+    <paragraph id="section-1.paragraph-0">
+      <content>
+        <p>LONGTITLE a long title</p>
+      </content>
+    </paragraph>
+  </section>
+</body>'
+    end
+  end
 end
