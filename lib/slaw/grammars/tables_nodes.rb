@@ -59,12 +59,12 @@ module Slaw
       class TableLine < Treetop::Runtime::SyntaxNode
         # line of table content
         def to_xml(b, i, tail)
-          clauses.to_xml(b) unless clauses.empty?
+          inline_items.to_xml(b) unless inline_items.empty?
 
           # add trailing newlines.
           #   for the first line, eat whitespace at the start
           #   for the last line, eat whitespace at the end
-          if not tail and (i > 0 or not clauses.empty?)
+          if not tail and (i > 0 or not inline_items.empty?)
             eol.text_value.count("\n").times { b.eol }
           end
         end

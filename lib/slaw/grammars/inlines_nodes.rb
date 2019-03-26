@@ -3,15 +3,15 @@ module Slaw
     module Inlines
       class NakedStatement < Treetop::Runtime::SyntaxNode
         def to_xml(b, idprefix, i=0)
-          b.p { |b| clauses.to_xml(b, idprefix) } if clauses
+          b.p { |b| inline_items.to_xml(b, idprefix) } if inline_items
         end
 
         def content
-          clauses
+          inline_items
         end
       end
 
-      class Clauses < Treetop::Runtime::SyntaxNode
+      class InlineItems < Treetop::Runtime::SyntaxNode
         def to_xml(b, idprefix=nil)
           for e in elements
             e.to_xml(b, idprefix)

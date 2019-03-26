@@ -96,7 +96,7 @@ module Slaw
             if longtitle
               longtitle.to_xml(b, idprefix)
             else
-              b.p { |b| clauses.to_xml(b, idprefix) }
+              b.p { |b| inline_items.to_xml(b, idprefix) }
             end
           end
 
@@ -104,15 +104,15 @@ module Slaw
             self.content if self.content.is_a? LongTitle
           end
 
-          def clauses
-            content.clauses if content.respond_to? :clauses
+          def inline_items
+            content.inline_items if content.respond_to? :inline_items
           end
         end
 
         class LongTitle < Treetop::Runtime::SyntaxNode
           def to_xml(b, idprefix, i=0)
             b.longTitle { |b|
-              b.p { |b| clauses.to_xml(b, idprefix) }
+              b.p { |b| inline_items.to_xml(b, idprefix) }
             }
           end
         end
@@ -321,7 +321,7 @@ module Slaw
             b.item(id: idprefix + num.gsub(/[()]/, '')) { |b|
               b.num(num)
               b.p { |b|
-                item_content.clauses.to_xml(b, idprefix) if respond_to? :item_content and item_content.respond_to? :clauses
+                item_content.inline_items.to_xml(b, idprefix) if respond_to? :item_content and item_content.respond_to? :inline_items
               }
             }
           end
@@ -341,7 +341,7 @@ module Slaw
 
             b.hcontainer(id: id, name: 'crossheading') { |b|
               b.heading { |b|
-                clauses.to_xml(b, idprefix)
+                inline_items.to_xml(b, idprefix)
               }
             }
           end

@@ -1960,20 +1960,20 @@ EOS
   end
 
   #-------------------------------------------------------------------------------
-  # clauses
+  # inline_items
 
-  context 'clauses' do
+  context 'inline_items' do
     it 'should handle a simple clause' do
-      node = parse :clauses, "simple text"
+      node = parse :inline_items, "simple text"
       node.text_value.should == "simple text"
     end
 
     it 'should handle a clause with a remark' do
-      node = parse :clauses, "simple [[remark]]. text"
+      node = parse :inline_items, "simple [[remark]]. text"
       node.text_value.should == "simple [[remark]]. text"
       node.elements[7].is_a?(Slaw::Grammars::ZA::Act::Remark).should be_true
 
-      node = parse :clauses, "simple [[remark]][[another]] text"
+      node = parse :inline_items, "simple [[remark]][[another]] text"
       node.text_value.should == "simple [[remark]][[another]] text"
       node.elements[7].is_a?(Slaw::Grammars::ZA::Act::Remark).should be_true
       node.elements[7].is_a?(Slaw::Grammars::ZA::Act::Remark).should be_true
@@ -1984,7 +1984,7 @@ EOS
   # crossheadings
 
   context 'crossheadings' do
-    it 'should handle a clauses in crossheadings' do
+    it 'should handle a inline_items in crossheadings' do
       node = parse :crossheading, "CROSSHEADING something [[remark]] [link](/foo/bar)\n"
       to_xml(node, '').should == '<hcontainer id="crossheading-0" name="crossheading">
   <heading>something <remark status="editorial">[remark]</remark> <ref href="/foo/bar">link</ref></heading>

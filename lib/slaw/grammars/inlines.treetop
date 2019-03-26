@@ -10,14 +10,14 @@ module Slaw
       # inline content
 
       rule inline_statement
-        space? '\\'? clauses eol
+        space? '\\'? inline_items eol
         <NakedStatement>
       end
 
       # one or more words, allowing inline elements
       # TODO: this is badly named, a better name would be inline_items
-      rule clauses
-        inline_item+ <Clauses>
+      rule inline_items
+        inline_item+ <InlineItems>
       end
 
       rule inline_item
