@@ -26,7 +26,7 @@ module Slaw
       end
 
       rule remark
-        '[[' content:(ref / (!']]' .))+ ']]'
+        '[[' content:(!']]' inline_item)+ ']]'
         <Remark>
       end
 

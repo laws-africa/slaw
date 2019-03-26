@@ -24,11 +24,7 @@ module Slaw
           b.remark(status: 'editorial') do |b|
             b.text('[')
             for e in content.elements
-              if e.respond_to? :to_xml
-                e.to_xml(b, idprefix)
-              else
-                b.text(e.text_value)
-              end
+              e.inline_item.to_xml(b, idprefix)
             end
             b.text(']')
           end

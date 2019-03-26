@@ -185,6 +185,17 @@ EOS
   </doc>
 </component>'
     end
+
+    it 'should handle other inline content' do
+      node = parse :block_paragraphs, <<EOS
+      Remark [[with **bold** and //italics// and [a ref](/a/b)]].
+EOS
+      to_xml(node, "").should == '<paragraph id="paragraph-0">
+  <content>
+    <p>Remark <remark status="editorial">[with <b>bold</b> and <i>italics</i> and <ref href="/a/b">a ref</ref>]</remark>.</p>
+  </content>
+</paragraph>'
+    end
   end
 
   #-------------------------------------------------------------------------------
