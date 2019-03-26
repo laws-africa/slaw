@@ -14,11 +14,7 @@ module Slaw
       class Clauses < Treetop::Runtime::SyntaxNode
         def to_xml(b, idprefix=nil)
           for e in elements
-            if e.respond_to? :to_xml
-              e.to_xml(b, idprefix)
-            else
-              b.text(e.text_value)
-            end
+            e.to_xml(b, idprefix)
           end
         end
       end
@@ -47,9 +43,39 @@ module Slaw
         end
       end
 
+      class InlineItem < Treetop::Runtime::SyntaxNode
+        def to_xml(b, idprefix)
+          b.text(text_value)
+        end
+      end
+
       class Ref < Treetop::Runtime::SyntaxNode
         def to_xml(b, idprefix)
-          b.ref(content.text_value, href: href.text_value)
+          b.ref(href: href.text_value) { |b|
+            for e in content.elements
+              e.inline_item.to_xml(b, idprefix)
+            end
+          }
+        end
+      end
+
+      class Bold < Treetop::Runtime::SyntaxNode
+        def to_xml(b, idprefix)
+          b.b { |b|
+            for e in content.elements
+              e.inline_item.to_xml(b, idprefix)
+            end
+          }
+        end
+      end
+
+      class Italics < Treetop::Runtime::SyntaxNode
+        def to_xml(b, idprefix)
+          b.i { |b|
+            for e in content.elements
+              e.inline_item.to_xml(b, idprefix)
+            end
+          }
         end
       end
 

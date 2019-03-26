@@ -27,7 +27,7 @@ module Slaw
         def alias
           if not schedule_title.title.text_value.blank?
             # plain-text elements only
-            schedule_title.title.elements.select { |x| !x.respond_to? :to_xml }.map { |x| x.text_value }.join('').strip
+            schedule_title.title.elements.select { |x| x.instance_of? ::Slaw::Grammars::Inlines::InlineItem }.map { |x| x.text_value }.join('').strip
           elsif num
             "Schedule #{num}"
           else
