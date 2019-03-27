@@ -77,7 +77,7 @@ EOS
     <mainBody>
       <hcontainer id="schedule" name="schedule">
         <heading>Schedule</heading>
-        <paragraph id="schedule.paragraph-0">
+        <paragraph id="schedule.paragraph0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
           </content>
@@ -186,7 +186,7 @@ EOS
         <hcontainer id="schedule3" name="schedule">
           <heading>Schedule 3</heading>
           <subheading>Another Title</subheading>
-          <paragraph id="schedule3.paragraph-0">
+          <paragraph id="schedule3.paragraph0">
             <content>
               <p>Baz</p>
               <p>Boom</p>
@@ -244,7 +244,7 @@ EOS
       <hcontainer id="schedule1" name="schedule">
         <heading>First Schedule</heading>
         <subheading>Schedule Heading</subheading>
-        <paragraph id="schedule1.paragraph-0">
+        <paragraph id="schedule1.paragraph0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
           </content>
@@ -305,7 +305,7 @@ EOS
       <hcontainer id="schedule1" name="schedule">
         <heading>First Schedule</heading>
         <subheading>Schedule Heading</subheading>
-        <paragraph id="schedule1.paragraph-0">
+        <paragraph id="schedule1.paragraph0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
           </content>
@@ -364,7 +364,7 @@ EOS
     <mainBody>
       <hcontainer id="firstschedule" name="schedule">
         <heading>First Schedule</heading>
-        <paragraph id="firstschedule.paragraph-0">
+        <paragraph id="firstschedule.paragraph0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
           </content>
@@ -425,7 +425,7 @@ EOS
     <mainBody>
       <hcontainer id="schedule1" name="schedule">
         <heading>Schedule 1</heading>
-        <paragraph id="schedule1.paragraph-0">
+        <paragraph id="schedule1.paragraph0">
           <content>
             <p>Other than as is set out hereinbelow, no signs other than locality bound signs, temporary signs including loose portable sign, estate agents signs, newspaper headline posters and posters (the erection of which must comply with the appropriate schedules pertinent thereto) shall be erected on Municipal owned land.</p>
           </content>
@@ -499,7 +499,7 @@ EOS
         <part id="part-I">
           <num>I</num>
           <heading>Form of authentication statement</heading>
-          <paragraph id="part-I.paragraph-0">
+          <paragraph id="part-I.paragraph0">
             <content>
               <p>This printed impression has been carefully compared by me with the bill which was passed by Parliament and found by me to be a true copy of the bill.</p>
             </content>
@@ -508,7 +508,7 @@ EOS
         <part id="part-II">
           <num>II</num>
           <heading>Form of statement of the President’s assent.</heading>
-          <paragraph id="part-II.paragraph-0">
+          <paragraph id="part-II.paragraph0">
             <content>
               <p>I signify my assent to the bill and a whole bunch of other stuff.</p>
             </content>
@@ -573,7 +573,7 @@ EOS
     <mainBody>
       <hcontainer id="schedule" name="schedule">
         <heading>Schedule</heading>
-        <paragraph id="schedule.paragraph-0">
+        <paragraph id="schedule.paragraph0">
           <content>
             <p>Subject to approval in terms of this By-Law.</p>
             <p>Schedule another</p>
@@ -626,7 +626,7 @@ EOS
       <hcontainer id="firstschedule" name="schedule">
         <heading>First Schedule <remark status="editorial">[remark]</remark></heading>
         <subheading>Subheading <remark status="editorial">[another]</remark></subheading>
-        <paragraph id="firstschedule.paragraph-0">
+        <paragraph id="firstschedule.paragraph0">
           <content>
             <p>Subject to approval in terms of this By-Law.</p>
           </content>

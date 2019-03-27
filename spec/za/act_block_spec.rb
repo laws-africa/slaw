@@ -47,7 +47,7 @@ Hello there
 CROSSHEADING crossheading
 EOS
       to_xml(node).should == '<body>
-  <paragraph id="paragraph-0">
+  <paragraph id="paragraph0">
     <content>
       <p>Some content before the section</p>
     </content>
@@ -55,7 +55,7 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph-0">
+    <paragraph id="section-1.paragraph0">
       <content>
         <p>Hello there</p>
       </content>
@@ -82,15 +82,15 @@ Hello there
 CROSSHEADING crossheading
 EOS
       to_xml(node).should == '<body>
-  <paragraph id="paragraph-0">
+  <paragraph id="paragraph0">
     <content>
       <p>Some content before the section</p>
-      <blockList id="paragraph-0.list1">
-        <item id="paragraph-0.list1.a">
+      <blockList id="paragraph0.list1">
+        <item id="paragraph0.list1.a">
           <num>(a)</num>
           <p>foo</p>
         </item>
-        <item id="paragraph-0.list1.b">
+        <item id="paragraph0.list1.b">
           <num>(b)</num>
           <p>bar</p>
         </item>
@@ -103,7 +103,7 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph-0">
+    <paragraph id="section-1.paragraph0">
       <content>
         <p>Hello there</p>
       </content>
@@ -125,7 +125,7 @@ EOS
 \\Chapter 2 ignored
 EOS
       to_xml(node).should == '<body>
-  <paragraph id="paragraph-0">
+  <paragraph id="paragraph0">
     <content>
       <p>1. ignored</p>
       <p>CROSSHEADING crossheading</p>
@@ -134,7 +134,7 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph-0">
+    <paragraph id="section-1.paragraph0">
       <content>
         <p>Chapter 2 ignored</p>
       </content>
@@ -161,7 +161,7 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph-0">
+    <paragraph id="section-1.paragraph0">
       <content>
         <p>Hello there</p>
       </content>
@@ -182,7 +182,7 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph-0">
+    <paragraph id="section-1.paragraph0">
       <content>
         <p>Hello there</p>
       </content>
@@ -208,7 +208,7 @@ EOS
   <hcontainer id="chapter-2.crossheading-0" name="crossheading">
     <heading>crossheading</heading>
   </hcontainer>
-  <paragraph id="chapter-2.paragraph-0">
+  <paragraph id="chapter-2.paragraph0">
     <content>
       <p>Some lines at the start of the chapter.</p>
     </content>
@@ -231,7 +231,7 @@ EOS
       to_xml(node).should == '<chapter id="chapter-2">
   <num>2</num>
   <heading>The Chapter Heading</heading>
-  <paragraph id="chapter-2.paragraph-0">
+  <paragraph id="chapter-2.paragraph0">
     <content>
       <p>Some lines at the start of the chapter.</p>
     </content>
@@ -239,7 +239,7 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section 1</heading>
-    <paragraph id="section-1.paragraph-0">
+    <paragraph id="section-1.paragraph0">
       <content>
         <p>Section text.</p>
       </content>
@@ -261,7 +261,7 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph-0">
+    <paragraph id="section-1.paragraph0">
       <content>
         <p>Hello there</p>
       </content>
@@ -298,9 +298,9 @@ EOS
       to_xml(node).should == '<chapter id="chapter-2">
   <num>2</num>
   <heading>The Chapter</heading>
-  <paragraph id="chapter-2.paragraph-0">
+  <paragraph id="chapter-2.paragraph0">
     <content>
-      <table id="chapter-2.paragraph-0.table0">
+      <table id="chapter-2.paragraph0.table0">
         <tr>
           <td>
             <p>foo</p>
@@ -325,7 +325,7 @@ EOS
       to_xml(node).should == '<chapter id="chapter-1">
   <num>1</num>
   <heading>The Chapter</heading>
-  <paragraph id="chapter-1.paragraph-0">
+  <paragraph id="chapter-1.paragraph0">
     <content>
       <p>Stuff</p>
       <p>Chapter 2 - Ignored</p>
@@ -359,7 +359,7 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph-0">
+    <paragraph id="section-1.paragraph0">
       <content>
         <p>Hello there</p>
       </content>
@@ -380,7 +380,7 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph-0">
+    <paragraph id="section-1.paragraph0">
       <content>
         <p>Hello there</p>
       </content>
@@ -401,7 +401,7 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph-0">
+    <paragraph id="section-1.paragraph0">
       <content>
         <p>Hello there</p>
       </content>
@@ -422,7 +422,7 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph-0">
+    <paragraph id="section-1.paragraph0">
       <content>
         <p>Hello there</p>
       </content>
@@ -444,7 +444,7 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph-0">
+    <paragraph id="section-1.paragraph0">
       <content>
         <p>Hello there</p>
       </content>
@@ -467,7 +467,7 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading/>
-    <paragraph id="section-1.paragraph-0">
+    <paragraph id="section-1.paragraph0">
       <content>
         <p>No owner or occupier of any shop or business premises or vacant land adjoining a shop or business premises shall cause a health nuisance.</p>
       </content>
@@ -491,7 +491,7 @@ EOS
       to_xml(node).should == '<part id="part-2">
   <num>2</num>
   <heading>The Part Heading</heading>
-  <paragraph id="part-2.paragraph-0">
+  <paragraph id="part-2.paragraph0">
     <content>
       <p>Some text before the part.</p>
     </content>
@@ -499,7 +499,7 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph-0">
+    <paragraph id="section-1.paragraph0">
       <content>
         <p>Hello there</p>
       </content>
@@ -534,7 +534,7 @@ EOS
   <part id="part-2">
     <num>2</num>
     <heading>The Part Heading</heading>
-    <paragraph id="part-2.paragraph-0">
+    <paragraph id="part-2.paragraph0">
       <content>
         <p>Part 3 ignored</p>
       </content>
@@ -1256,14 +1256,14 @@ EOS
       s.should == '<section id="section-1">
   <num>1.</num>
   <heading>Section</heading>
-  <paragraph id="section-1.paragraph-0">
+  <paragraph id="section-1.paragraph0">
     <content>
-      <blockList id="section-1.paragraph-0.list0">
-        <item id="section-1.paragraph-0.list0.a">
+      <blockList id="section-1.paragraph0.list0">
+        <item id="section-1.paragraph0.list0.a">
           <num>(a)</num>
           <p>first</p>
         </item>
-        <item id="section-1.paragraph-0.list0.b">
+        <item id="section-1.paragraph0.list0.b">
           <num>(b)</num>
           <p>second</p>
         </item>
@@ -1292,15 +1292,15 @@ EOS
       to_xml(node, "").should == '<section id="section-1">
   <num>1.</num>
   <heading>Section</heading>
-  <paragraph id="section-1.paragraph-0">
+  <paragraph id="section-1.paragraph0">
     <content>
       <p>naked statement (c) blah</p>
-      <blockList id="section-1.paragraph-0.list1">
-        <item id="section-1.paragraph-0.list1.a">
+      <blockList id="section-1.paragraph0.list1">
+        <item id="section-1.paragraph0.list1.a">
           <num>(a)</num>
           <p>foo</p>
         </item>
-        <item id="section-1.paragraph-0.list1.b">
+        <item id="section-1.paragraph0.list1.b">
           <num>(b)</num>
           <p>bar</p>
         </item>
@@ -1364,7 +1364,7 @@ EOS
       to_xml(node, "").should == '<section id="section-1">
   <num>1.</num>
   <heading>Section</heading>
-  <paragraph id="section-1.paragraph-0">
+  <paragraph id="section-1.paragraph0">
     <content>
       <p>1. ignored</p>
       <p>2. another line</p>
@@ -1450,7 +1450,7 @@ EOS
     <mainBody>
       <hcontainer id="schedule" name="schedule">
         <heading>Schedule</heading>
-        <paragraph id="schedule.paragraph-0">
+        <paragraph id="schedule.paragraph0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
           </content>
@@ -1559,7 +1559,7 @@ EOS
         <hcontainer id="schedule3" name="schedule">
           <heading>Schedule 3</heading>
           <subheading>Another Title</subheading>
-          <paragraph id="schedule3.paragraph-0">
+          <paragraph id="schedule3.paragraph0">
             <content>
               <p>Baz</p>
               <p>Boom</p>
@@ -1617,7 +1617,7 @@ EOS
       <hcontainer id="schedule1" name="schedule">
         <heading>First Schedule</heading>
         <subheading>Schedule Heading</subheading>
-        <paragraph id="schedule1.paragraph-0">
+        <paragraph id="schedule1.paragraph0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
           </content>
@@ -1678,7 +1678,7 @@ EOS
       <hcontainer id="schedule1" name="schedule">
         <heading>First Schedule</heading>
         <subheading>Schedule Heading</subheading>
-        <paragraph id="schedule1.paragraph-0">
+        <paragraph id="schedule1.paragraph0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
           </content>
@@ -1737,7 +1737,7 @@ EOS
     <mainBody>
       <hcontainer id="firstschedule" name="schedule">
         <heading>First Schedule</heading>
-        <paragraph id="firstschedule.paragraph-0">
+        <paragraph id="firstschedule.paragraph0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
           </content>
@@ -1798,7 +1798,7 @@ EOS
     <mainBody>
       <hcontainer id="schedule1" name="schedule">
         <heading>Schedule 1</heading>
-        <paragraph id="schedule1.paragraph-0">
+        <paragraph id="schedule1.paragraph0">
           <content>
             <p>Other than as is set out hereinbelow, no signs other than locality bound signs, temporary signs including loose portable sign, estate agents signs, newspaper headline posters and posters (the erection of which must comply with the appropriate schedules pertinent thereto) shall be erected on Municipal owned land.</p>
           </content>
@@ -1872,7 +1872,7 @@ EOS
         <part id="part-I">
           <num>I</num>
           <heading>Form of authentication statement</heading>
-          <paragraph id="part-I.paragraph-0">
+          <paragraph id="part-I.paragraph0">
             <content>
               <p>This printed impression has been carefully compared by me with the bill which was passed by Parliament and found by me to be a true copy of the bill.</p>
             </content>
@@ -1881,7 +1881,7 @@ EOS
         <part id="part-II">
           <num>II</num>
           <heading>Form of statement of the President’s assent.</heading>
-          <paragraph id="part-II.paragraph-0">
+          <paragraph id="part-II.paragraph0">
             <content>
               <p>I signify my assent to the bill and a whole bunch of other stuff.</p>
             </content>
@@ -1946,7 +1946,7 @@ EOS
     <mainBody>
       <hcontainer id="schedule" name="schedule">
         <heading>Schedule</heading>
-        <paragraph id="schedule.paragraph-0">
+        <paragraph id="schedule.paragraph0">
           <content>
             <p>Subject to approval in terms of this By-Law.</p>
             <p>Schedule another</p>
@@ -2054,7 +2054,7 @@ EOS
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph-0">
+    <paragraph id="section-1.paragraph0">
       <content>
         <p>LONGTITLE a long title</p>
       </content>

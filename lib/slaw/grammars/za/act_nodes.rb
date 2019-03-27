@@ -268,7 +268,7 @@ module Slaw
           def to_xml(b, idprefix='', i=0)
             @@counters[idprefix] ||= -1
             @@counters[idprefix] += 1
-            id = "#{idprefix}paragraph-#{@@counters[idprefix]}"
+            id = "#{idprefix}paragraph#{@@counters[idprefix]}"
             idprefix = "#{id}."
 
             b.paragraph(id: id) { |b|

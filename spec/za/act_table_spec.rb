@@ -183,10 +183,10 @@ EOS
       xml.should == '<section id="section-10">
   <num>10.</num>
   <heading>A section title</heading>
-  <paragraph id="section-10.paragraph-0">
+  <paragraph id="section-10.paragraph0">
     <content>
       <p>Heres a table:</p>
-      <table id="section-10.paragraph-0.table1">
+      <table id="section-10.paragraph0.table1">
         <tr>
           <td>
             <p>r1c1</p>
@@ -256,10 +256,10 @@ EOS
     <mainBody>
       <hcontainer id="schedule1" name="schedule">
         <heading>Schedule 1</heading>
-        <paragraph id="schedule1.paragraph-0">
+        <paragraph id="schedule1.paragraph0">
           <content>
             <p>Heres a table:</p>
-            <table id="schedule1.paragraph-0.table1">
+            <table id="schedule1.paragraph0.table1">
               <tr>
                 <td>
                   <p>r1c1</p>
@@ -293,7 +293,7 @@ EOS
 |}
 EOS
 
-      to_xml(node).should == '<paragraph id="paragraph-0">
+      to_xml(node).should == '<paragraph id="paragraph0">
   <content>
     <p>{|</p>
     <p>| r1c1</p>
