@@ -77,8 +77,20 @@ module Slaw
       # @return [String] an XML string
       def parse_text(text, parse_options={})
         text = preprocess(text)
+
+        require 'uri'
+        # use %-encoding to escape everything outside of the US_ASCII range,
+        # including encoding % itself.
+        unsafe = (0..126).to_a - ['%'.ord]
+        unsafe = unsafe.map { |i| '\u%04x' % i }
+        unsafe = Regexp.new('[^' + unsafe.join('') + ']')
+
+        text = URI::DEFAULT_PARSER.escape(text, unsafe)
+
         tree = text_to_syntax_tree(text, parse_options)
-        xml_from_syntax_tree(tree)
+        xml = xml_from_syntax_tree(tree)
+
+        URI.unescape(xml)
       end
 
       # Parse plain text into a syntax tree.
