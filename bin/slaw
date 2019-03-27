@@ -100,3 +100,6 @@ class SlawCLI < Thor
 end
 
 SlawCLI.start(ARGV)
+# Nokogiri can take 5-10 seconds to clean up and we don't care, just
+# exit now
+exit! 0
