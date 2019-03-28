@@ -16,6 +16,8 @@ module Slaw
 
         ########
         # major containers
+        #
+        # These are AKN's heirarchical containers which wrap actual content.
 
         rule act
           empty_line*
@@ -37,24 +39,24 @@ module Slaw
         end
 
         rule body
-          children:(chapter / part / section / subsection / block_paragraph)+ <Body>
+          children:(chapter / part / section / subsection / generic_container)+ <Body>
         end
 
         rule chapter
           heading:chapter_heading
-          children:(part / section / subsection / block_paragraph)*
+          children:(part / section / subsection / generic_container)*
           <Chapter>
         end
 
         rule part
           heading:part_heading
-          children:(section / subsection / block_paragraph)*
+          children:(section / subsection / generic_container)*
           <Part>
         end
 
         rule section
           section_title
-          children:(subsection / block_paragraph)* <Section>
+          children:(subsection / generic_container)* <Section>
         end
 
         rule subsection
@@ -64,6 +66,22 @@ module Slaw
           # eg: (2)
           eol?
           children:block_element* <Subsection>
+        end
+
+        rule generic_container
+          crossheading / block_elements
+        end
+
+        rule crossheading
+          'CROSSHEADING ' inline_items:inline_items eol
+          <Crossheading>
+        end
+
+        # Consecutive non-structured content. We allow many elements
+        # here so that we wrap consecutive block elements in one <content> tag,
+        # rather than multiple containers for each.
+        rule block_elements
+          block_element+ <BlockElements>
         end
 
         ##########
@@ -129,17 +147,6 @@ module Slaw
         ##########
         # blocks of content inside containers
 
-        rule block_paragraph
-          crossheading / block_elements
-        end
-
-        # Consecutive non-structured content. We allow many elements
-        # here so that we wrap consecutive block elements in one <content> tag,
-        # rather than multiple containers for each.
-        rule block_elements
-          block_element+ <BlockElements>
-        end
-
         rule block_element
           (table / blocklist / naked_statement)
         end
@@ -184,11 +191,6 @@ module Slaw
         rule preamble_statement
           space? !(chapter_heading / part_heading / section_title / schedule_title) '\\'? inline_items eol
           <NakedStatement>
-        end
-
-        rule crossheading
-          'CROSSHEADING ' inline_items:inline_items eol
-          <Crossheading>
         end
 
         rule longtitle

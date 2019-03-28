@@ -286,7 +286,7 @@ EOS
     end
 
     it 'should ignore an escaped table' do
-      node = parse :block_paragraph, <<EOS
+      node = parse :generic_container, <<EOS
 \\{|
 | r1c1
 | r1c2

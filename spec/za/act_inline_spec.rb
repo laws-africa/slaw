@@ -38,7 +38,7 @@ describe Slaw::ActGenerator do
 
   describe 'remark' do
     it 'should handle a plain remark' do
-      node = parse :block_paragraph, <<EOS
+      node = parse :generic_container, <<EOS
       [[Section 2 amended by Act 23 of 2004]]
 EOS
       to_xml(node, "").should == '<paragraph id="paragraph0">
@@ -51,7 +51,7 @@ EOS
     end
 
     it 'should handle an inline remark at the end of a sentence' do
-      node = parse :block_paragraph, <<EOS
+      node = parse :generic_container, <<EOS
       This statement has an inline remark. [[Section 2 amended by Act 23 of 2004]]
 EOS
       to_xml(node, "").should == '<paragraph id="paragraph0">
@@ -74,7 +74,7 @@ EOS
     end
 
     it 'should handle many inline remarks' do
-      node = parse :block_paragraph, <<EOS
+      node = parse :generic_container, <<EOS
       This statement has an inline remark. [[Section 2 amended by Act 23 of 2004]]. And now some more. [[Another remark]] [[and another]]
 EOS
       to_xml(node, "").should == '<paragraph id="paragraph0">
@@ -193,7 +193,7 @@ EOS
     end
 
     it 'should handle other inline content' do
-      node = parse :block_paragraph, <<EOS
+      node = parse :generic_container, <<EOS
       Remark [[with **bold** and //italics// and [a ref](/a/b)]].
 EOS
       to_xml(node, "").should == '<paragraph id="paragraph0">
@@ -209,7 +209,7 @@ EOS
 
   describe 'ref' do
     it 'should handle a plain ref' do
-      node = parse :block_paragraph, <<EOS
+      node = parse :generic_container, <<EOS
       Hello [there](/za/act/123) friend.
 EOS
       to_xml(node, "").should == '<paragraph id="paragraph0">
@@ -220,7 +220,7 @@ EOS
     end
 
     it 'should work many on a line' do
-      node = parse :block_paragraph, <<EOS
+      node = parse :generic_container, <<EOS
       Hello [there](/za/act/123) friend [and](http://foo.bar.com/with space) you too.
 EOS
       to_xml(node, "").should == '<paragraph id="paragraph0">
@@ -231,7 +231,7 @@ EOS
     end
 
     it 'should handle brackets' do
-      node = parse :block_paragraph, <<EOS
+      node = parse :generic_container, <<EOS
       Hello ([there](/za/act/123)).
 EOS
       to_xml(node, "").should == '<paragraph id="paragraph0">
@@ -242,7 +242,7 @@ EOS
     end
 
     it 'should handle many clauses on a line' do
-      node = parse :block_paragraph, <<EOS
+      node = parse :generic_container, <<EOS
       Hello [there](/za/act/123)[[remark one]] my[friend](/za) [[remark 2]][end](/foo).
 EOS
       to_xml(node, "").should == '<paragraph id="paragraph0">
@@ -253,7 +253,7 @@ EOS
     end
 
     it 'text should not cross end of line' do
-      node = parse :block_paragraph, <<EOS
+      node = parse :generic_container, <<EOS
       Hello [there
       
       my](/za/act/123) friend.
@@ -267,7 +267,7 @@ EOS
     end
 
     it 'href should not cross end of line' do
-      node = parse :block_paragraph, <<EOS
+      node = parse :generic_container, <<EOS
       Hello [there](/za/act
       /123) friend.
 EOS
@@ -280,7 +280,7 @@ EOS
     end
 
     it 'href should handle refs in a list' do
-      node = parse :block_paragraph, <<EOS
+      node = parse :generic_container, <<EOS
       2.18.1 a traffic officer appointed in terms of section 3 of the Road Traffic [Act, No. 29 of 1989](/za/act/1989/29) or section 3A of the National Road Traffic [Act No. 93 of 1996](/za/act/1996/93) as the case may be;
 EOS
       to_xml(node, "").should == '<paragraph id="paragraph0">
@@ -296,7 +296,7 @@ EOS
     end
 
     it 'should handle a link in an inline remark' do
-      node = parse :block_paragraph, <<EOS
+      node = parse :generic_container, <<EOS
       This statement has [[a [link in](/foo/bar) a remark]]
       This statement has [[[a link in](/foo/bar) a remark]]
       This statement has [[a [link in a remark](/foo/bar)]]
@@ -316,7 +316,7 @@ EOS
 
   describe 'images' do
     it 'should handle a simple image' do
-      node = parse :block_paragraph, <<EOS
+      node = parse :generic_container, <<EOS
       Hello ![title](media/foo.png) friend.
 EOS
       to_xml(node, "").should == '<paragraph id="paragraph0">
@@ -327,7 +327,7 @@ EOS
     end
 
     it 'should work many on a line' do
-      node = parse :block_paragraph, <<EOS
+      node = parse :generic_container, <<EOS
       Hello ![title](media/foo.png) friend and ![](media/bar.png) a second.
 EOS
       to_xml(node, "").should == '<paragraph id="paragraph0">
@@ -362,7 +362,7 @@ EOS
 
   describe 'bold' do
     it 'should handle simple bold' do
-      node = parse :block_paragraph, <<EOS
+      node = parse :generic_container, <<EOS
       Hello **something bold** foo
 EOS
       to_xml(node, "").should == '<paragraph id="paragraph0">
@@ -373,7 +373,7 @@ EOS
     end
 
     it 'should handle complex bold' do
-      node = parse :block_paragraph, <<EOS
+      node = parse :generic_container, <<EOS
       A [**link**](/a/b) with bold
       This is **bold with [a link](/a/b)** end
       This is **bold //italics [a link](/a/b)//** end
@@ -392,7 +392,7 @@ EOS
     end
 
     it 'should not mistake bold' do
-      node = parse :block_paragraph, <<EOS
+      node = parse :generic_container, <<EOS
       Hello **something
       New line**
       **New line
@@ -421,7 +421,7 @@ EOS
 
   describe 'italics' do
     it 'should handle simple italics' do
-      node = parse :block_paragraph, <<EOS
+      node = parse :generic_container, <<EOS
       Hello //something italics// foo
 EOS
       to_xml(node, "").should == '<paragraph id="paragraph0">
@@ -432,7 +432,7 @@ EOS
     end
 
     it 'should handle complex italics' do
-      node = parse :block_paragraph, <<EOS
+      node = parse :generic_container, <<EOS
       A [//link//](/a/b) with italics
       This is //italics with [a link](/a/b)// end
       A //italics**bold//**
@@ -453,7 +453,7 @@ EOS
     end
 
     it 'should not mistake italics' do
-      node = parse :block_paragraph, <<EOS
+      node = parse :generic_container, <<EOS
       Hello //something
       New line//
       //New line
