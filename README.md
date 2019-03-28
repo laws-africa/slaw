@@ -1,4 +1,4 @@
-# Slaw [![Build Status](https://travis-ci.org/longhotsummer/slaw.svg)](http://travis-ci.org/longhotsummer/slaw)
+# Slaw [![Build Status](https://travis-ci.org/longhotsummer/slaw.svg)](http://travis-ci.org/longhotsummer/slaw) [![Gem Version](https://badge.fury.io/rb/slaw.svg)](https://badge.fury.io/rb/slaw)
 
 Slaw is a lightweight library for generating Akoma Ntoso 2.0 Act XML from plain text documents.
 It is used to power [Indigo](https://github.com/OpenUpSA/indigo) and uses grammars developed for the legal
