@@ -84,7 +84,7 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
-### 3.0.0 (?)
+### 3.0.0 (28 March 2019)
 
 * Inline bold and italics
 * Support for CROSSHEADING elements using an empty hcontainer until we support AKN 3.0
