@@ -102,4 +102,6 @@ end
 SlawCLI.start(ARGV)
 # Nokogiri can take 5-10 seconds to clean up and we don't care, just
 # exit now
+STDOUT.flush
+STDERR.flush
 exit! 0
