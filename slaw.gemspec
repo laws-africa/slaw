@@ -18,12 +18,12 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "rake", "~> 10.3.1"
-  spec.add_development_dependency "rspec", "~> 2.14.1"
+  spec.add_development_dependency "rake", "~> 12.3"
+  spec.add_development_dependency "rspec", "~> 3.8"
 
-  spec.add_runtime_dependency "nokogiri", "~> 1.8.5"
+  spec.add_runtime_dependency "nokogiri", "~> 1.8"
   spec.add_runtime_dependency "treetop", "~> 1.5"
-  spec.add_runtime_dependency "log4r", "~> 1.1.10"
-  spec.add_runtime_dependency "thor", "~> 0.19.1"
-  spec.add_runtime_dependency "mimemagic", "~> 0.2.1"
+  spec.add_runtime_dependency "log4r", "~> 1.1"
+  spec.add_runtime_dependency "thor", "~> 0.20"
+  spec.add_runtime_dependency "mimemagic", "~> 0.2"
 end
