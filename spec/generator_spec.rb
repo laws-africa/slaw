@@ -16,13 +16,13 @@ Section title
 Another section title
 2. Section content that is long.
 "
-        subject.guess_section_number_after_title(text).should be_true
+        subject.guess_section_number_after_title(text).should be true
       end
     end
 
     context 'section number before title' do
       it 'should default to false' do
-        subject.guess_section_number_after_title("").should be_false
+        subject.guess_section_number_after_title("").should be false
       end
 
       it 'should be false' do
@@ -36,7 +36,7 @@ Some content.
 
 Some content.
 "
-        subject.guess_section_number_after_title(text).should be_false
+        subject.guess_section_number_after_title(text).should be false
       end
     end
   end

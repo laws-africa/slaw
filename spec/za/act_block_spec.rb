@@ -1973,12 +1973,12 @@ EOS
     it 'should handle a clause with a remark' do
       node = parse :inline_items, "simple [[remark]]. text"
       node.text_value.should == "simple [[remark]]. text"
-      node.elements[7].is_a?(Slaw::Grammars::ZA::Act::Remark).should be_true
+      node.elements[7].is_a?(Slaw::Grammars::ZA::Act::Remark).should be true
 
       node = parse :inline_items, "simple [[remark]][[another]] text"
       node.text_value.should == "simple [[remark]][[another]] text"
-      node.elements[7].is_a?(Slaw::Grammars::ZA::Act::Remark).should be_true
-      node.elements[7].is_a?(Slaw::Grammars::ZA::Act::Remark).should be_true
+      node.elements[7].is_a?(Slaw::Grammars::ZA::Act::Remark).should be true
+      node.elements[7].is_a?(Slaw::Grammars::ZA::Act::Remark).should be true
     end
   end
 
