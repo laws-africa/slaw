@@ -1,5 +1,6 @@
 # encoding: UTF-8
 
+require 'uri'
 require 'treetop'
 
 module Slaw
@@ -32,6 +33,9 @@ module Slaw
       # Prefix to use when generating IDs for fragments
       attr_accessor :fragment_id_prefix
 
+      # Should the parsing re-encoding the string as ASCII?
+      attr_accessor :force_ascii
+
       # Create a new builder.
       #
       # Specify either `:parser` or `:grammar_file` and `:grammar_class`.
@@ -41,6 +45,7 @@ module Slaw
       def initialize(opts={})
         @parser = opts[:parser]
         @parse_options = opts[:parse_optiosn] || {}
+        @force_ascii = false
       end
 
       # Do all the work necessary to parse text into a well-formed XML document.
@@ -77,8 +82,37 @@ module Slaw
       # @return [String] an XML string
       def parse_text(text, parse_options={})
         text = preprocess(text)
+
+        text = escape_utf8(text) if @force_ascii
+
         tree = text_to_syntax_tree(text, parse_options)
-        xml_from_syntax_tree(tree)
+        xml = xml_from_syntax_tree(tree)
+
+        xml = unescape_utf8(xml) if @force_ascii
+
+        xml
+      end
+
+      # Use %-encoding to escape everything outside of the US_ASCII range,
+      # including encoding % itself.
+      #
+      # This can have a huge performance benefit. String lookups on utf-8 strings
+      # are linear in Ruby, while string lookups on US_ASCII encoded strings
+      # are constant time.
+      #
+      # This option can only be used if the grammar doesn't include non-ascii literals.
+      #
+      # See https://github.com/cjheath/treetop/issues/31
+      def escape_utf8(text)
+        unsafe = (0..126).to_a - ['%'.ord]
+        unsafe = unsafe.map { |i| '\u%04x' % i }
+        unsafe = Regexp.new('[^' + unsafe.join('') + ']')
+
+        URI::DEFAULT_PARSER.escape(text, unsafe)
+      end
+
+      def unescape_utf8(xml)
+        URI.unescape(xml)
       end
 
       # Parse plain text into a syntax tree.

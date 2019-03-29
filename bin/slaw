@@ -18,6 +18,7 @@ class SlawCLI < Thor
   option :id_prefix, type: :string, desc: "Prefix to be used when generating ID elements when parsing a fragment."
   option :section_number_position, enum: ['before-title', 'after-title', 'guess'], desc: "Where do section titles come in relation to the section number? Default: before-title"
   option :grammar, type: :string, desc: "Grammar name (usually a two-letter country code). Default is za."
+  option :ascii, type: :boolean, default: false, desc: "Process text as ASCII using %-encoding. This can provide significant speed improvements if the grammar uses only ASCII literals. See https://github.com/cjheath/treetop/issues/31."
   def parse(name)
     logging
 
@@ -64,6 +65,8 @@ class SlawCLI < Thor
 
       generator.parser.options[:section_number_after_title] = after
     end
+
+    generator.builder.force_ascii = options[:ascii]
 
     begin
       act = generator.generate_from_text(text)

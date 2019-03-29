@@ -48,14 +48,6 @@ module Slaw
         [a-zA-Z0-9]+
       end
 
-      rule quotes
-        ["“”]
-      end
-      
-      rule non_quotes
-        [^"“”]
-      end
-
       ##########
       # whitespace
 
