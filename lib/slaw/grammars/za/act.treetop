@@ -178,7 +178,7 @@ module Slaw
         # and is ignored. This allows escaping of section headings, etc.
 
         rule naked_statement
-          space? !(chapter_heading / part_heading / section_title / schedule_title / subsection_prefix / crossheading) '\\'? inline_items eol
+          space? !(chapter_heading / part_heading / section_title / schedule_title / subsection_prefix / crossheading) '\\'? inline_items:inline_items? eol
           <NakedStatement>
         end
 

@@ -3,11 +3,7 @@ module Slaw
     module Inlines
       class NakedStatement < Treetop::Runtime::SyntaxNode
         def to_xml(b, idprefix, i=0)
-          b.p { |b| inline_items.to_xml(b, idprefix) } if inline_items
-        end
-
-        def content
-          inline_items
+          b.p { |b| inline_items.to_xml(b, idprefix) } unless inline_items.empty?
         end
       end
 

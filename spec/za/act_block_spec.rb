@@ -1375,6 +1375,25 @@ EOS
 </section>'
     end
 
+    it 'should handle escaped empty lines' do
+      node = parse :section, <<EOS
+1. Section
+
+\\
+
+stuff
+EOS
+      to_xml(node, "").should == '<section id="section-1">
+  <num>1.</num>
+  <heading>Section</heading>
+  <paragraph id="section-1.paragraph0">
+    <content>
+      <p>stuff</p>
+    </content>
+  </paragraph>
+</section>'
+    end
+
     it 'should not clash with dotted subsections' do
       node = parse :section, <<EOS
 3. Types of informal trading
