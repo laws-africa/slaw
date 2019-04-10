@@ -15,7 +15,6 @@ module Slaw
       end
 
       # one or more words, allowing inline elements
-      # TODO: this is badly named, a better name would be inline_items
       rule inline_items
         inline_item+ <InlineItems>
       end
