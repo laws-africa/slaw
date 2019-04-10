@@ -81,6 +81,10 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
+### 3.1.1 (?)
+
+* FIX don't error when a line is just a backslash
+
 ### 3.1.0 (29 March 2019)
 
 * Add --ascii flag to %-encode utf-8 strings into US-ASCII for speed. See https://github.com/cjheath/treetop/issues/31
