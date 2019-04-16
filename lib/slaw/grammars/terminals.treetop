@@ -3,15 +3,6 @@
 module Slaw
   module Grammars
     grammar Terminals
-      #########
-      ## one line of basic content
-
-      rule content
-        # anything but a newline, followed by a
-        # newline or end of file (without consuming the newline)
-        [^\n]+ &eol
-      end
-
       ##########
       # terminals
 

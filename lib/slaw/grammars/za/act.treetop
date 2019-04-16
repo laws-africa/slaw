@@ -106,12 +106,12 @@ module Slaw
         # headings
 
         rule chapter_heading
-          space? chapter_heading_prefix heading:(newline? content)? eol
+          space? chapter_heading_prefix heading:(newline? space? inline_items)? eol
           <ChapterHeading>
         end
 
         rule part_heading
-          space? part_heading_prefix heading:(newline? content)? eol
+          space? part_heading_prefix heading:(newline? space? inline_items)? eol
           <PartHeading>
         end
 
@@ -123,7 +123,7 @@ module Slaw
           &{ |s| options[:section_number_after_title] }
           # Section title
           # 1. Section content
-          content eol
+          space? inline_items eol
           section_title_prefix whitespace <SectionTitleType1>
         end
 
@@ -141,7 +141,7 @@ module Slaw
           # don't match subsections, eg.
           #
           # 10. (1) subsection content...
-          space !subsection_prefix content eol
+          space !subsection_prefix inline_items eol
         end
 
         ##########
