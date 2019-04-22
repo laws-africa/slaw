@@ -201,7 +201,7 @@ CROSSHEADING crossheading
 Some lines at the start of the chapter.
 EOS
       node.num.should == "2"
-      node.heading.title.should == 'The Chapter Heading'
+      node.heading.heading.text_value.should == "\nThe Chapter Heading"
       to_xml(node).should == '<chapter id="chapter-2">
   <num>2</num>
   <heading>The Chapter Heading</heading>
@@ -227,7 +227,7 @@ Some lines at the start of the chapter.
 Section text.
 EOS
       node.num.should == "2"
-      node.heading.title.should == 'The Chapter Heading'
+      node.heading.heading.text_value.should == 'The Chapter Heading'
       to_xml(node).should == '<chapter id="chapter-2">
   <num>2</num>
   <heading>The Chapter Heading</heading>
@@ -258,6 +258,51 @@ EOS
       to_xml(node).should == '<chapter id="chapter-2">
   <num>2</num>
   <heading>The Chapter Heading</heading>
+  <section id="section-1">
+    <num>1.</num>
+    <heading>Section</heading>
+    <paragraph id="section-1.paragraph0">
+      <content>
+        <p>Hello there</p>
+      </content>
+    </paragraph>
+  </section>
+</chapter>'
+    end
+
+    it 'should handle inlines in chapter titles after newline' do
+      node = parse :chapter, <<EOS
+Chapter 2
+  The **Chapter** [Heading](/za/act/1990/1) [[remark]]
+
+1. Section
+Hello there
+EOS
+      to_xml(node).should == '<chapter id="chapter-2">
+  <num>2</num>
+  <heading>The <b>Chapter</b> <ref href="/za/act/1990/1">Heading</ref> <remark status="editorial">[remark]</remark></heading>
+  <section id="section-1">
+    <num>1.</num>
+    <heading>Section</heading>
+    <paragraph id="section-1.paragraph0">
+      <content>
+        <p>Hello there</p>
+      </content>
+    </paragraph>
+  </section>
+</chapter>'
+    end
+
+    it 'should handle inlines in chapter titles' do
+      node = parse :chapter, <<EOS
+Chapter 2 -  The **Chapter** [Heading](/za/act/1990/1) [[remark]]
+
+1. Section
+Hello there
+EOS
+      to_xml(node).should == '<chapter id="chapter-2">
+  <num>2</num>
+  <heading>The <b>Chapter</b> <ref href="/za/act/1990/1">Heading</ref> <remark status="editorial">[remark]</remark></heading>
   <section id="section-1">
     <num>1.</num>
     <heading>Section</heading>
@@ -453,6 +498,49 @@ EOS
 </part>'
     end
 
+    it 'should handle part headers with inline elements after newline' do
+      node = parse :part, <<EOS
+Part 2
+  The **Part** Heading
+1. Section
+Hello there
+EOS
+      to_xml(node).should == '<part id="part-2">
+  <num>2</num>
+  <heading>The <b>Part</b> Heading</heading>
+  <section id="section-1">
+    <num>1.</num>
+    <heading>Section</heading>
+    <paragraph id="section-1.paragraph0">
+      <content>
+        <p>Hello there</p>
+      </content>
+    </paragraph>
+  </section>
+</part>'
+    end
+
+    it 'should handle part headers with inline elements' do
+      node = parse :part, <<EOS
+Part 2 The **Part** Heading
+1. Section
+Hello there
+EOS
+      to_xml(node).should == '<part id="part-2">
+  <num>2</num>
+  <heading>The <b>Part</b> Heading</heading>
+  <section id="section-1">
+    <num>1.</num>
+    <heading>Section</heading>
+    <paragraph id="section-1.paragraph0">
+      <content>
+        <p>Hello there</p>
+      </content>
+    </paragraph>
+  </section>
+</part>'
+    end
+
     it 'should handle parts and odd section numbers' do
       subject.parser.options = {section_number_after_title: false}
       node = parse :parts, <<EOS
@@ -487,7 +575,7 @@ Some text before the part.
 Hello there
 EOS
       node.num.should == "2"
-      node.heading.title.should == 'The Part Heading'
+      node.heading.heading.text_value.should == "\nThe Part Heading"
       to_xml(node).should == '<part id="part-2">
   <num>2</num>
   <heading>The Part Heading</heading>
@@ -1269,6 +1357,47 @@ EOS
         </item>
       </blockList>
       <p>and some stuff</p>
+    </content>
+  </paragraph>
+</section>'
+    end
+
+    it 'should handle sections with inline markup in headings' do
+      subject.parser.options = {section_number_after_title: false}
+      node = parse :section, <<EOS
+1. Section **bold** [foo](/za/act/1990/1)
+
+something
+EOS
+      
+      s = to_xml(node)
+      s.should == '<section id="section-1">
+  <num>1.</num>
+  <heading>Section <b>bold</b> <ref href="/za/act/1990/1">foo</ref></heading>
+  <paragraph id="section-1.paragraph0">
+    <content>
+      <p>something</p>
+    </content>
+  </paragraph>
+</section>'
+    end
+
+    it 'should handle prefixed sections with inline markup in headings' do
+      subject.parser.options = {section_number_after_title: true}
+      node = parse :section, <<EOS
+  Section **bold** [foo](/za/act/1990/1)
+1.
+
+something
+EOS
+      
+      s = to_xml(node)
+      s.should == '<section id="section-1">
+  <num>1.</num>
+  <heading>Section <b>bold</b> <ref href="/za/act/1990/1">foo</ref></heading>
+  <paragraph id="section-1.paragraph0">
+    <content>
+      <p>something</p>
     </content>
   </paragraph>
 </section>'

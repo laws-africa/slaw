@@ -154,15 +154,13 @@ module Slaw
             part_heading_prefix.alphanums.text_value
           end
 
-          def title
-            if heading.text_value and heading.respond_to? :content
-              heading.content.text_value.strip
-            end
-          end
-
           def to_xml(b)
             b.num(num)
-            b.heading(title) if title
+            if heading.respond_to? :inline_items
+              b.heading { |b|
+                heading.inline_items.to_xml(b)
+              }
+            end
           end
         end
 
@@ -191,15 +189,13 @@ module Slaw
             chapter_heading_prefix.alphanums.text_value
           end
 
-          def title
-            if heading.text_value and heading.respond_to? :content
-              heading.content.text_value.strip
-            end
-          end
-
           def to_xml(b)
             b.num(num)
-            b.heading(title) if title
+            if heading.respond_to? :inline_items
+              b.heading { |b|
+                heading.inline_items.to_xml(b)
+              }
+            end
           end
         end
 
@@ -208,18 +204,12 @@ module Slaw
             section_title.num
           end
 
-          def title
-            section_title.title
-          end
-
           def to_xml(b, *args)
             id = "section-#{num}"
             b.section(id: id) { |b|
-              b.num("#{num}.")
-              b.heading(title)
+              section_title.to_xml(b)
 
               idprefix = "#{id}."
-
               children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
             }
           end
@@ -235,8 +225,14 @@ module Slaw
             section_title_prefix.number_letter.text_value
           end
 
-          def title
-            content.text_value
+          def to_xml(b, *args)
+            b.num("#{num}.")
+
+            if inline_items.text_value
+              b.heading { |b|
+                inline_items.to_xml(b)
+              }
+            end
           end
         end
 
@@ -253,8 +249,16 @@ module Slaw
             section_title_prefix.number_letter.text_value
           end
 
-          def title
-            section_title.empty? ? "" : section_title.content.text_value
+          def to_xml(b, *args)
+            b.num("#{num}.")
+
+            if section_title.respond_to? :inline_items and section_title.inline_items.text_value
+              b.heading { |b|
+                section_title.inline_items.to_xml(b)
+              }
+            else
+              b.heading
+            end
           end
         end
 
