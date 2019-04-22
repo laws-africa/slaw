@@ -81,7 +81,11 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
-### 3.1.1 (?)
+### 3.2.0 (22 April 2019)
+
+* Permit inline content in chapter, part and section headings
+
+### 3.1.1 (10 April 2019)
 
 * FIX don't error when a line is just a backslash
 
