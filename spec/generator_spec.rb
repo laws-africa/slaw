@@ -119,7 +119,7 @@ PREFACE not escaped
         <heading>Section</heading>
         <paragraph id="section-9.paragraph-0">
           <content>
-            <blockList id="section-9.paragraph-0.list1">
+            <blockList id="section-9.paragraph-0.list1" renest="true">
               <listIntroduction>(2) A special meeting <remark>[ foo ]</remark>:</listIntroduction>
               <item id="section-9.paragraph-0.list1.a">
                 <num>(a)</num>

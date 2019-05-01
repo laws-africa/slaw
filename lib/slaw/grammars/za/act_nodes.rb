@@ -316,7 +316,7 @@ module Slaw
             id = idprefix + "list#{i}"
             idprefix = id + '.'
 
-            b.blockList(id: id) { |b|
+            b.blockList(id: id, renest: true) { |b|
               b.listIntroduction { |b| yield b } if block_given?
 
               elements.each { |e| e.to_xml(b, idprefix) }
