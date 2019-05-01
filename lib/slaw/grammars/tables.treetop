@@ -14,10 +14,18 @@ module Slaw
       # lines, which we do support.
 
       rule table
-        space? '{|' eol
+        table_start
         table_body
-        '|}' eol
+        table_end
         <Table>
+      end
+
+      rule table_start
+        space? '{|' eol
+      end
+
+      rule table_end
+        space? '|}' eol
       end
 
       rule table_body
@@ -25,16 +33,30 @@ module Slaw
       end
 
       rule table_row
-        '|-' space? eol
+        space? '|-' space? eol
       end
 
       rule table_cell
         # don't match end-of-table
-        !'|}'
-        [!|] attribs:table_attribs? space?
-        # first content line, then multiple lines
-        content:(line:table_line (![!|] space? line:table_line)*)
+        !table_end
+
+        # td (|) or th (!) cell marker with attributes
+        table_cell_start attribs:table_attribs? space?
+
+        # cell's first content line, then multiple lines
+        content:(line:table_line (!table_cell_start space? line:table_line)*)
         <TableCell>
+      end
+
+      # td (|) or th (!) cell marker
+      rule table_cell_start
+        space? [!|]
+
+        {
+          def th?
+            elements[1].text_value == '!'
+          end
+        }
       end
 
       rule table_line
@@ -42,10 +64,14 @@ module Slaw
         <TableLine>
       end
 
+      # foo=one bar=two |
       rule table_attribs
         space? attribs:(table_attrib+) '|'
       end
 
+      # foo=bar
+      # foo="bar"
+      # foo='bar'
       rule table_attrib
         name:([a-z_-]+) '=' value:(
                                    ('"' (!'"' .)* '"') /

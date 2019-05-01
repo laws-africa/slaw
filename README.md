@@ -81,6 +81,11 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
+### 3.3.0 (1 May 2019)
+
+* Only renest annotated blocklists
+* Table grammar uses additional rules and permits whitespace
+
 ### 3.2.0 (22 April 2019)
 
 * Permit inline content in chapter, part and section headings

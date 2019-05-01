@@ -125,7 +125,7 @@ EOS
     <num>(1)</num>
     <content>
       <p>something</p>
-      <blockList id="section-1.1.list1">
+      <blockList id="section-1.1.list1" renest="true">
         <item id="section-1.1.list1.a">
           <num>(a)</num>
           <p>with a remark <remark status="editorial">[Section 1 amended by Act 23 of 2004]</remark></p>
@@ -285,7 +285,7 @@ EOS
 EOS
       to_xml(node, "").should == '<paragraph id="paragraph0">
   <content>
-    <blockList id="paragraph0.list0">
+    <blockList id="paragraph0.list0" renest="true">
       <item id="paragraph0.list0.2.18.1">
         <num>2.18.1</num>
         <p>a traffic officer appointed in terms of section 3 of the Road Traffic <ref href="/za/act/1989/29">Act, No. 29 of 1989</ref> or section 3A of the National Road Traffic <ref href="/za/act/1996/93">Act No. 93 of 1996</ref> as the case may be;</p>

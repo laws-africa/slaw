@@ -164,6 +164,50 @@ EOS
 </table>'
     end
 
+    it 'should allow whitespace at start of table rows' do
+      node = parse :table, <<EOS
+    {|
+    ! foo
+ three
+  |-
+  | four
+    |}
+EOS
+
+      to_xml(node, "prefix.").should == '<table id="prefix.table0">
+  <tr>
+    <th>
+      <p>foo<eol/>three</p>
+    </th>
+  </tr>
+  <tr>
+    <td>
+      <p>four</p>
+    </td>
+  </tr>
+</table>'
+    end
+
+    it 'should tolerate lines that aren\'t really ending lines' do
+      node = parse :table, <<EOS
+{|
+| cell
+|} another cell
+|}
+EOS
+
+      to_xml(node, "prefix.").should == '<table id="prefix.table0">
+  <tr>
+    <td>
+      <p>cell</p>
+    </td>
+    <td>
+      <p>} another cell</p>
+    </td>
+  </tr>
+</table>'
+    end
+
     it 'should parse a table in a section' do
       node = parse :section, <<EOS
 10. A section title

@@ -10,7 +10,7 @@ describe Slaw::Parse::Builder do
   describe '#adjust_blocklists' do
     it 'should nest simple blocks' do
       doc = xml2doc(subsection(<<XML
-            <blockList id="section-10.1.lst0">
+            <blockList id="section-10.1.lst0" renest="true">
               <item id="section-10.1.lst0.a">
                 <num>(a)</num>
                 <p>foo</p>
@@ -79,7 +79,7 @@ XML
 
     it 'should jump back up a level' do
       doc = xml2doc(subsection(<<XML
-            <blockList id="section-10.1.lst0">
+            <blockList id="section-10.1.lst0" renest="true">
               <item id="section-10.1.lst0.a">
                 <num>(a)</num>
                 <p>foo</p>
@@ -130,7 +130,7 @@ XML
 
     it 'should handle (i) correctly' do
       doc = xml2doc(subsection(<<XML
-            <blockList id="section-10.1.lst0">
+            <blockList id="section-10.1.lst0" renest="true">
               <item id="section-10.1.lst0.h">
                 <num>(h)</num>
                 <p>foo</p>
@@ -171,7 +171,7 @@ XML
 
     it 'should handle (u) (v) and (x) correctly' do
       doc = xml2doc(subsection(<<XML
-            <blockList id="section-10.1.lst0">
+            <blockList id="section-10.1.lst0" renest="true">
               <item id="section-10.1.lst0.t">
                 <num>(t)</num>
                 <p>foo</p>
@@ -229,7 +229,7 @@ XML
 
     it 'should handle (j) correctly' do
       doc = xml2doc(subsection(<<XML
-              <blockList id="section-28.3.list2">
+              <blockList id="section-28.3.list2" renest="true">
                 <item id="section-28.3.list2.g">
                   <num>(g)</num>
                   <p>all <term refersTo="#term-memorial_work" id="trm381">memorial work</term> up to 150 mm in thickness must be securely attached to the base;</p>
@@ -303,7 +303,7 @@ XML
     # -------------------------------------------------------------------------
     it 'should handle (I) correctly' do
       doc = xml2doc(subsection(<<XML
-              <blockList id="section-28.3.list2">
+              <blockList id="section-28.3.list2" renest="true">
                 <item id="section-28.3.list2.g">
                   <num>(g)</num>
                   <p>all memorial work up to 150 mm in thickness must be securely attached to the base;</p>
@@ -445,7 +445,7 @@ XML
 
     it 'should treat (AA) after (z) a sublist' do
       doc = xml2doc(subsection(<<XML
-        <blockList id="list0">
+        <blockList id="list0" renest="true">
           <item id="list0.y">
             <num>(y)</num>
             <p>foo</p>
@@ -496,7 +496,7 @@ XML
 
     it 'should handle deeply nested lists' do
       doc = xml2doc(subsection(<<XML
-        <blockList id="list0">
+        <blockList id="list0" renest="true">
           <item id="list0.a">
             <num>(a)</num>
             <p>foo</p>
@@ -599,7 +599,7 @@ XML
 
     it 'should jump back up a level when finding (i) near (h)' do
       doc = xml2doc(subsection(<<XML
-            <blockList id="section-10.1.lst0">
+            <blockList id="section-10.1.lst0" renest="true">
               <item id="section-10.1.lst0.h">
                 <num>(h)</num>
                 <p>foo</p>
@@ -650,7 +650,7 @@ XML
 
     it 'should handle dotted numbers correctly' do
       doc = xml2doc(subsection(<<XML
-            <blockList id="section-9.subsection-2.list2">
+            <blockList id="section-9.subsection-2.list2" renest="true">
               <item id="section-9.subsection-2.list2.9.2.1">
                 <num>9.2.1</num>
                 <p>is incapable of trading because of an illness, provided that:</p>

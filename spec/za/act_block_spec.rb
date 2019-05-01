@@ -85,7 +85,7 @@ EOS
   <paragraph id="paragraph0">
     <content>
       <p>Some content before the section</p>
-      <blockList id="paragraph0.list1">
+      <blockList id="paragraph0.list1" renest="true">
         <item id="paragraph0.list1.a">
           <num>(a)</num>
           <p>foo</p>
@@ -654,7 +654,7 @@ EOS
   <num>(2)</num>
   <content>
     <p>title</p>
-    <blockList id="2.list1">
+    <blockList id="2.list1" renest="true">
       <item id="2.list1.a">
         <num>(a)</num>
         <p>one</p>
@@ -687,7 +687,7 @@ EOS
       to_xml(node, "", 1).should == '<subsection id="1">
   <num>(1)</num>
   <content>
-    <blockList id="1.list0">
+    <blockList id="1.list0" renest="true">
       <item id="1.list0.a">
         <num>(a)</num>
         <p>one</p>
@@ -719,7 +719,7 @@ EOS
       to_xml(node, "", 1).should == '<subsection id="1">
   <num>(1)</num>
   <content>
-    <blockList id="1.list0">
+    <blockList id="1.list0" renest="true">
       <item id="1.list0.a">
         <num>(a)</num>
         <p>one</p>
@@ -778,7 +778,7 @@ EOS
   <num>(1)</num>
   <content>
     <p>here\'s my really cool list,</p>
-    <blockList id="1.list1">
+    <blockList id="1.list1" renest="true">
       <item id="1.list1.a">
         <num>(a)</num>
         <p>one</p>
@@ -812,7 +812,7 @@ EOS
   <num>(1)</num>
   <content>
     <p>here\'s my really cool list,</p>
-    <blockList id="1.list1">
+    <blockList id="1.list1" renest="true">
       <item id="1.list1.a">
         <num>(a)</num>
         <p/>
@@ -854,7 +854,7 @@ EOS
   <num>9.9</num>
   <content>
     <p>foo</p>
-    <blockList id="9.9.list1">
+    <blockList id="9.9.list1" renest="true">
       <item id="9.9.list1.9.9.1">
         <num>9.9.1</num>
         <p>item1</p>
@@ -888,7 +888,7 @@ EOS
   <num>(1)</num>
   <content>
     <p>a list</p>
-    <blockList id="1.list1">
+    <blockList id="1.list1" renest="true">
       <item id="1.list1.a">
         <num>(a)</num>
         <p>item 1</p>
@@ -899,7 +899,7 @@ EOS
       </item>
     </blockList>
     <p>some text</p>
-    <blockList id="1.list3">
+    <blockList id="1.list3" renest="true">
       <item id="1.list3.c">
         <num>(c)</num>
         <p>item 3</p>
@@ -1346,7 +1346,7 @@ EOS
   <heading>Section</heading>
   <paragraph id="section-1.paragraph0">
     <content>
-      <blockList id="section-1.paragraph0.list0">
+      <blockList id="section-1.paragraph0.list0" renest="true">
         <item id="section-1.paragraph0.list0.a">
           <num>(a)</num>
           <p>first</p>
@@ -1424,7 +1424,7 @@ EOS
   <paragraph id="section-1.paragraph0">
     <content>
       <p>naked statement (c) blah</p>
-      <blockList id="section-1.paragraph0.list1">
+      <blockList id="section-1.paragraph0.list1" renest="true">
         <item id="section-1.paragraph0.list1.a">
           <num>(a)</num>
           <p>foo</p>
@@ -1466,7 +1466,7 @@ EOS
     <num>(2)</num>
     <content>
       <p>Schedule 1</p>
-      <blockList id="section-1.2.list1">
+      <blockList id="section-1.2.list1" renest="true">
         <item id="section-1.2.list1.a">
           <num>(a)</num>
           <p>Part 1</p>
@@ -1538,7 +1538,7 @@ EOS
     <num>3.1</num>
     <content>
       <p>Informal trading may include, amongst others:-</p>
-      <blockList id="section-3.3.1.list1">
+      <blockList id="section-3.3.1.list1" renest="true">
         <item id="section-3.3.1.list1.3.1.1">
           <num>3.1.1</num>
           <p>street trading;</p>
