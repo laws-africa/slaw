@@ -167,7 +167,7 @@ EOS
     it 'should allow whitespace at start of table rows' do
       node = parse :table, <<EOS
     {|
-    | foo
+    ! foo
  three
   |-
   | four
@@ -176,9 +176,9 @@ EOS
 
       to_xml(node, "prefix.").should == '<table id="prefix.table0">
   <tr>
-    <td>
+    <th>
       <p>foo<eol/>three</p>
-    </td>
+    </th>
   </tr>
   <tr>
     <td>

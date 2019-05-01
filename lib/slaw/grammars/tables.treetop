@@ -51,6 +51,12 @@ module Slaw
       # td (|) or th (!) cell marker
       rule table_cell_start
         space? [!|]
+
+        {
+          def th?
+            elements[1].text_value == '!'
+          end
+        }
       end
 
       rule table_line

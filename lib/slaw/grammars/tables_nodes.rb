@@ -33,7 +33,7 @@ module Slaw
 
       class TableCell < Treetop::Runtime::SyntaxNode
         def to_xml(b, idprefix)
-          tag = text_value[0] == '!' ? 'th' : 'td'
+          tag = table_cell_start.th? ? 'th' : 'td'
 
           attrs = {}
           if not attribs.empty?
