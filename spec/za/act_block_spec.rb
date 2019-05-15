@@ -2140,6 +2140,132 @@ EOS
   <heading>something <remark status="editorial">[remark]</remark> <ref href="/foo/bar">link</ref></heading>
 </hcontainer>'
     end
+
+    it 'should not be allowed in preface' do
+      node = parse :act, '
+PREFACE
+      
+Some text
+
+CROSSHEADING In the body
+
+1. Section 1
+      
+Text
+'
+      today = Time.now.strftime('%Y-%m-%d')
+      to_xml(node, "").should == '<act contains="originalVersion">
+  <meta>
+    <identification source="#slaw">
+      <FRBRWork>
+        <FRBRthis value="/za/act/1980/01/main"/>
+        <FRBRuri value="/za/act/1980/01"/>
+        <FRBRalias value="Short Title"/>
+        <FRBRdate date="1980-01-01" name="Generation"/>
+        <FRBRauthor href="#council"/>
+        <FRBRcountry value="za"/>
+      </FRBRWork>
+      <FRBRExpression>
+        <FRBRthis value="/za/act/1980/01/eng@/main"/>
+        <FRBRuri value="/za/act/1980/01/eng@"/>
+        <FRBRdate date="1980-01-01" name="Generation"/>
+        <FRBRauthor href="#council"/>
+        <FRBRlanguage language="eng"/>
+      </FRBRExpression>
+      <FRBRManifestation>
+        <FRBRthis value="/za/act/1980/01/eng@/main"/>
+        <FRBRuri value="/za/act/1980/01/eng@"/>
+        <FRBRdate date="' + today + '" name="Generation"/>
+        <FRBRauthor href="#slaw"/>
+      </FRBRManifestation>
+    </identification>
+    <references source="#this">
+      <TLCOrganization id="slaw" href="https://github.com/longhotsummer/slaw" showAs="Slaw"/>
+      <TLCOrganization id="council" href="/ontology/organization/za/council" showAs="Council"/>
+    </references>
+  </meta>
+  <preface>
+    <p>Some text</p>
+  </preface>
+  <body>
+    <hcontainer id="crossheading-0" name="crossheading">
+      <heading>In the body</heading>
+    </hcontainer>
+    <section id="section-1">
+      <num>1.</num>
+      <heading>Section 1</heading>
+      <paragraph id="section-1.paragraph0">
+        <content>
+          <p>Text</p>
+        </content>
+      </paragraph>
+    </section>
+  </body>
+</act>'
+    end
+
+    it 'should not be allowed in preamble' do
+      node = parse :act, '
+PREAMBLE
+      
+Some text
+
+CROSSHEADING In the body
+
+1. Section 1
+      
+Text
+'
+      today = Time.now.strftime('%Y-%m-%d')
+      to_xml(node, "").should == '<act contains="originalVersion">
+  <meta>
+    <identification source="#slaw">
+      <FRBRWork>
+        <FRBRthis value="/za/act/1980/01/main"/>
+        <FRBRuri value="/za/act/1980/01"/>
+        <FRBRalias value="Short Title"/>
+        <FRBRdate date="1980-01-01" name="Generation"/>
+        <FRBRauthor href="#council"/>
+        <FRBRcountry value="za"/>
+      </FRBRWork>
+      <FRBRExpression>
+        <FRBRthis value="/za/act/1980/01/eng@/main"/>
+        <FRBRuri value="/za/act/1980/01/eng@"/>
+        <FRBRdate date="1980-01-01" name="Generation"/>
+        <FRBRauthor href="#council"/>
+        <FRBRlanguage language="eng"/>
+      </FRBRExpression>
+      <FRBRManifestation>
+        <FRBRthis value="/za/act/1980/01/eng@/main"/>
+        <FRBRuri value="/za/act/1980/01/eng@"/>
+        <FRBRdate date="' + today + '" name="Generation"/>
+        <FRBRauthor href="#slaw"/>
+      </FRBRManifestation>
+    </identification>
+    <references source="#this">
+      <TLCOrganization id="slaw" href="https://github.com/longhotsummer/slaw" showAs="Slaw"/>
+      <TLCOrganization id="council" href="/ontology/organization/za/council" showAs="Council"/>
+    </references>
+  </meta>
+  <preamble>
+    <p>Some text</p>
+  </preamble>
+  <body>
+    <hcontainer id="crossheading-0" name="crossheading">
+      <heading>In the body</heading>
+    </hcontainer>
+    <section id="section-1">
+      <num>1.</num>
+      <heading>Section 1</heading>
+      <paragraph id="section-1.paragraph0">
+        <content>
+          <p>Text</p>
+        </content>
+      </paragraph>
+    </section>
+  </body>
+</act>'
+    end
   end
 
   #-------------------------------------------------------------------------------

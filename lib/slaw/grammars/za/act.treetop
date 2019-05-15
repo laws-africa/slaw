@@ -183,13 +183,13 @@ module Slaw
         end
 
         rule preface_statement
-          space? !(chapter_heading / part_heading / section_title / schedule_title)
+          space? !(chapter_heading / part_heading / section_title / schedule_title / crossheading)
           content:(longtitle / ('\\'? inline_items:inline_items eol))
           <PrefaceStatement>
         end
 
         rule preamble_statement
-          space? !(chapter_heading / part_heading / section_title / schedule_title) '\\'? inline_items eol
+          space? !(chapter_heading / part_heading / section_title / schedule_title / crossheading) '\\'? inline_items eol
           <NakedStatement>
         end
 
