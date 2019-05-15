@@ -81,6 +81,10 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
+### 3.3.1 (15 May 2019)
+
+* Crossheadings at start of body (ending preface and preamble)
+
 ### 3.3.0 (1 May 2019)
 
 * Only renest annotated blocklists
