@@ -178,18 +178,18 @@ module Slaw
         # and is ignored. This allows escaping of section headings, etc.
 
         rule naked_statement
-          space? !(chapter_heading / part_heading / section_title / schedule_title / subsection_prefix / crossheading) '\\'? inline_items:inline_items? eol
+          space? !body_hierarchy_prefix '\\'? inline_items:inline_items? eol
           <NakedStatement>
         end
 
         rule preface_statement
-          space? !(chapter_heading / part_heading / section_title / schedule_title / crossheading)
+          space? !non_body_hierarchy_prefix
           content:(longtitle / ('\\'? inline_items:inline_items eol))
           <PrefaceStatement>
         end
 
         rule preamble_statement
-          space? !(chapter_heading / part_heading / section_title / schedule_title / crossheading) '\\'? inline_items eol
+          space? !non_body_hierarchy_prefix '\\'? inline_items eol
           <NakedStatement>
         end
 
@@ -235,6 +235,16 @@ module Slaw
           num:('(' number_letter ')')
           /
           num:dotted_number_2 '.'? (space / newline)
+        end
+
+        rule body_hierarchy_prefix
+          # Text that indicates the start of a hierarchy element, in the body
+          chapter_heading / part_heading / section_title / schedule_title / subsection_prefix / crossheading
+        end
+
+        rule non_body_hierarchy_prefix
+          # Text that indicates the start of a hierarchy element, in the preamble or preface
+          chapter_heading / part_heading / section_title / schedule_title / crossheading
         end
 
         include Slaw::Grammars::Inlines
