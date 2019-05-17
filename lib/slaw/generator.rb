@@ -87,7 +87,7 @@ module Slaw
 
       if dir = $LOAD_PATH.find { |p| File.exist?(p + filename) }
         xslt = Nokogiri::XSLT(File.read(dir + filename))
-        xslt.transform(doc).child.to_xml
+        xslt.apply_to(doc).gsub(/^( *\n){2,}/, "\n")
       else
         raise "Unable to find text XSL for grammar #{@grammar}: #{fragment}"
       end

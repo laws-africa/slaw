@@ -222,7 +222,6 @@ baz
 two
 three
 
-              
 |-
 |}
 
@@ -244,7 +243,6 @@ EOS
 
 SCHEDULE - First Schedule [[remark]]
 Subheading [[another]]
-
 
 Subject to approval in terms of this By-Law.
 
