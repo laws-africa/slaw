@@ -60,12 +60,7 @@ module Slaw
         end
 
         rule subsection
-          space? subsection_prefix space?
-          # eg: (2) (a) foo
-          first_child:inline_block_element?
-          # eg: (2)
-          eol?
-          children:block_element* <Subsection>
+          space? subsection_prefix space? block_elements_with_inline <Subsection>
         end
 
         rule generic_container
@@ -75,6 +70,18 @@ module Slaw
         rule crossheading
           'CROSSHEADING ' inline_items:inline_items eol
           <Crossheading>
+        end
+
+        # An option inline block element, followed by consecutive non-structured content.
+        # This is useful after a rule that can start a new container and have
+        # the first element of the container on the same line, eg.:
+        #
+        # (1) subsection with content
+        #     (a) list a...
+        #
+        rule block_elements_with_inline
+          first_child:inline_block_element?
+          children:block_element* <BlockElementsWithInline>
         end
 
         # Consecutive non-structured content. We allow many elements
