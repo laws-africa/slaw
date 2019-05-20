@@ -262,6 +262,22 @@ module Slaw
           end
         end
 
+        class BlockElementsWithInline < Treetop::Runtime::SyntaxNode
+          def to_xml(b, idprefix='')
+            b.content { |b|
+              kids = [first_child] + children.elements
+              kids = kids.select { |k| k and !k.text_value.strip.empty? }
+
+              if kids.empty?
+                # schema requires a non-empty content element
+                b.p
+              else
+                kids.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
+              end
+            }
+          end
+        end
+
         class BlockElements < Treetop::Runtime::SyntaxNode
           @@counters = {}
 
@@ -292,19 +308,9 @@ module Slaw
             id = idprefix + num.gsub(/[()]/, '')
             idprefix = id + "."
 
-            kids = children.elements
-            kids = [first_child] + kids if first_child and !first_child.empty?
-
             b.subsection(id: id) { |b|
               b.num(num)
-              b.content { |b|
-                if kids.empty?
-                  # schema requires a non-empty content element
-                  b.p
-                else
-                  kids.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
-                end
-              }
+              block_elements_with_inline.to_xml(b, idprefix)
             }
           end
         end

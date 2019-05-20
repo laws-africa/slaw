@@ -81,6 +81,10 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
+### 3.4.0 (20 May 2019)
+
+* Restructure subsections to support generic block elements, starting with an inline block element
+
 ### 3.3.3 (17 May 2019)
 
 * FIX bug where unparse was returning XML, not text
