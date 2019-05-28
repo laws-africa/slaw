@@ -81,6 +81,10 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
+### 3.5.0 (?)
+
+* Preserver whitespace for mixed content nodes
+
 ### 3.4.0 (20 May 2019)
 
 * Restructure subsections to support generic block elements, starting with an inline block element
