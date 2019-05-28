@@ -81,9 +81,10 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
-### 3.5.0 (?)
+### 4.0.0 (?)
 
-* Preserver whitespace for mixed content nodes
+* Preserve whitespace for mixed content nodes
+* Don't pretty-print XML, as this can introduce meaningful whitespace
 
 ### 3.4.0 (20 May 2019)
 
