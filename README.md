@@ -81,6 +81,10 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
+### 4.1.0 (4 June 2019)
+
+* BODY marks start of body
+
 ### 4.0.0 (29 May 2019)
 
 * Preserve whitespace for mixed content nodes

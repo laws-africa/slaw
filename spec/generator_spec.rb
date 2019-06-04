@@ -72,7 +72,9 @@ XML
       ))
 
       text = subject.text_from_act(doc)
-      text.should == '1. Section
+      text.should == 'BODY
+
+1. Section
 
 \Chapter 2 ignored
 
@@ -136,7 +138,9 @@ XML
       ))
 
       text = subject.text_from_act(doc)
-      text.should == '1. Section
+      text.should == 'BODY
+
+1. Section
 
 \(2) A special meeting [[ foo ]]:
 
@@ -162,7 +166,9 @@ XML
       ))
 
       text = subject.text_from_act(doc)
-      text.should == '1. 
+      text.should == 'BODY
+
+1. 
 
 [[ foo ]]
 
@@ -183,7 +189,9 @@ XML
       ))
 
       text = subject.text_from_act(doc)
-      text.should == '1. 
+      text.should == 'BODY
+
+1. 
 
 Hello [there](/za/act/123) friend.
 
@@ -210,7 +218,9 @@ XML
       ))
 
       text = subject.text_from_act(doc)
-      text.should == '1. 
+      text.should == 'BODY
+
+1. 
 
 {| 
 |-
@@ -239,7 +249,9 @@ Subject to approval in terms of this By-Law.
 EOS
 )
       s = subject.text_from_act(doc)
-      s.should == '1. Something
+      s.should == 'BODY
+
+1. Something
 
 SCHEDULE - First Schedule [[remark]]
 Subheading [[another]]
