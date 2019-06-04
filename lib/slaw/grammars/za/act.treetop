@@ -29,16 +29,19 @@ module Slaw
 
         rule preface
           !'PREAMBLE'
+          !'BODY'
           ('PREFACE'i space? eol)?
-          statements:(!'PREAMBLE' preface_statement)* <Preface>
+          statements:(!'PREAMBLE' !'BODY' preface_statement)* <Preface>
         end
 
         rule preamble
+          !'BODY'
           'PREAMBLE'i space? eol
-          statements:preamble_statement* <Preamble>
+          statements:(!'BODY' preamble_statement)* <Preamble>
         end
 
         rule body
+          ('BODY' space? eol)?
           children:(chapter / part / section / subsection / generic_container)+ <Body>
         end
 

@@ -79,9 +79,10 @@ module Slaw
 
         class Preface < Treetop::Runtime::SyntaxNode
           def to_xml(b, *args)
-            if text_value != ""
+            stmts = statements.elements
+            if !stmts.empty?
               b.preface { |b|
-                statements.elements.each { |element|
+                stmts.each { |element|
                   for e in element.elements
                     e.to_xml(b, "") if e.respond_to? :to_xml
                   end
@@ -119,10 +120,11 @@ module Slaw
 
         class Preamble < Treetop::Runtime::SyntaxNode
           def to_xml(b, *args)
-            if text_value != ""
+            stmts = statements.elements
+            if !stmts.empty?
               b.preamble { |b|
-                statements.elements.each { |e|
-                  e.to_xml(b, "")
+                stmts.each { |e|
+                  e.preamble_statement.to_xml(b, "")
                 }
               }
             end

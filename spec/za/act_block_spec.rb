@@ -142,6 +142,33 @@ EOS
   </section>
 </body>'
     end
+
+    it 'should understand a body marker' do
+      node = parse :body, <<EOS
+BODY
+
+Some content before the section
+
+1. Section
+Hello there
+EOS
+      to_xml(node).should == '<body>
+  <paragraph id="paragraph0">
+    <content>
+      <p>Some content before the section</p>
+    </content>
+  </paragraph>
+  <section id="section-1">
+    <num>1.</num>
+    <heading>Section</heading>
+    <paragraph id="section-1.paragraph0">
+      <content>
+        <p>Hello there</p>
+      </content>
+    </paragraph>
+  </section>
+</body>'
+    end
   end
 
   #-------------------------------------------------------------------------------
@@ -1137,7 +1164,7 @@ EOS
 </preamble>'
     end
 
-    it 'should support prefaces and preambles' do
+    it 'should support explicit preface and preamble' do
       node = parse :act, <<EOS
 PREFACE
 this is in the preface
@@ -1155,6 +1182,33 @@ EOS
       to_xml(node.preamble).should == '<preamble>
   <p>this is in the preamble</p>
 </preamble>'
+    end
+
+    it 'should obey a BODY marker' do
+      node = parse :act, <<EOS
+PREFACE
+this is in the preface
+
+PREAMBLE
+this is in the preamble
+
+BODY
+this is in the body
+EOS
+
+      to_xml(node.preface).should == '<preface>
+  <p>this is in the preface</p>
+</preface>'
+      to_xml(node.preamble).should == '<preamble>
+  <p>this is in the preamble</p>
+</preamble>'
+      to_xml(node.body).should == '<body>
+  <paragraph id="paragraph0">
+    <content>
+      <p>this is in the body</p>
+    </content>
+  </paragraph>
+</body>'
     end
   end
 
@@ -1227,6 +1281,46 @@ EOS
       to_xml(node.preamble).should == '<preamble>
   <p>PREAMBLE</p>
 </preamble>'
+    end
+
+    it 'should handle weird preamble indicators' do
+      node = parse :act, <<EOS
+BODY
+
+PREAMBLE
+
+this is actually in the body
+EOS
+
+      to_xml(node.body).should == '<body>
+  <paragraph id="paragraph0">
+    <content>
+      <p>PREAMBLE</p>
+      <p>this is actually in the body</p>
+    </content>
+  </paragraph>
+</body>'
+    end
+
+    it 'should handle weird preface indicators' do
+      node = parse :act, <<EOS
+PREFACE
+
+BODY
+
+PREFACE
+
+this is actually in the body
+EOS
+
+      to_xml(node.body).should == '<body>
+  <paragraph id="paragraph0">
+    <content>
+      <p>PREFACE</p>
+      <p>this is actually in the body</p>
+    </content>
+  </paragraph>
+</body>'
     end
   end
 
