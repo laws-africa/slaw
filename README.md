@@ -81,6 +81,10 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
+### 4.2.0 (7 Sept 2019)
+
+* BODY is allowed to be empty
+
 ### 4.1.0 (4 June 2019)
 
 * BODY marks start of body
