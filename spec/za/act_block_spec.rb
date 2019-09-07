@@ -169,6 +169,31 @@ EOS
   </section>
 </body>'
     end
+
+    it 'should handle no body and a schedule' do
+      node = parse :act, <<EOS
+this is in the preface
+
+SCHEDULE
+
+some stuff
+EOS
+
+      b = ::Nokogiri::XML::Builder.new
+      b.root do |b|
+        node.to_xml(b)
+      end
+      xml = b.to_xml(encoding: 'UTF-8')
+
+      xml.should include('<body/>')
+    end
+
+    it 'should handle an empty body' do
+      node = parse :body, <<EOS
+EOS
+
+      to_xml(node).should == '<body/>'
+    end
   end
 
   #-------------------------------------------------------------------------------

@@ -42,7 +42,7 @@ module Slaw
 
         rule body
           ('BODY' space? eol)?
-          children:(chapter / part / section / subsection / generic_container)+ <Body>
+          children:(chapter / part / section / subsection / generic_container)* <Body>
         end
 
         rule chapter
