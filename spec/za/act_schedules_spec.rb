@@ -35,75 +35,18 @@ describe Slaw::ActGenerator do
 
   #-------------------------------------------------------------------------------
   # schedules
-
+  #
   context 'schedules' do
-    it 'should handle a simple schedule' do
-      node = parse :schedules, <<EOS
-Schedule
-
-Subject to approval in terms of this By-Law, the erection:
-1. Foo
-2. Bar
-EOS
-      s = to_xml(node)
-      today = Time.now.strftime('%Y-%m-%d')
-      s.should == '<component id="component-schedule">
-  <doc name="schedule">
-    <meta>
-      <identification source="#slaw">
-        <FRBRWork>
-          <FRBRthis value="/za/act/1980/01/schedule"/>
-          <FRBRuri value="/za/act/1980/01"/>
-          <FRBRalias value="Schedule"/>
-          <FRBRdate date="1980-01-01" name="Generation"/>
-          <FRBRauthor href="#council"/>
-          <FRBRcountry value="za"/>
-        </FRBRWork>
-        <FRBRExpression>
-          <FRBRthis value="/za/act/1980/01/eng@/schedule"/>
-          <FRBRuri value="/za/act/1980/01/eng@"/>
-          <FRBRdate date="1980-01-01" name="Generation"/>
-          <FRBRauthor href="#council"/>
-          <FRBRlanguage language="eng"/>
-        </FRBRExpression>
-        <FRBRManifestation>
-          <FRBRthis value="/za/act/1980/01/eng@/schedule"/>
-          <FRBRuri value="/za/act/1980/01/eng@"/>
-          <FRBRdate date="' + today + '" name="Generation"/>
-          <FRBRauthor href="#slaw"/>
-        </FRBRManifestation>
-      </identification>
-    </meta>
-    <mainBody>
-      <hcontainer id="schedule" name="schedule">
-        <heading>Schedule</heading>
-        <paragraph id="schedule.paragraph0">
-          <content>
-            <p>Subject to approval in terms of this By-Law, the erection:</p>
-          </content>
-        </paragraph>
-        <section id="section-1">
-          <num>1.</num>
-          <heading>Foo</heading>
-        </section>
-        <section id="section-2">
-          <num>2.</num>
-          <heading>Bar</heading>
-        </section>
-      </hcontainer>
-    </mainBody>
-  </doc>
-</component>'
-    end
-
     it 'should serialise many schedules correctly' do
       node = parse :schedules_container, <<EOS
-Schedule "2"
-A Title
+SCHEDULE
+HEADING 2
+SUBHEADING A Title
 1. Foo
 2. Bar
-Schedule 3
-Another Title
+SCHEDULE
+HEADING 3
+SUBHEADING Another Title
 Baz
 Boom
 EOS
@@ -202,10 +145,11 @@ EOS
 
     end
 
-    it 'should handle a schedule with a title and a number' do
+    it 'should handle a schedule with a heading and a subheading' do
       node = parse :schedules, <<EOS
-Schedule 1 - First Schedule
-Schedule Heading
+SCHEDULE
+HEADING First Schedule
+SUBHEADING Schedule Heading
 
 Subject to approval in terms of this By-Law, the erection:
 1. Foo
@@ -265,8 +209,9 @@ EOS
 
     it 'should handle a schedule with dot in the number' do
       node = parse :schedules, <<EOS
-Schedule 1. First Schedule
-Schedule Heading
+SCHEDULE
+HEADING 1. First Schedule
+SUBHEADING Schedule Heading
 
 Subject to approval in terms of this By-Law, the erection:
 1. Foo
@@ -326,7 +271,8 @@ EOS
 
     it 'should handle a schedule with a title' do
       node = parse :schedules, <<EOS
-Schedule - First Schedule
+SCHEDULE
+HEADING First Schedule
 
 Subject to approval in terms of this By-Law, the erection:
 1. Foo
@@ -383,72 +329,10 @@ EOS
 </component>'
     end
 
-    it 'should serialise a single schedule without a heading' do
-      node = parse :schedules, <<EOS
-Schedule "1"
-
-Other than as is set out hereinbelow, no signs other than locality bound signs, temporary signs including loose portable sign, estate agents signs, newspaper headline posters and posters (the erection of which must comply with the appropriate schedules pertinent thereto) shall be erected on Municipal owned land.
-1. Foo
-2. Bar
-EOS
-
-      s = to_xml(node)
-      today = Time.now.strftime('%Y-%m-%d')
-      s.should == <<EOS
-<component id="component-schedule1">
-  <doc name="schedule1">
-    <meta>
-      <identification source="#slaw">
-        <FRBRWork>
-          <FRBRthis value="/za/act/1980/01/schedule1"/>
-          <FRBRuri value="/za/act/1980/01"/>
-          <FRBRalias value="Schedule 1"/>
-          <FRBRdate date="1980-01-01" name="Generation"/>
-          <FRBRauthor href="#council"/>
-          <FRBRcountry value="za"/>
-        </FRBRWork>
-        <FRBRExpression>
-          <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
-          <FRBRuri value="/za/act/1980/01/eng@"/>
-          <FRBRdate date="1980-01-01" name="Generation"/>
-          <FRBRauthor href="#council"/>
-          <FRBRlanguage language="eng"/>
-        </FRBRExpression>
-        <FRBRManifestation>
-          <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
-          <FRBRuri value="/za/act/1980/01/eng@"/>
-          <FRBRdate date="#{today}" name="Generation"/>
-          <FRBRauthor href="#slaw"/>
-        </FRBRManifestation>
-      </identification>
-    </meta>
-    <mainBody>
-      <hcontainer id="schedule1" name="schedule">
-        <heading>Schedule 1</heading>
-        <paragraph id="schedule1.paragraph0">
-          <content>
-            <p>Other than as is set out hereinbelow, no signs other than locality bound signs, temporary signs including loose portable sign, estate agents signs, newspaper headline posters and posters (the erection of which must comply with the appropriate schedules pertinent thereto) shall be erected on Municipal owned land.</p>
-          </content>
-        </paragraph>
-        <section id="section-1">
-          <num>1.</num>
-          <heading>Foo</heading>
-        </section>
-        <section id="section-2">
-          <num>2.</num>
-          <heading>Bar</heading>
-        </section>
-      </hcontainer>
-    </mainBody>
-  </doc>
-</component>
-EOS
-      .strip
-    end
-
     it 'should support rich parts, chapters and sections in a schedule' do
       node = parse :schedules, <<EOS
-Schedule 1
+SCHEDULE
+HEADING Schedule 1
 Forms
 
 Part I
@@ -588,8 +472,9 @@ EOS
 
     it 'should handle rich content in titles and subheandings' do
       node = parse :schedules, <<EOS
-Schedule - First Schedule [[remark]]
-Subheading [[another]]
+SCHEDULE
+HEADING First Schedule [[remark]]
+SUBHEADING Subheading [[another]]
 
 Subject to approval in terms of this By-Law.
 EOS
@@ -637,6 +522,531 @@ EOS
 </component>'
     end
 
+    it 'should handle a schedule without a heading' do
+      node = parse :schedules, <<EOS
+SCHEDULE
+SUBHEADING Subheading
+
+Subject to approval in terms of this By-Law, the erection:
+1. Foo
+2. Bar
+EOS
+      s = to_xml(node)
+      today = Time.now.strftime('%Y-%m-%d')
+      s.should == '<component id="component-firstschedule">
+  <doc name="firstschedule">
+    <meta>
+      <identification source="#slaw">
+        <FRBRWork>
+          <FRBRthis value="/za/act/1980/01/schedule"/>
+          <FRBRuri value="/za/act/1980/01"/>
+          <FRBRalias value="First Schedule"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRcountry value="za"/>
+        </FRBRWork>
+        <FRBRExpression>
+          <FRBRthis value="/za/act/1980/01/eng@/schedule"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRlanguage language="eng"/>
+        </FRBRExpression>
+        <FRBRManifestation>
+          <FRBRthis value="/za/act/1980/01/eng@/schedule"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="' + today + '" name="Generation"/>
+          <FRBRauthor href="#slaw"/>
+        </FRBRManifestation>
+      </identification>
+    </meta>
+    <mainBody>
+      <hcontainer id="schedule" name="schedule">
+        <heading>Schedule</heading>
+        <subheading>Subheading</subheading>
+        <paragraph id="schedule.paragraph0">
+          <content>
+            <p>Subject to approval in terms of this By-Law, the erection:</p>
+          </content>
+        </paragraph>
+        <section id="section-1">
+          <num>1.</num>
+          <heading>Foo</heading>
+        </section>
+        <section id="section-2">
+          <num>2.</num>
+          <heading>Bar</heading>
+        </section>
+      </hcontainer>
+    </mainBody>
+  </doc>
+</component>'
+    end
+
+  end
+
+  context 'legacy schedules' do
+    context 'schedules' do
+      it 'should handle a simple schedule' do
+        node = parse :schedules, <<EOS
+Schedule
+
+Subject to approval in terms of this By-Law, the erection:
+1. Foo
+2. Bar
+EOS
+        s = to_xml(node)
+        today = Time.now.strftime('%Y-%m-%d')
+        s.should == '<component id="component-schedule">
+  <doc name="schedule">
+    <meta>
+      <identification source="#slaw">
+        <FRBRWork>
+          <FRBRthis value="/za/act/1980/01/schedule"/>
+          <FRBRuri value="/za/act/1980/01"/>
+          <FRBRalias value="Schedule"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRcountry value="za"/>
+        </FRBRWork>
+        <FRBRExpression>
+          <FRBRthis value="/za/act/1980/01/eng@/schedule"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRlanguage language="eng"/>
+        </FRBRExpression>
+        <FRBRManifestation>
+          <FRBRthis value="/za/act/1980/01/eng@/schedule"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="' + today + '" name="Generation"/>
+          <FRBRauthor href="#slaw"/>
+        </FRBRManifestation>
+      </identification>
+    </meta>
+    <mainBody>
+      <hcontainer id="schedule" name="schedule">
+        <heading>Schedule</heading>
+        <paragraph id="schedule.paragraph0">
+          <content>
+            <p>Subject to approval in terms of this By-Law, the erection:</p>
+          </content>
+        </paragraph>
+        <section id="section-1">
+          <num>1.</num>
+          <heading>Foo</heading>
+        </section>
+        <section id="section-2">
+          <num>2.</num>
+          <heading>Bar</heading>
+        </section>
+      </hcontainer>
+    </mainBody>
+  </doc>
+</component>'
+      end
+
+      it 'should serialise many schedules correctly' do
+        node = parse :schedules_container, <<EOS
+Schedule "2"
+A Title
+1. Foo
+2. Bar
+Schedule 3
+Another Title
+Baz
+Boom
+EOS
+
+        s = to_xml(node)
+        today = Time.now.strftime('%Y-%m-%d')
+        s.should == <<EOS
+<components>
+  <component id="component-schedule2">
+    <doc name="schedule2">
+      <meta>
+        <identification source="#slaw">
+          <FRBRWork>
+            <FRBRthis value="/za/act/1980/01/schedule2"/>
+            <FRBRuri value="/za/act/1980/01"/>
+            <FRBRalias value="Schedule 2"/>
+            <FRBRdate date="1980-01-01" name="Generation"/>
+            <FRBRauthor href="#council"/>
+            <FRBRcountry value="za"/>
+          </FRBRWork>
+          <FRBRExpression>
+            <FRBRthis value="/za/act/1980/01/eng@/schedule2"/>
+            <FRBRuri value="/za/act/1980/01/eng@"/>
+            <FRBRdate date="1980-01-01" name="Generation"/>
+            <FRBRauthor href="#council"/>
+            <FRBRlanguage language="eng"/>
+          </FRBRExpression>
+          <FRBRManifestation>
+            <FRBRthis value="/za/act/1980/01/eng@/schedule2"/>
+            <FRBRuri value="/za/act/1980/01/eng@"/>
+            <FRBRdate date="#{today}" name="Generation"/>
+            <FRBRauthor href="#slaw"/>
+          </FRBRManifestation>
+        </identification>
+      </meta>
+      <mainBody>
+        <hcontainer id="schedule2" name="schedule">
+          <heading>Schedule 2</heading>
+          <subheading>A Title</subheading>
+          <section id="section-1">
+            <num>1.</num>
+            <heading>Foo</heading>
+          </section>
+          <section id="section-2">
+            <num>2.</num>
+            <heading>Bar</heading>
+          </section>
+        </hcontainer>
+      </mainBody>
+    </doc>
+  </component>
+  <component id="component-schedule3">
+    <doc name="schedule3">
+      <meta>
+        <identification source="#slaw">
+          <FRBRWork>
+            <FRBRthis value="/za/act/1980/01/schedule3"/>
+            <FRBRuri value="/za/act/1980/01"/>
+            <FRBRalias value="Schedule 3"/>
+            <FRBRdate date="1980-01-01" name="Generation"/>
+            <FRBRauthor href="#council"/>
+            <FRBRcountry value="za"/>
+          </FRBRWork>
+          <FRBRExpression>
+            <FRBRthis value="/za/act/1980/01/eng@/schedule3"/>
+            <FRBRuri value="/za/act/1980/01/eng@"/>
+            <FRBRdate date="1980-01-01" name="Generation"/>
+            <FRBRauthor href="#council"/>
+            <FRBRlanguage language="eng"/>
+          </FRBRExpression>
+          <FRBRManifestation>
+            <FRBRthis value="/za/act/1980/01/eng@/schedule3"/>
+            <FRBRuri value="/za/act/1980/01/eng@"/>
+            <FRBRdate date="#{today}" name="Generation"/>
+            <FRBRauthor href="#slaw"/>
+          </FRBRManifestation>
+        </identification>
+      </meta>
+      <mainBody>
+        <hcontainer id="schedule3" name="schedule">
+          <heading>Schedule 3</heading>
+          <subheading>Another Title</subheading>
+          <paragraph id="schedule3.paragraph0">
+            <content>
+              <p>Baz</p>
+              <p>Boom</p>
+            </content>
+          </paragraph>
+        </hcontainer>
+      </mainBody>
+    </doc>
+  </component>
+</components>
+EOS
+      .strip
+
+      end
+
+      it 'should handle a schedule with a title and a number' do
+        node = parse :schedules, <<EOS
+Schedule 1 - First Schedule
+Schedule Heading
+
+Subject to approval in terms of this By-Law, the erection:
+1. Foo
+2. Bar
+EOS
+        s = to_xml(node)
+        today = Time.now.strftime('%Y-%m-%d')
+        s.should == '<component id="component-schedule1">
+  <doc name="schedule1">
+    <meta>
+      <identification source="#slaw">
+        <FRBRWork>
+          <FRBRthis value="/za/act/1980/01/schedule1"/>
+          <FRBRuri value="/za/act/1980/01"/>
+          <FRBRalias value="First Schedule"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRcountry value="za"/>
+        </FRBRWork>
+        <FRBRExpression>
+          <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRlanguage language="eng"/>
+        </FRBRExpression>
+        <FRBRManifestation>
+          <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="' + today + '" name="Generation"/>
+          <FRBRauthor href="#slaw"/>
+        </FRBRManifestation>
+      </identification>
+    </meta>
+    <mainBody>
+      <hcontainer id="schedule1" name="schedule">
+        <heading>First Schedule</heading>
+        <subheading>Schedule Heading</subheading>
+        <paragraph id="schedule1.paragraph0">
+          <content>
+            <p>Subject to approval in terms of this By-Law, the erection:</p>
+          </content>
+        </paragraph>
+        <section id="section-1">
+          <num>1.</num>
+          <heading>Foo</heading>
+        </section>
+        <section id="section-2">
+          <num>2.</num>
+          <heading>Bar</heading>
+        </section>
+      </hcontainer>
+    </mainBody>
+  </doc>
+</component>'
+      end
+
+      it 'should handle a schedule with dot in the number' do
+        node = parse :schedules, <<EOS
+Schedule 1. First Schedule
+Schedule Heading
+
+Subject to approval in terms of this By-Law, the erection:
+1. Foo
+2. Bar
+EOS
+        s = to_xml(node)
+        today = Time.now.strftime('%Y-%m-%d')
+        s.should == '<component id="component-schedule1">
+  <doc name="schedule1">
+    <meta>
+      <identification source="#slaw">
+        <FRBRWork>
+          <FRBRthis value="/za/act/1980/01/schedule1"/>
+          <FRBRuri value="/za/act/1980/01"/>
+          <FRBRalias value="First Schedule"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRcountry value="za"/>
+        </FRBRWork>
+        <FRBRExpression>
+          <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRlanguage language="eng"/>
+        </FRBRExpression>
+        <FRBRManifestation>
+          <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="' + today + '" name="Generation"/>
+          <FRBRauthor href="#slaw"/>
+        </FRBRManifestation>
+      </identification>
+    </meta>
+    <mainBody>
+      <hcontainer id="schedule1" name="schedule">
+        <heading>First Schedule</heading>
+        <subheading>Schedule Heading</subheading>
+        <paragraph id="schedule1.paragraph0">
+          <content>
+            <p>Subject to approval in terms of this By-Law, the erection:</p>
+          </content>
+        </paragraph>
+        <section id="section-1">
+          <num>1.</num>
+          <heading>Foo</heading>
+        </section>
+        <section id="section-2">
+          <num>2.</num>
+          <heading>Bar</heading>
+        </section>
+      </hcontainer>
+    </mainBody>
+  </doc>
+</component>'
+      end
+
+      it 'should handle a schedule with a title' do
+        node = parse :schedules, <<EOS
+Schedule - First Schedule
+
+Subject to approval in terms of this By-Law, the erection:
+1. Foo
+2. Bar
+EOS
+        s = to_xml(node)
+        today = Time.now.strftime('%Y-%m-%d')
+        s.should == '<component id="component-firstschedule">
+  <doc name="firstschedule">
+    <meta>
+      <identification source="#slaw">
+        <FRBRWork>
+          <FRBRthis value="/za/act/1980/01/firstschedule"/>
+          <FRBRuri value="/za/act/1980/01"/>
+          <FRBRalias value="First Schedule"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRcountry value="za"/>
+        </FRBRWork>
+        <FRBRExpression>
+          <FRBRthis value="/za/act/1980/01/eng@/firstschedule"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRlanguage language="eng"/>
+        </FRBRExpression>
+        <FRBRManifestation>
+          <FRBRthis value="/za/act/1980/01/eng@/firstschedule"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="' + today + '" name="Generation"/>
+          <FRBRauthor href="#slaw"/>
+        </FRBRManifestation>
+      </identification>
+    </meta>
+    <mainBody>
+      <hcontainer id="firstschedule" name="schedule">
+        <heading>First Schedule</heading>
+        <paragraph id="firstschedule.paragraph0">
+          <content>
+            <p>Subject to approval in terms of this By-Law, the erection:</p>
+          </content>
+        </paragraph>
+        <section id="section-1">
+          <num>1.</num>
+          <heading>Foo</heading>
+        </section>
+        <section id="section-2">
+          <num>2.</num>
+          <heading>Bar</heading>
+        </section>
+      </hcontainer>
+    </mainBody>
+  </doc>
+</component>'
+      end
+
+      it 'should serialise a single schedule without a heading' do
+        node = parse :schedules, <<EOS
+Schedule "1"
+
+Other than as is set out hereinbelow, no signs other than locality bound signs, temporary signs including loose portable sign, estate agents signs, newspaper headline posters and posters (the erection of which must comply with the appropriate schedules pertinent thereto) shall be erected on Municipal owned land.
+1. Foo
+2. Bar
+EOS
+
+        s = to_xml(node)
+        today = Time.now.strftime('%Y-%m-%d')
+        s.should == <<EOS
+<component id="component-schedule1">
+  <doc name="schedule1">
+    <meta>
+      <identification source="#slaw">
+        <FRBRWork>
+          <FRBRthis value="/za/act/1980/01/schedule1"/>
+          <FRBRuri value="/za/act/1980/01"/>
+          <FRBRalias value="Schedule 1"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRcountry value="za"/>
+        </FRBRWork>
+        <FRBRExpression>
+          <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRlanguage language="eng"/>
+        </FRBRExpression>
+        <FRBRManifestation>
+          <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="#{today}" name="Generation"/>
+          <FRBRauthor href="#slaw"/>
+        </FRBRManifestation>
+      </identification>
+    </meta>
+    <mainBody>
+      <hcontainer id="schedule1" name="schedule">
+        <heading>Schedule 1</heading>
+        <paragraph id="schedule1.paragraph0">
+          <content>
+            <p>Other than as is set out hereinbelow, no signs other than locality bound signs, temporary signs including loose portable sign, estate agents signs, newspaper headline posters and posters (the erection of which must comply with the appropriate schedules pertinent thereto) shall be erected on Municipal owned land.</p>
+          </content>
+        </paragraph>
+        <section id="section-1">
+          <num>1.</num>
+          <heading>Foo</heading>
+        </section>
+        <section id="section-2">
+          <num>2.</num>
+          <heading>Bar</heading>
+        </section>
+      </hcontainer>
+    </mainBody>
+  </doc>
+</component>
+EOS
+        .strip
+      end
+
+      it 'should handle rich content in titles and subheandings' do
+        node = parse :schedules, <<EOS
+Schedule - First Schedule [[remark]]
+Subheading [[another]]
+
+Subject to approval in terms of this By-Law.
+EOS
+        s = to_xml(node)
+        today = Time.now.strftime('%Y-%m-%d')
+        s.should == '<component id="component-firstschedule">
+  <doc name="firstschedule">
+    <meta>
+      <identification source="#slaw">
+        <FRBRWork>
+          <FRBRthis value="/za/act/1980/01/firstschedule"/>
+          <FRBRuri value="/za/act/1980/01"/>
+          <FRBRalias value="First Schedule"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRcountry value="za"/>
+        </FRBRWork>
+        <FRBRExpression>
+          <FRBRthis value="/za/act/1980/01/eng@/firstschedule"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRlanguage language="eng"/>
+        </FRBRExpression>
+        <FRBRManifestation>
+          <FRBRthis value="/za/act/1980/01/eng@/firstschedule"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="' + today + '" name="Generation"/>
+          <FRBRauthor href="#slaw"/>
+        </FRBRManifestation>
+      </identification>
+    </meta>
+    <mainBody>
+      <hcontainer id="firstschedule" name="schedule">
+        <heading>First Schedule <remark status="editorial">[remark]</remark></heading>
+        <subheading>Subheading <remark status="editorial">[another]</remark></subheading>
+        <paragraph id="firstschedule.paragraph0">
+          <content>
+            <p>Subject to approval in terms of this By-Law.</p>
+          </content>
+        </paragraph>
+      </hcontainer>
+    </mainBody>
+  </doc>
+</component>'
+      end
+
+    end
   end
 end
-
