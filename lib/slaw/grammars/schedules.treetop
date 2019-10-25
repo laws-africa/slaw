@@ -20,9 +20,32 @@ module Slaw
       end
 
       rule schedule_title
-        space? schedule_title_prefix space? "\""? num:alphanums? "\""? [ \t:.-]* title:inline_items?
+        new_schedule_title / legacy_schedule_title
+      end
+
+      rule new_schedule_title
+        space? 'SCHEDULE'i
+        eol
+        heading:schedule_heading?
+        subheading:schedule_subheading?
+        <ScheduleTitle>
+      end
+
+      rule schedule_heading
+        'HEADING'i space? title:inline_items? eol
+      end
+
+      rule schedule_subheading
+        'SUBHEADING'i space? title:inline_items? eol
+      end
+
+      # The legacy schedule mechanism is retained because it matches PDF imports well.
+      # Subsequent edits will use the new schedule format.
+      rule legacy_schedule_title
+        space? schedule_title_prefix [ \t:.-]* heading:inline_items?
         subheading:(newline space? inline_items)?
         eol
+        <LegacyScheduleTitle>
       end
 
       rule schedule_title_prefix
