@@ -81,6 +81,11 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
+### 5.0.0 (25 Oct 2019)
+
+* Schedules have a new grammar to make it easier for users to understand headings and subheadings.
+* The way schedule IDs are generated has been simplified.
+
 ### 4.2.0 (7 Sept 2019)
 
 * BODY is allowed to be empty
