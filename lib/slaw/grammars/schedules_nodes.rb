@@ -20,7 +20,7 @@ module Slaw
 
       class ScheduleTitle < Treetop::Runtime::SyntaxNode
         def heading_text
-          if heading.empty?
+          if heading.empty? or heading.title.empty?
             nil
           else
             heading.title.elements
