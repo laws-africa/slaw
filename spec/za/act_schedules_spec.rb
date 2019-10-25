@@ -587,6 +587,62 @@ EOS
 </component>'
     end
 
+    it 'should handle a schedule with an empty heading and subheading' do
+      node = parse :schedules, <<EOS
+SCHEDULE
+HEADING
+SUBHEADING
+
+Subject to approval in terms of this By-Law, the erection:
+1. Foo
+EOS
+      s = to_xml(node)
+      today = Time.now.strftime('%Y-%m-%d')
+      s.should == '<component id="component-schedule">
+  <doc name="schedule">
+    <meta>
+      <identification source="#slaw">
+        <FRBRWork>
+          <FRBRthis value="/za/act/1980/01/schedule"/>
+          <FRBRuri value="/za/act/1980/01"/>
+          <FRBRalias value="Schedule"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRcountry value="za"/>
+        </FRBRWork>
+        <FRBRExpression>
+          <FRBRthis value="/za/act/1980/01/eng@/schedule"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="1980-01-01" name="Generation"/>
+          <FRBRauthor href="#council"/>
+          <FRBRlanguage language="eng"/>
+        </FRBRExpression>
+        <FRBRManifestation>
+          <FRBRthis value="/za/act/1980/01/eng@/schedule"/>
+          <FRBRuri value="/za/act/1980/01/eng@"/>
+          <FRBRdate date="' + today + '" name="Generation"/>
+          <FRBRauthor href="#slaw"/>
+        </FRBRManifestation>
+      </identification>
+    </meta>
+    <mainBody>
+      <hcontainer id="schedule" name="schedule">
+        <heading>Schedule</heading>
+        <paragraph id="schedule.paragraph0">
+          <content>
+            <p>Subject to approval in terms of this By-Law, the erection:</p>
+          </content>
+        </paragraph>
+        <section id="section-1">
+          <num>1.</num>
+          <heading>Foo</heading>
+        </section>
+      </hcontainer>
+    </mainBody>
+  </doc>
+</component>'
+    end
+
   end
 
   context 'legacy schedules' do
