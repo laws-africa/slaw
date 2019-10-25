@@ -40,8 +40,12 @@ describe Slaw::ActGenerator do
     it 'should serialise many schedules correctly' do
       node = parse :schedules_container, <<EOS
 SCHEDULE
+
 HEADING Schedule 2
+
 SUBHEADING A Title
+
+
 1. Foo
 2. Bar
 SCHEDULE
