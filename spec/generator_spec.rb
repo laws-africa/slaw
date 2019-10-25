@@ -54,6 +54,8 @@ Some content.
             <p>participation</p>
             <p>Schedule 2 ignored</p>
             <p>Schedules</p>
+            <p>HEADING x</p>
+            <p>SUBHEADING x</p>
             <p>BODY not escaped</p>
             <p>BODY</p>
             <p>PREAMBLE not escaped</p>
@@ -87,6 +89,10 @@ participation
 \Schedule 2 ignored
 
 Schedules
+
+\HEADING x
+
+\SUBHEADING x
 
 BODY not escaped
 
@@ -242,8 +248,9 @@ three
       doc = subject.generate_from_text(<<EOS
 1. Something
 
-Schedule - First Schedule [[remark]]
-Subheading [[another]]
+SCHEDULE
+HEADING First Schedule [[remark]]
+SUBHEADING Subheading [[another]]
 
 Subject to approval in terms of this By-Law.
 EOS
@@ -253,8 +260,9 @@ EOS
 
 1. Something
 
-SCHEDULE - First Schedule [[remark]]
-Subheading [[another]]
+SCHEDULE
+HEADING First Schedule [[remark]]
+SUBHEADING Subheading [[another]]
 
 Subject to approval in terms of this By-Law.
 
