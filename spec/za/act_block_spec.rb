@@ -1674,27 +1674,6 @@ EOS
   end
 
   #-------------------------------------------------------------------------------
-  # inline_items
-
-  context 'inline_items' do
-    it 'should handle a simple clause' do
-      node = parse :inline_items, "simple text"
-      node.text_value.should == "simple text"
-    end
-
-    it 'should handle a clause with a remark' do
-      node = parse :inline_items, "simple [[remark]]. text"
-      node.text_value.should == "simple [[remark]]. text"
-      node.elements[7].is_a?(Slaw::Grammars::ZA::Act::Remark).should be true
-
-      node = parse :inline_items, "simple [[remark]][[another]] text"
-      node.text_value.should == "simple [[remark]][[another]] text"
-      node.elements[7].is_a?(Slaw::Grammars::ZA::Act::Remark).should be true
-      node.elements[7].is_a?(Slaw::Grammars::ZA::Act::Remark).should be true
-    end
-  end
-
-  #-------------------------------------------------------------------------------
   # crossheadings
 
   context 'crossheadings' do
