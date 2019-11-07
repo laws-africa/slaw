@@ -185,22 +185,7 @@ module Slaw
       #
       # @return [Nokogiri::XML::Document] the updated document
       def postprocess(doc)
-        adjust_blocklists(doc)
-
-        doc
-      end
-
-      # Adjust blocklists:
-      #
-      # - nest them correctly
-      # - change preceding p tags into listIntroductions
-      #
-      # @param doc [Nokogiri::XML::Document]
-      def adjust_blocklists(doc)
-        logger.info("Adjusting blocklists")
-
-        Slaw::Parse::Blocklists.nest_blocklists(doc)
-        Slaw::Parse::Blocklists.fix_intros(doc)
+        @parser.postprocess(doc)
       end
 
       protected
