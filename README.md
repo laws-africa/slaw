@@ -81,6 +81,12 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
+### 6.0.0 (7 Nov 2019)
+
+* Give grammars the opportunity to post-process generated XML
+* Move blocklist handling into postprocessing for ZA grammar
+* ZA grammar rewrites schedule aliases to include full text content of headings
+
 ### 5.0.0 (25 Oct 2019)
 
 * Schedules have a new grammar to make it easier for users to understand headings and subheadings.
