@@ -3,6 +3,11 @@ module Slaw
     module Blocklists
       include Slaw::Namespace
 
+      def self.adjust_blocklists(doc)
+        nest_blocklists(doc)
+        fix_intros(doc)
+      end
+
       # Correctly re-nest nested block lists that are tagged with the "renest" attribute.
       #
       # We do this by identifying the numbering format of each item in the list

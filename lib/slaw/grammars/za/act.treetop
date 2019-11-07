@@ -2,6 +2,7 @@
 
 require 'slaw/parse/grammar_helpers'
 require 'slaw/grammars/za/act_nodes'
+require 'slaw/grammars/za/postprocess'
 
 require 'slaw/grammars/terminals'
 require 'slaw/grammars/tables'
@@ -13,6 +14,7 @@ module Slaw
     module ZA
       grammar Act
         include Slaw::Parse::GrammarHelpers
+        include Slaw::Grammars::ZA::Postprocess
 
         ########
         # major containers
