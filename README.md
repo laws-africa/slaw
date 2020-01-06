@@ -81,6 +81,10 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
+### 6.1.0 (6 Jan 2020)
+
+* Support Chapters inside Parts
+
 ### 6.0.0 (7 Nov 2019)
 
 * Give grammars the opportunity to post-process generated XML
