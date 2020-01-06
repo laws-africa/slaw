@@ -431,6 +431,42 @@ EOS
   </paragraph>
 </chapter>'
     end
+
+    it 'should allow parts in chapters' do
+      node = parse :chapter, <<EOS
+Chapter 1 - Chapter One
+
+Part 1 - Chapter One Part One
+
+one-one
+
+Part 2 - Chapter One Part Two
+
+one-two
+EOS
+      to_xml(node).should == '<chapter id="chapter-1">
+  <num>1</num>
+  <heading>Chapter One</heading>
+  <part id="chapter-1.part-1">
+    <num>1</num>
+    <heading>Chapter One Part One</heading>
+    <paragraph id="chapter-1.part-1.paragraph0">
+      <content>
+        <p>one-one</p>
+      </content>
+    </paragraph>
+  </part>
+  <part id="chapter-1.part-2">
+    <num>2</num>
+    <heading>Chapter One Part Two</heading>
+    <paragraph id="chapter-1.part-2.paragraph0">
+      <content>
+        <p>one-two</p>
+      </content>
+    </paragraph>
+  </part>
+</chapter>'
+    end
   end
 
   #-------------------------------------------------------------------------------
@@ -681,6 +717,42 @@ EOS
     </paragraph>
   </part>
 </body>'
+    end
+
+    it 'should allow chapters in parts' do
+      node = parse :part, <<EOS
+Part 1 - Part One
+
+Chapter 1 - Part One Chapter One
+
+one-one
+
+Chapter 2 - Part One Chapter Two
+
+one-two
+EOS
+      to_xml(node).should == '<part id="part-1">
+  <num>1</num>
+  <heading>Part One</heading>
+  <chapter id="part-1.chapter-1">
+    <num>1</num>
+    <heading>Part One Chapter One</heading>
+    <paragraph id="part-1.chapter-1.paragraph0">
+      <content>
+        <p>one-one</p>
+      </content>
+    </paragraph>
+  </chapter>
+  <chapter id="part-1.chapter-2">
+    <num>2</num>
+    <heading>Part One Chapter Two</heading>
+    <paragraph id="part-1.chapter-2.paragraph0">
+      <content>
+        <p>one-two</p>
+      </content>
+    </paragraph>
+  </chapter>
+</part>'
     end
   end
 

@@ -47,16 +47,32 @@ module Slaw
           children:(chapter / part / section / subsection / generic_container)* <Body>
         end
 
+        # chapter (parts allowed)
         rule chapter
           heading:chapter_heading
-          children:(part / section / subsection / generic_container)*
+          children:(part_no_chapter / section / subsection / generic_container)*
           <Chapter>
         end
 
+        # part (chapters allowed)
         rule part
+          heading:part_heading
+          children:(chapter_no_part / section / subsection / generic_container)*
+          <Part>
+        end
+
+        # part (no chapters)
+        rule part_no_chapter
           heading:part_heading
           children:(section / subsection / generic_container)*
           <Part>
+        end
+
+        # chapter (no parts)
+        rule chapter_no_part
+          heading:chapter_heading
+          children:(section / subsection / generic_container)*
+          <Chapter>
         end
 
         rule section
@@ -106,8 +122,16 @@ module Slaw
           children:chapter+ <GroupNode>
         end
 
+        rule chapters_no_parts
+          children:chapter_no_part+ <GroupNode>
+        end
+
         rule parts
           children:part+ <GroupNode>
+        end
+
+        rule parts_no_chapters
+          children:part_no_chapter+ <GroupNode>
         end
 
         rule sections
