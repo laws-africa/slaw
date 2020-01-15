@@ -81,6 +81,10 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
+### 6.2.0 (15 Jan 2020)
+
+* Better support for ol, ul and li when importing from HTML
+
 ### 6.1.0 (6 Jan 2020)
 
 * Support Chapters inside Parts
