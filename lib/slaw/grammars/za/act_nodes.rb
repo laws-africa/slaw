@@ -315,7 +315,8 @@ module Slaw
           # Render a block list to xml. If a block is given,
           # yield to it a builder to insert a listIntroduction node
           def to_xml(b, idprefix, i=0, &block)
-            id = idprefix + "list#{i}"
+            cnt = Slaw::Grammars::Counters.counters[idprefix]['list'] += 1
+            id = idprefix + "list#{cnt}"
             idprefix = id + '.'
 
             b.blockList(id: id, renest: true) { |b|

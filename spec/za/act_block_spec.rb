@@ -84,12 +84,12 @@ EOS
   <paragraph id="paragraph0">
     <content>
       <p>Some content before the section</p>
-      <blockList id="paragraph0.list1" renest="true">
-        <item id="paragraph0.list1.a">
+      <blockList id="paragraph0.list0" renest="true">
+        <item id="paragraph0.list0.a">
           <num>(a)</num>
           <p>foo</p>
         </item>
-        <item id="paragraph0.list1.b">
+        <item id="paragraph0.list0.b">
           <num>(b)</num>
           <p>bar</p>
         </item>
@@ -777,20 +777,20 @@ EOS
   <num>(2)</num>
   <content>
     <p>title</p>
-    <blockList id="2.list1" renest="true">
-      <item id="2.list1.a">
+    <blockList id="2.list0" renest="true">
+      <item id="2.list0.a">
         <num>(a)</num>
         <p>one</p>
       </item>
-      <item id="2.list1.b">
+      <item id="2.list0.b">
         <num>(b)</num>
         <p>two</p>
       </item>
-      <item id="2.list1.c">
+      <item id="2.list0.c">
         <num>(c)</num>
         <p>three</p>
       </item>
-      <item id="2.list1.i">
+      <item id="2.list0.i">
         <num>(i)</num>
         <p>four</p>
       </item>
@@ -901,20 +901,20 @@ EOS
   <num>(1)</num>
   <content>
     <p>here\'s my really cool list,</p>
-    <blockList id="1.list1" renest="true">
-      <item id="1.list1.a">
+    <blockList id="1.list0" renest="true">
+      <item id="1.list0.a">
         <num>(a)</num>
         <p>one</p>
       </item>
-      <item id="1.list1.b">
+      <item id="1.list0.b">
         <num>(b)</num>
         <p/>
       </item>
-      <item id="1.list1.i">
+      <item id="1.list0.i">
         <num>(i)</num>
         <p>single</p>
       </item>
-      <item id="1.list1.ii">
+      <item id="1.list0.ii">
         <num>(ii)</num>
         <p>double</p>
       </item>
@@ -935,20 +935,20 @@ EOS
   <num>(1)</num>
   <content>
     <p>here\'s my really cool list,</p>
-    <blockList id="1.list1" renest="true">
-      <item id="1.list1.a">
+    <blockList id="1.list0" renest="true">
+      <item id="1.list0.a">
         <num>(a)</num>
         <p/>
       </item>
-      <item id="1.list1.b">
+      <item id="1.list0.b">
         <num>(b)</num>
         <p/>
       </item>
-      <item id="1.list1.i">
+      <item id="1.list0.i">
         <num>(i)</num>
         <p>single</p>
       </item>
-      <item id="1.list1.ii">
+      <item id="1.list0.ii">
         <num>(ii)</num>
         <p>double</p>
       </item>
@@ -977,16 +977,16 @@ EOS
   <num>9.9</num>
   <content>
     <p>foo</p>
-    <blockList id="9.9.list1" renest="true">
-      <item id="9.9.list1.9.9.1">
+    <blockList id="9.9.list0" renest="true">
+      <item id="9.9.list0.9.9.1">
         <num>9.9.1</num>
         <p>item1</p>
       </item>
-      <item id="9.9.list1.9.9.2">
+      <item id="9.9.list0.9.9.2">
         <num>9.9.2</num>
         <p>item2</p>
       </item>
-      <item id="9.9.list1.9.9.2.1">
+      <item id="9.9.list0.9.9.2.1">
         <num>9.9.2.1</num>
         <p>item3</p>
       </item>
@@ -1011,23 +1011,23 @@ EOS
   <num>(1)</num>
   <content>
     <p>a list</p>
-    <blockList id="1.list1" renest="true">
-      <item id="1.list1.a">
+    <blockList id="1.list0" renest="true">
+      <item id="1.list0.a">
         <num>(a)</num>
         <p>item 1</p>
       </item>
-      <item id="1.list1.b">
+      <item id="1.list0.b">
         <num>(b)</num>
         <p>item 2</p>
       </item>
     </blockList>
     <p>some text</p>
-    <blockList id="1.list3" renest="true">
-      <item id="1.list3.c">
+    <blockList id="1.list1" renest="true">
+      <item id="1.list1.c">
         <num>(c)</num>
         <p>item 3</p>
       </item>
-      <item id="1.list3.d">
+      <item id="1.list1.d">
         <num>(d)</num>
         <p>item 4</p>
       </item>
@@ -1614,12 +1614,12 @@ EOS
   <paragraph id="section-1.paragraph0">
     <content>
       <p>naked statement (c) blah</p>
-      <blockList id="section-1.paragraph0.list1" renest="true">
-        <item id="section-1.paragraph0.list1.a">
+      <blockList id="section-1.paragraph0.list0" renest="true">
+        <item id="section-1.paragraph0.list0.a">
           <num>(a)</num>
           <p>foo</p>
         </item>
-        <item id="section-1.paragraph0.list1.b">
+        <item id="section-1.paragraph0.list0.b">
           <num>(b)</num>
           <p>bar</p>
         </item>
@@ -1656,12 +1656,12 @@ EOS
     <num>(2)</num>
     <content>
       <p>Schedule 1</p>
-      <blockList id="section-1.2.list1" renest="true">
-        <item id="section-1.2.list1.a">
+      <blockList id="section-1.2.list0" renest="true">
+        <item id="section-1.2.list0.a">
           <num>(a)</num>
           <p>Part 1</p>
         </item>
-        <item id="section-1.2.list1.b">
+        <item id="section-1.2.list0.b">
           <num>(b)</num>
           <p>thing</p>
         </item>
@@ -1728,12 +1728,12 @@ EOS
     <num>3.1</num>
     <content>
       <p>Informal trading may include, amongst others:-</p>
-      <blockList id="section-3.3.1.list1" renest="true">
-        <item id="section-3.3.1.list1.3.1.1">
+      <blockList id="section-3.3.1.list0" renest="true">
+        <item id="section-3.3.1.list0.3.1.1">
           <num>3.1.1</num>
           <p>street trading;</p>
         </item>
-        <item id="section-3.3.1.list1.3.1.2">
+        <item id="section-3.3.1.list0.3.1.2">
           <num>3.1.2</num>
           <p>trading in pedestrian malls;</p>
         </item>
