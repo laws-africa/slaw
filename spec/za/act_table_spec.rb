@@ -29,8 +29,7 @@ describe Slaw::ActGenerator do
   end
 
   before(:each) do
-    Slaw::Grammars::ZA::Act::Crossheading.counters.clear
-    Slaw::Grammars::ZA::Act::BlockElements.counters.clear
+    Slaw::Grammars::Counters.reset!
   end
 
   describe 'tables' do

@@ -1,4 +1,5 @@
 require 'slaw/grammars/core_nodes'
+require 'slaw/grammars/counters'
 
 module Slaw
   module Grammars
@@ -281,16 +282,9 @@ module Slaw
         end
 
         class BlockElements < Treetop::Runtime::SyntaxNode
-          @@counters = {}
-
-          def self.counters
-            @@counters
-          end
-
           def to_xml(b, idprefix='', i=0)
-            @@counters[idprefix] ||= -1
-            @@counters[idprefix] += 1
-            id = "#{idprefix}paragraph#{@@counters[idprefix]}"
+            cnt = Slaw::Grammars::Counters.counters[idprefix]['paragraph'] += 1
+            id = "#{idprefix}paragraph#{cnt}"
             idprefix = "#{id}."
 
             b.paragraph(id: id) { |b|
@@ -348,16 +342,9 @@ module Slaw
         end
 
         class Crossheading < Treetop::Runtime::SyntaxNode
-          @@counters = {}
-
-          def self.counters
-            @@counters
-          end
-
           def to_xml(b, idprefix, i=0)
-            @@counters[idprefix] ||= -1
-            @@counters[idprefix] += 1
-            id = "#{idprefix}crossheading-#{@@counters[idprefix]}"
+            cnt = Slaw::Grammars::Counters.counters[idprefix]['crossheading'] += 1
+            id = "#{idprefix}crossheading-#{cnt}"
 
             b.hcontainer(id: id, name: 'crossheading') { |b|
               b.heading { |b|
