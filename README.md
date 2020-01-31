@@ -81,6 +81,11 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
+### 7.0.0 (31 Jan 2020)
+
+* Lists ids are now numbered sequentially, rather than by tree position
+* New Slaw::Grammars::Counters helper module
+
 ### 6.2.0 (15 Jan 2020)
 
 * Better support for ol, ul and li when importing from HTML

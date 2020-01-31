@@ -29,8 +29,7 @@ describe Slaw::ActGenerator do
   end
 
   before(:each) do
-    Slaw::Grammars::ZA::Act::Crossheading.counters.clear
-    Slaw::Grammars::ZA::Act::BlockElements.counters.clear
+    Slaw::Grammars::Counters.reset!
   end
 
   #-------------------------------------------------------------------------------
@@ -146,8 +145,8 @@ EOS
     <num>(1)</num>
     <content>
       <p>something</p>
-      <blockList id="section-1.1.list1" renest="true">
-        <item id="section-1.1.list1.a">
+      <blockList id="section-1.1.list0" renest="true">
+        <item id="section-1.1.list0.a">
           <num>(a)</num>
           <p>with a remark <remark status="editorial">[Section 1 amended by Act 23 of 2004]</remark></p>
         </item>
