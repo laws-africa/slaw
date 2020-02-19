@@ -81,6 +81,11 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
+### 8.0.0 (19 Feb 2020)
+
+* Obey --id-prefix for group nodes
+* Ensure that schedules prefix their children, for those that require it (parts and chapters)
+
 ### 7.0.0 (31 Jan 2020)
 
 * Lists ids are now numbered sequentially, rather than by tree position
