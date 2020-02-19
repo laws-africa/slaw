@@ -383,19 +383,19 @@ EOS
       <hcontainer id="schedule1" name="schedule">
         <heading>Schedule 1</heading>
         <subheading>Forms</subheading>
-        <part id="part-I">
+        <part id="schedule1.part-I">
           <num>I</num>
           <heading>Form of authentication statement</heading>
-          <paragraph id="part-I.paragraph0">
+          <paragraph id="schedule1.part-I.paragraph0">
             <content>
               <p>This printed impression has been carefully compared by me with the bill which was passed by Parliament and found by me to be a true copy of the bill.</p>
             </content>
           </paragraph>
         </part>
-        <part id="part-II">
+        <part id="schedule1.part-II">
           <num>II</num>
           <heading>Form of statement of the President’s assent.</heading>
-          <paragraph id="part-II.paragraph0">
+          <paragraph id="schedule1.part-II.paragraph0">
             <content>
               <p>I signify my assent to the bill and a whole bunch of other stuff.</p>
             </content>
