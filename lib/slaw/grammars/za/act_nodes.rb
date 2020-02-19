@@ -137,13 +137,8 @@ module Slaw
             heading.num
           end
 
-          def to_xml(b, *args)
-            id = "part-#{num}"
-
-            # include a chapter number in the id if our parent has one
-            if parent and parent.parent.is_a?(Chapter) and parent.parent.num
-              id = "chapter-#{parent.parent.num}.#{id}"
-            end
+          def to_xml(b, id_prefix='', *args)
+            id = id_prefix + "part-#{num}"
 
             b.part(id: id) { |b|
               heading.to_xml(b)
@@ -172,13 +167,8 @@ module Slaw
             heading.num
           end
 
-          def to_xml(b, *args)
-            id = "chapter-#{num}"
-
-            # include a part number in the id if our parent has one
-            if parent and parent.parent.is_a?(Part) and parent.parent.num
-              id = "part-#{parent.parent.num}.#{id}"
-            end
+          def to_xml(b, id_prefix='', *args)
+            id = id_prefix + "chapter-#{num}"
 
             b.chapter(id: id) { |b|
               heading.to_xml(b)
