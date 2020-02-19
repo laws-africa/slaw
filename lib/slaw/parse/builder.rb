@@ -148,14 +148,7 @@ module Slaw
         builder.akomaNtoso("xmlns:xsi"=> "http://www.w3.org/2001/XMLSchema-instance", 
                            "xsi:schemaLocation" => "http://www.akomantoso.org/2.0 akomantoso20.xsd",
                            "xmlns" => NS) do |b|
-          args = [b]
-
-          # should we provide an id prefix?
-          arity = tree.method('to_xml').arity 
-          arity = arity.abs-1 if arity < 0
-          args << (fragment_id_prefix || "") if arity > 1
-
-          tree.to_xml(*args)
+          tree.to_xml(b, fragment_id_prefix || '')
         end
 
         builder.to_xml(encoding: 'UTF-8')
