@@ -9,10 +9,10 @@ module Slaw
       MANIFESTATION_URI = EXPRESSION_URI
 
       class ScheduleContainer < Treetop::Runtime::SyntaxNode
-        def to_xml(b)
+        def to_xml(b, idprefix="")
           b.components { |b| 
             schedules.children.elements.each_with_index { |e, i|
-              e.to_xml(b, "", i+1)
+              e.to_xml(b, idprefix, i+1)
             }
           }
         end
