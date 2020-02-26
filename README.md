@@ -81,6 +81,10 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
+### 8.0.1 (26 Feb 2020)
+
+* Fix bug with id prefix on schedules container
+
 ### 8.0.0 (19 Feb 2020)
 
 * Obey --id-prefix for group nodes
