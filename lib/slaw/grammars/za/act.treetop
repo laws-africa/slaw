@@ -44,35 +44,41 @@ module Slaw
 
         rule body
           ('BODY' space? eol)?
-          children:(chapter / part / section / subsection / generic_container)* <Body>
+          children:(chapter / part / subpart / section / subsection / generic_container)* <Body>
         end
 
         # chapter (parts allowed)
         rule chapter
           heading:chapter_heading
-          children:(part_no_chapter / section / subsection / generic_container)*
+          children:(part_no_chapter / subpart / section / subsection / generic_container)*
           <Chapter>
         end
 
         # part (chapters allowed)
         rule part
           heading:part_heading
-          children:(chapter_no_part / section / subsection / generic_container)*
+          children:(chapter_no_part / subpart / section / subsection / generic_container)*
           <Part>
         end
 
         # part (no chapters)
         rule part_no_chapter
           heading:part_heading
-          children:(section / subsection / generic_container)*
+          children:(subpart / section / subsection / generic_container)*
           <Part>
         end
 
         # chapter (no parts)
         rule chapter_no_part
           heading:chapter_heading
-          children:(section / subsection / generic_container)*
+          children:(subpart / section / subsection / generic_container)*
           <Chapter>
+        end
+
+        rule subpart
+          heading:subpart_heading
+          children:(section / subsection / generic_container)*
+          <Subpart>
         end
 
         rule section
@@ -134,6 +140,10 @@ module Slaw
           children:part_no_chapter+ <GroupNode>
         end
 
+        rule subparts
+          children:subpart+ <GroupNode>
+        end
+
         rule sections
           children:section+ <GroupNode>
         end
@@ -149,6 +159,11 @@ module Slaw
         rule part_heading
           space? part_heading_prefix heading:(newline? space? inline_items)? eol
           <PartHeading>
+        end
+
+        rule subpart_heading
+          space? subpart_heading_prefix heading:(newline? space? inline_items)? eol
+          <SubpartHeading>
         end
 
         rule section_title
@@ -241,6 +256,10 @@ module Slaw
           'part'i space alphanums [ :-]*
         end
 
+        rule subpart_heading_prefix
+          'subpart'i space alphanums [ :-]*
+        end
+
         rule chapter_heading_prefix
           'chapter'i space alphanums [ :-]*
         end
@@ -275,12 +294,12 @@ module Slaw
 
         rule body_hierarchy_prefix
           # Text that indicates the start of a hierarchy element, in the body
-          chapter_heading / part_heading / section_title / schedule_title / subsection_prefix / crossheading
+          chapter_heading / part_heading / subpart_heading / section_title / schedule_title / subsection_prefix / crossheading
         end
 
         rule non_body_hierarchy_prefix
           # Text that indicates the start of a hierarchy element, in the preamble or preface
-          chapter_heading / part_heading / section_title / schedule_title / crossheading
+          chapter_heading / part_heading / subpart_heading / section_title / schedule_title / crossheading
         end
 
         include Slaw::Grammars::Inlines

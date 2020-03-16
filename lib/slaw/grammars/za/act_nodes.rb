@@ -162,6 +162,36 @@ module Slaw
           end
         end
 
+        class Subpart < Treetop::Runtime::SyntaxNode
+          def num
+            heading.num
+          end
+
+          def to_xml(b, id_prefix='', *args)
+            id = id_prefix + "subpart-#{num}"
+
+            b.subpart(id: id) { |b|
+              heading.to_xml(b)
+              children.elements.each_with_index { |e, i| e.to_xml(b, id + '.', i) }
+            }
+          end
+        end
+
+        class SubpartHeading < Treetop::Runtime::SyntaxNode
+          def num
+            subpart_heading_prefix.alphanums.text_value
+          end
+
+          def to_xml(b)
+            b.num(num)
+            if heading.respond_to? :inline_items
+              b.heading { |b|
+                heading.inline_items.to_xml(b)
+              }
+            end
+          end
+        end
+
         class Chapter < Treetop::Runtime::SyntaxNode
           def num
             heading.num

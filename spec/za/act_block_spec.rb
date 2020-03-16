@@ -756,6 +756,81 @@ EOS
   end
 
   #-------------------------------------------------------------------------------
+  # Subparts
+
+  describe 'subparts' do
+    it 'should handle subparts' do
+      node = parse :subpart, <<EOS
+SUBPART 2 - Heading
+
+1. Section
+Hello there
+EOS
+      to_xml(node).should == '<subpart id="subpart-2">
+  <num>2</num>
+  <heading>Heading</heading>
+  <section id="section-1">
+    <num>1.</num>
+    <heading>Section</heading>
+    <paragraph id="section-1.paragraph0">
+      <content>
+        <p>Hello there</p>
+      </content>
+    </paragraph>
+  </section>
+</subpart>'
+    end
+
+    it 'should handle subparts in parts' do
+      node = parse :part, <<EOS
+PART A - The Part
+
+SUBPART 1 - The Subpart 1
+
+1. Section
+
+Hello
+
+SUBPART 2 - The Subpart 2
+
+2. Section
+
+Bye
+EOS
+      to_xml(node).should == '<part id="part-A">
+  <num>A</num>
+  <heading>The Part</heading>
+  <subpart id="part-A.subpart-1">
+    <num>1</num>
+    <heading>The Subpart 1</heading>
+    <section id="section-1">
+      <num>1.</num>
+      <heading>Section</heading>
+      <paragraph id="section-1.paragraph0">
+        <content>
+          <p>Hello</p>
+        </content>
+      </paragraph>
+    </section>
+  </subpart>
+  <subpart id="part-A.subpart-2">
+    <num>2</num>
+    <heading>The Subpart 2</heading>
+    <section id="section-2">
+      <num>2.</num>
+      <heading>Section</heading>
+      <paragraph id="section-2.paragraph0">
+        <content>
+          <p>Bye</p>
+        </content>
+      </paragraph>
+    </section>
+  </subpart>
+</part>'
+    end
+  end
+
+  #-------------------------------------------------------------------------------
   # Subsections
 
   describe 'subsection' do
