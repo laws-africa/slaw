@@ -1038,6 +1038,28 @@ EOS
           9.9. foo
 EOS
         node.num.should == "9.9"
+
+        node = parse :subsection, <<EOS
+          9.9 foo
+EOS
+        node.num.should == "9.9"
+      end
+
+      it 'should handle dotted number and letter subsection numbers' do
+        node = parse :subsection, <<EOS
+          9.9A. foo
+EOS
+        node.num.should == "9.9A"
+
+        node = parse :subsection, <<EOS
+          9.9bis foo
+EOS
+        node.num.should == "9.9bis"
+
+        node = parse :subsection, <<EOS
+          9.9A foo
+EOS
+        node.num.should == "9.9A"
       end
 
       it 'should handle dotted number sublists' do

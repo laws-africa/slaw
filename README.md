@@ -79,7 +79,16 @@ You can create your own grammar by creating a gem that provides these files and 
 7. Push to the branch: `git push origin my-new-feature`
 8. Create a new Pull Request
 
+## Releasing
+
+1. Update `lib/slaw/version.rb`
+2. Run `rake release`
+
 ## Changelog
+
+### 9.1.0 (15 April 2020)
+
+* Subsections can have numbers such as 1.1A and 1.1bis
 
 ### 9.0.0 (17 Mar 2020)
 

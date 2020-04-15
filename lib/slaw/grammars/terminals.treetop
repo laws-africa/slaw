@@ -20,7 +20,11 @@ module Slaw
       end
 
       rule dotted_number_2
-        number '.' number
+        # 9.1
+        # 9.1A
+        # 9.1A1
+        # NOT: 9.A
+        number '.' number alphanums?
       end
 
       rule number
