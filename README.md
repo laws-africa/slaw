@@ -86,6 +86,12 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
+### 10.0.0 (?)
+
+* Support creating XML with AKN 3 namespace (http://docs.oasis-open.org/legaldocml/ns/akn/3.0)
+* Add --namespace option to toggle between generate AKN2 and AKN3 documents
+* Remove unnecessary schemaLocation header in root element
+
 ### 9.1.0 (15 April 2020)
 
 * Subsections can have numbers such as 1.1A and 1.1bis

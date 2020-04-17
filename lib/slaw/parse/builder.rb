@@ -21,7 +21,6 @@ module Slaw
     #     doc = builder.parse_and_process_text(text)
     #
     class Builder
-      include Slaw::Namespace
       include Slaw::Logging
 
       # Additional hash of options to be provided to the parser when parsing.
@@ -147,7 +146,7 @@ module Slaw
 
         builder.akomaNtoso("xmlns:xsi"=> "http://www.w3.org/2001/XMLSchema-instance", 
                            "xsi:schemaLocation" => "http://www.akomantoso.org/2.0 akomantoso20.xsd",
-                           "xmlns" => NS) do |b|
+                           "xmlns" => Slaw.akn_namespace) do |b|
           tree.to_xml(b, fragment_id_prefix || '')
         end
 

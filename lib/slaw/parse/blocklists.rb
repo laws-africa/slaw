@@ -1,7 +1,6 @@
 module Slaw
   module Parse
     module Blocklists
-      include Slaw::Namespace
 
       def self.adjust_blocklists(doc)
         nest_blocklists(doc)
@@ -40,9 +39,9 @@ module Slaw
       #
       # @param doc [Nokogiri::XML::Document] the document
       def self.nest_blocklists(doc)
-        doc.xpath('//a:blockList[@renest]', a: NS).each do |blocklist|
+        doc.xpath('//a:blockList[@renest]', a: Slaw.akn_namespace).each do |blocklist|
           blocklist.remove_attribute('renest')
-          items = blocklist.xpath('a:item', a: NS)
+          items = blocklist.xpath('a:item', a: Slaw.akn_namespace)
           nest_blocklist_items(items.to_a, guess_number_format(items.first), nil, nil) unless items.empty?
         end
       end
@@ -82,7 +81,7 @@ module Slaw
               sublist_count += 1
 
               # list intro
-              num = prev.at_xpath('a:num', a: NS)
+              num = prev.at_xpath('a:num', a: Slaw.akn_namespace)
               if intro = num.next_element
                 intro.name = 'listIntroduction'
                 sublist << intro
@@ -174,7 +173,7 @@ module Slaw
 
       # Change p tags preceding a blocklist into listIntroductions within the blocklist
       def self.fix_intros(doc)
-        doc.xpath('//a:blockList', a: NS).each do |blocklist|
+        doc.xpath('//a:blockList', a: Slaw.akn_namespace).each do |blocklist|
           prev = blocklist.previous
           if prev and prev.name == 'p'
             prev.name = 'listIntroduction'
