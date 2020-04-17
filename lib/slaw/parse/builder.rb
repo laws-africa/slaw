@@ -144,9 +144,7 @@ module Slaw
       def xml_from_syntax_tree(tree)
         builder = ::Nokogiri::XML::Builder.new
 
-        builder.akomaNtoso("xmlns:xsi"=> "http://www.w3.org/2001/XMLSchema-instance", 
-                           "xsi:schemaLocation" => "http://www.akomantoso.org/2.0 akomantoso20.xsd",
-                           "xmlns" => Slaw.akn_namespace) do |b|
+        builder.akomaNtoso("xmlns" => Slaw.akn_namespace) do |b|
           tree.to_xml(b, fragment_id_prefix || '')
         end
 
