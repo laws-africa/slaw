@@ -58,7 +58,7 @@ EOS
       today = Time.now.strftime('%Y-%m-%d')
       s.should == <<EOS
 <components>
-  <component id="component-schedule2">
+  <component eId="component-schedule2">
     <doc name="schedule2">
       <meta>
         <identification source="#slaw">
@@ -86,14 +86,14 @@ EOS
         </identification>
       </meta>
       <mainBody>
-        <hcontainer id="schedule2" name="schedule">
+        <hcontainer eId="schedule2" name="schedule">
           <heading>Schedule 2</heading>
           <subheading>A Title</subheading>
-          <section id="section-1">
+          <section eId="section-1">
             <num>1.</num>
             <heading>Foo</heading>
           </section>
-          <section id="section-2">
+          <section eId="section-2">
             <num>2.</num>
             <heading>Bar</heading>
           </section>
@@ -101,7 +101,7 @@ EOS
       </mainBody>
     </doc>
   </component>
-  <component id="component-schedule3">
+  <component eId="component-schedule3">
     <doc name="schedule3">
       <meta>
         <identification source="#slaw">
@@ -129,10 +129,10 @@ EOS
         </identification>
       </meta>
       <mainBody>
-        <hcontainer id="schedule3" name="schedule">
+        <hcontainer eId="schedule3" name="schedule">
           <heading>Schedule 3</heading>
           <subheading>Another Title</subheading>
-          <paragraph id="schedule3.paragraph0">
+          <paragraph eId="schedule3__para_0">
             <content>
               <p>Baz</p>
               <p>Boom</p>
@@ -160,7 +160,7 @@ Subject to approval in terms of this By-Law, the erection:
 EOS
       s = to_xml(node)
       today = Time.now.strftime('%Y-%m-%d')
-      s.should == '<component id="component-firstschedule">
+      s.should == '<component eId="component-firstschedule">
   <doc name="firstschedule">
     <meta>
       <identification source="#slaw">
@@ -188,19 +188,19 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer id="firstschedule" name="schedule">
+      <hcontainer eId="firstschedule" name="schedule">
         <heading>First Schedule</heading>
         <subheading>Schedule Heading</subheading>
-        <paragraph id="firstschedule.paragraph0">
+        <paragraph eId="firstschedule__para_0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
           </content>
         </paragraph>
-        <section id="section-1">
+        <section eId="section-1">
           <num>1.</num>
           <heading>Foo</heading>
         </section>
-        <section id="section-2">
+        <section eId="section-2">
           <num>2.</num>
           <heading>Bar</heading>
         </section>
@@ -222,7 +222,7 @@ Subject to approval in terms of this By-Law, the erection:
 EOS
       s = to_xml(node)
       today = Time.now.strftime('%Y-%m-%d')
-      s.should == '<component id="component-1firstschedule">
+      s.should == '<component eId="component-1firstschedule">
   <doc name="1firstschedule">
     <meta>
       <identification source="#slaw">
@@ -250,19 +250,19 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer id="1firstschedule" name="schedule">
+      <hcontainer eId="1firstschedule" name="schedule">
         <heading>1. First Schedule</heading>
         <subheading>Schedule Heading</subheading>
-        <paragraph id="1firstschedule.paragraph0">
+        <paragraph eId="1firstschedule__para_0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
           </content>
         </paragraph>
-        <section id="section-1">
+        <section eId="section-1">
           <num>1.</num>
           <heading>Foo</heading>
         </section>
-        <section id="section-2">
+        <section eId="section-2">
           <num>2.</num>
           <heading>Bar</heading>
         </section>
@@ -283,7 +283,7 @@ Subject to approval in terms of this By-Law, the erection:
 EOS
       s = to_xml(node)
       today = Time.now.strftime('%Y-%m-%d')
-      s.should == '<component id="component-firstschedule">
+      s.should == '<component eId="component-firstschedule">
   <doc name="firstschedule">
     <meta>
       <identification source="#slaw">
@@ -311,18 +311,18 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer id="firstschedule" name="schedule">
+      <hcontainer eId="firstschedule" name="schedule">
         <heading>First Schedule</heading>
-        <paragraph id="firstschedule.paragraph0">
+        <paragraph eId="firstschedule__para_0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
           </content>
         </paragraph>
-        <section id="section-1">
+        <section eId="section-1">
           <num>1.</num>
           <heading>Foo</heading>
         </section>
-        <section id="section-2">
+        <section eId="section-2">
           <num>2.</num>
           <heading>Bar</heading>
         </section>
@@ -352,7 +352,7 @@ EOS
       s = to_xml(node)
       today = Time.now.strftime('%Y-%m-%d')
       s.should == <<EOS
-<component id="component-schedule1">
+<component eId="component_schedule1">
   <doc name="schedule1">
     <meta>
       <identification source="#slaw">
@@ -380,22 +380,22 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer id="schedule1" name="schedule">
+      <hcontainer eId="schedule1" name="schedule">
         <heading>Schedule 1</heading>
         <subheading>Forms</subheading>
-        <part id="schedule1.part-I">
+        <part eId="schedule1__part_I">
           <num>I</num>
           <heading>Form of authentication statement</heading>
-          <paragraph id="schedule1.part-I.paragraph0">
+          <paragraph eId="schedule1__part_I__para_0">
             <content>
               <p>This printed impression has been carefully compared by me with the bill which was passed by Parliament and found by me to be a true copy of the bill.</p>
             </content>
           </paragraph>
         </part>
-        <part id="schedule1.part-II">
+        <part eId="schedule1__part_II">
           <num>II</num>
           <heading>Form of statement of the President’s assent.</heading>
-          <paragraph id="schedule1.part-II.paragraph0">
+          <paragraph eId="schedule1__part_II__para_0">
             <content>
               <p>I signify my assent to the bill and a whole bunch of other stuff.</p>
             </content>
@@ -430,7 +430,7 @@ More stuff
 EOS
       s = to_xml(node)
       today = Time.now.strftime('%Y-%m-%d')
-      s.should == '<component id="component-schedule">
+      s.should == '<component eId="component-schedule">
   <doc name="schedule">
     <meta>
       <identification source="#slaw">
@@ -458,9 +458,9 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer id="schedule" name="schedule">
+      <hcontainer eId="schedule" name="schedule">
         <heading>Schedule</heading>
-        <paragraph id="schedule.paragraph0">
+        <paragraph eId="schedule__para_0">
           <content>
             <p>Subject to approval in terms of this By-Law.</p>
             <p>Schedule another</p>
@@ -483,7 +483,7 @@ Subject to approval in terms of this By-Law.
 EOS
       s = to_xml(node)
       today = Time.now.strftime('%Y-%m-%d')
-      s.should == '<component id="component-firstschedule">
+      s.should == '<component eId="component-firstschedule">
   <doc name="firstschedule">
     <meta>
       <identification source="#slaw">
@@ -511,10 +511,10 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer id="firstschedule" name="schedule">
+      <hcontainer eId="firstschedule" name="schedule">
         <heading>First Schedule <remark status="editorial">[remark]</remark></heading>
         <subheading>Subheading <remark status="editorial">[another]</remark></subheading>
-        <paragraph id="firstschedule.paragraph0">
+        <paragraph eId="firstschedule__para_0">
           <content>
             <p>Subject to approval in terms of this By-Law.</p>
           </content>
@@ -536,7 +536,7 @@ Subject to approval in terms of this By-Law, the erection:
 EOS
       s = to_xml(node)
       today = Time.now.strftime('%Y-%m-%d')
-      s.should == '<component id="component-schedule">
+      s.should == '<component eId="component-schedule">
   <doc name="schedule">
     <meta>
       <identification source="#slaw">
@@ -564,19 +564,19 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer id="schedule" name="schedule">
+      <hcontainer eId="schedule" name="schedule">
         <heading>Schedule</heading>
         <subheading>Subheading</subheading>
-        <paragraph id="schedule.paragraph0">
+        <paragraph eId="schedule__para_0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
           </content>
         </paragraph>
-        <section id="section-1">
+        <section eId="section-1">
           <num>1.</num>
           <heading>Foo</heading>
         </section>
-        <section id="section-2">
+        <section eId="section-2">
           <num>2.</num>
           <heading>Bar</heading>
         </section>
@@ -597,7 +597,7 @@ Subject to approval in terms of this By-Law, the erection:
 EOS
       s = to_xml(node)
       today = Time.now.strftime('%Y-%m-%d')
-      s.should == '<component id="component-schedule">
+      s.should == '<component eId="component-schedule">
   <doc name="schedule">
     <meta>
       <identification source="#slaw">
@@ -625,14 +625,14 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer id="schedule" name="schedule">
+      <hcontainer eId="schedule" name="schedule">
         <heading>Schedule</heading>
-        <paragraph id="schedule.paragraph0">
+        <paragraph eId="schedule__para_0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
           </content>
         </paragraph>
-        <section id="section-1">
+        <section eId="section-1">
           <num>1.</num>
           <heading>Foo</heading>
         </section>
@@ -656,7 +656,7 @@ Subject to approval in terms of this By-Law, the erection:
 EOS
         s = to_xml(node)
         today = Time.now.strftime('%Y-%m-%d')
-        s.should == '<component id="component-schedule">
+        s.should == '<component eId="component-schedule">
   <doc name="schedule">
     <meta>
       <identification source="#slaw">
@@ -684,18 +684,18 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer id="schedule" name="schedule">
+      <hcontainer eId="schedule" name="schedule">
         <heading>Schedule</heading>
-        <paragraph id="schedule.paragraph0">
+        <paragraph eId="schedule__para_0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
           </content>
         </paragraph>
-        <section id="section-1">
+        <section eId="section-1">
           <num>1.</num>
           <heading>Foo</heading>
         </section>
-        <section id="section-2">
+        <section eId="section-2">
           <num>2.</num>
           <heading>Bar</heading>
         </section>
@@ -721,7 +721,7 @@ EOS
         today = Time.now.strftime('%Y-%m-%d')
         s.should == <<EOS
 <components>
-  <component id="component-schedule2">
+  <component eId="component-schedule2">
     <doc name="schedule2">
       <meta>
         <identification source="#slaw">
@@ -749,14 +749,14 @@ EOS
         </identification>
       </meta>
       <mainBody>
-        <hcontainer id="schedule2" name="schedule">
+        <hcontainer eId="schedule2" name="schedule">
           <heading>Schedule 2</heading>
           <subheading>A Title</subheading>
-          <section id="section-1">
+          <section eId="section-1">
             <num>1.</num>
             <heading>Foo</heading>
           </section>
-          <section id="section-2">
+          <section eId="section-2">
             <num>2.</num>
             <heading>Bar</heading>
           </section>
@@ -764,7 +764,7 @@ EOS
       </mainBody>
     </doc>
   </component>
-  <component id="component-schedule3">
+  <component eId="component-schedule3">
     <doc name="schedule3">
       <meta>
         <identification source="#slaw">
@@ -792,10 +792,10 @@ EOS
         </identification>
       </meta>
       <mainBody>
-        <hcontainer id="schedule3" name="schedule">
+        <hcontainer eId="schedule3" name="schedule">
           <heading>Schedule 3</heading>
           <subheading>Another Title</subheading>
-          <paragraph id="schedule3.paragraph0">
+          <paragraph eId="schedule3__para_0">
             <content>
               <p>Baz</p>
               <p>Boom</p>
@@ -822,7 +822,7 @@ Subject to approval in terms of this By-Law, the erection:
 EOS
         s = to_xml(node)
         today = Time.now.strftime('%Y-%m-%d')
-        s.should == '<component id="component-1firstschedule">
+        s.should == '<component eId="component-1firstschedule">
   <doc name="1firstschedule">
     <meta>
       <identification source="#slaw">
@@ -850,19 +850,19 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer id="1firstschedule" name="schedule">
+      <hcontainer eId="1firstschedule" name="schedule">
         <heading>1 - First Schedule</heading>
         <subheading>Schedule Heading</subheading>
-        <paragraph id="1firstschedule.paragraph0">
+        <paragraph eId="1firstschedule__para_0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
           </content>
         </paragraph>
-        <section id="section-1">
+        <section eId="section-1">
           <num>1.</num>
           <heading>Foo</heading>
         </section>
-        <section id="section-2">
+        <section eId="section-2">
           <num>2.</num>
           <heading>Bar</heading>
         </section>
@@ -883,7 +883,7 @@ Subject to approval in terms of this By-Law, the erection:
 EOS
         s = to_xml(node)
         today = Time.now.strftime('%Y-%m-%d')
-        s.should == '<component id="component-1firstschedule">
+        s.should == '<component eId="component-1firstschedule">
   <doc name="1firstschedule">
     <meta>
       <identification source="#slaw">
@@ -911,19 +911,19 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer id="1firstschedule" name="schedule">
+      <hcontainer eId="1firstschedule" name="schedule">
         <heading>1. First Schedule</heading>
         <subheading>Schedule Heading</subheading>
-        <paragraph id="1firstschedule.paragraph0">
+        <paragraph eId="1firstschedule__para_0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
           </content>
         </paragraph>
-        <section id="section-1">
+        <section eId="section-1">
           <num>1.</num>
           <heading>Foo</heading>
         </section>
-        <section id="section-2">
+        <section eId="section-2">
           <num>2.</num>
           <heading>Bar</heading>
         </section>
@@ -943,7 +943,7 @@ Subject to approval in terms of this By-Law, the erection:
 EOS
         s = to_xml(node)
         today = Time.now.strftime('%Y-%m-%d')
-        s.should == '<component id="component-firstschedule">
+        s.should == '<component eId="component-firstschedule">
   <doc name="firstschedule">
     <meta>
       <identification source="#slaw">
@@ -971,18 +971,18 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer id="firstschedule" name="schedule">
+      <hcontainer eId="firstschedule" name="schedule">
         <heading>First Schedule</heading>
-        <paragraph id="firstschedule.paragraph0">
+        <paragraph eId="firstschedule__para_0">
           <content>
             <p>Subject to approval in terms of this By-Law, the erection:</p>
           </content>
         </paragraph>
-        <section id="section-1">
+        <section eId="section-1">
           <num>1.</num>
           <heading>Foo</heading>
         </section>
-        <section id="section-2">
+        <section eId="section-2">
           <num>2.</num>
           <heading>Bar</heading>
         </section>
@@ -1004,7 +1004,7 @@ EOS
         s = to_xml(node)
         today = Time.now.strftime('%Y-%m-%d')
         s.should == <<EOS
-<component id="component-schedule1">
+<component eId="component-schedule1">
   <doc name="schedule1">
     <meta>
       <identification source="#slaw">
@@ -1032,18 +1032,18 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer id="schedule1" name="schedule">
+      <hcontainer eId="schedule1" name="schedule">
         <heading>Schedule 1</heading>
-        <paragraph id="schedule1.paragraph0">
+        <paragraph eId="schedule1__para_0">
           <content>
             <p>Other than as is set out hereinbelow, no signs other than locality bound signs, temporary signs including loose portable sign, estate agents signs, newspaper headline posters and posters (the erection of which must comply with the appropriate schedules pertinent thereto) shall be erected on Municipal owned land.</p>
           </content>
         </paragraph>
-        <section id="section-1">
+        <section eId="section-1">
           <num>1.</num>
           <heading>Foo</heading>
         </section>
-        <section id="section-2">
+        <section eId="section-2">
           <num>2.</num>
           <heading>Bar</heading>
         </section>
@@ -1064,7 +1064,7 @@ Subject to approval in terms of this By-Law.
 EOS
         s = to_xml(node)
         today = Time.now.strftime('%Y-%m-%d')
-        s.should == '<component id="component-firstschedule">
+        s.should == '<component eId="component-firstschedule">
   <doc name="firstschedule">
     <meta>
       <identification source="#slaw">
@@ -1092,10 +1092,10 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer id="firstschedule" name="schedule">
+      <hcontainer eId="firstschedule" name="schedule">
         <heading>First Schedule <remark status="editorial">[remark]</remark></heading>
         <subheading>Subheading <remark status="editorial">[another]</remark></subheading>
-        <paragraph id="firstschedule.paragraph0">
+        <paragraph eId="firstschedule__para_0">
           <content>
             <p>Subject to approval in terms of this By-Law.</p>
           </content>

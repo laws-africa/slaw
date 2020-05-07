@@ -46,20 +46,20 @@ Hello there
 CROSSHEADING crossheading
 EOS
       to_xml(node).should == '<body>
-  <paragraph id="paragraph0">
+  <paragraph eId="para_0">
     <content>
       <p>Some content before the section</p>
     </content>
   </paragraph>
-  <section id="section-1">
+  <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph0">
+    <paragraph eId="sec_1__para_0">
       <content>
         <p>Hello there</p>
       </content>
     </paragraph>
-    <hcontainer id="section-1.crossheading-0" name="crossheading">
+    <hcontainer eId="sec_1__crossheading_0" name="crossheading">
       <heading>crossheading</heading>
     </hcontainer>
   </section>
@@ -81,33 +81,33 @@ Hello there
 CROSSHEADING crossheading
 EOS
       to_xml(node).should == '<body>
-  <paragraph id="paragraph0">
+  <paragraph eId="para_0">
     <content>
       <p>Some content before the section</p>
-      <blockList id="paragraph0.list0" renest="true">
-        <item id="paragraph0.list0.a">
+      <blockList eId="para_0__list_0" renest="true">
+        <item eId="para_0__list_0__item_a">
           <num>(a)</num>
           <p>foo</p>
         </item>
-        <item id="paragraph0.list0.b">
+        <item eId="para_0__list_0__item_b">
           <num>(b)</num>
           <p>bar</p>
         </item>
       </blockList>
     </content>
   </paragraph>
-  <hcontainer id="crossheading-0" name="crossheading">
+  <hcontainer eId="crossheading_0" name="crossheading">
     <heading>crossheading</heading>
   </hcontainer>
-  <section id="section-1">
+  <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph0">
+    <paragraph eId="sec_1__para_0">
       <content>
         <p>Hello there</p>
       </content>
     </paragraph>
-    <hcontainer id="section-1.crossheading-0" name="crossheading">
+    <hcontainer eId="sec_1__crossheading_0" name="crossheading">
       <heading>crossheading</heading>
     </hcontainer>
   </section>
@@ -124,16 +124,16 @@ EOS
 \\Chapter 2 ignored
 EOS
       to_xml(node).should == '<body>
-  <paragraph id="paragraph0">
+  <paragraph eId="para_0">
     <content>
       <p>1. ignored</p>
       <p>CROSSHEADING crossheading</p>
     </content>
   </paragraph>
-  <section id="section-1">
+  <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph0">
+    <paragraph eId="sec_1__para_0">
       <content>
         <p>Chapter 2 ignored</p>
       </content>
@@ -152,15 +152,15 @@ Some content before the section
 Hello there
 EOS
       to_xml(node).should == '<body>
-  <paragraph id="paragraph0">
+  <paragraph eId="para_0">
     <content>
       <p>Some content before the section</p>
     </content>
   </paragraph>
-  <section id="section-1">
+  <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph0">
+    <paragraph eId="sec_1__para_0">
       <content>
         <p>Hello there</p>
       </content>
@@ -206,13 +206,13 @@ The Chapter Heading
 1. Section
 Hello there
 EOS
-      to_xml(node).should == '<chapter id="chapter-2">
+      to_xml(node).should == '<chapter eId="chp_2">
   <num>2</num>
   <heading>The Chapter Heading</heading>
-  <section id="section-1">
+  <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph0">
+    <paragraph eId="sec_1__para_0">
       <content>
         <p>Hello there</p>
       </content>
@@ -228,12 +228,12 @@ ChaPTEr 2:
 1. Section
 Hello there
 EOS
-      to_xml(node).should == '<chapter id="chapter-2">
+      to_xml(node).should == '<chapter eId="chp_2">
   <num>2</num>
-  <section id="section-1">
+  <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph0">
+    <paragraph eId="sec_1__para_0">
       <content>
         <p>Hello there</p>
       </content>
@@ -253,13 +253,13 @@ Some lines at the start of the chapter.
 EOS
       node.num.should == "2"
       node.heading.heading.text_value.should == "\nThe Chapter Heading"
-      to_xml(node).should == '<chapter id="chapter-2">
+      to_xml(node).should == '<chapter eId="chp_2">
   <num>2</num>
   <heading>The Chapter Heading</heading>
-  <hcontainer id="chapter-2.crossheading-0" name="crossheading">
+  <hcontainer eId="chp_2__crossheading_0" name="crossheading">
     <heading>crossheading</heading>
   </hcontainer>
-  <paragraph id="chapter-2.paragraph0">
+  <paragraph eId="chp_2__para_0">
     <content>
       <p>Some lines at the start of the chapter.</p>
     </content>
@@ -279,18 +279,18 @@ Section text.
 EOS
       node.num.should == "2"
       node.heading.heading.text_value.should == 'The Chapter Heading'
-      to_xml(node).should == '<chapter id="chapter-2">
+      to_xml(node).should == '<chapter eId="chp_2">
   <num>2</num>
   <heading>The Chapter Heading</heading>
-  <paragraph id="chapter-2.paragraph0">
+  <paragraph eId="chp_2__para_0">
     <content>
       <p>Some lines at the start of the chapter.</p>
     </content>
   </paragraph>
-  <section id="section-1">
+  <section eId="sec_1">
     <num>1.</num>
     <heading>Section 1</heading>
-    <paragraph id="section-1.paragraph0">
+    <paragraph eId="sec_1__para_0">
       <content>
         <p>Section text.</p>
       </content>
@@ -306,13 +306,13 @@ Chapter 2
 1. Section
 Hello there
 EOS
-      to_xml(node).should == '<chapter id="chapter-2">
+      to_xml(node).should == '<chapter eId="chp_2">
   <num>2</num>
   <heading>The Chapter Heading</heading>
-  <section id="section-1">
+  <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph0">
+    <paragraph eId="sec_1__para_0">
       <content>
         <p>Hello there</p>
       </content>
@@ -329,13 +329,13 @@ Chapter 2
 1. Section
 Hello there
 EOS
-      to_xml(node).should == '<chapter id="chapter-2">
+      to_xml(node).should == '<chapter eId="chp_2">
   <num>2</num>
   <heading>The <b>Chapter</b> <ref href="/za/act/1990/1">Heading</ref> <remark status="editorial">[remark]</remark></heading>
-  <section id="section-1">
+  <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph0">
+    <paragraph eId="sec_1__para_0">
       <content>
         <p>Hello there</p>
       </content>
@@ -351,13 +351,13 @@ Chapter 2 -  The **Chapter** [Heading](/za/act/1990/1) [[remark]]
 1. Section
 Hello there
 EOS
-      to_xml(node).should == '<chapter id="chapter-2">
+      to_xml(node).should == '<chapter eId="chp_2">
   <num>2</num>
   <heading>The <b>Chapter</b> <ref href="/za/act/1990/1">Heading</ref> <remark status="editorial">[remark]</remark></heading>
-  <section id="section-1">
+  <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph0">
+    <paragraph eId="sec_1__para_0">
       <content>
         <p>Hello there</p>
       </content>
@@ -372,11 +372,11 @@ Chapter 2 The Chapter Heading
 Chapter 3 The Other Heading
 EOS
       to_xml(node).should == '<body>
-  <chapter id="chapter-2">
+  <chapter eId="chp_2">
     <num>2</num>
     <heading>The Chapter Heading</heading>
   </chapter>
-  <chapter id="chapter-3">
+  <chapter eId="chp_3">
     <num>3</num>
     <heading>The Other Heading</heading>
   </chapter>
@@ -391,12 +391,12 @@ Chapter 2 The Chapter
 | foo
 |}
 EOS
-      to_xml(node).should == '<chapter id="chapter-2">
+      to_xml(node).should == '<chapter eId="chp_2">
   <num>2</num>
   <heading>The Chapter</heading>
-  <paragraph id="chapter-2.paragraph0">
+  <paragraph eId="chp_2__para_0">
     <content>
-      <table id="chapter-2.paragraph0.table0">
+      <table eId="chp_2__para_0__table_0">
         <tr>
           <td>
             <p>foo</p>
@@ -418,10 +418,10 @@ Stuff
 
 More stuff
 EOS
-      to_xml(node).should == '<chapter id="chapter-1">
+      to_xml(node).should == '<chapter eId="chp_1">
   <num>1</num>
   <heading>The Chapter</heading>
-  <paragraph id="chapter-1.paragraph0">
+  <paragraph eId="chp_1__para_0">
     <content>
       <p>Stuff</p>
       <p>Chapter 2 - Ignored</p>
@@ -443,22 +443,22 @@ Part 2 - Chapter One Part Two
 
 one-two
 EOS
-      to_xml(node).should == '<chapter id="chapter-1">
+      to_xml(node).should == '<chapter eId="chp_1">
   <num>1</num>
   <heading>Chapter One</heading>
-  <part id="chapter-1.part-1">
+  <part eId="chp_1__part_1">
     <num>1</num>
     <heading>Chapter One Part One</heading>
-    <paragraph id="chapter-1.part-1.paragraph0">
+    <paragraph eId="chp_1__part_1__para_0">
       <content>
         <p>one-one</p>
       </content>
     </paragraph>
   </part>
-  <part id="chapter-1.part-2">
+  <part eId="chp_1__part_2">
     <num>2</num>
     <heading>Chapter One Part Two</heading>
-    <paragraph id="chapter-1.part-2.paragraph0">
+    <paragraph eId="chp_1__part_2__para_0">
       <content>
         <p>one-two</p>
       </content>
@@ -482,16 +482,16 @@ CROSSHEADING crossheading
 1. Section
 Hello there
 EOS
-      to_xml(node).should == '<part id="part-2">
+      to_xml(node).should == '<part eId="part_2">
   <num>2</num>
   <heading>The Part Heading</heading>
-  <hcontainer id="part-2.crossheading-0" name="crossheading">
+  <hcontainer eId="part_2__crossheading_0" name="crossheading">
     <heading>crossheading</heading>
   </hcontainer>
-  <section id="section-1">
+  <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph0">
+    <paragraph eId="sec_1__para_0">
       <content>
         <p>Hello there</p>
       </content>
@@ -506,13 +506,13 @@ Part 2 - The Part Heading
 1. Section
 Hello there
 EOS
-      to_xml(node).should == '<part id="part-2">
+      to_xml(node).should == '<part eId="part_2">
   <num>2</num>
   <heading>The Part Heading</heading>
-  <section id="section-1">
+  <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph0">
+    <paragraph eId="sec_1__para_0">
       <content>
         <p>Hello there</p>
       </content>
@@ -527,13 +527,13 @@ Part 2: The Part Heading
 1. Section
 Hello there
 EOS
-      to_xml(node).should == '<part id="part-2">
+      to_xml(node).should == '<part eId="part_2">
   <num>2</num>
   <heading>The Part Heading</heading>
-  <section id="section-1">
+  <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph0">
+    <paragraph eId="sec_1__para_0">
       <content>
         <p>Hello there</p>
       </content>
@@ -549,12 +549,12 @@ Part 2:
 1. Section
 Hello there
 EOS
-      to_xml(node).should == '<part id="part-2">
+      to_xml(node).should == '<part eId="part_2">
   <num>2</num>
-  <section id="section-1">
+  <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph0">
+    <paragraph eId="sec_1__para_0">
       <content>
         <p>Hello there</p>
       </content>
@@ -570,13 +570,13 @@ Part 2
 1. Section
 Hello there
 EOS
-      to_xml(node).should == '<part id="part-2">
+      to_xml(node).should == '<part eId="part_2">
   <num>2</num>
   <heading>The Part Heading</heading>
-  <section id="section-1">
+  <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph0">
+    <paragraph eId="sec_1__para_0">
       <content>
         <p>Hello there</p>
       </content>
@@ -592,13 +592,13 @@ Part 2
 1. Section
 Hello there
 EOS
-      to_xml(node).should == '<part id="part-2">
+      to_xml(node).should == '<part eId="part_2">
   <num>2</num>
   <heading>The <b>Part</b> Heading</heading>
-  <section id="section-1">
+  <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph0">
+    <paragraph eId="sec_1__para_0">
       <content>
         <p>Hello there</p>
       </content>
@@ -613,13 +613,13 @@ Part 2 The **Part** Heading
 1. Section
 Hello there
 EOS
-      to_xml(node).should == '<part id="part-2">
+      to_xml(node).should == '<part eId="part_2">
   <num>2</num>
   <heading>The <b>Part</b> Heading</heading>
-  <section id="section-1">
+  <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph0">
+    <paragraph eId="sec_1__para_0">
       <content>
         <p>Hello there</p>
       </content>
@@ -636,13 +636,13 @@ PREVENTION AND SUPPRESSION OF HEALTH NUISANCES
 1.
 No owner or occupier of any shop or business premises or vacant land adjoining a shop or business premises shall cause a health nuisance.
 EOS
-      to_xml(node).should == '<part id="part-1">
+      to_xml(node).should == '<part eId="part_1">
   <num>1</num>
   <heading>PREVENTION AND SUPPRESSION OF HEALTH NUISANCES</heading>
-  <section id="section-1">
+  <section eId="sec_1">
     <num>1.</num>
     <heading/>
-    <paragraph id="section-1.paragraph0">
+    <paragraph eId="sec_1__para_0">
       <content>
         <p>No owner or occupier of any shop or business premises or vacant land adjoining a shop or business premises shall cause a health nuisance.</p>
       </content>
@@ -663,18 +663,18 @@ Hello there
 EOS
       node.num.should == "2"
       node.heading.heading.text_value.should == "\nThe Part Heading"
-      to_xml(node).should == '<part id="part-2">
+      to_xml(node).should == '<part eId="part_2">
   <num>2</num>
   <heading>The Part Heading</heading>
-  <paragraph id="part-2.paragraph0">
+  <paragraph eId="part_2__para_0">
     <content>
       <p>Some text before the part.</p>
     </content>
   </paragraph>
-  <section id="section-1">
+  <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph0">
+    <paragraph eId="sec_1__para_0">
       <content>
         <p>Hello there</p>
       </content>
@@ -689,11 +689,11 @@ Part 2 The Part Heading
 Part 3 The Other Heading
 EOS
       to_xml(node).should == '<body>
-  <part id="part-2">
+  <part eId="part_2">
     <num>2</num>
     <heading>The Part Heading</heading>
   </part>
-  <part id="part-3">
+  <part eId="part_3">
     <num>3</num>
     <heading>The Other Heading</heading>
   </part>
@@ -706,10 +706,10 @@ Part 2 The Part Heading
 \\Part 3 ignored
 EOS
       to_xml(node).should == '<body>
-  <part id="part-2">
+  <part eId="part_2">
     <num>2</num>
     <heading>The Part Heading</heading>
-    <paragraph id="part-2.paragraph0">
+    <paragraph eId="part_2__para_0">
       <content>
         <p>Part 3 ignored</p>
       </content>
@@ -730,22 +730,22 @@ Chapter 2 - Part One Chapter Two
 
 one-two
 EOS
-      to_xml(node).should == '<part id="part-1">
+      to_xml(node).should == '<part eId="part_1">
   <num>1</num>
   <heading>Part One</heading>
-  <chapter id="part-1.chapter-1">
+  <chapter eId="part_1__chp_1">
     <num>1</num>
     <heading>Part One Chapter One</heading>
-    <paragraph id="part-1.chapter-1.paragraph0">
+    <paragraph eId="part_1__chp_1__para_0">
       <content>
         <p>one-one</p>
       </content>
     </paragraph>
   </chapter>
-  <chapter id="part-1.chapter-2">
+  <chapter eId="part_1__chp_2">
     <num>2</num>
     <heading>Part One Chapter Two</heading>
-    <paragraph id="part-1.chapter-2.paragraph0">
+    <paragraph eId="part_1__chp_2__para_0">
       <content>
         <p>one-two</p>
       </content>
@@ -766,13 +766,13 @@ SUBPART 2 - Heading
 1. Section
 Hello there
 EOS
-      to_xml(node).should == '<subpart id="subpart-2">
+      to_xml(node).should == '<subpart eId="subpart_2">
   <num>2</num>
   <heading>Heading</heading>
-  <section id="section-1">
+  <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph0">
+    <paragraph eId="sec_1__para_0">
       <content>
         <p>Hello there</p>
       </content>
@@ -797,29 +797,29 @@ SUBPART 2 - The Subpart 2
 
 Bye
 EOS
-      to_xml(node).should == '<part id="part-A">
+      to_xml(node).should == '<part eId="part_A">
   <num>A</num>
   <heading>The Part</heading>
-  <subpart id="part-A.subpart-1">
+  <subpart eId="part_A__subpart_1">
     <num>1</num>
     <heading>The Subpart 1</heading>
-    <section id="section-1">
+    <section eId="sec_1">
       <num>1.</num>
       <heading>Section</heading>
-      <paragraph id="section-1.paragraph0">
+      <paragraph eId="sec_1__para_0">
         <content>
           <p>Hello</p>
         </content>
       </paragraph>
     </section>
   </subpart>
-  <subpart id="part-A.subpart-2">
+  <subpart eId="part_A__subpart_2">
     <num>2</num>
     <heading>The Subpart 2</heading>
-    <section id="section-2">
+    <section eId="sec_2">
       <num>2.</num>
       <heading>Section</heading>
-      <paragraph id="section-2.paragraph0">
+      <paragraph eId="sec_2__para_0">
         <content>
           <p>Bye</p>
         </content>
@@ -848,24 +848,24 @@ EOS
         (c) three
         (i) four
 EOS
-      to_xml(node, "", 1).should == '<subsection id="2">
+      to_xml(node, "", 1).should == '<subsection eId="subsec_2">
   <num>(2)</num>
   <content>
     <p>title</p>
-    <blockList id="2.list0" renest="true">
-      <item id="2.list0.a">
+    <blockList eId="subsec_2__list_0" renest="true">
+      <item eId="subsec_2__list_0__item_a">
         <num>(a)</num>
         <p>one</p>
       </item>
-      <item id="2.list0.b">
+      <item eId="subsec_2__list_0__item_b">
         <num>(b)</num>
         <p>two</p>
       </item>
-      <item id="2.list0.c">
+      <item eId="subsec_2__list_0__item_c">
         <num>(c)</num>
         <p>three</p>
       </item>
-      <item id="2.list0.i">
+      <item eId="subsec_2__list_0__item_i">
         <num>(i)</num>
         <p>four</p>
       </item>
@@ -882,23 +882,23 @@ EOS
         (i) four
 EOS
                   )
-      to_xml(node, "", 1).should == '<subsection id="1">
+      to_xml(node, "", 1).should == '<subsection eId="subsec_1">
   <num>(1)</num>
   <content>
-    <blockList id="1.list0" renest="true">
-      <item id="1.list0.a">
+    <blockList eId="subsec_1__list_0" renest="true">
+      <item eId="subsec_1__list_0__item_a">
         <num>(a)</num>
         <p>one</p>
       </item>
-      <item id="1.list0.b">
+      <item eId="subsec_1__list_0__item_b">
         <num>(b)</num>
         <p>two</p>
       </item>
-      <item id="1.list0.c">
+      <item eId="subsec_1__list_0__item_c">
         <num>(c)</num>
         <p>three</p>
       </item>
-      <item id="1.list0.i">
+      <item eId="subsec_1__list_0__item_i">
         <num>(i)</num>
         <p>four</p>
       </item>
@@ -914,15 +914,15 @@ EOS
         (b) two
 EOS
                   )
-      to_xml(node, "", 1).should == '<subsection id="1">
+      to_xml(node, "", 1).should == '<subsection eId="subsec_1">
   <num>(1)</num>
   <content>
-    <blockList id="1.list0" renest="true">
-      <item id="1.list0.a">
+    <blockList eId="subsec_1__list_0" renest="true">
+      <item eId="subsec_1__list_0__item_a">
         <num>(a)</num>
         <p>one</p>
       </item>
-      <item id="1.list0.b">
+      <item eId="subsec_1__list_0__item_b">
         <num>(b)</num>
         <p>two</p>
       </item>
@@ -940,22 +940,22 @@ EOS
         (3) third
 EOS
                   )
-      to_xml(node).should == '<section id="section-1">
+      to_xml(node).should == '<section eId="sec_1">
   <num>1.</num>
   <heading>Section</heading>
-  <subsection id="section-1.1">
+  <subsection eId="sec_1__subsec_1">
     <num>(1)</num>
     <content>
       <p/>
     </content>
   </subsection>
-  <subsection id="section-1.2">
+  <subsection eId="sec_1__subsec_2">
     <num>(2)</num>
     <content>
       <p>next line</p>
     </content>
   </subsection>
-  <subsection id="section-1.3">
+  <subsection eId="sec_1__subsec_3">
     <num>(3)</num>
     <content>
       <p>third</p>
@@ -972,24 +972,24 @@ EOS
         (ii) double
 EOS
                   )
-      to_xml(node, "", 1).should == '<subsection id="1">
+      to_xml(node, "", 1).should == '<subsection eId="subsec_1">
   <num>(1)</num>
   <content>
     <p>here\'s my really cool list,</p>
-    <blockList id="1.list0" renest="true">
-      <item id="1.list0.a">
+    <blockList eId="subsec_1__list_0" renest="true">
+      <item eId="subsec_1__list_0__item_a">
         <num>(a)</num>
         <p>one</p>
       </item>
-      <item id="1.list0.b">
+      <item eId="subsec_1__list_0__item_b">
         <num>(b)</num>
         <p/>
       </item>
-      <item id="1.list0.i">
+      <item eId="subsec_1__list_0__item_i">
         <num>(i)</num>
         <p>single</p>
       </item>
-      <item id="1.list0.ii">
+      <item eId="subsec_1__list_0__item_ii">
         <num>(ii)</num>
         <p>double</p>
       </item>
@@ -1006,24 +1006,24 @@ EOS
         (ii) double
 EOS
                   )
-      to_xml(node, "", 1).should == '<subsection id="1">
+      to_xml(node, "", 1).should == '<subsection eId="subsec_1">
   <num>(1)</num>
   <content>
     <p>here\'s my really cool list,</p>
-    <blockList id="1.list0" renest="true">
-      <item id="1.list0.a">
+    <blockList eId="subsec_1__list_0" renest="true">
+      <item eId="subsec_1__list_0__item_a">
         <num>(a)</num>
         <p/>
       </item>
-      <item id="1.list0.b">
+      <item eId="subsec_1__list_0__item_b">
         <num>(b)</num>
         <p/>
       </item>
-      <item id="1.list0.i">
+      <item eId="subsec_1__list_0__item_i">
         <num>(i)</num>
         <p>single</p>
       </item>
-      <item id="1.list0.ii">
+      <item eId="subsec_1__list_0__item_ii">
         <num>(ii)</num>
         <p>double</p>
       </item>
@@ -1070,20 +1070,20 @@ EOS
           9.9.2.1 item3
 EOS
                     )
-        to_xml(node, '', 1).should == '<subsection id="9.9">
+        to_xml(node, '', 1).should == '<subsection eId="subsec_9-9">
   <num>9.9</num>
   <content>
     <p>foo</p>
-    <blockList id="9.9.list0" renest="true">
-      <item id="9.9.list0.9.9.1">
+    <blockList eId="subsec_9-9__list_0" renest="true">
+      <item eId="subsec_9-9__list_0__item_9-9-1">
         <num>9.9.1</num>
         <p>item1</p>
       </item>
-      <item id="9.9.list0.9.9.2">
+      <item eId="subsec_9-9__list_0__item_9-9-2">
         <num>9.9.2</num>
         <p>item2</p>
       </item>
-      <item id="9.9.list0.9.9.2.1">
+      <item eId="subsec_9-9__list_0__item_9-9-2-1">
         <num>9.9.2.1</num>
         <p>item3</p>
       </item>
@@ -1104,27 +1104,27 @@ EOS
 EOS
       )
 
-      to_xml(node, '', 1).should == '<subsection id="1">
+      to_xml(node, '', 1).should == '<subsection eId="subsec_1">
   <num>(1)</num>
   <content>
     <p>a list</p>
-    <blockList id="1.list0" renest="true">
-      <item id="1.list0.a">
+    <blockList eId="subsec_1__list_0" renest="true">
+      <item eId="subsec_1__list_0__item_a">
         <num>(a)</num>
         <p>item 1</p>
       </item>
-      <item id="1.list0.b">
+      <item eId="subsec_1__list_0__item_b">
         <num>(b)</num>
         <p>item 2</p>
       </item>
     </blockList>
     <p>some text</p>
-    <blockList id="1.list1" renest="true">
-      <item id="1.list1.c">
+    <blockList eId="subsec_1__list_1" renest="true">
+      <item eId="subsec_1__list_1__item_c">
         <num>(c)</num>
         <p>item 3</p>
       </item>
-      <item id="1.list1.d">
+      <item eId="subsec_1__list_1__item_d">
         <num>(d)</num>
         <p>item 4</p>
       </item>
@@ -1144,7 +1144,7 @@ EOS
 EOS
       )
 
-      to_xml(node, '', 1).should == '<subsection id="1">
+      to_xml(node, '', 1).should == '<subsection eId="subsec_1">
   <num>(1)</num>
   <content>
     <p>a subsection</p>
@@ -1165,16 +1165,16 @@ EOS
 (3) Part 1
 EOS
       to_xml(node).should == '<body>
-  <section id="section-1">
+  <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <subsection id="section-1.2">
+    <subsection eId="sec_1__subsec_2">
       <num>(2)</num>
       <content>
         <p>Schedule 1 is cool.</p>
       </content>
     </subsection>
-    <subsection id="section-1.3">
+    <subsection eId="sec_1__subsec_3">
       <num>(3)</num>
       <content>
         <p>Part 1</p>
@@ -1225,13 +1225,13 @@ baz
 </preface>'
 
       today = Time.now.strftime('%Y-%m-%d')
-      to_xml(node, "").should == '<act contains="originalVersion">
+      to_xml(node, "").should == '<act contains="originalVersion" name="act">
   <meta>
     <identification source="#slaw">
       <FRBRWork>
         <FRBRthis value="/za/act/1980/01/main"/>
         <FRBRuri value="/za/act/1980/01"/>
-        <FRBRalias value="Short Title"/>
+        <FRBRalias value="Short Title" name="title"/>
         <FRBRdate date="1980-01-01" name="Generation"/>
         <FRBRauthor href="#council"/>
         <FRBRcountry value="za"/>
@@ -1251,8 +1251,8 @@ baz
       </FRBRManifestation>
     </identification>
     <references source="#this">
-      <TLCOrganization id="slaw" href="https://github.com/longhotsummer/slaw" showAs="Slaw"/>
-      <TLCOrganization id="council" href="/ontology/organization/za/council" showAs="Council"/>
+      <TLCOrganization eId="slaw" href="https://github.com/longhotsummer/slaw" showAs="Slaw"/>
+      <TLCOrganization eId="council" href="/ontology/organization/za/council" showAs="Council"/>
     </references>
   </meta>
   <preface>
@@ -1263,10 +1263,10 @@ baz
     <p>baz</p>
   </preface>
   <body>
-    <section id="section-1">
+    <section eId="sec_1">
       <num>1.</num>
       <heading>Section</heading>
-      <subsection id="section-1.1">
+      <subsection eId="sec_1__subsec_1">
         <num>(1)</num>
         <content>
           <p>hello</p>
@@ -1396,7 +1396,7 @@ EOS
   <p>this is in the preamble</p>
 </preamble>'
       to_xml(node.body).should == '<body>
-  <paragraph id="paragraph0">
+  <paragraph eId="para_0">
     <content>
       <p>this is in the body</p>
     </content>
@@ -1486,7 +1486,7 @@ this is actually in the body
 EOS
 
       to_xml(node.body).should == '<body>
-  <paragraph id="paragraph0">
+  <paragraph eId="para_0">
     <content>
       <p>PREAMBLE</p>
       <p>this is actually in the body</p>
@@ -1507,7 +1507,7 @@ this is actually in the body
 EOS
 
       to_xml(node.body).should == '<body>
-  <paragraph id="paragraph0">
+  <paragraph eId="para_0">
     <content>
       <p>PREFACE</p>
       <p>this is actually in the body</p>
@@ -1529,10 +1529,10 @@ Section
 EOS
 
       s = to_xml(node)
-      s.should == '<section id="section-1">
+      s.should == '<section eId="sec_1">
   <num>1.</num>
   <heading>Section</heading>
-  <subsection id="section-1.1">
+  <subsection eId="sec_1__subsec_1">
     <num>(1)</num>
     <content>
       <p>hello</p>
@@ -1548,10 +1548,10 @@ EOS
 (1) hello
 EOS
       s = to_xml(node)
-      s.should == '<section id="section-1">
+      s.should == '<section eId="sec_1">
   <num>1.</num>
   <heading>Section</heading>
-  <subsection id="section-1.1">
+  <subsection eId="sec_1__subsec_1">
     <num>(1)</num>
     <content>
       <p>hello</p>
@@ -1570,20 +1570,20 @@ EOS
 EOS
       s = to_xml(node)
       s.should == '<body>
-  <section id="section-1">
+  <section eId="sec_1">
     <num>1.</num>
     <heading>A section</heading>
-    <subsection id="section-1.1">
+    <subsection eId="sec_1__subsec_1">
       <num>(1)</num>
       <content>
         <p>hello</p>
       </content>
     </subsection>
   </section>
-  <section id="section-2">
+  <section eId="sec_2">
     <num>2.</num>
     <heading>Another section</heading>
-    <subsection id="section-2.2">
+    <subsection eId="sec_2__subsec_2">
       <num>(2)</num>
       <content>
         <p>Another line</p>
@@ -1600,16 +1600,16 @@ EOS
 (2) Without limiting generality, stuff.
 EOS
       s = to_xml(node)
-      s.should == '<section id="section-10">
+      s.should == '<section eId="sec_10">
   <num>10.</num>
   <heading/>
-  <subsection id="section-10.1">
+  <subsection eId="sec_10__subsec_1">
     <num>(1)</num>
     <content>
       <p>Transporters must remove medical waste.</p>
     </content>
   </subsection>
-  <subsection id="section-10.2">
+  <subsection eId="sec_10__subsec_2">
     <num>(2)</num>
     <content>
       <p>Without limiting generality, stuff.</p>
@@ -1628,17 +1628,17 @@ and some stuff
 EOS
       
       s = to_xml(node)
-      s.should == '<section id="section-1">
+      s.should == '<section eId="sec_1">
   <num>1.</num>
   <heading>Section</heading>
-  <paragraph id="section-1.paragraph0">
+  <paragraph eId="sec_1__para_0">
     <content>
-      <blockList id="section-1.paragraph0.list0" renest="true">
-        <item id="section-1.paragraph0.list0.a">
+      <blockList eId="sec_1__para_0__list_0" renest="true">
+        <item eId="sec_1__para_0__list_0__item_a">
           <num>(a)</num>
           <p>first</p>
         </item>
-        <item id="section-1.paragraph0.list0.b">
+        <item eId="sec_1__para_0__list_0__item_b">
           <num>(b)</num>
           <p>second</p>
         </item>
@@ -1658,10 +1658,10 @@ something
 EOS
       
       s = to_xml(node)
-      s.should == '<section id="section-1">
+      s.should == '<section eId="sec_1">
   <num>1.</num>
   <heading>Section <b>bold</b> <ref href="/za/act/1990/1">foo</ref></heading>
-  <paragraph id="section-1.paragraph0">
+  <paragraph eId="sec_1__para_0">
     <content>
       <p>something</p>
     </content>
@@ -1679,10 +1679,10 @@ something
 EOS
       
       s = to_xml(node)
-      s.should == '<section id="section-1">
+      s.should == '<section eId="sec_1">
   <num>1.</num>
   <heading>Section <b>bold</b> <ref href="/za/act/1990/1">foo</ref></heading>
-  <paragraph id="section-1.paragraph0">
+  <paragraph eId="sec_1__para_0">
     <content>
       <p>something</p>
     </content>
@@ -1705,18 +1705,18 @@ naked statement (c) blah
 (a) foo
 (b) bar
 EOS
-      to_xml(node, "").should == '<section id="section-1">
+      to_xml(node, "").should == '<section eId="sec_1">
   <num>1.</num>
   <heading>Section</heading>
-  <paragraph id="section-1.paragraph0">
+  <paragraph eId="sec_1__para_0">
     <content>
       <p>naked statement (c) blah</p>
-      <blockList id="section-1.paragraph0.list0" renest="true">
-        <item id="section-1.paragraph0.list0.a">
+      <blockList eId="sec_1__para_0__list_0" renest="true">
+        <item eId="sec_1__para_0__list_0__item_a">
           <num>(a)</num>
           <p>foo</p>
         </item>
-        <item id="section-1.paragraph0.list0.b">
+        <item eId="sec_1__para_0__list_0__item_b">
           <num>(b)</num>
           <p>bar</p>
         </item>
@@ -1740,25 +1740,25 @@ something
 
 (b) thing
 EOS
-      to_xml(node, "").should == '<section id="section-1">
+      to_xml(node, "").should == '<section eId="sec_1">
   <num>1.</num>
   <heading>Section</heading>
-  <subsection id="section-1.1">
+  <subsection eId="sec_1__subsec_1">
     <num>(1)</num>
     <content>
       <p>something</p>
     </content>
   </subsection>
-  <subsection id="section-1.2">
+  <subsection eId="sec_1__subsec_2">
     <num>(2)</num>
     <content>
       <p>Schedule 1</p>
-      <blockList id="section-1.2.list0" renest="true">
-        <item id="section-1.2.list0.a">
+      <blockList eId="sec_1__subsec_2__list_0" renest="true">
+        <item eId="sec_1__subsec_2__list_0__item_a">
           <num>(a)</num>
           <p>Part 1</p>
         </item>
-        <item id="section-1.2.list0.b">
+        <item eId="sec_1__subsec_2__list_0__item_b">
           <num>(b)</num>
           <p>thing</p>
         </item>
@@ -1777,10 +1777,10 @@ EOS
 stuff
 \\3. a third
 EOS
-      to_xml(node, "").should == '<section id="section-1">
+      to_xml(node, "").should == '<section eId="sec_1">
   <num>1.</num>
   <heading>Section</heading>
-  <paragraph id="section-1.paragraph0">
+  <paragraph eId="sec_1__para_0">
     <content>
       <p>1. ignored</p>
       <p>2. another line</p>
@@ -1799,10 +1799,10 @@ EOS
 
 stuff
 EOS
-      to_xml(node, "").should == '<section id="section-1">
+      to_xml(node, "").should == '<section eId="sec_1">
   <num>1.</num>
   <heading>Section</heading>
-  <paragraph id="section-1.paragraph0">
+  <paragraph eId="sec_1__para_0">
     <content>
       <p>stuff</p>
     </content>
@@ -1818,19 +1818,19 @@ Informal trading may include, amongst others:-
 3.1.1 street trading;
 3.1.2 trading in pedestrian malls;
 EOS
-      to_xml(node, '').should == '<section id="section-3">
+      to_xml(node, '').should == '<section eId="sec_3">
   <num>3.</num>
   <heading>Types of informal trading</heading>
-  <subsection id="section-3.3.1">
+  <subsection eId="sec_3__subsec_3-1">
     <num>3.1</num>
     <content>
       <p>Informal trading may include, amongst others:-</p>
-      <blockList id="section-3.3.1.list0" renest="true">
-        <item id="section-3.3.1.list0.3.1.1">
+      <blockList eId="sec_3__subsec_3-1__list_0" renest="true">
+        <item eId="sec_3__subsec_3-1__list_0__item_3-1-1">
           <num>3.1.1</num>
           <p>street trading;</p>
         </item>
-        <item id="section-3.3.1.list0.3.1.2">
+        <item eId="sec_3__subsec_3-1__list_0__item_3-1-2">
           <num>3.1.2</num>
           <p>trading in pedestrian malls;</p>
         </item>
@@ -1847,7 +1847,7 @@ EOS
   context 'crossheadings' do
     it 'should handle a inline_items in crossheadings' do
       node = parse :crossheading, "CROSSHEADING something [[remark]] [link](/foo/bar)\n"
-      to_xml(node, '').should == '<hcontainer id="crossheading-0" name="crossheading">
+      to_xml(node, '').should == '<hcontainer eId="crossheading_0" name="crossheading">
   <heading>something <remark status="editorial">[remark]</remark> <ref href="/foo/bar">link</ref></heading>
 </hcontainer>'
     end
@@ -1865,13 +1865,13 @@ CROSSHEADING In the body
 Text
 '
       today = Time.now.strftime('%Y-%m-%d')
-      to_xml(node, "").should == '<act contains="originalVersion">
+      to_xml(node, "").should == '<act contains="originalVersion" name="act">
   <meta>
     <identification source="#slaw">
       <FRBRWork>
         <FRBRthis value="/za/act/1980/01/main"/>
         <FRBRuri value="/za/act/1980/01"/>
-        <FRBRalias value="Short Title"/>
+        <FRBRalias value="Short Title" name="title"/>
         <FRBRdate date="1980-01-01" name="Generation"/>
         <FRBRauthor href="#council"/>
         <FRBRcountry value="za"/>
@@ -1891,21 +1891,21 @@ Text
       </FRBRManifestation>
     </identification>
     <references source="#this">
-      <TLCOrganization id="slaw" href="https://github.com/longhotsummer/slaw" showAs="Slaw"/>
-      <TLCOrganization id="council" href="/ontology/organization/za/council" showAs="Council"/>
+      <TLCOrganization eId="slaw" href="https://github.com/longhotsummer/slaw" showAs="Slaw"/>
+      <TLCOrganization eId="council" href="/ontology/organization/za/council" showAs="Council"/>
     </references>
   </meta>
   <preface>
     <p>Some text</p>
   </preface>
   <body>
-    <hcontainer id="crossheading-0" name="crossheading">
+    <hcontainer eId="crossheading_0" name="crossheading">
       <heading>In the body</heading>
     </hcontainer>
-    <section id="section-1">
+    <section eId="sec_1">
       <num>1.</num>
       <heading>Section 1</heading>
-      <paragraph id="section-1.paragraph0">
+      <paragraph eId="sec_1__para_0">
         <content>
           <p>Text</p>
         </content>
@@ -1928,13 +1928,13 @@ CROSSHEADING In the body
 Text
 '
       today = Time.now.strftime('%Y-%m-%d')
-      to_xml(node, "").should == '<act contains="originalVersion">
+      to_xml(node, "").should == '<act contains="originalVersion" name="act">
   <meta>
     <identification source="#slaw">
       <FRBRWork>
         <FRBRthis value="/za/act/1980/01/main"/>
         <FRBRuri value="/za/act/1980/01"/>
-        <FRBRalias value="Short Title"/>
+        <FRBRalias value="Short Title" name="title"/>
         <FRBRdate date="1980-01-01" name="Generation"/>
         <FRBRauthor href="#council"/>
         <FRBRcountry value="za"/>
@@ -1954,21 +1954,21 @@ Text
       </FRBRManifestation>
     </identification>
     <references source="#this">
-      <TLCOrganization id="slaw" href="https://github.com/longhotsummer/slaw" showAs="Slaw"/>
-      <TLCOrganization id="council" href="/ontology/organization/za/council" showAs="Council"/>
+      <TLCOrganization eId="slaw" href="https://github.com/longhotsummer/slaw" showAs="Slaw"/>
+      <TLCOrganization eId="council" href="/ontology/organization/za/council" showAs="Council"/>
     </references>
   </meta>
   <preamble>
     <p>Some text</p>
   </preamble>
   <body>
-    <hcontainer id="crossheading-0" name="crossheading">
+    <hcontainer eId="crossheading_0" name="crossheading">
       <heading>In the body</heading>
     </hcontainer>
-    <section id="section-1">
+    <section eId="sec_1">
       <num>1.</num>
       <heading>Section 1</heading>
-      <paragraph id="section-1.paragraph0">
+      <paragraph eId="sec_1__para_0">
         <content>
           <p>Text</p>
         </content>
@@ -2036,10 +2036,10 @@ LONGTITLE a long title
 EOS
 
       to_xml(node).should == '<body>
-  <section id="section-1">
+  <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <paragraph id="section-1.paragraph0">
+    <paragraph eId="sec_1__para_0">
       <content>
         <p>LONGTITLE a long title</p>
       </content>

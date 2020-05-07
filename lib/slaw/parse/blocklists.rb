@@ -1,3 +1,5 @@
+require 'slaw/grammars/counters'
+
 module Slaw
   module Parse
     module Blocklists
@@ -77,7 +79,7 @@ module Slaw
               # The blockList is inserted as a child of the sibling just before
               # +item+, and that sibling's content is moved into the
               # +listIntroduction+ of the new list.
-              sublist = item.document.create_element('blockList', id: prev['id'] + ".list#{sublist_count}")
+              sublist = item.document.create_element('blockList', eId: prev['eId'] + "__list_#{sublist_count}")
               sublist_count += 1
 
               # list intro
@@ -88,7 +90,7 @@ module Slaw
               end
 
               # make +item+ the first in this list
-              item['id'] = sublist['id'] + ".#{item.num.gsub(/[()]/, '')}"
+              item['eId'] = sublist['eId'] + "__item_#{Slaw::Grammars::Counters.clean(item.num)}"
               sublist << item
 
               # insert this list as a child of the previous item
@@ -111,7 +113,7 @@ module Slaw
               # keep it with this list
               if list
                 list << item
-                item['id'] = list['id'] + ".#{item.num.gsub(/[()]/, '')}"
+                item['eId'] = list['eId'] + "__item_#{Slaw::Grammars::Counters.clean(item.num)}"
               end
             end
           end

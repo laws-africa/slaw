@@ -95,7 +95,7 @@ module Slaw
           # the schedule id is derived from the heading
           schedule_id = self.schedule_id(heading_text, i)
 
-          b.component(id: "component-#{schedule_id}") { |b|
+          b.component(eId: "component_#{schedule_id}") { |b|
             b.doc_(name: schedule_id) { |b|
               b.meta { |b|
                 b.identification(source: "#slaw") { |b|
@@ -124,11 +124,11 @@ module Slaw
               }
 
               b.mainBody { |b| 
-                idprefix = "#{schedule_id}."
+                idprefix = "#{schedule_id}__"
 
                 # there is no good AKN hierarchy container for schedules, so we
                 # use hcontainer instead
-                b.hcontainer(id: schedule_id, name: "schedule") { |b|
+                b.hcontainer(eId: schedule_id, name: "schedule") { |b|
                   schedule_title.to_xml(b, idprefix, heading_text)
                   body.children.elements.each_with_index { |e| e.to_xml(b, idprefix, i) } if body.is_a? Body
                 }
