@@ -17,8 +17,8 @@ module Slaw
               write_preface(b)
               write_preamble(b)
               write_body(b)
+              write_schedules(b)
             }
-            write_schedules(b)
           end
 
           def write_meta(b)

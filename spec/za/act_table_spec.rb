@@ -269,12 +269,13 @@ EOS
 
       xml = to_xml(node, "")
       today = Time.now.strftime('%Y-%m-%d')
-      xml.should == '<component eId="component-schedule1">
+      xml.should == '<attachment eId="att_1">
+  <heading>Schedule 1</heading>
   <doc name="schedule1">
     <meta>
       <identification source="#slaw">
         <FRBRWork>
-          <FRBRthis value="/za/act/1980/01/schedule1"/>
+          <FRBRthis value="/za/act/1980/01/!schedule1"/>
           <FRBRuri value="/za/act/1980/01"/>
           <FRBRalias value="Schedule 1"/>
           <FRBRdate date="1980-01-01" name="Generation"/>
@@ -282,14 +283,14 @@ EOS
           <FRBRcountry value="za"/>
         </FRBRWork>
         <FRBRExpression>
-          <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+          <FRBRthis value="/za/act/1980/01/eng@/!schedule1"/>
           <FRBRuri value="/za/act/1980/01/eng@"/>
           <FRBRdate date="1980-01-01" name="Generation"/>
           <FRBRauthor href="#council"/>
           <FRBRlanguage language="eng"/>
         </FRBRExpression>
         <FRBRManifestation>
-          <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+          <FRBRthis value="/za/act/1980/01/eng@/!schedule1"/>
           <FRBRuri value="/za/act/1980/01/eng@"/>
           <FRBRdate date="' + today + '" name="Generation"/>
           <FRBRauthor href="#slaw"/>
@@ -297,35 +298,32 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer eId="schedule1" name="schedule">
-        <heading>Schedule 1</heading>
-        <paragraph eId="schedule1__para_0">
-          <content>
-            <p>Heres a table:</p>
-            <table eId="schedule1__para_0__table_1">
-              <tr>
-                <td>
-                  <p>r1c1</p>
-                </td>
-                <td>
-                  <p>r1c2</p>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <p>r2c1</p>
-                </td>
-                <td>
-                  <p>r2c2</p>
-                </td>
-              </tr>
-            </table>
-          </content>
-        </paragraph>
-      </hcontainer>
+      <paragraph eId="para_0">
+        <content>
+          <p>Heres a table:</p>
+          <table eId="para_0__table_1">
+            <tr>
+              <td>
+                <p>r1c1</p>
+              </td>
+              <td>
+                <p>r1c2</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>r2c1</p>
+              </td>
+              <td>
+                <p>r2c2</p>
+              </td>
+            </tr>
+          </table>
+        </content>
+      </paragraph>
     </mainBody>
   </doc>
-</component>'
+</attachment>'
     end
 
     it 'should ignore an escaped table' do

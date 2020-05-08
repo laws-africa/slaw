@@ -167,12 +167,14 @@ EOS
 EOS
 
       today = Time.now.strftime('%Y-%m-%d')
-      to_xml(node, "").should == '<component eId="component_schedule1">
+      to_xml(node, "").should == '<attachment eId="att_1">
+  <heading>Schedule 1</heading>
+  <subheading>A Title</subheading>
   <doc name="schedule1">
     <meta>
       <identification source="#slaw">
         <FRBRWork>
-          <FRBRthis value="/za/act/1980/01/schedule1"/>
+          <FRBRthis value="/za/act/1980/01/!schedule1"/>
           <FRBRuri value="/za/act/1980/01"/>
           <FRBRalias value="Schedule 1"/>
           <FRBRdate date="1980-01-01" name="Generation"/>
@@ -180,14 +182,14 @@ EOS
           <FRBRcountry value="za"/>
         </FRBRWork>
         <FRBRExpression>
-          <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+          <FRBRthis value="/za/act/1980/01/eng@/!schedule1"/>
           <FRBRuri value="/za/act/1980/01/eng@"/>
           <FRBRdate date="1980-01-01" name="Generation"/>
           <FRBRauthor href="#council"/>
           <FRBRlanguage language="eng"/>
         </FRBRExpression>
         <FRBRManifestation>
-          <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+          <FRBRthis value="/za/act/1980/01/eng@/!schedule1"/>
           <FRBRuri value="/za/act/1980/01/eng@"/>
           <FRBRdate date="' + today + '" name="Generation"/>
           <FRBRauthor href="#slaw"/>
@@ -195,21 +197,17 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer eId="schedule1" name="schedule">
-        <heading>Schedule 1</heading>
-        <subheading>A Title</subheading>
-        <paragraph eId="schedule1__para_0">
-          <content>
-            <p>
-              <remark status="editorial">[Schedule 1 added by Act 23 of 2004]</remark>
-            </p>
-            <p>Some content</p>
-          </content>
-        </paragraph>
-      </hcontainer>
+      <paragraph eId="para_0">
+        <content>
+          <p>
+            <remark status="editorial">[Schedule 1 added by Act 23 of 2004]</remark>
+          </p>
+          <p>Some content</p>
+        </content>
+      </paragraph>
     </mainBody>
   </doc>
-</component>'
+</attachment>'
     end
 
     it 'should handle other inline content' do

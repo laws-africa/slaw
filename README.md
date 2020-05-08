@@ -91,6 +91,8 @@ You can create your own grammar by creating a gem that provides these files and 
 * Support creating XML with AKN 3 namespace (http://docs.oasis-open.org/legaldocml/ns/akn/3.0)
 * Add --namespace option to toggle between generate AKN2 and AKN3 documents
 * Remove unnecessary schemaLocation header in root element
+* BREAKING: replace id attributes with eId attributes
+* BREAKING: serialize schedules as attachments to act, not as components as peers of the act
 
 ### 9.1.0 (15 April 2020)
 
