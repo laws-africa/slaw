@@ -3,7 +3,7 @@ module Slaw
     module Tables
       class Table < Treetop::Runtime::SyntaxNode
         def to_xml(b, idprefix, i=0)
-          b.table(id: "#{idprefix}table#{i}") { |b|
+          b.table(eId: "#{idprefix}table_#{i}") { |b|
             # we'll gather cells into this row list
             rows = []
             cells = []

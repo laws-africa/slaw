@@ -22,6 +22,25 @@ module Slaw
       def self.reset!
         @@counters.clear
       end
+
+      # Clean a <num> value for use in an eId
+      # See https://docs.oasis-open.org/legaldocml/akn-nc/v1.0/os/akn-nc-v1.0-os.html#_Toc531692306
+      #
+      # The number part of the identifiers of such elements corresponds to the
+      # stripping of all final punctuation, meaningless separations as well as
+      # redundant characters in the content of the <num> element. The
+      # representation is case-sensitive
+      #
+      # (i) -> i
+      # 1.2. -> 1-2
+      # 3a bis -> 3abis
+      def self.clean(num)
+        num
+          .gsub(/[ ()\[\]]/, '')
+          .gsub(/\.+$/, '')
+          .gsub(/^\.+/, '')
+          .gsub(/\.+/, '-')
+      end
     end
   end
 end
