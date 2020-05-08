@@ -303,11 +303,11 @@ module Slaw
 
         class BlockElements < Treetop::Runtime::SyntaxNode
           def to_xml(b, idprefix='', i=0)
-            cnt = Slaw::Grammars::Counters.counters[idprefix]['paragraph'] += 1
-            id = "#{idprefix}para_#{cnt}"
+            cnt = Slaw::Grammars::Counters.counters[idprefix]['hcontainer'] += 1
+            id = "#{idprefix}hcontainer_#{cnt}"
             idprefix = "#{id}__"
 
-            b.paragraph(eId: id) { |b|
+            b.hcontainer(eId: id) { |b|
               b.content { |b|
                 elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
               }

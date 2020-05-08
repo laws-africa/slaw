@@ -93,6 +93,7 @@ You can create your own grammar by creating a gem that provides these files and 
 * Remove unnecessary schemaLocation header in root element
 * BREAKING: replace id attributes with eId attributes
 * BREAKING: serialize schedules as attachments to act, not as components as peers of the act
+* BREAKING: anonymous blocks are serialized as hcontainers, not paragraphs
 
 ### 9.1.0 (15 April 2020)
 

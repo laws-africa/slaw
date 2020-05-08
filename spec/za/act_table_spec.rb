@@ -226,10 +226,10 @@ EOS
       xml.should == '<section eId="sec_10">
   <num>10.</num>
   <heading>A section title</heading>
-  <paragraph eId="sec_10__para_0">
+  <hcontainer eId="sec_10__hcontainer_0">
     <content>
       <p>Heres a table:</p>
-      <table eId="sec_10__para_0__table_1">
+      <table eId="sec_10__hcontainer_0__table_1">
         <tr>
           <td>
             <p>r1c1</p>
@@ -248,7 +248,7 @@ EOS
         </tr>
       </table>
     </content>
-  </paragraph>
+  </hcontainer>
 </section>'
     end
 
@@ -298,10 +298,10 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <paragraph eId="para_0">
+      <hcontainer eId="hcontainer_0">
         <content>
           <p>Heres a table:</p>
-          <table eId="para_0__table_1">
+          <table eId="hcontainer_0__table_1">
             <tr>
               <td>
                 <p>r1c1</p>
@@ -320,7 +320,7 @@ EOS
             </tr>
           </table>
         </content>
-      </paragraph>
+      </hcontainer>
     </mainBody>
   </doc>
 </attachment>'
@@ -334,14 +334,14 @@ EOS
 |}
 EOS
 
-      to_xml(node).should == '<paragraph eId="para_0">
+      to_xml(node).should == '<hcontainer eId="hcontainer_0">
   <content>
     <p>{|</p>
     <p>| r1c1</p>
     <p>| r1c2</p>
     <p>|}</p>
   </content>
-</paragraph>'
+</hcontainer>'
     end
 
     it 'should allow a table as part of a subsection' do

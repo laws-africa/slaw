@@ -129,12 +129,12 @@ EOS
         </identification>
       </meta>
       <mainBody>
-        <paragraph eId="para_0">
+        <hcontainer eId="hcontainer_0">
           <content>
             <p>Baz</p>
             <p>Boom</p>
           </content>
-        </paragraph>
+        </hcontainer>
       </mainBody>
     </doc>
   </attachment>
@@ -186,11 +186,11 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <paragraph eId="para_0">
+      <hcontainer eId="hcontainer_0">
         <content>
           <p>Subject to approval in terms of this By-Law, the erection:</p>
         </content>
-      </paragraph>
+      </hcontainer>
       <section eId="sec_1">
         <num>1.</num>
         <heading>Foo</heading>
@@ -246,11 +246,11 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <paragraph eId="para_0">
+      <hcontainer eId="hcontainer_0">
         <content>
           <p>Subject to approval in terms of this By-Law, the erection:</p>
         </content>
-      </paragraph>
+      </hcontainer>
       <section eId="sec_1">
         <num>1.</num>
         <heading>Foo</heading>
@@ -304,11 +304,11 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <paragraph eId="para_0">
+      <hcontainer eId="hcontainer_0">
         <content>
           <p>Subject to approval in terms of this By-Law, the erection:</p>
         </content>
-      </paragraph>
+      </hcontainer>
       <section eId="sec_1">
         <num>1.</num>
         <heading>Foo</heading>
@@ -375,20 +375,20 @@ EOS
       <part eId="part_I">
         <num>I</num>
         <heading>Form of authentication statement</heading>
-        <paragraph eId="part_I__para_0">
+        <hcontainer eId="part_I__hcontainer_0">
           <content>
             <p>This printed impression has been carefully compared by me with the bill which was passed by Parliament and found by me to be a true copy of the bill.</p>
           </content>
-        </paragraph>
+        </hcontainer>
       </part>
       <part eId="part_II">
         <num>II</num>
         <heading>Form of statement of the President’s assent.</heading>
-        <paragraph eId="part_II__para_0">
+        <hcontainer eId="part_II__hcontainer_0">
           <content>
             <p>I signify my assent to the bill and a whole bunch of other stuff.</p>
           </content>
-        </paragraph>
+        </hcontainer>
       </part>
     </mainBody>
   </doc>
@@ -447,13 +447,13 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <paragraph eId="para_0">
+      <hcontainer eId="hcontainer_0">
         <content>
           <p>Subject to approval in terms of this By-Law.</p>
           <p>Schedule another</p>
           <p>More stuff</p>
         </content>
-      </paragraph>
+      </hcontainer>
     </mainBody>
   </doc>
 </attachment>'
@@ -499,11 +499,11 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <paragraph eId="para_0">
+      <hcontainer eId="hcontainer_0">
         <content>
           <p>Subject to approval in terms of this By-Law.</p>
         </content>
-      </paragraph>
+      </hcontainer>
     </mainBody>
   </doc>
 </attachment>'
@@ -550,11 +550,11 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <paragraph eId="para_0">
+      <hcontainer eId="hcontainer_0">
         <content>
           <p>Subject to approval in terms of this By-Law, the erection:</p>
         </content>
-      </paragraph>
+      </hcontainer>
       <section eId="sec_1">
         <num>1.</num>
         <heading>Foo</heading>
@@ -608,11 +608,11 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <paragraph eId="para_0">
+      <hcontainer eId="hcontainer_0">
         <content>
           <p>Subject to approval in terms of this By-Law, the erection:</p>
         </content>
-      </paragraph>
+      </hcontainer>
       <section eId="sec_1">
         <num>1.</num>
         <heading>Foo</heading>
@@ -665,11 +665,11 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <paragraph eId="para_0">
+      <hcontainer eId="hcontainer_0">
         <content>
           <p>Subject to approval in terms of this By-Law, the erection:</p>
         </content>
-      </paragraph>
+      </hcontainer>
       <section eId="sec_1">
         <num>1.</num>
         <heading>Foo</heading>
@@ -770,12 +770,12 @@ EOS
         </identification>
       </meta>
       <mainBody>
-        <paragraph eId="para_0">
+        <hcontainer eId="hcontainer_0">
           <content>
             <p>Baz</p>
             <p>Boom</p>
           </content>
-        </paragraph>
+        </hcontainer>
       </mainBody>
     </doc>
   </attachment>
@@ -826,11 +826,11 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <paragraph eId="para_0">
+      <hcontainer eId="hcontainer_0">
         <content>
           <p>Subject to approval in terms of this By-Law, the erection:</p>
         </content>
-      </paragraph>
+      </hcontainer>
       <section eId="sec_1">
         <num>1.</num>
         <heading>Foo</heading>
@@ -885,11 +885,11 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <paragraph eId="para_0">
+      <hcontainer eId="hcontainer_0">
         <content>
           <p>Subject to approval in terms of this By-Law, the erection:</p>
         </content>
-      </paragraph>
+      </hcontainer>
       <section eId="sec_1">
         <num>1.</num>
         <heading>Foo</heading>
@@ -942,11 +942,11 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <paragraph eId="para_0">
+      <hcontainer eId="hcontainer_0">
         <content>
           <p>Subject to approval in terms of this By-Law, the erection:</p>
         </content>
-      </paragraph>
+      </hcontainer>
       <section eId="sec_1">
         <num>1.</num>
         <heading>Foo</heading>
@@ -1001,11 +1001,11 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <paragraph eId="para_0">
+      <hcontainer eId="hcontainer_0">
         <content>
           <p>Other than as is set out hereinbelow, no signs other than locality bound signs, temporary signs including loose portable sign, estate agents signs, newspaper headline posters and posters (the erection of which must comply with the appropriate schedules pertinent thereto) shall be erected on Municipal owned land.</p>
         </content>
-      </paragraph>
+      </hcontainer>
       <section eId="sec_1">
         <num>1.</num>
         <heading>Foo</heading>
@@ -1060,11 +1060,11 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <paragraph eId="para_0">
+      <hcontainer eId="hcontainer_0">
         <content>
           <p>Subject to approval in terms of this By-Law.</p>
         </content>
-      </paragraph>
+      </hcontainer>
     </mainBody>
   </doc>
 </attachment>'

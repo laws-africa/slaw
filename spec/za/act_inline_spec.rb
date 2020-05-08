@@ -61,24 +61,24 @@ describe Slaw::ActGenerator do
       node = parse :generic_container, <<EOS
       [[Section 2 amended by Act 23 of 2004]]
 EOS
-      to_xml(node, "").should == '<paragraph eId="para_0">
+      to_xml(node, "").should == '<hcontainer eId="hcontainer_0">
   <content>
     <p>
       <remark status="editorial">[Section 2 amended by Act 23 of 2004]</remark>
     </p>
   </content>
-</paragraph>'
+</hcontainer>'
     end
 
     it 'should handle an inline remark at the end of a sentence' do
       node = parse :generic_container, <<EOS
       This statement has an inline remark. [[Section 2 amended by Act 23 of 2004]]
 EOS
-      to_xml(node, "").should == '<paragraph eId="para_0">
+      to_xml(node, "").should == '<hcontainer eId="hcontainer_0">
   <content>
     <p>This statement has an inline remark. <remark status="editorial">[Section 2 amended by Act 23 of 2004]</remark></p>
   </content>
-</paragraph>'
+</hcontainer>'
     end
 
     it 'should handle an inline remark mid-way through' do
@@ -97,11 +97,11 @@ EOS
       node = parse :generic_container, <<EOS
       This statement has an inline remark. [[Section 2 amended by Act 23 of 2004]]. And now some more. [[Another remark]] [[and another]]
 EOS
-      to_xml(node, "").should == '<paragraph eId="para_0">
+      to_xml(node, "").should == '<hcontainer eId="hcontainer_0">
   <content>
     <p>This statement has an inline remark. <remark status="editorial">[Section 2 amended by Act 23 of 2004]</remark>. And now some more. <remark status="editorial">[Another remark]</remark> <remark status="editorial">[and another]</remark></p>
   </content>
-</paragraph>'
+</hcontainer>'
     end
 
     it 'should handle a remark in a section' do
@@ -114,14 +114,14 @@ EOS
       to_xml(node).should == '<section eId="sec_1">
   <num>1.</num>
   <heading>Section title</heading>
-  <paragraph eId="sec_1__para_0">
+  <hcontainer eId="sec_1__hcontainer_0">
     <content>
       <p>Some text is a long line.</p>
       <p>
         <remark status="editorial">[Section 1 amended by Act 23 of 2004]</remark>
       </p>
     </content>
-  </paragraph>
+  </hcontainer>
 </section>'
     end
 
@@ -136,11 +136,11 @@ EOS
       to_xml(node).should == '<section eId="sec_1">
   <num>1.</num>
   <heading>Section title</heading>
-  <paragraph eId="sec_1__para_0">
+  <hcontainer eId="sec_1__hcontainer_0">
     <content>
       <p>Some text is a long line.</p>
     </content>
-  </paragraph>
+  </hcontainer>
   <subsection eId="sec_1__subsec_1">
     <num>(1)</num>
     <content>
@@ -197,14 +197,14 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <paragraph eId="para_0">
+      <hcontainer eId="hcontainer_0">
         <content>
           <p>
             <remark status="editorial">[Schedule 1 added by Act 23 of 2004]</remark>
           </p>
           <p>Some content</p>
         </content>
-      </paragraph>
+      </hcontainer>
     </mainBody>
   </doc>
 </attachment>'
@@ -214,11 +214,11 @@ EOS
       node = parse :generic_container, <<EOS
       Remark [[with **bold** and //italics// and [a ref](/a/b)]].
 EOS
-      to_xml(node, "").should == '<paragraph eId="para_0">
+      to_xml(node, "").should == '<hcontainer eId="hcontainer_0">
   <content>
     <p>Remark <remark status="editorial">[with <b>bold</b> and <i>italics</i> and <ref href="/a/b">a ref</ref>]</remark>.</p>
   </content>
-</paragraph>'
+</hcontainer>'
     end
   end
 
@@ -230,44 +230,44 @@ EOS
       node = parse :generic_container, <<EOS
       Hello [there](/za/act/123) friend.
 EOS
-      to_xml(node, "").should == '<paragraph eId="para_0">
+      to_xml(node, "").should == '<hcontainer eId="hcontainer_0">
   <content>
     <p>Hello <ref href="/za/act/123">there</ref> friend.</p>
   </content>
-</paragraph>'
+</hcontainer>'
     end
 
     it 'should work many on a line' do
       node = parse :generic_container, <<EOS
       Hello [there](/za/act/123) friend [and](http://foo.bar.com/with space) you too.
 EOS
-      to_xml(node, "").should == '<paragraph eId="para_0">
+      to_xml(node, "").should == '<hcontainer eId="hcontainer_0">
   <content>
     <p>Hello <ref href="/za/act/123">there</ref> friend <ref href="http://foo.bar.com/with space">and</ref> you too.</p>
   </content>
-</paragraph>'
+</hcontainer>'
     end
 
     it 'should handle brackets' do
       node = parse :generic_container, <<EOS
       Hello ([there](/za/act/123)).
 EOS
-      to_xml(node, "").should == '<paragraph eId="para_0">
+      to_xml(node, "").should == '<hcontainer eId="hcontainer_0">
   <content>
     <p>Hello (<ref href="/za/act/123">there</ref>).</p>
   </content>
-</paragraph>'
+</hcontainer>'
     end
 
     it 'should handle many clauses on a line' do
       node = parse :generic_container, <<EOS
       Hello [there](/za/act/123)[[remark one]] my[friend](/za) [[remark 2]][end](/foo).
 EOS
-      to_xml(node, "").should == '<paragraph eId="para_0">
+      to_xml(node, "").should == '<hcontainer eId="hcontainer_0">
   <content>
     <p>Hello <ref href="/za/act/123">there</ref><remark status="editorial">[remark one]</remark> my<ref href="/za">friend</ref> <remark status="editorial">[remark 2]</remark><ref href="/foo">end</ref>.</p>
   </content>
-</paragraph>'
+</hcontainer>'
     end
 
     it 'text should not cross end of line' do
@@ -276,12 +276,12 @@ EOS
       
       my](/za/act/123) friend.
 EOS
-      to_xml(node, "").should == '<paragraph eId="para_0">
+      to_xml(node, "").should == '<hcontainer eId="hcontainer_0">
   <content>
     <p>Hello [there</p>
     <p>my](/za/act/123) friend.</p>
   </content>
-</paragraph>'
+</hcontainer>'
     end
 
     it 'href should not cross end of line' do
@@ -289,28 +289,28 @@ EOS
       Hello [there](/za/act
       /123) friend.
 EOS
-      to_xml(node, "").should == '<paragraph eId="para_0">
+      to_xml(node, "").should == '<hcontainer eId="hcontainer_0">
   <content>
     <p>Hello [there](/za/act</p>
     <p>/123) friend.</p>
   </content>
-</paragraph>'
+</hcontainer>'
     end
 
     it 'href should handle refs in a list' do
       node = parse :generic_container, <<EOS
       2.18.1 a traffic officer appointed in terms of section 3 of the Road Traffic [Act, No. 29 of 1989](/za/act/1989/29) or section 3A of the National Road Traffic [Act No. 93 of 1996](/za/act/1996/93) as the case may be;
 EOS
-      to_xml(node, "").should == '<paragraph eId="para_0">
+      to_xml(node, "").should == '<hcontainer eId="hcontainer_0">
   <content>
-    <blockList eId="para_0__list_0" renest="true">
-      <item eId="para_0__list_0__item_2-18-1">
+    <blockList eId="hcontainer_0__list_0" renest="true">
+      <item eId="hcontainer_0__list_0__item_2-18-1">
         <num>2.18.1</num>
         <p>a traffic officer appointed in terms of section 3 of the Road Traffic <ref href="/za/act/1989/29">Act, No. 29 of 1989</ref> or section 3A of the National Road Traffic <ref href="/za/act/1996/93">Act No. 93 of 1996</ref> as the case may be;</p>
       </item>
     </blockList>
   </content>
-</paragraph>'
+</hcontainer>'
     end
 
     it 'should handle a link in an inline remark' do
@@ -319,13 +319,13 @@ EOS
       This statement has [[[a link in](/foo/bar) a remark]]
       This statement has [[a [link in a remark](/foo/bar)]]
 EOS
-      to_xml(node, "").should == '<paragraph eId="para_0">
+      to_xml(node, "").should == '<hcontainer eId="hcontainer_0">
   <content>
     <p>This statement has <remark status="editorial">[a <ref href="/foo/bar">link in</ref> a remark]</remark></p>
     <p>This statement has <remark status="editorial">[<ref href="/foo/bar">a link in</ref> a remark]</remark></p>
     <p>This statement has <remark status="editorial">[a <ref href="/foo/bar">link in a remark</ref>]</remark></p>
   </content>
-</paragraph>'
+</hcontainer>'
     end
   end
 
@@ -337,22 +337,22 @@ EOS
       node = parse :generic_container, <<EOS
       Hello ![title](media/foo.png) friend.
 EOS
-      to_xml(node, "").should == '<paragraph eId="para_0">
+      to_xml(node, "").should == '<hcontainer eId="hcontainer_0">
   <content>
     <p>Hello <img src="media/foo.png" alt="title"/> friend.</p>
   </content>
-</paragraph>'
+</hcontainer>'
     end
 
     it 'should work many on a line' do
       node = parse :generic_container, <<EOS
       Hello ![title](media/foo.png) friend and ![](media/bar.png) a second.
 EOS
-      to_xml(node, "").should == '<paragraph eId="para_0">
+      to_xml(node, "").should == '<hcontainer eId="hcontainer_0">
   <content>
     <p>Hello <img src="media/foo.png" alt="title"/> friend and <img src="media/bar.png"/> a second.</p>
   </content>
-</paragraph>'
+</hcontainer>'
     end
   end
 
@@ -383,11 +383,11 @@ EOS
       node = parse :generic_container, <<EOS
       Hello **something bold** foo
 EOS
-      to_xml(node, "").should == '<paragraph eId="para_0">
+      to_xml(node, "").should == '<hcontainer eId="hcontainer_0">
   <content>
     <p>Hello <b>something bold</b> foo</p>
   </content>
-</paragraph>'
+</hcontainer>'
     end
 
     it 'should handle complex bold' do
@@ -398,7 +398,7 @@ EOS
       A **[link**](/a/b)**
       A **[link**](/a/b)
 EOS
-      to_xml(node, "").should == '<paragraph eId="para_0">
+      to_xml(node, "").should == '<hcontainer eId="hcontainer_0">
   <content>
     <p>A <ref href="/a/b"><b>link</b></ref> with bold</p>
     <p>This is <b>bold with <ref href="/a/b">a link</ref></b> end</p>
@@ -406,7 +406,7 @@ EOS
     <p>A <b>[link</b>](/a/b)**</p>
     <p>A **<ref href="/a/b">link**</ref></p>
   </content>
-</paragraph>'
+</hcontainer>'
     end
 
     it 'should not mistake bold' do
@@ -421,7 +421,7 @@ EOS
       * * foo * *
       ** foo * *
 EOS
-      to_xml(node, "").should == '<paragraph eId="para_0">
+      to_xml(node, "").should == '<hcontainer eId="hcontainer_0">
   <content>
     <p>Hello **something</p>
     <p>New line**</p>
@@ -433,7 +433,7 @@ EOS
     <p>* * foo * *</p>
     <p>** foo * *</p>
   </content>
-</paragraph>'
+</hcontainer>'
     end
   end
 
@@ -442,11 +442,11 @@ EOS
       node = parse :generic_container, <<EOS
       Hello //something italics// foo
 EOS
-      to_xml(node, "").should == '<paragraph eId="para_0">
+      to_xml(node, "").should == '<hcontainer eId="hcontainer_0">
   <content>
     <p>Hello <i>something italics</i> foo</p>
   </content>
-</paragraph>'
+</hcontainer>'
     end
 
     it 'should handle complex italics' do
@@ -458,7 +458,7 @@ EOS
       A //[link//](/a/b)//
       A //[link//](/a/b)
 EOS
-      to_xml(node, "").should == '<paragraph eId="para_0">
+      to_xml(node, "").should == '<hcontainer eId="hcontainer_0">
   <content>
     <p>A <ref href="/a/b"><i>link</i></ref> with italics</p>
     <p>This is <i>italics with <ref href="/a/b">a link</ref></i> end</p>
@@ -467,7 +467,7 @@ EOS
     <p>A <i>[link</i>](/a/b)//</p>
     <p>A //<ref href="/a/b">link//</ref></p>
   </content>
-</paragraph>'
+</hcontainer>'
     end
 
     it 'should not mistake italics' do
@@ -482,7 +482,7 @@ EOS
       / / foo / /
       // foo / /
 EOS
-      to_xml(node, "").should == '<paragraph eId="para_0">
+      to_xml(node, "").should == '<hcontainer eId="hcontainer_0">
   <content>
     <p>Hello //something</p>
     <p>New line//</p>
@@ -494,7 +494,7 @@ EOS
     <p>/ / foo / /</p>
     <p>// foo / /</p>
   </content>
-</paragraph>'
+</hcontainer>'
     end
   end
 
