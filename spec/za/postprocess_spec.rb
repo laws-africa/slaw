@@ -12,7 +12,7 @@ describe Slaw::Grammars::ZA::Postprocess do
   context 'schedule_aliases' do
     it 'should include all text in schedule aliases' do
       xml = '
-<akomaNtoso xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.akomantoso.org/2.0" xsi:schemaLocation="http://www.akomantoso.org/2.0 akomantoso20.xsd">
+<akomaNtoso xmlns="http://docs.oasis-open.org/legaldocml/ns/akn/3.0">
   <components>
     <component id="component-firstschedule">
       <doc name="firstschedule">
@@ -64,7 +64,7 @@ describe Slaw::Grammars::ZA::Postprocess do
 
     it 'should have a decent alias when there is an empty heading' do
       xml = '
-<akomaNtoso xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.akomantoso.org/2.0" xsi:schemaLocation="http://www.akomantoso.org/2.0 akomantoso20.xsd">
+<akomaNtoso xmlns="http://docs.oasis-open.org/legaldocml/ns/akn/3.0">
   <components>
     <component id="component-firstschedule">
       <doc name="firstschedule">
