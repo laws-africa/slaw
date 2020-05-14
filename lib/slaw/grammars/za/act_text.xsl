@@ -42,7 +42,7 @@
     <xsl:apply-templates select="a:preamble" />
     <xsl:apply-templates select="a:body" />
     <xsl:apply-templates select="a:conclusions" />
-    <xsl:apply-templates select="a:attachments" />
+    <xsl:apply-templates select="a:attachments/a:attachment" />
   </xsl:template>
 
   <xsl:template match="a:preface">
@@ -186,7 +186,7 @@
     <xsl:text>{| </xsl:text>
 
     <!-- attributes -->
-    <xsl:for-each select="@*[local-name()!='id']">
+    <xsl:for-each select="@*[local-name()!='eId']">
       <xsl:value-of select="local-name(.)" />
       <xsl:text>="</xsl:text>
       <xsl:value-of select="." />
