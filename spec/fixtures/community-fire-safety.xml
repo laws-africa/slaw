@@ -4,23 +4,23 @@
     <meta>
       <identification source="#openbylaws">
         <FRBRWork>
-          <FRBRthis value="/za/by-law/cape-town/2002/community-fire-safety/main"/>
-          <FRBRuri value="/za/by-law/cape-town/2002/community-fire-safety"/>
+          <FRBRthis value="/akn/za/by-law/cape-town/2002/community-fire-safety/main"/>
+          <FRBRuri value="/akn/za/by-law/cape-town/2002/community-fire-safety"/>
           <FRBRalias value="Community Fire Safety By-law"/>
           <FRBRdate date="2002-02-28" name="Generation"/>
           <FRBRauthor href="#council" as="#author"/>
           <FRBRcountry value="za"/>
         </FRBRWork>
         <FRBRExpression>
-          <FRBRthis value="/za/by-law/cape-town/2002/community-fire-safety/main/eng@"/>
-          <FRBRuri value="/za/by-law/cape-town/2002/community-fire-safety/eng@"/>
+          <FRBRthis value="/akn/za/by-law/cape-town/2002/community-fire-safety/main/eng@"/>
+          <FRBRuri value="/akn/za/by-law/cape-town/2002/community-fire-safety/eng@"/>
           <FRBRdate date="2002-02-28" name="Generation"/>
           <FRBRauthor href="#council" as="#author"/>
           <FRBRlanguage language="eng"/>
         </FRBRExpression>
         <FRBRManifestation>
-          <FRBRthis value="/za/by-law/cape-town/2002/community-fire-safety/main/eng@"/>
-          <FRBRuri value="/za/by-law/cape-town/2002/community-fire-safety/eng@"/>
+          <FRBRthis value="/akn/za/by-law/cape-town/2002/community-fire-safety/main/eng@"/>
+          <FRBRuri value="/akn/za/by-law/cape-town/2002/community-fire-safety/eng@"/>
           <FRBRdate date="2014-01-14" name="Generation"/>
           <FRBRauthor href="#openbylaws" as="#author"/>
         </FRBRManifestation>
@@ -34,8 +34,8 @@
         <TLCOrganization id="openbylaws" href="http://openbylaws.org.za" showAs="openbylaws.org.za"/>
         <TLCOrganization id="council" href="/ontology/organization/za/council.cape-town" showAs="Cape Town City Council"/>
         <TLCRole id="author" href="/ontology/role/author" showAs="Author"/>
-        <original id="original" href="/za/by-law/cape-town/2002/community-fire-safety" showAs="Original"/>
-        <passiveRef id="amendment-1" href="/za/by-law/cape-town/2007/community-fire-safety-amendment" showAs="Community Fire Safety Amendment By-law"/>
+        <original id="original" href="/akn/za/by-law/cape-town/2002/community-fire-safety" showAs="Original"/>
+        <passiveRef id="amendment-1" href="/akn/za/by-law/cape-town/2007/community-fire-safety-amendment" showAs="Community Fire Safety Amendment By-law"/>
         <TLCTerm id="term-above_ground_storage_tank" href="/ontology/term/this.eng.above_ground_storage_tank" showAs="above ground storage tank"/>
         <TLCTerm id="term-automatic_releasing_hold-open_device" href="/ontology/term/this.eng.automatic_releasing_hold-open_device" showAs="automatic releasing hold-open device"/>
         <TLCTerm id="term-boundary" href="/ontology/term/this.eng.boundary" showAs="boundary"/>
@@ -2914,22 +2914,22 @@ Any person who:—                </listIntroduction>
         <meta>
           <identification source="#openbylaws">
             <FRBRWork>
-              <FRBRthis value="/za/by-law/cape-town/2002/community-fire-safety/schedules"/>
-              <FRBRuri value="/za/by-law/cape-town/2002/community-fire-safety"/>
+              <FRBRthis value="/akn/za/by-law/cape-town/2002/community-fire-safety/schedules"/>
+              <FRBRuri value="/akn/za/by-law/cape-town/2002/community-fire-safety"/>
               <FRBRdate date="2002-02-28" name="Generation"/>
               <FRBRauthor href="#council" as="#author"/>
               <FRBRcountry value="za"/>
             </FRBRWork>
             <FRBRExpression>
-              <FRBRthis value="/za/by-law/cape-town/2002/community-fire-safety/schedules/eng@"/>
-              <FRBRuri value="/za/by-law/cape-town/2002/community-fire-safety/eng@"/>
+              <FRBRthis value="/akn/za/by-law/cape-town/2002/community-fire-safety/schedules/eng@"/>
+              <FRBRuri value="/akn/za/by-law/cape-town/2002/community-fire-safety/eng@"/>
               <FRBRdate date="2002-02-28" name="Generation"/>
               <FRBRauthor href="#council" as="#author"/>
               <FRBRlanguage language="eng"/>
             </FRBRExpression>
             <FRBRManifestation>
-              <FRBRthis value="/za/by-law/cape-town/2002/community-fire-safety/schedules/eng@"/>
-              <FRBRuri value="/za/by-law/cape-town/2002/community-fire-safety/eng@"/>
+              <FRBRthis value="/akn/za/by-law/cape-town/2002/community-fire-safety/schedules/eng@"/>
+              <FRBRuri value="/akn/za/by-law/cape-town/2002/community-fire-safety/eng@"/>
               <FRBRdate date="2014-01-14" name="Generation"/>
               <FRBRauthor href="#openbylaws" as="#author"/>
             </FRBRManifestation>
