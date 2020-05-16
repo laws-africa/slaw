@@ -170,7 +170,7 @@ EOS
       to_xml(node, "").should == '<attachment eId="att_1">
   <heading>Schedule 1</heading>
   <subheading>A Title</subheading>
-  <doc name="schedule1">
+  <doc name="schedule">
     <meta>
       <identification source="#slaw">
         <FRBRWork>

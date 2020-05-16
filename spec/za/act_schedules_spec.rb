@@ -61,7 +61,7 @@ EOS
   <attachment eId="att_1">
     <heading>Schedule 2</heading>
     <subheading>A Title</subheading>
-    <doc name="schedule2">
+    <doc name="schedule">
       <meta>
         <identification source="#slaw">
           <FRBRWork>
@@ -102,7 +102,7 @@ EOS
   <attachment eId="att_2">
     <heading>Schedule 3</heading>
     <subheading>Another Title</subheading>
-    <doc name="schedule3">
+    <doc name="schedule">
       <meta>
         <identification source="#slaw">
           <FRBRWork>
@@ -159,7 +159,7 @@ EOS
       s.should == '<attachment eId="att_1">
   <heading>First Schedule</heading>
   <subheading>Schedule Heading</subheading>
-  <doc name="firstschedule">
+  <doc name="schedule">
     <meta>
       <identification source="#slaw">
         <FRBRWork>
@@ -219,7 +219,7 @@ EOS
       s.should == '<attachment eId="att_1">
   <heading>1. First Schedule</heading>
   <subheading>Schedule Heading</subheading>
-  <doc name="1firstschedule">
+  <doc name="schedule">
     <meta>
       <identification source="#slaw">
         <FRBRWork>
@@ -277,7 +277,7 @@ EOS
       today = Time.now.strftime('%Y-%m-%d')
       s.should == '<attachment eId="att_1">
   <heading>First Schedule</heading>
-  <doc name="firstschedule">
+  <doc name="schedule">
     <meta>
       <identification source="#slaw">
         <FRBRWork>
@@ -345,7 +345,7 @@ EOS
 <attachment eId="att_1">
   <heading>Schedule 1</heading>
   <subheading>Forms</subheading>
-  <doc name="schedule1">
+  <doc name="schedule">
     <meta>
       <identification source="#slaw">
         <FRBRWork>
@@ -472,7 +472,7 @@ EOS
       s.should == '<attachment eId="att_1">
   <heading>First Schedule <remark status="editorial">[remark]</remark></heading>
   <subheading>Subheading <remark status="editorial">[another]</remark></subheading>
-  <doc name="firstschedule">
+  <doc name="schedule">
     <meta>
       <identification source="#slaw">
         <FRBRWork>
@@ -702,7 +702,7 @@ EOS
   <attachment eId="att_1">
     <heading>Schedule 2</heading>
     <subheading>A Title</subheading>
-    <doc name="schedule2">
+    <doc name="schedule">
       <meta>
         <identification source="#slaw">
           <FRBRWork>
@@ -743,7 +743,7 @@ EOS
   <attachment eId="att_2">
     <heading>Schedule 3</heading>
     <subheading>Another Title</subheading>
-    <doc name="schedule3">
+    <doc name="schedule">
       <meta>
         <identification source="#slaw">
           <FRBRWork>
@@ -799,7 +799,7 @@ EOS
         s.should == '<attachment eId="att_1">
   <heading>1 - First Schedule</heading>
   <subheading>Schedule Heading</subheading>
-  <doc name="1firstschedule">
+  <doc name="schedule">
     <meta>
       <identification source="#slaw">
         <FRBRWork>
@@ -858,7 +858,7 @@ EOS
         s.should == '<attachment eId="att_1">
   <heading>1. First Schedule</heading>
   <subheading>Schedule Heading</subheading>
-  <doc name="1firstschedule">
+  <doc name="schedule">
     <meta>
       <identification source="#slaw">
         <FRBRWork>
@@ -915,7 +915,7 @@ EOS
         today = Time.now.strftime('%Y-%m-%d')
         s.should == '<attachment eId="att_1">
   <heading>First Schedule</heading>
-  <doc name="firstschedule">
+  <doc name="schedule">
     <meta>
       <identification source="#slaw">
         <FRBRWork>
@@ -974,7 +974,7 @@ EOS
         s.should == <<EOS
 <attachment eId="att_1">
   <heading>Schedule 1</heading>
-  <doc name="schedule1">
+  <doc name="schedule">
     <meta>
       <identification source="#slaw">
         <FRBRWork>
@@ -1033,7 +1033,7 @@ EOS
         s.should == '<attachment eId="att_1">
   <heading>First Schedule <remark status="editorial">[remark]</remark></heading>
   <subheading>Subheading <remark status="editorial">[another]</remark></subheading>
-  <doc name="firstschedule">
+  <doc name="schedule">
     <meta>
       <identification source="#slaw">
         <FRBRWork>

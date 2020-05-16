@@ -97,7 +97,7 @@ module Slaw
 
           b.attachment(eId: "att_#{i}") { |b|
             schedule_title.to_xml(b, '', heading_text)
-            b.doc_(name: schedule_id) { |b|
+            b.doc_(name: "schedule") { |b|
               b.meta { |b|
                 b.identification(source: "#slaw") { |b|
                   b.FRBRWork { |b|

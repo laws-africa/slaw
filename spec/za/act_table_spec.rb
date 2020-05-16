@@ -271,7 +271,7 @@ EOS
       today = Time.now.strftime('%Y-%m-%d')
       xml.should == '<attachment eId="att_1">
   <heading>Schedule 1</heading>
-  <doc name="schedule1">
+  <doc name="schedule">
     <meta>
       <identification source="#slaw">
         <FRBRWork>
