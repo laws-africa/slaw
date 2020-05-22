@@ -95,6 +95,7 @@ You can create your own grammar by creating a gem that provides these files and 
 * BREAKING: replace id attributes with eId attributes
 * BREAKING: serialize schedules as attachments to act, not as components as peers of the act
 * BREAKING: anonymous blocks are serialized as hcontainers, not paragraphs
+* BREAKING: crossheading hcontainer IDs correctly use hcontainer
 
 ### 9.1.0 (15 April 2020)
 

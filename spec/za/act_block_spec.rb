@@ -59,7 +59,7 @@ EOS
         <p>Hello there</p>
       </content>
     </hcontainer>
-    <hcontainer eId="sec_1__crossheading_0" name="crossheading">
+    <hcontainer eId="sec_1__hcontainer_1" name="crossheading">
       <heading>crossheading</heading>
     </hcontainer>
   </section>
@@ -96,7 +96,7 @@ EOS
       </blockList>
     </content>
   </hcontainer>
-  <hcontainer eId="crossheading_0" name="crossheading">
+  <hcontainer eId="hcontainer_1" name="crossheading">
     <heading>crossheading</heading>
   </hcontainer>
   <section eId="sec_1">
@@ -107,7 +107,7 @@ EOS
         <p>Hello there</p>
       </content>
     </hcontainer>
-    <hcontainer eId="sec_1__crossheading_0" name="crossheading">
+    <hcontainer eId="sec_1__hcontainer_1" name="crossheading">
       <heading>crossheading</heading>
     </hcontainer>
   </section>
@@ -256,10 +256,10 @@ EOS
       to_xml(node).should == '<chapter eId="chp_2">
   <num>2</num>
   <heading>The Chapter Heading</heading>
-  <hcontainer eId="chp_2__crossheading_0" name="crossheading">
+  <hcontainer eId="chp_2__hcontainer_0" name="crossheading">
     <heading>crossheading</heading>
   </hcontainer>
-  <hcontainer eId="chp_2__hcontainer_0">
+  <hcontainer eId="chp_2__hcontainer_1">
     <content>
       <p>Some lines at the start of the chapter.</p>
     </content>
@@ -485,7 +485,7 @@ EOS
       to_xml(node).should == '<part eId="part_2">
   <num>2</num>
   <heading>The Part Heading</heading>
-  <hcontainer eId="part_2__crossheading_0" name="crossheading">
+  <hcontainer eId="part_2__hcontainer_0" name="crossheading">
     <heading>crossheading</heading>
   </hcontainer>
   <section eId="sec_1">
@@ -1847,7 +1847,7 @@ EOS
   context 'crossheadings' do
     it 'should handle a inline_items in crossheadings' do
       node = parse :crossheading, "CROSSHEADING something [[remark]] [link](/foo/bar)\n"
-      to_xml(node, '').should == '<hcontainer eId="crossheading_0" name="crossheading">
+      to_xml(node, '').should == '<hcontainer eId="hcontainer_0" name="crossheading">
   <heading>something <remark status="editorial">[remark]</remark> <ref href="/foo/bar">link</ref></heading>
 </hcontainer>'
     end
@@ -1899,7 +1899,7 @@ Text
     <p>Some text</p>
   </preface>
   <body>
-    <hcontainer eId="crossheading_0" name="crossheading">
+    <hcontainer eId="hcontainer_0" name="crossheading">
       <heading>In the body</heading>
     </hcontainer>
     <section eId="sec_1">
@@ -1962,7 +1962,7 @@ Text
     <p>Some text</p>
   </preamble>
   <body>
-    <hcontainer eId="crossheading_0" name="crossheading">
+    <hcontainer eId="hcontainer_0" name="crossheading">
       <heading>In the body</heading>
     </hcontainer>
     <section eId="sec_1">

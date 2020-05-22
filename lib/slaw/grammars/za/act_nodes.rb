@@ -364,8 +364,8 @@ module Slaw
 
         class Crossheading < Treetop::Runtime::SyntaxNode
           def to_xml(b, idprefix, i=0)
-            cnt = Slaw::Grammars::Counters.counters[idprefix]['crossheading'] += 1
-            id = "#{idprefix}crossheading_#{cnt}"
+            cnt = Slaw::Grammars::Counters.counters[idprefix]['hcontainer'] += 1
+            id = "#{idprefix}hcontainer_#{cnt}"
 
             b.hcontainer(eId: id, name: 'crossheading') { |b|
               b.heading { |b|
