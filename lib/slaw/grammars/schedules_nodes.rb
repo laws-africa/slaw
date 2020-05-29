@@ -86,6 +86,9 @@ module Slaw
         end
 
         def to_xml(b, idprefix=nil, i=1)
+          # reset counters for this new schedule document
+          Slaw::Grammars::Counters.reset!
+
           heading_text = self.schedule_title.heading_text
           if not heading_text
             heading_text = "Schedule"

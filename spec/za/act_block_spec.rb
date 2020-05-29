@@ -396,7 +396,7 @@ EOS
   <heading>The Chapter</heading>
   <hcontainer eId="chp_2__hcontainer_1">
     <content>
-      <table eId="chp_2__hcontainer_1__table_0">
+      <table eId="chp_2__hcontainer_1__table_1">
         <tr>
           <td>
             <p>foo</p>

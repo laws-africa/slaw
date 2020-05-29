@@ -44,7 +44,7 @@ describe Slaw::ActGenerator do
 |}
 EOS
 
-      to_xml(node, "prefix__").should == '<table eId="prefix__table_0">
+      to_xml(node, "prefix__").should == '<table eId="prefix__table_1">
   <tr>
     <th>
       <p>r1c1</p>
@@ -78,7 +78,7 @@ EOS
 |}
 EOS
 
-      to_xml(node, "prefix__").should == '<table eId="prefix__table_0">
+      to_xml(node, "prefix__").should == '<table eId="prefix__table_1">
   <tr>
     <th>
       <p/>
@@ -109,7 +109,7 @@ EOS
 |}
 EOS
 
-      to_xml(node, "prefix__").should == '<table eId="prefix__table_0">
+      to_xml(node, "prefix__").should == '<table eId="prefix__table_1">
   <tr>
     <td colspan="2">
       <p>r1c1</p>
@@ -148,7 +148,7 @@ two
 |}
 EOS
 
-      to_xml(node, "prefix__").should == '<table eId="prefix__table_0">
+      to_xml(node, "prefix__").should == '<table eId="prefix__table_1">
   <tr>
     <td>
       <p>foo<eol/>bar<eol/><eol/>baz</p>
@@ -173,7 +173,7 @@ EOS
     |}
 EOS
 
-      to_xml(node, "prefix__").should == '<table eId="prefix__table_0">
+      to_xml(node, "prefix__").should == '<table eId="prefix__table_1">
   <tr>
     <th>
       <p>foo<eol/>three</p>
@@ -195,7 +195,7 @@ EOS
 |}
 EOS
 
-      to_xml(node, "prefix__").should == '<table eId="prefix__table_0">
+      to_xml(node, "prefix__").should == '<table eId="prefix__table_1">
   <tr>
     <td>
       <p>cell</p>
@@ -354,7 +354,7 @@ EOS
       to_xml(node, '', 0).should == '<subsection eId="subsec_1">
   <num>(1)</num>
   <content>
-    <table eId="subsec_1__table_0">
+    <table eId="subsec_1__table_1">
       <tr>
         <td>
           <p>foo</p>
@@ -374,7 +374,7 @@ EOS
 |}
 EOS
 
-      to_xml(node, '', 0).should == '<table eId="table_0">
+      to_xml(node, '', 0).should == '<table eId="table_1">
   <tr>
     <td>
       <p>a <ref href="/a/b">link</ref> in a table</p>
@@ -394,7 +394,7 @@ EOS
 |}
 EOS
 
-      to_xml(node, '', 0).should == '<table eId="table_0">
+      to_xml(node, '', 0).should == '<table eId="table_1">
   <tr>
     <td>
       <p>a &gt; b</p>

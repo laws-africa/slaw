@@ -207,7 +207,7 @@ Hello [there](/za/act/123) friend.
     it 'should replace eol with newlines in tables' do
       doc = xml2doc(section(<<XML
         <num>1.</num>
-        <table eId="sec__21_table_0">
+        <table eId="sec__21_table_1">
           <tr>
             <td>
               <p>foo<eol/>bar<eol/>baz</p>
