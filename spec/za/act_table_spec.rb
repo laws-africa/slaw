@@ -226,10 +226,10 @@ EOS
       xml.should == '<section eId="sec_10">
   <num>10.</num>
   <heading>A section title</heading>
-  <hcontainer eId="sec_10__hcontainer_0">
+  <hcontainer eId="sec_10__hcontainer_1">
     <content>
       <p>Heres a table:</p>
-      <table eId="sec_10__hcontainer_0__table_1">
+      <table eId="sec_10__hcontainer_1__table_1">
         <tr>
           <td>
             <p>r1c1</p>
@@ -298,10 +298,10 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer eId="hcontainer_0">
+      <hcontainer eId="hcontainer_1">
         <content>
           <p>Heres a table:</p>
-          <table eId="hcontainer_0__table_1">
+          <table eId="hcontainer_1__table_1">
             <tr>
               <td>
                 <p>r1c1</p>
@@ -334,7 +334,7 @@ EOS
 |}
 EOS
 
-      to_xml(node).should == '<hcontainer eId="hcontainer_0">
+      to_xml(node).should == '<hcontainer eId="hcontainer_1">
   <content>
     <p>{|</p>
     <p>| r1c1</p>

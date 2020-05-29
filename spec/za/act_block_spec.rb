@@ -46,7 +46,7 @@ Hello there
 CROSSHEADING crossheading
 EOS
       to_xml(node).should == '<body>
-  <hcontainer eId="hcontainer_0">
+  <hcontainer eId="hcontainer_1">
     <content>
       <p>Some content before the section</p>
     </content>
@@ -54,12 +54,12 @@ EOS
   <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <hcontainer eId="sec_1__hcontainer_0">
+    <hcontainer eId="sec_1__hcontainer_1">
       <content>
         <p>Hello there</p>
       </content>
     </hcontainer>
-    <hcontainer eId="sec_1__hcontainer_1" name="crossheading">
+    <hcontainer eId="sec_1__hcontainer_2" name="crossheading">
       <heading>crossheading</heading>
     </hcontainer>
   </section>
@@ -81,33 +81,33 @@ Hello there
 CROSSHEADING crossheading
 EOS
       to_xml(node).should == '<body>
-  <hcontainer eId="hcontainer_0">
+  <hcontainer eId="hcontainer_1">
     <content>
       <p>Some content before the section</p>
-      <blockList eId="hcontainer_0__list_0" renest="true">
-        <item eId="hcontainer_0__list_0__item_a">
+      <blockList eId="hcontainer_1__list_1" renest="true">
+        <item eId="hcontainer_1__list_1__item_a">
           <num>(a)</num>
           <p>foo</p>
         </item>
-        <item eId="hcontainer_0__list_0__item_b">
+        <item eId="hcontainer_1__list_1__item_b">
           <num>(b)</num>
           <p>bar</p>
         </item>
       </blockList>
     </content>
   </hcontainer>
-  <hcontainer eId="hcontainer_1" name="crossheading">
+  <hcontainer eId="hcontainer_2" name="crossheading">
     <heading>crossheading</heading>
   </hcontainer>
   <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <hcontainer eId="sec_1__hcontainer_0">
+    <hcontainer eId="sec_1__hcontainer_1">
       <content>
         <p>Hello there</p>
       </content>
     </hcontainer>
-    <hcontainer eId="sec_1__hcontainer_1" name="crossheading">
+    <hcontainer eId="sec_1__hcontainer_2" name="crossheading">
       <heading>crossheading</heading>
     </hcontainer>
   </section>
@@ -124,7 +124,7 @@ EOS
 \\Chapter 2 ignored
 EOS
       to_xml(node).should == '<body>
-  <hcontainer eId="hcontainer_0">
+  <hcontainer eId="hcontainer_1">
     <content>
       <p>1. ignored</p>
       <p>CROSSHEADING crossheading</p>
@@ -133,7 +133,7 @@ EOS
   <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <hcontainer eId="sec_1__hcontainer_0">
+    <hcontainer eId="sec_1__hcontainer_1">
       <content>
         <p>Chapter 2 ignored</p>
       </content>
@@ -152,7 +152,7 @@ Some content before the section
 Hello there
 EOS
       to_xml(node).should == '<body>
-  <hcontainer eId="hcontainer_0">
+  <hcontainer eId="hcontainer_1">
     <content>
       <p>Some content before the section</p>
     </content>
@@ -160,7 +160,7 @@ EOS
   <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <hcontainer eId="sec_1__hcontainer_0">
+    <hcontainer eId="sec_1__hcontainer_1">
       <content>
         <p>Hello there</p>
       </content>
@@ -212,7 +212,7 @@ EOS
   <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <hcontainer eId="sec_1__hcontainer_0">
+    <hcontainer eId="sec_1__hcontainer_1">
       <content>
         <p>Hello there</p>
       </content>
@@ -233,7 +233,7 @@ EOS
   <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <hcontainer eId="sec_1__hcontainer_0">
+    <hcontainer eId="sec_1__hcontainer_1">
       <content>
         <p>Hello there</p>
       </content>
@@ -256,10 +256,10 @@ EOS
       to_xml(node).should == '<chapter eId="chp_2">
   <num>2</num>
   <heading>The Chapter Heading</heading>
-  <hcontainer eId="chp_2__hcontainer_0" name="crossheading">
+  <hcontainer eId="chp_2__hcontainer_1" name="crossheading">
     <heading>crossheading</heading>
   </hcontainer>
-  <hcontainer eId="chp_2__hcontainer_1">
+  <hcontainer eId="chp_2__hcontainer_2">
     <content>
       <p>Some lines at the start of the chapter.</p>
     </content>
@@ -282,7 +282,7 @@ EOS
       to_xml(node).should == '<chapter eId="chp_2">
   <num>2</num>
   <heading>The Chapter Heading</heading>
-  <hcontainer eId="chp_2__hcontainer_0">
+  <hcontainer eId="chp_2__hcontainer_1">
     <content>
       <p>Some lines at the start of the chapter.</p>
     </content>
@@ -290,7 +290,7 @@ EOS
   <section eId="sec_1">
     <num>1.</num>
     <heading>Section 1</heading>
-    <hcontainer eId="sec_1__hcontainer_0">
+    <hcontainer eId="sec_1__hcontainer_1">
       <content>
         <p>Section text.</p>
       </content>
@@ -312,7 +312,7 @@ EOS
   <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <hcontainer eId="sec_1__hcontainer_0">
+    <hcontainer eId="sec_1__hcontainer_1">
       <content>
         <p>Hello there</p>
       </content>
@@ -335,7 +335,7 @@ EOS
   <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <hcontainer eId="sec_1__hcontainer_0">
+    <hcontainer eId="sec_1__hcontainer_1">
       <content>
         <p>Hello there</p>
       </content>
@@ -357,7 +357,7 @@ EOS
   <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <hcontainer eId="sec_1__hcontainer_0">
+    <hcontainer eId="sec_1__hcontainer_1">
       <content>
         <p>Hello there</p>
       </content>
@@ -394,9 +394,9 @@ EOS
       to_xml(node).should == '<chapter eId="chp_2">
   <num>2</num>
   <heading>The Chapter</heading>
-  <hcontainer eId="chp_2__hcontainer_0">
+  <hcontainer eId="chp_2__hcontainer_1">
     <content>
-      <table eId="chp_2__hcontainer_0__table_0">
+      <table eId="chp_2__hcontainer_1__table_0">
         <tr>
           <td>
             <p>foo</p>
@@ -421,7 +421,7 @@ EOS
       to_xml(node).should == '<chapter eId="chp_1">
   <num>1</num>
   <heading>The Chapter</heading>
-  <hcontainer eId="chp_1__hcontainer_0">
+  <hcontainer eId="chp_1__hcontainer_1">
     <content>
       <p>Stuff</p>
       <p>Chapter 2 - Ignored</p>
@@ -449,7 +449,7 @@ EOS
   <part eId="chp_1__part_1">
     <num>1</num>
     <heading>Chapter One Part One</heading>
-    <hcontainer eId="chp_1__part_1__hcontainer_0">
+    <hcontainer eId="chp_1__part_1__hcontainer_1">
       <content>
         <p>one-one</p>
       </content>
@@ -458,7 +458,7 @@ EOS
   <part eId="chp_1__part_2">
     <num>2</num>
     <heading>Chapter One Part Two</heading>
-    <hcontainer eId="chp_1__part_2__hcontainer_0">
+    <hcontainer eId="chp_1__part_2__hcontainer_1">
       <content>
         <p>one-two</p>
       </content>
@@ -485,13 +485,13 @@ EOS
       to_xml(node).should == '<part eId="part_2">
   <num>2</num>
   <heading>The Part Heading</heading>
-  <hcontainer eId="part_2__hcontainer_0" name="crossheading">
+  <hcontainer eId="part_2__hcontainer_1" name="crossheading">
     <heading>crossheading</heading>
   </hcontainer>
   <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <hcontainer eId="sec_1__hcontainer_0">
+    <hcontainer eId="sec_1__hcontainer_1">
       <content>
         <p>Hello there</p>
       </content>
@@ -512,7 +512,7 @@ EOS
   <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <hcontainer eId="sec_1__hcontainer_0">
+    <hcontainer eId="sec_1__hcontainer_1">
       <content>
         <p>Hello there</p>
       </content>
@@ -533,7 +533,7 @@ EOS
   <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <hcontainer eId="sec_1__hcontainer_0">
+    <hcontainer eId="sec_1__hcontainer_1">
       <content>
         <p>Hello there</p>
       </content>
@@ -554,7 +554,7 @@ EOS
   <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <hcontainer eId="sec_1__hcontainer_0">
+    <hcontainer eId="sec_1__hcontainer_1">
       <content>
         <p>Hello there</p>
       </content>
@@ -576,7 +576,7 @@ EOS
   <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <hcontainer eId="sec_1__hcontainer_0">
+    <hcontainer eId="sec_1__hcontainer_1">
       <content>
         <p>Hello there</p>
       </content>
@@ -598,7 +598,7 @@ EOS
   <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <hcontainer eId="sec_1__hcontainer_0">
+    <hcontainer eId="sec_1__hcontainer_1">
       <content>
         <p>Hello there</p>
       </content>
@@ -619,7 +619,7 @@ EOS
   <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <hcontainer eId="sec_1__hcontainer_0">
+    <hcontainer eId="sec_1__hcontainer_1">
       <content>
         <p>Hello there</p>
       </content>
@@ -642,7 +642,7 @@ EOS
   <section eId="sec_1">
     <num>1.</num>
     <heading/>
-    <hcontainer eId="sec_1__hcontainer_0">
+    <hcontainer eId="sec_1__hcontainer_1">
       <content>
         <p>No owner or occupier of any shop or business premises or vacant land adjoining a shop or business premises shall cause a health nuisance.</p>
       </content>
@@ -666,7 +666,7 @@ EOS
       to_xml(node).should == '<part eId="part_2">
   <num>2</num>
   <heading>The Part Heading</heading>
-  <hcontainer eId="part_2__hcontainer_0">
+  <hcontainer eId="part_2__hcontainer_1">
     <content>
       <p>Some text before the part.</p>
     </content>
@@ -674,7 +674,7 @@ EOS
   <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <hcontainer eId="sec_1__hcontainer_0">
+    <hcontainer eId="sec_1__hcontainer_1">
       <content>
         <p>Hello there</p>
       </content>
@@ -709,7 +709,7 @@ EOS
   <part eId="part_2">
     <num>2</num>
     <heading>The Part Heading</heading>
-    <hcontainer eId="part_2__hcontainer_0">
+    <hcontainer eId="part_2__hcontainer_1">
       <content>
         <p>Part 3 ignored</p>
       </content>
@@ -736,7 +736,7 @@ EOS
   <chapter eId="part_1__chp_1">
     <num>1</num>
     <heading>Part One Chapter One</heading>
-    <hcontainer eId="part_1__chp_1__hcontainer_0">
+    <hcontainer eId="part_1__chp_1__hcontainer_1">
       <content>
         <p>one-one</p>
       </content>
@@ -745,7 +745,7 @@ EOS
   <chapter eId="part_1__chp_2">
     <num>2</num>
     <heading>Part One Chapter Two</heading>
-    <hcontainer eId="part_1__chp_2__hcontainer_0">
+    <hcontainer eId="part_1__chp_2__hcontainer_1">
       <content>
         <p>one-two</p>
       </content>
@@ -772,7 +772,7 @@ EOS
   <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <hcontainer eId="sec_1__hcontainer_0">
+    <hcontainer eId="sec_1__hcontainer_1">
       <content>
         <p>Hello there</p>
       </content>
@@ -806,7 +806,7 @@ EOS
     <section eId="sec_1">
       <num>1.</num>
       <heading>Section</heading>
-      <hcontainer eId="sec_1__hcontainer_0">
+      <hcontainer eId="sec_1__hcontainer_1">
         <content>
           <p>Hello</p>
         </content>
@@ -819,7 +819,7 @@ EOS
     <section eId="sec_2">
       <num>2.</num>
       <heading>Section</heading>
-      <hcontainer eId="sec_2__hcontainer_0">
+      <hcontainer eId="sec_2__hcontainer_1">
         <content>
           <p>Bye</p>
         </content>
@@ -852,20 +852,20 @@ EOS
   <num>(2)</num>
   <content>
     <p>title</p>
-    <blockList eId="subsec_2__list_0" renest="true">
-      <item eId="subsec_2__list_0__item_a">
+    <blockList eId="subsec_2__list_1" renest="true">
+      <item eId="subsec_2__list_1__item_a">
         <num>(a)</num>
         <p>one</p>
       </item>
-      <item eId="subsec_2__list_0__item_b">
+      <item eId="subsec_2__list_1__item_b">
         <num>(b)</num>
         <p>two</p>
       </item>
-      <item eId="subsec_2__list_0__item_c">
+      <item eId="subsec_2__list_1__item_c">
         <num>(c)</num>
         <p>three</p>
       </item>
-      <item eId="subsec_2__list_0__item_i">
+      <item eId="subsec_2__list_1__item_i">
         <num>(i)</num>
         <p>four</p>
       </item>
@@ -885,20 +885,20 @@ EOS
       to_xml(node, "", 1).should == '<subsection eId="subsec_1">
   <num>(1)</num>
   <content>
-    <blockList eId="subsec_1__list_0" renest="true">
-      <item eId="subsec_1__list_0__item_a">
+    <blockList eId="subsec_1__list_1" renest="true">
+      <item eId="subsec_1__list_1__item_a">
         <num>(a)</num>
         <p>one</p>
       </item>
-      <item eId="subsec_1__list_0__item_b">
+      <item eId="subsec_1__list_1__item_b">
         <num>(b)</num>
         <p>two</p>
       </item>
-      <item eId="subsec_1__list_0__item_c">
+      <item eId="subsec_1__list_1__item_c">
         <num>(c)</num>
         <p>three</p>
       </item>
-      <item eId="subsec_1__list_0__item_i">
+      <item eId="subsec_1__list_1__item_i">
         <num>(i)</num>
         <p>four</p>
       </item>
@@ -917,12 +917,12 @@ EOS
       to_xml(node, "", 1).should == '<subsection eId="subsec_1">
   <num>(1)</num>
   <content>
-    <blockList eId="subsec_1__list_0" renest="true">
-      <item eId="subsec_1__list_0__item_a">
+    <blockList eId="subsec_1__list_1" renest="true">
+      <item eId="subsec_1__list_1__item_a">
         <num>(a)</num>
         <p>one</p>
       </item>
-      <item eId="subsec_1__list_0__item_b">
+      <item eId="subsec_1__list_1__item_b">
         <num>(b)</num>
         <p>two</p>
       </item>
@@ -976,20 +976,20 @@ EOS
   <num>(1)</num>
   <content>
     <p>here\'s my really cool list,</p>
-    <blockList eId="subsec_1__list_0" renest="true">
-      <item eId="subsec_1__list_0__item_a">
+    <blockList eId="subsec_1__list_1" renest="true">
+      <item eId="subsec_1__list_1__item_a">
         <num>(a)</num>
         <p>one</p>
       </item>
-      <item eId="subsec_1__list_0__item_b">
+      <item eId="subsec_1__list_1__item_b">
         <num>(b)</num>
         <p/>
       </item>
-      <item eId="subsec_1__list_0__item_i">
+      <item eId="subsec_1__list_1__item_i">
         <num>(i)</num>
         <p>single</p>
       </item>
-      <item eId="subsec_1__list_0__item_ii">
+      <item eId="subsec_1__list_1__item_ii">
         <num>(ii)</num>
         <p>double</p>
       </item>
@@ -1010,20 +1010,20 @@ EOS
   <num>(1)</num>
   <content>
     <p>here\'s my really cool list,</p>
-    <blockList eId="subsec_1__list_0" renest="true">
-      <item eId="subsec_1__list_0__item_a">
+    <blockList eId="subsec_1__list_1" renest="true">
+      <item eId="subsec_1__list_1__item_a">
         <num>(a)</num>
         <p/>
       </item>
-      <item eId="subsec_1__list_0__item_b">
+      <item eId="subsec_1__list_1__item_b">
         <num>(b)</num>
         <p/>
       </item>
-      <item eId="subsec_1__list_0__item_i">
+      <item eId="subsec_1__list_1__item_i">
         <num>(i)</num>
         <p>single</p>
       </item>
-      <item eId="subsec_1__list_0__item_ii">
+      <item eId="subsec_1__list_1__item_ii">
         <num>(ii)</num>
         <p>double</p>
       </item>
@@ -1074,16 +1074,16 @@ EOS
   <num>9.9</num>
   <content>
     <p>foo</p>
-    <blockList eId="subsec_9-9__list_0" renest="true">
-      <item eId="subsec_9-9__list_0__item_9-9-1">
+    <blockList eId="subsec_9-9__list_1" renest="true">
+      <item eId="subsec_9-9__list_1__item_9-9-1">
         <num>9.9.1</num>
         <p>item1</p>
       </item>
-      <item eId="subsec_9-9__list_0__item_9-9-2">
+      <item eId="subsec_9-9__list_1__item_9-9-2">
         <num>9.9.2</num>
         <p>item2</p>
       </item>
-      <item eId="subsec_9-9__list_0__item_9-9-2-1">
+      <item eId="subsec_9-9__list_1__item_9-9-2-1">
         <num>9.9.2.1</num>
         <p>item3</p>
       </item>
@@ -1108,23 +1108,23 @@ EOS
   <num>(1)</num>
   <content>
     <p>a list</p>
-    <blockList eId="subsec_1__list_0" renest="true">
-      <item eId="subsec_1__list_0__item_a">
+    <blockList eId="subsec_1__list_1" renest="true">
+      <item eId="subsec_1__list_1__item_a">
         <num>(a)</num>
         <p>item 1</p>
       </item>
-      <item eId="subsec_1__list_0__item_b">
+      <item eId="subsec_1__list_1__item_b">
         <num>(b)</num>
         <p>item 2</p>
       </item>
     </blockList>
     <p>some text</p>
-    <blockList eId="subsec_1__list_1" renest="true">
-      <item eId="subsec_1__list_1__item_c">
+    <blockList eId="subsec_1__list_2" renest="true">
+      <item eId="subsec_1__list_2__item_c">
         <num>(c)</num>
         <p>item 3</p>
       </item>
-      <item eId="subsec_1__list_1__item_d">
+      <item eId="subsec_1__list_2__item_d">
         <num>(d)</num>
         <p>item 4</p>
       </item>
@@ -1396,7 +1396,7 @@ EOS
   <p>this is in the preamble</p>
 </preamble>'
       to_xml(node.body).should == '<body>
-  <hcontainer eId="hcontainer_0">
+  <hcontainer eId="hcontainer_1">
     <content>
       <p>this is in the body</p>
     </content>
@@ -1486,7 +1486,7 @@ this is actually in the body
 EOS
 
       to_xml(node.body).should == '<body>
-  <hcontainer eId="hcontainer_0">
+  <hcontainer eId="hcontainer_1">
     <content>
       <p>PREAMBLE</p>
       <p>this is actually in the body</p>
@@ -1507,7 +1507,7 @@ this is actually in the body
 EOS
 
       to_xml(node.body).should == '<body>
-  <hcontainer eId="hcontainer_0">
+  <hcontainer eId="hcontainer_1">
     <content>
       <p>PREFACE</p>
       <p>this is actually in the body</p>
@@ -1631,14 +1631,14 @@ EOS
       s.should == '<section eId="sec_1">
   <num>1.</num>
   <heading>Section</heading>
-  <hcontainer eId="sec_1__hcontainer_0">
+  <hcontainer eId="sec_1__hcontainer_1">
     <content>
-      <blockList eId="sec_1__hcontainer_0__list_0" renest="true">
-        <item eId="sec_1__hcontainer_0__list_0__item_a">
+      <blockList eId="sec_1__hcontainer_1__list_1" renest="true">
+        <item eId="sec_1__hcontainer_1__list_1__item_a">
           <num>(a)</num>
           <p>first</p>
         </item>
-        <item eId="sec_1__hcontainer_0__list_0__item_b">
+        <item eId="sec_1__hcontainer_1__list_1__item_b">
           <num>(b)</num>
           <p>second</p>
         </item>
@@ -1661,7 +1661,7 @@ EOS
       s.should == '<section eId="sec_1">
   <num>1.</num>
   <heading>Section <b>bold</b> <ref href="/za/act/1990/1">foo</ref></heading>
-  <hcontainer eId="sec_1__hcontainer_0">
+  <hcontainer eId="sec_1__hcontainer_1">
     <content>
       <p>something</p>
     </content>
@@ -1682,7 +1682,7 @@ EOS
       s.should == '<section eId="sec_1">
   <num>1.</num>
   <heading>Section <b>bold</b> <ref href="/za/act/1990/1">foo</ref></heading>
-  <hcontainer eId="sec_1__hcontainer_0">
+  <hcontainer eId="sec_1__hcontainer_1">
     <content>
       <p>something</p>
     </content>
@@ -1708,15 +1708,15 @@ EOS
       to_xml(node, "").should == '<section eId="sec_1">
   <num>1.</num>
   <heading>Section</heading>
-  <hcontainer eId="sec_1__hcontainer_0">
+  <hcontainer eId="sec_1__hcontainer_1">
     <content>
       <p>naked statement (c) blah</p>
-      <blockList eId="sec_1__hcontainer_0__list_0" renest="true">
-        <item eId="sec_1__hcontainer_0__list_0__item_a">
+      <blockList eId="sec_1__hcontainer_1__list_1" renest="true">
+        <item eId="sec_1__hcontainer_1__list_1__item_a">
           <num>(a)</num>
           <p>foo</p>
         </item>
-        <item eId="sec_1__hcontainer_0__list_0__item_b">
+        <item eId="sec_1__hcontainer_1__list_1__item_b">
           <num>(b)</num>
           <p>bar</p>
         </item>
@@ -1753,12 +1753,12 @@ EOS
     <num>(2)</num>
     <content>
       <p>Schedule 1</p>
-      <blockList eId="sec_1__subsec_2__list_0" renest="true">
-        <item eId="sec_1__subsec_2__list_0__item_a">
+      <blockList eId="sec_1__subsec_2__list_1" renest="true">
+        <item eId="sec_1__subsec_2__list_1__item_a">
           <num>(a)</num>
           <p>Part 1</p>
         </item>
-        <item eId="sec_1__subsec_2__list_0__item_b">
+        <item eId="sec_1__subsec_2__list_1__item_b">
           <num>(b)</num>
           <p>thing</p>
         </item>
@@ -1780,7 +1780,7 @@ EOS
       to_xml(node, "").should == '<section eId="sec_1">
   <num>1.</num>
   <heading>Section</heading>
-  <hcontainer eId="sec_1__hcontainer_0">
+  <hcontainer eId="sec_1__hcontainer_1">
     <content>
       <p>1. ignored</p>
       <p>2. another line</p>
@@ -1802,7 +1802,7 @@ EOS
       to_xml(node, "").should == '<section eId="sec_1">
   <num>1.</num>
   <heading>Section</heading>
-  <hcontainer eId="sec_1__hcontainer_0">
+  <hcontainer eId="sec_1__hcontainer_1">
     <content>
       <p>stuff</p>
     </content>
@@ -1825,12 +1825,12 @@ EOS
     <num>3.1</num>
     <content>
       <p>Informal trading may include, amongst others:-</p>
-      <blockList eId="sec_3__subsec_3-1__list_0" renest="true">
-        <item eId="sec_3__subsec_3-1__list_0__item_3-1-1">
+      <blockList eId="sec_3__subsec_3-1__list_1" renest="true">
+        <item eId="sec_3__subsec_3-1__list_1__item_3-1-1">
           <num>3.1.1</num>
           <p>street trading;</p>
         </item>
-        <item eId="sec_3__subsec_3-1__list_0__item_3-1-2">
+        <item eId="sec_3__subsec_3-1__list_1__item_3-1-2">
           <num>3.1.2</num>
           <p>trading in pedestrian malls;</p>
         </item>
@@ -1847,7 +1847,7 @@ EOS
   context 'crossheadings' do
     it 'should handle a inline_items in crossheadings' do
       node = parse :crossheading, "CROSSHEADING something [[remark]] [link](/foo/bar)\n"
-      to_xml(node, '').should == '<hcontainer eId="hcontainer_0" name="crossheading">
+      to_xml(node, '').should == '<hcontainer eId="hcontainer_1" name="crossheading">
   <heading>something <remark status="editorial">[remark]</remark> <ref href="/foo/bar">link</ref></heading>
 </hcontainer>'
     end
@@ -1899,13 +1899,13 @@ Text
     <p>Some text</p>
   </preface>
   <body>
-    <hcontainer eId="hcontainer_0" name="crossheading">
+    <hcontainer eId="hcontainer_1" name="crossheading">
       <heading>In the body</heading>
     </hcontainer>
     <section eId="sec_1">
       <num>1.</num>
       <heading>Section 1</heading>
-      <hcontainer eId="sec_1__hcontainer_0">
+      <hcontainer eId="sec_1__hcontainer_1">
         <content>
           <p>Text</p>
         </content>
@@ -1962,13 +1962,13 @@ Text
     <p>Some text</p>
   </preamble>
   <body>
-    <hcontainer eId="hcontainer_0" name="crossheading">
+    <hcontainer eId="hcontainer_1" name="crossheading">
       <heading>In the body</heading>
     </hcontainer>
     <section eId="sec_1">
       <num>1.</num>
       <heading>Section 1</heading>
-      <hcontainer eId="sec_1__hcontainer_0">
+      <hcontainer eId="sec_1__hcontainer_1">
         <content>
           <p>Text</p>
         </content>
@@ -2039,7 +2039,7 @@ EOS
   <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
-    <hcontainer eId="sec_1__hcontainer_0">
+    <hcontainer eId="sec_1__hcontainer_1">
       <content>
         <p>LONGTITLE a long title</p>
       </content>

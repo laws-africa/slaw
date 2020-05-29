@@ -54,7 +54,7 @@ module Slaw
         return if items.empty?
         item = items.shift
 
-        sublist_count = 0
+        sublist_count = 1
         number_format = our_number_format
 
         while item and item.name == 'item'
