@@ -57,7 +57,7 @@ class SlawCLI < Thor
 
       if options[:id_prefix]
         prefix = options[:id_prefix]
-        prefix += "." unless prefix.end_with?('.')
+        prefix += "__" unless prefix.end_with?('__')
         generator.builder.fragment_id_prefix = prefix
       end
     end
