@@ -168,7 +168,14 @@ module Slaw
           end
 
           def to_xml(b, id_prefix='', *args)
-            id = id_prefix + "subpart_#{Slaw::Grammars::Counters.clean(num)}"
+            num = self.num
+            if num.empty?
+              num = Slaw::Grammars::Counters.counters[id_prefix]['subpart'] += 1
+            else
+              num = Slaw::Grammars::Counters.clean(num)
+            end
+
+            id = id_prefix + "subpart_#{num}"
 
             b.subpart(eId: id) { |b|
               heading.to_xml(b)
@@ -179,11 +186,11 @@ module Slaw
 
         class SubpartHeading < Treetop::Runtime::SyntaxNode
           def num
-            subpart_heading_prefix.alphanums.text_value
+            subpart_heading_prefix.num.text_value.strip()
           end
 
           def to_xml(b)
-            b.num(num)
+            b.num(num) unless self.num.empty?
             if heading.respond_to? :inline_items
               b.heading { |b|
                 heading.inline_items.to_xml(b)

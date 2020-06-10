@@ -257,7 +257,7 @@ module Slaw
         end
 
         rule subpart_heading_prefix
-          'subpart'i space alphanums [ :-]*
+          'subpart'i num:(space alphanums)? [ :-]*
         end
 
         rule chapter_heading_prefix

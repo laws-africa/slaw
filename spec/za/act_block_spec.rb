@@ -828,6 +828,27 @@ EOS
   </subpart>
 </part>'
     end
+
+    it 'should allow optional numbers' do
+      node = parse :subpart, <<EOS
+SUBPART - Heading - with a dash
+
+1. Section
+Hello there
+EOS
+      to_xml(node).should == '<subpart eId="subpart_1">
+  <heading>Heading - with a dash</heading>
+  <section eId="sec_1">
+    <num>1.</num>
+    <heading>Section</heading>
+    <hcontainer eId="sec_1__hcontainer_1">
+      <content>
+        <p>Hello there</p>
+      </content>
+    </hcontainer>
+  </section>
+</subpart>'
+    end
   end
 
   #-------------------------------------------------------------------------------
