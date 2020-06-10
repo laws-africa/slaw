@@ -86,6 +86,10 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
+### 9.2.0 (10 June 2020)
+
+* Subpart numbers are optional
+
 ### 9.1.0 (15 April 2020)
 
 * Subsections can have numbers such as 1.1A and 1.1bis
