@@ -1,6 +1,6 @@
 # Slaw [![Build Status](https://travis-ci.org/longhotsummer/slaw.svg)](http://travis-ci.org/longhotsummer/slaw) [![Gem Version](https://badge.fury.io/rb/slaw.svg)](https://badge.fury.io/rb/slaw)
 
-Slaw is a lightweight library for generating Akoma Ntoso 2.0 Act XML from plain text documents.
+Slaw is a lightweight library for generating Akoma Ntoso 3.0 Act XML from plain text documents.
 It is used to power [Indigo](https://github.com/laws-africa/indigo) and uses grammars developed for the legal
 tradition in South Africa, although others traditions are supported.
 
@@ -86,7 +86,7 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
-### 10.0.0 (?)
+### 10.0.0 (12 June 2020)
 
 * BREAKING: Create XML with AKN 3 namespace (http://docs.oasis-open.org/legaldocml/ns/akn/3.0), AKN2 is no longer supported
 * BREAKING: replace id attributes with eId attributes
