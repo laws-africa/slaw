@@ -19,6 +19,7 @@ class SlawCLI < Thor
   option :section_number_position, enum: ['before-title', 'after-title', 'guess'], desc: "Where do section titles come in relation to the section number? Default: before-title"
   option :grammar, type: :string, desc: "Grammar name (usually a two-letter country code). Default is za."
   option :ascii, type: :boolean, default: false, desc: "Process text as ASCII using %-encoding. This can provide significant speed improvements if the grammar uses only ASCII literals. See https://github.com/cjheath/treetop/issues/31."
+  option :namespace, enum: ['akn2', 'akn3'], default: 'akn3', desc: 'AKN XML namespace to use.'
   def parse(name)
     logging
 
@@ -31,6 +32,13 @@ class SlawCLI < Thor
       text = extractor.extract_from_text(name)
     else
       text = extractor.extract_from_file(name)
+    end
+
+    case options[:namespace]
+    when 'akn2'
+      Slaw.akn_namespace = Slaw::AKN2_NS
+    when 'akn3'
+      Slaw.akn_namespace = Slaw::AKN3_NS
     end
 
     generator = Slaw::ActGenerator.new(options[:grammar] || 'za')
@@ -49,7 +57,7 @@ class SlawCLI < Thor
 
       if options[:id_prefix]
         prefix = options[:id_prefix]
-        prefix += "." unless prefix.end_with?('.')
+        prefix += "__" unless prefix.end_with?('__')
         generator.builder.fragment_id_prefix = prefix
       end
     end

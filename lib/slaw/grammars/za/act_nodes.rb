@@ -12,13 +12,13 @@ module Slaw
           MANIFESTATION_URI = EXPRESSION_URI
 
           def to_xml(b, idprefix=nil, i=0)
-            b.act(contains: "originalVersion") { |b|
+            b.act(contains: 'originalVersion', name: 'act') { |b|
               write_meta(b)
               write_preface(b)
               write_preamble(b)
               write_body(b)
+              write_schedules(b)
             }
-            write_schedules(b)
           end
 
           def write_meta(b)
@@ -26,8 +26,8 @@ module Slaw
               write_identification(b)
 
               b.references(source: "#this") {
-                b.TLCOrganization(id: 'slaw', href: 'https://github.com/longhotsummer/slaw', showAs: "Slaw")
-                b.TLCOrganization(id: 'council', href: '/ontology/organization/za/council', showAs: "Council")
+                b.TLCOrganization(eId: 'slaw', href: 'https://github.com/longhotsummer/slaw', showAs: "Slaw")
+                b.TLCOrganization(eId: 'council', href: '/ontology/organization/za/council', showAs: "Council")
               }
             }
           end
@@ -38,7 +38,7 @@ module Slaw
               b.FRBRWork { |b|
                 b.FRBRthis(value: "#{WORK_URI}/main")
                 b.FRBRuri(value: WORK_URI)
-                b.FRBRalias(value: 'Short Title')
+                b.FRBRalias(value: 'Short Title', name: 'title')
                 b.FRBRdate(date: '1980-01-01', name: 'Generation')
                 b.FRBRauthor(href: '#council')
                 b.FRBRcountry(value: 'za')
@@ -125,7 +125,7 @@ module Slaw
             if !stmts.empty?
               b.preamble { |b|
                 stmts.each { |e|
-                  e.preamble_statement.to_xml(b, "")
+                  e.preamble_statement.to_xml(b, "preamble__")
                 }
               }
             end
@@ -138,11 +138,11 @@ module Slaw
           end
 
           def to_xml(b, id_prefix='', *args)
-            id = id_prefix + "part-#{num}"
+            id = id_prefix + "part_#{Slaw::Grammars::Counters.clean(num)}"
 
-            b.part(id: id) { |b|
+            b.part(eId: id) { |b|
               heading.to_xml(b)
-              children.elements.each_with_index { |e, i| e.to_xml(b, id + '.', i) }
+              children.elements.each_with_index { |e, i| e.to_xml(b, id + '__', i) }
             }
           end
         end
@@ -171,13 +171,15 @@ module Slaw
             num = self.num
             if num.empty?
               num = Slaw::Grammars::Counters.counters[id_prefix]['subpart'] += 1
+            else
+              num = Slaw::Grammars::Counters.clean(num)
             end
 
-            id = id_prefix + "subpart-#{num}"
+            id = id_prefix + "subpart_#{num}"
 
-            b.subpart(id: id) { |b|
+            b.subpart(eId: id) { |b|
               heading.to_xml(b)
-              children.elements.each_with_index { |e, i| e.to_xml(b, id + '.', i) }
+              children.elements.each_with_index { |e, i| e.to_xml(b, id + '__', i) }
             }
           end
         end
@@ -203,11 +205,11 @@ module Slaw
           end
 
           def to_xml(b, id_prefix='', *args)
-            id = id_prefix + "chapter-#{num}"
+            id = id_prefix + "chp_#{Slaw::Grammars::Counters.clean(num)}"
 
-            b.chapter(id: id) { |b|
+            b.chapter(eId: id) { |b|
               heading.to_xml(b)
-              children.elements.each_with_index { |e, i| e.to_xml(b, id + '.', i) }
+              children.elements.each_with_index { |e, i| e.to_xml(b, id + '__', i) }
             }
           end
         end
@@ -233,11 +235,11 @@ module Slaw
           end
 
           def to_xml(b, *args)
-            id = "section-#{num}"
-            b.section(id: id) { |b|
+            id = "sec_#{Slaw::Grammars::Counters.clean(num)}"
+            b.section(eId: id) { |b|
               section_title.to_xml(b)
 
-              idprefix = "#{id}."
+              idprefix = "#{id}__"
               children.elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
             }
           end
@@ -308,11 +310,11 @@ module Slaw
 
         class BlockElements < Treetop::Runtime::SyntaxNode
           def to_xml(b, idprefix='', i=0)
-            cnt = Slaw::Grammars::Counters.counters[idprefix]['paragraph'] += 1
-            id = "#{idprefix}paragraph#{cnt}"
-            idprefix = "#{id}."
+            cnt = Slaw::Grammars::Counters.counters[idprefix]['hcontainer'] += 1
+            id = "#{idprefix}hcontainer_#{cnt}"
+            idprefix = "#{id}__"
 
-            b.paragraph(id: id) { |b|
+            b.hcontainer(eId: id) { |b|
               b.content { |b|
                 elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
               }
@@ -326,10 +328,10 @@ module Slaw
           end
 
           def to_xml(b, idprefix, i)
-            id = idprefix + num.gsub(/[()]/, '')
-            idprefix = id + "."
+            id = idprefix + "subsec_" + Slaw::Grammars::Counters.clean(num)
+            idprefix = id + "__"
 
-            b.subsection(id: id) { |b|
+            b.subsection(eId: id) { |b|
               b.num(num)
               block_elements_with_inline.to_xml(b, idprefix)
             }
@@ -341,10 +343,10 @@ module Slaw
           # yield to it a builder to insert a listIntroduction node
           def to_xml(b, idprefix, i=0, &block)
             cnt = Slaw::Grammars::Counters.counters[idprefix]['list'] += 1
-            id = idprefix + "list#{cnt}"
-            idprefix = id + '.'
+            id = idprefix + "list_#{cnt}"
+            idprefix = id + '__'
 
-            b.blockList(id: id, renest: true) { |b|
+            b.blockList(eId: id, renest: true) { |b|
               b.listIntroduction { |b| yield b } if block_given?
 
               elements.each { |e| e.to_xml(b, idprefix) }
@@ -358,7 +360,7 @@ module Slaw
           end
 
           def to_xml(b, idprefix)
-            b.item(id: idprefix + num.gsub(/[()]/, '')) { |b|
+            b.item(eId: idprefix + "item_" + Slaw::Grammars::Counters.clean(num)) { |b|
               b.num(num)
               b.p { |b|
                 item_content.inline_items.to_xml(b, idprefix) if respond_to? :item_content and item_content.respond_to? :inline_items
@@ -369,10 +371,10 @@ module Slaw
 
         class Crossheading < Treetop::Runtime::SyntaxNode
           def to_xml(b, idprefix, i=0)
-            cnt = Slaw::Grammars::Counters.counters[idprefix]['crossheading'] += 1
-            id = "#{idprefix}crossheading-#{cnt}"
+            cnt = Slaw::Grammars::Counters.counters[idprefix]['hcontainer'] += 1
+            id = "#{idprefix}hcontainer_#{cnt}"
 
-            b.hcontainer(id: id, name: 'crossheading') { |b|
+            b.hcontainer(eId: id, name: 'crossheading') { |b|
               b.heading { |b|
                 inline_items.to_xml(b, idprefix)
               }

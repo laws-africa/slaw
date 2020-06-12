@@ -44,7 +44,7 @@ describe Slaw::ActGenerator do
 |}
 EOS
 
-      to_xml(node, "prefix.").should == '<table id="prefix.table0">
+      to_xml(node, "prefix__").should == '<table eId="prefix__table_1">
   <tr>
     <th>
       <p>r1c1</p>
@@ -78,7 +78,7 @@ EOS
 |}
 EOS
 
-      to_xml(node, "prefix.").should == '<table id="prefix.table0">
+      to_xml(node, "prefix__").should == '<table eId="prefix__table_1">
   <tr>
     <th>
       <p/>
@@ -109,7 +109,7 @@ EOS
 |}
 EOS
 
-      to_xml(node, "prefix.").should == '<table id="prefix.table0">
+      to_xml(node, "prefix__").should == '<table eId="prefix__table_1">
   <tr>
     <td colspan="2">
       <p>r1c1</p>
@@ -148,7 +148,7 @@ two
 |}
 EOS
 
-      to_xml(node, "prefix.").should == '<table id="prefix.table0">
+      to_xml(node, "prefix__").should == '<table eId="prefix__table_1">
   <tr>
     <td>
       <p>foo<eol/>bar<eol/><eol/>baz</p>
@@ -173,7 +173,7 @@ EOS
     |}
 EOS
 
-      to_xml(node, "prefix.").should == '<table id="prefix.table0">
+      to_xml(node, "prefix__").should == '<table eId="prefix__table_1">
   <tr>
     <th>
       <p>foo<eol/>three</p>
@@ -195,7 +195,7 @@ EOS
 |}
 EOS
 
-      to_xml(node, "prefix.").should == '<table id="prefix.table0">
+      to_xml(node, "prefix__").should == '<table eId="prefix__table_1">
   <tr>
     <td>
       <p>cell</p>
@@ -223,13 +223,13 @@ Heres a table:
 EOS
 
       xml = to_xml(node)
-      xml.should == '<section id="section-10">
+      xml.should == '<section eId="sec_10">
   <num>10.</num>
   <heading>A section title</heading>
-  <paragraph id="section-10.paragraph0">
+  <hcontainer eId="sec_10__hcontainer_1">
     <content>
       <p>Heres a table:</p>
-      <table id="section-10.paragraph0.table1">
+      <table eId="sec_10__hcontainer_1__table_1">
         <tr>
           <td>
             <p>r1c1</p>
@@ -248,7 +248,7 @@ EOS
         </tr>
       </table>
     </content>
-  </paragraph>
+  </hcontainer>
 </section>'
     end
 
@@ -269,12 +269,13 @@ EOS
 
       xml = to_xml(node, "")
       today = Time.now.strftime('%Y-%m-%d')
-      xml.should == '<component id="component-schedule1">
-  <doc name="schedule1">
+      xml.should == '<attachment eId="att_1">
+  <heading>Schedule 1</heading>
+  <doc name="schedule">
     <meta>
       <identification source="#slaw">
         <FRBRWork>
-          <FRBRthis value="/za/act/1980/01/schedule1"/>
+          <FRBRthis value="/za/act/1980/01/!schedule1"/>
           <FRBRuri value="/za/act/1980/01"/>
           <FRBRalias value="Schedule 1"/>
           <FRBRdate date="1980-01-01" name="Generation"/>
@@ -282,14 +283,14 @@ EOS
           <FRBRcountry value="za"/>
         </FRBRWork>
         <FRBRExpression>
-          <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+          <FRBRthis value="/za/act/1980/01/eng@/!schedule1"/>
           <FRBRuri value="/za/act/1980/01/eng@"/>
           <FRBRdate date="1980-01-01" name="Generation"/>
           <FRBRauthor href="#council"/>
           <FRBRlanguage language="eng"/>
         </FRBRExpression>
         <FRBRManifestation>
-          <FRBRthis value="/za/act/1980/01/eng@/schedule1"/>
+          <FRBRthis value="/za/act/1980/01/eng@/!schedule1"/>
           <FRBRuri value="/za/act/1980/01/eng@"/>
           <FRBRdate date="' + today + '" name="Generation"/>
           <FRBRauthor href="#slaw"/>
@@ -297,35 +298,32 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer id="schedule1" name="schedule">
-        <heading>Schedule 1</heading>
-        <paragraph id="schedule1.paragraph0">
-          <content>
-            <p>Heres a table:</p>
-            <table id="schedule1.paragraph0.table1">
-              <tr>
-                <td>
-                  <p>r1c1</p>
-                </td>
-                <td>
-                  <p>r1c2</p>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <p>r2c1</p>
-                </td>
-                <td>
-                  <p>r2c2</p>
-                </td>
-              </tr>
-            </table>
-          </content>
-        </paragraph>
+      <hcontainer eId="hcontainer_1">
+        <content>
+          <p>Heres a table:</p>
+          <table eId="hcontainer_1__table_1">
+            <tr>
+              <td>
+                <p>r1c1</p>
+              </td>
+              <td>
+                <p>r1c2</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>r2c1</p>
+              </td>
+              <td>
+                <p>r2c2</p>
+              </td>
+            </tr>
+          </table>
+        </content>
       </hcontainer>
     </mainBody>
   </doc>
-</component>'
+</attachment>'
     end
 
     it 'should ignore an escaped table' do
@@ -336,14 +334,14 @@ EOS
 |}
 EOS
 
-      to_xml(node).should == '<paragraph id="paragraph0">
+      to_xml(node).should == '<hcontainer eId="hcontainer_1">
   <content>
     <p>{|</p>
     <p>| r1c1</p>
     <p>| r1c2</p>
     <p>|}</p>
   </content>
-</paragraph>'
+</hcontainer>'
     end
 
     it 'should allow a table as part of a subsection' do
@@ -353,10 +351,10 @@ EOS
 |}
 EOS
 
-      to_xml(node, '', 0).should == '<subsection id="1">
+      to_xml(node, '', 0).should == '<subsection eId="subsec_1">
   <num>(1)</num>
   <content>
-    <table id="1.table0">
+    <table eId="subsec_1__table_1">
       <tr>
         <td>
           <p>foo</p>
@@ -376,7 +374,7 @@ EOS
 |}
 EOS
 
-      to_xml(node, '', 0).should == '<table id="table0">
+      to_xml(node, '', 0).should == '<table eId="table_1">
   <tr>
     <td>
       <p>a <ref href="/a/b">link</ref> in a table</p>
@@ -396,7 +394,7 @@ EOS
 |}
 EOS
 
-      to_xml(node, '', 0).should == '<table id="table0">
+      to_xml(node, '', 0).should == '<table eId="table_1">
   <tr>
     <td>
       <p>a &gt; b</p>

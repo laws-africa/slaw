@@ -3,7 +3,9 @@ module Slaw
     module Tables
       class Table < Treetop::Runtime::SyntaxNode
         def to_xml(b, idprefix, i=0)
-          b.table(id: "#{idprefix}table#{i}") { |b|
+          cnt = Slaw::Grammars::Counters.counters[idprefix]['table'] += 1
+
+          b.table(eId: "#{idprefix}table_#{cnt}") { |b|
             # we'll gather cells into this row list
             rows = []
             cells = []

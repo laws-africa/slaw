@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
-  xmlns:a="http://www.akomantoso.org/2.0"
+  xmlns:a="http://docs.oasis-open.org/legaldocml/ns/akn/3.0"
   exclude-result-prefixes="a">
 
   <xsl:output method="text" indent="no" omit-xml-declaration="yes" />
@@ -42,6 +42,7 @@
     <xsl:apply-templates select="a:preamble" />
     <xsl:apply-templates select="a:body" />
     <xsl:apply-templates select="a:conclusions" />
+    <xsl:apply-templates select="a:attachments/a:attachment" />
   </xsl:template>
 
   <xsl:template match="a:preface">
@@ -163,9 +164,8 @@
   </xsl:template>
 
 
-  <!-- components/schedules -->
-  <!-- new-style schedules, "hcontainer" elements -->
-  <xsl:template match="a:hcontainer[@name='schedule']">
+  <!-- attachments/schedules -->
+  <xsl:template match="a:attachment">
     <xsl:text>SCHEDULE&#10;HEADING </xsl:text>
     <xsl:apply-templates select="a:heading" />
     <xsl:text>&#10;</xsl:text>
@@ -177,24 +177,7 @@
     </xsl:if>
 
     <xsl:text>&#10;&#10;</xsl:text>
-    <xsl:apply-templates select="./*[not(self::a:heading) and not(self::a:subheading)]" />
-  </xsl:template>
-
-
-  <!-- old-style schedules, "article" elements -->
-  <xsl:template match="a:doc/a:mainBody/a:article">
-    <xsl:text>SCHEDULE&#10;HEADING </xsl:text>
-    <xsl:value-of select="../../a:meta/a:identification/a:FRBRWork/a:FRBRalias/@value" />
-    <xsl:text>&#10;</xsl:text>
-
-    <xsl:if test="a:heading">
-      <xsl:text>SUBHEADING </xsl:text>
-      <xsl:apply-templates select="a:heading" />
-      <xsl:text>&#10;</xsl:text>
-    </xsl:if>
-
-    <xsl:text>&#10;</xsl:text>
-    <xsl:apply-templates select="./*[not(self::a:heading)]"/>
+    <xsl:apply-templates select="a:doc/a:mainBody" />
   </xsl:template>
 
 
@@ -203,7 +186,7 @@
     <xsl:text>{| </xsl:text>
 
     <!-- attributes -->
-    <xsl:for-each select="@*[local-name()!='id']">
+    <xsl:for-each select="@*[local-name()!='eId']">
       <xsl:value-of select="local-name(.)" />
       <xsl:text>="</xsl:text>
       <xsl:value-of select="." />

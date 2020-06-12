@@ -10,7 +10,7 @@ module Slaw
 
       class ScheduleContainer < Treetop::Runtime::SyntaxNode
         def to_xml(b, idprefix="")
-          b.components { |b| 
+          b.attachments { |b|
             schedules.children.elements.each_with_index { |e, i|
               e.to_xml(b, idprefix, i+1)
             }
@@ -86,6 +86,9 @@ module Slaw
         end
 
         def to_xml(b, idprefix=nil, i=1)
+          # reset counters for this new schedule document
+          Slaw::Grammars::Counters.reset!
+
           heading_text = self.schedule_title.heading_text
           if not heading_text
             heading_text = "Schedule"
@@ -95,12 +98,13 @@ module Slaw
           # the schedule id is derived from the heading
           schedule_id = self.schedule_id(heading_text, i)
 
-          b.component(id: "component-#{schedule_id}") { |b|
-            b.doc_(name: schedule_id) { |b|
+          b.attachment(eId: "att_#{i}") { |b|
+            schedule_title.to_xml(b, '', heading_text)
+            b.doc_(name: "schedule") { |b|
               b.meta { |b|
                 b.identification(source: "#slaw") { |b|
                   b.FRBRWork { |b|
-                    b.FRBRthis(value: "#{WORK_URI}/#{schedule_id}")
+                    b.FRBRthis(value: "#{WORK_URI}/!#{schedule_id}")
                     b.FRBRuri(value: WORK_URI)
                     b.FRBRalias(value: heading_text)
                     b.FRBRdate(date: '1980-01-01', name: 'Generation')
@@ -108,14 +112,14 @@ module Slaw
                     b.FRBRcountry(value: 'za')
                   }
                   b.FRBRExpression { |b|
-                    b.FRBRthis(value: "#{EXPRESSION_URI}/#{schedule_id}")
+                    b.FRBRthis(value: "#{EXPRESSION_URI}/!#{schedule_id}")
                     b.FRBRuri(value: EXPRESSION_URI)
                     b.FRBRdate(date: '1980-01-01', name: 'Generation')
                     b.FRBRauthor(href: '#council')
                     b.FRBRlanguage(language: 'eng')
                   }
                   b.FRBRManifestation { |b|
-                    b.FRBRthis(value: "#{MANIFESTATION_URI}/#{schedule_id}")
+                    b.FRBRthis(value: "#{MANIFESTATION_URI}/!#{schedule_id}")
                     b.FRBRuri(value: MANIFESTATION_URI)
                     b.FRBRdate(date: Time.now.strftime('%Y-%m-%d'), name: 'Generation')
                     b.FRBRauthor(href: '#slaw')
@@ -124,14 +128,7 @@ module Slaw
               }
 
               b.mainBody { |b| 
-                idprefix = "#{schedule_id}."
-
-                # there is no good AKN hierarchy container for schedules, so we
-                # use hcontainer instead
-                b.hcontainer(id: schedule_id, name: "schedule") { |b|
-                  schedule_title.to_xml(b, idprefix, heading_text)
-                  body.children.elements.each_with_index { |e| e.to_xml(b, idprefix, i) } if body.is_a? Body
-                }
+                body.children.elements.each_with_index { |e| e.to_xml(b, '', i) } if body.is_a? Body
               }
             }
           }

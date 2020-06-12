@@ -1,7 +1,8 @@
+require 'slaw/grammars/counters'
+
 module Slaw
   module Parse
     module Blocklists
-      include Slaw::Namespace
 
       def self.adjust_blocklists(doc)
         nest_blocklists(doc)
@@ -40,9 +41,9 @@ module Slaw
       #
       # @param doc [Nokogiri::XML::Document] the document
       def self.nest_blocklists(doc)
-        doc.xpath('//a:blockList[@renest]', a: NS).each do |blocklist|
+        doc.xpath('//a:blockList[@renest]', a: Slaw.akn_namespace).each do |blocklist|
           blocklist.remove_attribute('renest')
-          items = blocklist.xpath('a:item', a: NS)
+          items = blocklist.xpath('a:item', a: Slaw.akn_namespace)
           nest_blocklist_items(items.to_a, guess_number_format(items.first), nil, nil) unless items.empty?
         end
       end
@@ -53,7 +54,7 @@ module Slaw
         return if items.empty?
         item = items.shift
 
-        sublist_count = 0
+        sublist_count = 1
         number_format = our_number_format
 
         while item and item.name == 'item'
@@ -78,18 +79,18 @@ module Slaw
               # The blockList is inserted as a child of the sibling just before
               # +item+, and that sibling's content is moved into the
               # +listIntroduction+ of the new list.
-              sublist = item.document.create_element('blockList', id: prev['id'] + ".list#{sublist_count}")
+              sublist = item.document.create_element('blockList', eId: prev['eId'] + "__list_#{sublist_count}")
               sublist_count += 1
 
               # list intro
-              num = prev.at_xpath('a:num', a: NS)
+              num = prev.at_xpath('a:num', a: Slaw.akn_namespace)
               if intro = num.next_element
                 intro.name = 'listIntroduction'
                 sublist << intro
               end
 
               # make +item+ the first in this list
-              item['id'] = sublist['id'] + ".#{item.num.gsub(/[()]/, '')}"
+              item['eId'] = sublist['eId'] + "__item_#{Slaw::Grammars::Counters.clean(item.num)}"
               sublist << item
 
               # insert this list as a child of the previous item
@@ -112,7 +113,7 @@ module Slaw
               # keep it with this list
               if list
                 list << item
-                item['id'] = list['id'] + ".#{item.num.gsub(/[()]/, '')}"
+                item['eId'] = list['eId'] + "__item_#{Slaw::Grammars::Counters.clean(item.num)}"
               end
             end
           end
@@ -174,7 +175,7 @@ module Slaw
 
       # Change p tags preceding a blocklist into listIntroductions within the blocklist
       def self.fix_intros(doc)
-        doc.xpath('//a:blockList', a: NS).each do |blocklist|
+        doc.xpath('//a:blockList', a: Slaw.akn_namespace).each do |blocklist|
           prev = blocklist.previous
           if prev and prev.name == 'p'
             prev.name = 'listIntroduction'
