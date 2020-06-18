@@ -86,6 +86,10 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
+### 10.1.0 (18 June 2020)
+
+* hcontainer elements have name attributes, to be compliant with AKN 3.0
+
 ### 10.0.0 (12 June 2020)
 
 * BREAKING: Create XML with AKN 3 namespace (http://docs.oasis-open.org/legaldocml/ns/akn/3.0), AKN2 is no longer supported
