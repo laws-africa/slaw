@@ -314,7 +314,7 @@ module Slaw
             id = "#{idprefix}hcontainer_#{cnt}"
             idprefix = "#{id}__"
 
-            b.hcontainer(eId: id) { |b|
+            b.hcontainer(eId: id, name: 'hcontainer') { |b|
               b.content { |b|
                 elements.each_with_index { |e, i| e.to_xml(b, idprefix, i) }
               }
