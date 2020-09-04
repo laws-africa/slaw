@@ -71,6 +71,26 @@ module Slaw
         end
       end
 
+      class Superscript < Treetop::Runtime::SyntaxNode
+        def to_xml(b, idprefix)
+          b.sup { |b|
+            for e in content.elements
+              e.inline_item.to_xml(b, idprefix)
+            end
+          }
+        end
+      end
+
+      class Subscript < Treetop::Runtime::SyntaxNode
+        def to_xml(b, idprefix)
+          b.sub { |b|
+            for e in content.elements
+              e.inline_item.to_xml(b, idprefix)
+            end
+          }
+        end
+      end
+
     end
   end
 end

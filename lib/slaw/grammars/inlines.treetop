@@ -20,7 +20,7 @@ module Slaw
       end
 
       rule inline_item
-        remark / image / ref / bold / italics / [^\n]
+        remark / image / ref / bold / italics / superscript / subscript / [^\n]
         <InlineItem>
       end
 
@@ -55,6 +55,18 @@ module Slaw
         # eg. [link text](link url)
         '[' content:(!'](' inline_item)+ '](' href:([^)\n]+) ')'
         <Ref>
+      end
+
+      rule superscript
+        # ^^foo^^
+        '^^' content:(!'^^' inline_item)+ '^^'
+        <Superscript>
+      end
+
+      rule subscript
+        # _^foo^_
+        '_^' content:(!'^_' inline_item)+ '^_'
+        <Subscript>
       end
 
     end

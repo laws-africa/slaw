@@ -86,6 +86,11 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
+### 10.2.0 (4 September 2020)
+
+* support inline superscript `^^text^^`
+* support inline subscript `_^text^_`
+
 ### 10.1.0 (18 June 2020)
 
 * hcontainer elements have name attributes, to be compliant with AKN 3.0
