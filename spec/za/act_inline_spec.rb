@@ -498,4 +498,30 @@ EOS
     end
   end
 
+  describe 'superscript' do
+    it 'should handle superscript' do
+      node = parse :generic_container, <<EOS
+      Hello ^^super **bold** ^^ foo
+EOS
+      to_xml(node, "").should == '<hcontainer eId="hcontainer_1" name="hcontainer">
+  <content>
+    <p>Hello <sup>super <b>bold</b> </sup> foo</p>
+  </content>
+</hcontainer>'
+    end
+  end
+
+  describe 'subscript' do
+    it 'should handle subscript' do
+      node = parse :generic_container, <<EOS
+      Hello _^sub **bold** ^_ foo
+EOS
+      to_xml(node, "").should == '<hcontainer eId="hcontainer_1" name="hcontainer">
+  <content>
+    <p>Hello <sub>sub <b>bold</b> </sub> foo</p>
+  </content>
+</hcontainer>'
+    end
+  end
+
 end
