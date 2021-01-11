@@ -42,7 +42,7 @@ module Slaw
       # 3a bis -> 3abis
       def self.clean(num)
         # leading whitespace and punctuation
-        num.gsub!(/^[\s\u{2000}-\u{206f}\u{2e00}-\u{2e7f}!"#$%&'()*+,\-.\/:;<=>?@\[\]^_`{|}~]+/, '')
+        num = num.gsub(/^[\s\u{2000}-\u{206f}\u{2e00}-\u{2e7f}!"#$%&'()*+,\-.\/:;<=>?@\[\]^_`{|}~]+/, '')
         # trailing whitespace and punctuation
         num.gsub!(/[\s\u{2000}-\u{206f}\u{2e00}-\u{2e7f}!"#$%&'()*+,\-.\/:;<=>?@\[\]^_`{|}~]+$/, '')
         # whitespace

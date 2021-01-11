@@ -86,7 +86,7 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
-### 10.3.0 (8 January 2021)
+### 10.3.1 (11 January 2021)
 
 * Strip ascii, unicode general and unicode supplemental punctuation from num elements when building eIds
 
