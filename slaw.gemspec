@@ -25,5 +25,4 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "treetop", "~> 1.5"
   spec.add_runtime_dependency "log4r", "~> 1.1"
   spec.add_runtime_dependency "thor", "~> 0.20"
-  spec.add_runtime_dependency "mimemagic", "~> 0.2"
 end
