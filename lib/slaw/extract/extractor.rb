@@ -1,5 +1,3 @@
-require 'mimemagic'
-
 module Slaw
   module Extract
 
@@ -13,15 +11,10 @@ module Slaw
       #
       # @return [String] extracted text
       def extract_from_file(filename)
-        mimetype = get_mimetype(filename)
-
-        case mimetype && mimetype.type
-        when 'text/html'
+        if filename.end_with? '.html' or filename.end_with? '.htm'
           extract_from_html(filename)
-        when 'text/plain', nil
-          extract_from_text(filename)
         else
-          raise ArgumentError.new("Unsupported file type #{mimetype || 'unknown'}")
+          extract_from_text(filename)
         end
       end
 
