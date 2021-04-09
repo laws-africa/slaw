@@ -86,6 +86,10 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
+### 10.4.0 (9 April 2021)
+
+* Remove dependency on mimemagic. Guess file type based on filename instead.
+
 ### 10.3.1 (11 January 2021)
 
 * Strip ascii, unicode general and unicode supplemental punctuation from num elements when building eIds
