@@ -118,9 +118,9 @@ EOS
       node = parse :body, <<EOS
 \\1. ignored
 
-\\CROSSHEADING crossheading
+\\CROSSHEADING cross\\heading
 
-1. Section
+1. Sec\\tion
 \\Chapter 2 ignored
 EOS
       to_xml(node).should == '<body>

@@ -327,6 +327,17 @@ EOS
   </content>
 </hcontainer>'
     end
+
+    it 'should handle escapes in links' do
+      node = parse :generic_container, <<EOS
+      Visit the site [https:\\/\\/example.com](https://example.com) for more.
+EOS
+      to_xml(node, "").should == '<hcontainer eId="hcontainer_1" name="hcontainer">
+  <content>
+    <p>Visit the site <ref href="https://example.com">https://example.com</ref> for more.</p>
+  </content>
+</hcontainer>'
+    end
   end
 
   #-------------------------------------------------------------------------------
