@@ -20,7 +20,7 @@ module Slaw
       end
 
       rule inline_item
-        remark / image / ref / bold / italics / superscript / subscript / [^\n]
+        remark / image / ref / bold / italics / superscript / subscript / '\\'? [^\n]
         <InlineItem>
       end
 

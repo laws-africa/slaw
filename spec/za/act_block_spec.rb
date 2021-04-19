@@ -117,16 +117,19 @@ EOS
     it 'should handle escaped content' do
       node = parse :body, <<EOS
 \\1. ignored
+foo \\\\bar
 
 \\CROSSHEADING cross\\heading
 
 1. Sec\\tion
 \\Chapter 2 ignored
+Some text with a \\\\real backslash
 EOS
       to_xml(node).should == '<body>
   <hcontainer eId="hcontainer_1" name="hcontainer">
     <content>
       <p>1. ignored</p>
+      <p>foo \\bar</p>
       <p>CROSSHEADING crossheading</p>
     </content>
   </hcontainer>
@@ -136,6 +139,7 @@ EOS
     <hcontainer eId="sec_1__hcontainer_1" name="hcontainer">
       <content>
         <p>Chapter 2 ignored</p>
+        <p>Some text with a \\real backslash</p>
       </content>
     </hcontainer>
   </section>

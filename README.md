@@ -86,6 +86,10 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
+### 10.4.2 (14 April 2021)
+
+* Handle escaping inlines when unparsing.
+
 ### 10.4.1 (14 April 2021)
 
 * Handle escaping in inlines, so that forward slashes in link text are unescaped correctly, eg `[https:\/\/example.com](https://example.com)`

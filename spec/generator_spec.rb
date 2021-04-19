@@ -68,6 +68,9 @@ Some content.
             <p>(a) ignored</p>
             <p>(2a) ignored</p>
             <p>{| ignored</p>
+            <p>text \\ with slashes</p>
+            <p>some <b>inlines // <ref href="#foo">with // slashes</ref></b></p>
+            <p>inlines that ** should // be [[ escaped ![ and ]]</p>
           </content>
         </paragraph>
 XML
@@ -78,45 +81,51 @@ XML
 
 1. Section
 
-\Chapter 2 ignored
+\\Chapter 2 ignored
 
 Chapters
 
-\Part 2 ignored
+\\Part 2 ignored
 
 participation
 
-\Schedule 2 ignored
+\\Schedule 2 ignored
 
 Schedules
 
-\HEADING x
+\\HEADING x
 
-\SUBHEADING x
+\\SUBHEADING x
 
 BODY not escaped
 
-\BODY
+\\BODY
 
 PREAMBLE not escaped
 
-\PREAMBLE
+\\PREAMBLE
 
 PREFACE not escaped
 
-\PREFACE
+\\PREFACE
 
-\2. ignored
+\\2. ignored
 
-\2.1 ignored
+\\2.1 ignored
 
-\(2) ignored
+\\(2) ignored
 
-\(a) ignored
+\\(a) ignored
 
-\(2a) ignored
+\\(2a) ignored
 
-\{| ignored
+\\{| ignored
+
+text \\\\ with slashes
+
+some **inlines \\// [with \\// slashes](#foo)**
+
+inlines that \\** should \\// be \\[[ escaped \\![ and \\]]
 
 '
     end
@@ -148,7 +157,7 @@ XML
 
 1. Section
 
-\(2) A special meeting [[ foo ]]:
+\\(2) A special meeting [[ foo ]]:
 
 (a) the chairperson so directs; or
 
