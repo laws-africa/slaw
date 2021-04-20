@@ -146,13 +146,13 @@ XML
 
 text \\\\ with a single slash
 
-some **inlines \// [with \// slashes](#foo)**
+some **inlines \/\/ [with \/\/ slashes](#foo)**
 
-inlines that \** should \// be \[[ escaped \![ and \]]
+inlines that \*\* should \/\/ be \[\[ escaped \![ and \]\]
 
-refs [https:\//example.com with ] and \]( and **nested \****](#foo)
+refs [https:\/\/example.com with ] and \]( and **nested \*\***](#foo)
 
-super ^^with \^^^^ and sub _^\_^ with \^_^_
+super ^^with \^\^^^ and sub _^\_^ with \^_^_
 
 '
     end
