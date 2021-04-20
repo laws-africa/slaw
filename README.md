@@ -86,7 +86,7 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
-### 10.4.2 (14 April 2021)
+### 10.5.0 (20 April 2021)
 
 * Handle escaping inlines when unparsing.
 
