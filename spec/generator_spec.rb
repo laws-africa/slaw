@@ -68,9 +68,6 @@ Some content.
             <p>(a) ignored</p>
             <p>(2a) ignored</p>
             <p>{| ignored</p>
-            <p>text \\ with slashes</p>
-            <p>some <b>inlines // <ref href="#foo">with // slashes</ref></b></p>
-            <p>inlines that ** should // be [[ escaped ![ and ]]</p>
           </content>
         </paragraph>
 XML
@@ -121,11 +118,41 @@ PREFACE not escaped
 
 \\{| ignored
 
-text \\\\ with slashes
+'
+    end
 
-some **inlines \\// [with \\// slashes](#foo)**
+    it 'should escape inlines when unparsing' do
+      doc = xml2doc(section(<<'XML'
+        <num>1.</num>
+        <heading>Section</heading>
+        <paragraph id="section-1.paragraph-0">
+          <content>
+            <p>text \ with a single slash</p>
+            <p>some <b>inlines // <ref href="#foo">with // slashes</ref></b></p>
+            <p>inlines that ** should // be [[ escaped ![ and ]]</p>
+            <p>refs <ref href="#foo">https://example.com with ] and ]( and <b>nested **</b></ref></p>
+            <p>super <sup>with ^^</sup> and sub <sub>_^ with ^_</sub></p>
+          </content>
+        </paragraph>
+XML
+      ))
 
-inlines that \\** should \\// be \\[[ escaped \\![ and \\]]
+      text = subject.text_from_act(doc)
+      # NOTE: in single quoted strings, backslash sequences aren't considered special, EXCEPT a double backslash
+      # which is actually a single backslash. So \\ needs to be \\\\ while \* is just \*. The mind boggles.
+      text.should == 'BODY
+
+1. Section
+
+text \\\\ with a single slash
+
+some **inlines \// [with \// slashes](#foo)**
+
+inlines that \** should \// be \[[ escaped \![ and \]]
+
+refs [https:\//example.com with ] and \]( and **nested \****](#foo)
+
+super ^^with \^^^^ and sub _^\_^ with \^_^_
 
 '
     end
@@ -276,6 +303,15 @@ SUBHEADING Subheading [[another]]
 Subject to approval in terms of this By-Law.
 
 '
+    end
+  end
+
+  describe 'round trip' do
+    it 'should be idempotent for escapes' do
+      text = File.open('spec/fixtures/roundtrip-escapes.txt', 'r').read()
+      act = subject.generate_from_text(text)
+      xml = act.to_xml(encoding: 'utf-8')
+      subject.text_from_act(act).should == text
     end
   end
 end
