@@ -37,8 +37,12 @@ module Slaw
 
       class InlineItem < Treetop::Runtime::SyntaxNode
         def to_xml(b, idprefix)
-          # handle escaped characters foo\/bar -> foo/bar
-          b.text(text_value.gsub(/\\(.)?/, '\1'))
+          if text_value.start_with? '\\'
+            # handle escaped characters: \a -> a
+            b.text(text_value[1..])
+          else
+            b.text(text_value)
+          end
         end
       end
 

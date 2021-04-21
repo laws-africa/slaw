@@ -1,0 +1,20 @@
+BODY
+
+1. Section that tests escapes
+
+text \\ with a single slash
+
+some **inlines \/\/ [with \/\/ slashes](#foo)**
+
+inlines that \*\* should \/\/ be \[\[ escaped \![ and \]\]
+
+refs [https:\/\/example.com with ] and and \]( and **nested \*\* stars \*\***](#foo)
+
+nested ** stars \*\* in bold \*\***
+
+nested // slashes \/\/ in italics \/\///
+
+nested ** stars in // italics \*\* // and bold **
+
+super ^^with \^\^ hats \^\^^^ and sub _^\_^ with \^_ end tokens \^_^_
+
