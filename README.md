@@ -86,6 +86,10 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
+### 10.6.0 (10 May 2021)
+
+* Handle sup and sub when extracting from HTML.
+
 ### 10.5.0 (20 April 2021)
 
 * Handle escaping inlines when unparsing.
