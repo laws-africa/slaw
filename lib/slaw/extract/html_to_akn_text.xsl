@@ -11,7 +11,7 @@
 
   <xsl:template match="head|style|script|link" />
 
-  <xsl:template match="ul|ol">
+  <xsl:template match="ul|ol|section|article">
     <xsl:apply-templates />
     <xsl:text>&#10;</xsl:text>
   </xsl:template>
