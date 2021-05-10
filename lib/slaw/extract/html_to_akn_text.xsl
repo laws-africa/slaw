@@ -11,9 +11,10 @@
 
   <xsl:template match="head|style|script|link" />
 
+  <!-- block containers that end with newlines -->
   <xsl:template match="ul|ol|section|article">
     <xsl:apply-templates />
-    <xsl:text>&#10;</xsl:text>
+    <xsl:text>&#10;&#10;</xsl:text>
   </xsl:template>
 
   <xsl:template match="ul/li">
@@ -23,6 +24,7 @@
     <xsl:text>&#10;</xsl:text>
   </xsl:template>
 
+  <!-- numbered lists should include a number -->
   <xsl:template match="ol/li">
     <!-- 1. foo -->
     <xsl:text>\</xsl:text>
