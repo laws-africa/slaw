@@ -535,4 +535,17 @@ EOS
     end
   end
 
+  describe 'underline' do
+    it 'should handle underline' do
+      node = parse :generic_container, <<EOS
+      Text __with underline__ and _ under__scores__.
+EOS
+      to_xml(node, "").should == '<hcontainer eId="hcontainer_1" name="hcontainer">
+  <content>
+    <p>Text <u>with underline</u> and _ under<u>scores</u>.</p>
+  </content>
+</hcontainer>'
+    end
+  end
+
 end

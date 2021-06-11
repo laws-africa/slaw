@@ -240,6 +240,27 @@ Hello [there](/za/act/123) friend.
 '
     end
 
+    it 'should unparse underlines correctly' do
+      doc = xml2doc(section(<<XML
+        <num>1.</num>
+        <paragraph id="section-19.paragraph-0">
+          <content>
+            <p>Hello <u>underlined</u>.</p>
+          </content>
+        </paragraph>
+XML
+      ))
+
+      text = subject.text_from_act(doc)
+      text.should == 'BODY
+
+1. 
+
+Hello __underlined__.
+
+'
+    end
+
     it 'should replace eol with newlines in tables' do
       doc = xml2doc(section(<<XML
         <num>1.</num>

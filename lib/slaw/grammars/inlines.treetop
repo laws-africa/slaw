@@ -20,7 +20,7 @@ module Slaw
       end
 
       rule inline_item
-        remark / image / ref / bold / italics / superscript / subscript / '\\'? [^\n]
+        remark / image / ref / bold / italics / superscript / subscript / underline / '\\'? [^\n]
         <InlineItem>
       end
 
@@ -67,6 +67,12 @@ module Slaw
         # _^foo^_
         '_^' content:(!'^_' inline_item)+ '^_'
         <Subscript>
+      end
+
+      rule underline
+        # __foo__
+        '__' content:(!'__' inline_item)+ '__'
+        <Underline>
       end
 
     end

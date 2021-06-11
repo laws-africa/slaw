@@ -18,3 +18,7 @@ nested ** stars in // italics \*\* // and bold **
 
 super ^^with \^\^ hats \^\^^^ and sub _^\_^ with \^_ end tokens \^_^_
 
+underlines __underline with _ underscores__ and \_\_escaped underlines \_\_
+
+mixed __underline **and \_\_ bold**__
+

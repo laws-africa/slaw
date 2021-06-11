@@ -96,6 +96,15 @@ module Slaw
         end
       end
 
+      class Underline < Treetop::Runtime::SyntaxNode
+        def to_xml(b, idprefix)
+          b.u { |b|
+            for e in content.elements
+              e.inline_item.to_xml(b, idprefix)
+            end
+          }
+        end
+      end
     end
   end
 end
