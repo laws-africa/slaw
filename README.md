@@ -86,6 +86,10 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
+### 10.7.0 (11 June 2021)
+
+* Support underlines with `__text__`
+
 ### 10.6.0 (10 May 2021)
 
 * Handle sup and sub when extracting from HTML.
