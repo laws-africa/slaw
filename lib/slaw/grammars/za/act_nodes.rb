@@ -377,13 +377,11 @@ module Slaw
 
         class Crossheading < Treetop::Runtime::SyntaxNode
           def to_xml(b, idprefix, i=0)
-            cnt = Slaw::Grammars::Counters.counters[idprefix]['hcontainer'] += 1
-            id = "#{idprefix}hcontainer_#{cnt}"
+            cnt = Slaw::Grammars::Counters.counters[idprefix]['crossHeading'] += 1
+            id = "#{idprefix}crossHeading_#{cnt}"
 
-            b.hcontainer(eId: id, name: 'crossheading') { |b|
-              b.heading { |b|
+            b.crossHeading(eId: id) { |b|
                 inline_items.to_xml(b, idprefix)
-              }
             }
           end
         end

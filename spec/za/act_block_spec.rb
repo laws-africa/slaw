@@ -59,9 +59,7 @@ EOS
         <p>Hello there</p>
       </content>
     </hcontainer>
-    <hcontainer eId="sec_1__hcontainer_2" name="crossheading">
-      <heading>crossheading</heading>
-    </hcontainer>
+    <crossHeading eId="sec_1__crossHeading_1">crossheading</crossHeading>
   </section>
 </body>'
     end
@@ -96,9 +94,7 @@ EOS
       </blockList>
     </content>
   </hcontainer>
-  <hcontainer eId="hcontainer_2" name="crossheading">
-    <heading>crossheading</heading>
-  </hcontainer>
+  <crossHeading eId="crossHeading_1">crossheading</crossHeading>
   <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
@@ -107,9 +103,7 @@ EOS
         <p>Hello there</p>
       </content>
     </hcontainer>
-    <hcontainer eId="sec_1__hcontainer_2" name="crossheading">
-      <heading>crossheading</heading>
-    </hcontainer>
+    <crossHeading eId="sec_1__crossHeading_1">crossheading</crossHeading>
   </section>
 </body>'
     end
@@ -260,10 +254,8 @@ EOS
       to_xml(node).should == '<chapter eId="chp_2">
   <num>2</num>
   <heading>The Chapter Heading</heading>
-  <hcontainer eId="chp_2__hcontainer_1" name="crossheading">
-    <heading>crossheading</heading>
-  </hcontainer>
-  <hcontainer eId="chp_2__hcontainer_2" name="hcontainer">
+  <crossHeading eId="chp_2__crossHeading_1">crossheading</crossHeading>
+  <hcontainer eId="chp_2__hcontainer_1" name="hcontainer">
     <content>
       <p>Some lines at the start of the chapter.</p>
     </content>
@@ -489,9 +481,7 @@ EOS
       to_xml(node).should == '<part eId="part_2">
   <num>2</num>
   <heading>The Part Heading</heading>
-  <hcontainer eId="part_2__hcontainer_1" name="crossheading">
-    <heading>crossheading</heading>
-  </hcontainer>
+  <crossHeading eId="part_2__crossHeading_1">crossheading</crossHeading>
   <section eId="sec_1">
     <num>1.</num>
     <heading>Section</heading>
@@ -1872,9 +1862,7 @@ EOS
   context 'crossheadings' do
     it 'should handle a inline_items in crossheadings' do
       node = parse :crossheading, "CROSSHEADING something [[remark]] [link](/foo/bar)\n"
-      to_xml(node, '').should == '<hcontainer eId="hcontainer_1" name="crossheading">
-  <heading>something <remark status="editorial">[remark]</remark> <ref href="/foo/bar">link</ref></heading>
-</hcontainer>'
+      to_xml(node, '').should == '<crossHeading eId="crossHeading_1">something <remark status="editorial">[remark]</remark> <ref href="/foo/bar">link</ref></crossHeading>'
     end
 
     it 'should not be allowed in preface' do
@@ -1924,9 +1912,7 @@ Text
     <p>Some text</p>
   </preface>
   <body>
-    <hcontainer eId="hcontainer_1" name="crossheading">
-      <heading>In the body</heading>
-    </hcontainer>
+    <crossHeading eId="crossHeading_1">In the body</crossHeading>
     <section eId="sec_1">
       <num>1.</num>
       <heading>Section 1</heading>
@@ -1987,9 +1973,7 @@ Text
     <p>Some text</p>
   </preamble>
   <body>
-    <hcontainer eId="hcontainer_1" name="crossheading">
-      <heading>In the body</heading>
-    </hcontainer>
+    <crossHeading eId="crossHeading_1">In the body</crossHeading>
     <section eId="sec_1">
       <num>1.</num>
       <heading>Section 1</heading>
