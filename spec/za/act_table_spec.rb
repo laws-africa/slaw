@@ -298,10 +298,10 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer eId="hcontainer_1" name="hcontainer">
+      <hcontainer eId="att_1__hcontainer_1" name="hcontainer">
         <content>
           <p>Heres a table:</p>
-          <table eId="hcontainer_1__table_1">
+          <table eId="att_1__hcontainer_1__table_1">
             <tr>
               <td>
                 <p>r1c1</p>

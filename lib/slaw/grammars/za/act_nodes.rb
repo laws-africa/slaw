@@ -234,8 +234,14 @@ module Slaw
             section_title.num
           end
 
-          def to_xml(b, *args)
+          def to_xml(b, idprefix='', *args)
             id = "sec_#{Slaw::Grammars::Counters.clean(num)}"
+            # For historical reasons, we normally ignore the idprefix for sections, assuming
+            # them to be unique. However, in an attachment (eg. a schedule), ensure they
+            # are correctly prefixed
+            # TODO: always include the idprefix
+            id = idprefix + id if idprefix.start_with? 'att_'
+
             b.section(eId: id) { |b|
               section_title.to_xml(b)
 
