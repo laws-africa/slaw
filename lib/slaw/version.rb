@@ -1,3 +1,3 @@
 module Slaw
-  VERSION = "10.8.0"
+  VERSION = "11.0.0"
 end
