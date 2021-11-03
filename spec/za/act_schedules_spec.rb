@@ -88,11 +88,11 @@ EOS
         </identification>
       </meta>
       <mainBody>
-        <section eId="sec_1">
+        <section eId="att_1__sec_1">
           <num>1.</num>
           <heading>Foo</heading>
         </section>
-        <section eId="sec_2">
+        <section eId="att_1__sec_2">
           <num>2.</num>
           <heading>Bar</heading>
         </section>
@@ -129,7 +129,7 @@ EOS
         </identification>
       </meta>
       <mainBody>
-        <hcontainer eId="hcontainer_1" name="hcontainer">
+        <hcontainer eId="att_2__hcontainer_1" name="hcontainer">
           <content>
             <p>Baz</p>
             <p>Boom</p>
@@ -186,16 +186,16 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer eId="hcontainer_1" name="hcontainer">
+      <hcontainer eId="att_1__hcontainer_1" name="hcontainer">
         <content>
           <p>Subject to approval in terms of this By-Law, the erection:</p>
         </content>
       </hcontainer>
-      <section eId="sec_1">
+      <section eId="att_1__sec_1">
         <num>1.</num>
         <heading>Foo</heading>
       </section>
-      <section eId="sec_2">
+      <section eId="att_1__sec_2">
         <num>2.</num>
         <heading>Bar</heading>
       </section>
@@ -246,16 +246,16 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer eId="hcontainer_1" name="hcontainer">
+      <hcontainer eId="att_1__hcontainer_1" name="hcontainer">
         <content>
           <p>Subject to approval in terms of this By-Law, the erection:</p>
         </content>
       </hcontainer>
-      <section eId="sec_1">
+      <section eId="att_1__sec_1">
         <num>1.</num>
         <heading>Foo</heading>
       </section>
-      <section eId="sec_2">
+      <section eId="att_1__sec_2">
         <num>2.</num>
         <heading>Bar</heading>
       </section>
@@ -304,16 +304,16 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer eId="hcontainer_1" name="hcontainer">
+      <hcontainer eId="att_1__hcontainer_1" name="hcontainer">
         <content>
           <p>Subject to approval in terms of this By-Law, the erection:</p>
         </content>
       </hcontainer>
-      <section eId="sec_1">
+      <section eId="att_1__sec_1">
         <num>1.</num>
         <heading>Foo</heading>
       </section>
-      <section eId="sec_2">
+      <section eId="att_1__sec_2">
         <num>2.</num>
         <heading>Bar</heading>
       </section>
@@ -372,19 +372,19 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <part eId="part_I">
+      <part eId="att_1__part_I">
         <num>I</num>
         <heading>Form of authentication statement</heading>
-        <hcontainer eId="part_I__hcontainer_1" name="hcontainer">
+        <hcontainer eId="att_1__part_I__hcontainer_1" name="hcontainer">
           <content>
             <p>This printed impression has been carefully compared by me with the bill which was passed by Parliament and found by me to be a true copy of the bill.</p>
           </content>
         </hcontainer>
       </part>
-      <part eId="part_II">
+      <part eId="att_1__part_II">
         <num>II</num>
         <heading>Form of statement of the President’s assent.</heading>
-        <hcontainer eId="part_II__hcontainer_1" name="hcontainer">
+        <hcontainer eId="att_1__part_II__hcontainer_1" name="hcontainer">
           <content>
             <p>I signify my assent to the bill and a whole bunch of other stuff.</p>
           </content>
@@ -447,7 +447,7 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer eId="hcontainer_1" name="hcontainer">
+      <hcontainer eId="att_1__hcontainer_1" name="hcontainer">
         <content>
           <p>Subject to approval in terms of this By-Law.</p>
           <p>Schedule another</p>
@@ -499,7 +499,7 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer eId="hcontainer_1" name="hcontainer">
+      <hcontainer eId="att_1__hcontainer_1" name="hcontainer">
         <content>
           <p>Subject to approval in terms of this By-Law.</p>
         </content>
@@ -550,16 +550,16 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer eId="hcontainer_1" name="hcontainer">
+      <hcontainer eId="att_1__hcontainer_1" name="hcontainer">
         <content>
           <p>Subject to approval in terms of this By-Law, the erection:</p>
         </content>
       </hcontainer>
-      <section eId="sec_1">
+      <section eId="att_1__sec_1">
         <num>1.</num>
         <heading>Foo</heading>
       </section>
-      <section eId="sec_2">
+      <section eId="att_1__sec_2">
         <num>2.</num>
         <heading>Bar</heading>
       </section>
@@ -608,12 +608,12 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer eId="hcontainer_1" name="hcontainer">
+      <hcontainer eId="att_1__hcontainer_1" name="hcontainer">
         <content>
           <p>Subject to approval in terms of this By-Law, the erection:</p>
         </content>
       </hcontainer>
-      <section eId="sec_1">
+      <section eId="att_1__sec_1">
         <num>1.</num>
         <heading>Foo</heading>
       </section>
@@ -665,16 +665,16 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer eId="hcontainer_1" name="hcontainer">
+      <hcontainer eId="att_1__hcontainer_1" name="hcontainer">
         <content>
           <p>Subject to approval in terms of this By-Law, the erection:</p>
         </content>
       </hcontainer>
-      <section eId="sec_1">
+      <section eId="att_1__sec_1">
         <num>1.</num>
         <heading>Foo</heading>
       </section>
-      <section eId="sec_2">
+      <section eId="att_1__sec_2">
         <num>2.</num>
         <heading>Bar</heading>
       </section>
@@ -729,11 +729,11 @@ EOS
         </identification>
       </meta>
       <mainBody>
-        <section eId="sec_1">
+        <section eId="att_1__sec_1">
           <num>1.</num>
           <heading>Foo</heading>
         </section>
-        <section eId="sec_2">
+        <section eId="att_1__sec_2">
           <num>2.</num>
           <heading>Bar</heading>
         </section>
@@ -770,7 +770,7 @@ EOS
         </identification>
       </meta>
       <mainBody>
-        <hcontainer eId="hcontainer_1" name="hcontainer">
+        <hcontainer eId="att_2__hcontainer_1" name="hcontainer">
           <content>
             <p>Baz</p>
             <p>Boom</p>
@@ -826,16 +826,16 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer eId="hcontainer_1" name="hcontainer">
+      <hcontainer eId="att_1__hcontainer_1" name="hcontainer">
         <content>
           <p>Subject to approval in terms of this By-Law, the erection:</p>
         </content>
       </hcontainer>
-      <section eId="sec_1">
+      <section eId="att_1__sec_1">
         <num>1.</num>
         <heading>Foo</heading>
       </section>
-      <section eId="sec_2">
+      <section eId="att_1__sec_2">
         <num>2.</num>
         <heading>Bar</heading>
       </section>
@@ -885,16 +885,16 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer eId="hcontainer_1" name="hcontainer">
+      <hcontainer eId="att_1__hcontainer_1" name="hcontainer">
         <content>
           <p>Subject to approval in terms of this By-Law, the erection:</p>
         </content>
       </hcontainer>
-      <section eId="sec_1">
+      <section eId="att_1__sec_1">
         <num>1.</num>
         <heading>Foo</heading>
       </section>
-      <section eId="sec_2">
+      <section eId="att_1__sec_2">
         <num>2.</num>
         <heading>Bar</heading>
       </section>
@@ -942,16 +942,16 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer eId="hcontainer_1" name="hcontainer">
+      <hcontainer eId="att_1__hcontainer_1" name="hcontainer">
         <content>
           <p>Subject to approval in terms of this By-Law, the erection:</p>
         </content>
       </hcontainer>
-      <section eId="sec_1">
+      <section eId="att_1__sec_1">
         <num>1.</num>
         <heading>Foo</heading>
       </section>
-      <section eId="sec_2">
+      <section eId="att_1__sec_2">
         <num>2.</num>
         <heading>Bar</heading>
       </section>
@@ -1001,16 +1001,16 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer eId="hcontainer_1" name="hcontainer">
+      <hcontainer eId="att_1__hcontainer_1" name="hcontainer">
         <content>
           <p>Other than as is set out hereinbelow, no signs other than locality bound signs, temporary signs including loose portable sign, estate agents signs, newspaper headline posters and posters (the erection of which must comply with the appropriate schedules pertinent thereto) shall be erected on Municipal owned land.</p>
         </content>
       </hcontainer>
-      <section eId="sec_1">
+      <section eId="att_1__sec_1">
         <num>1.</num>
         <heading>Foo</heading>
       </section>
-      <section eId="sec_2">
+      <section eId="att_1__sec_2">
         <num>2.</num>
         <heading>Bar</heading>
       </section>
@@ -1060,7 +1060,7 @@ EOS
       </identification>
     </meta>
     <mainBody>
-      <hcontainer eId="hcontainer_1" name="hcontainer">
+      <hcontainer eId="att_1__hcontainer_1" name="hcontainer">
         <content>
           <p>Subject to approval in terms of this By-Law.</p>
         </content>

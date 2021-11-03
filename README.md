@@ -86,6 +86,11 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
+### 11.0.0 (2021-10-29)
+
+* Prefix eId attributes in attachments with attachement's eId
+* Use crossHeading element for crossheadings
+
 ### 10.7.0 (11 June 2021)
 
 * Support underlines with `__text__`

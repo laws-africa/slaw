@@ -234,8 +234,14 @@ module Slaw
             section_title.num
           end
 
-          def to_xml(b, *args)
+          def to_xml(b, idprefix='', *args)
             id = "sec_#{Slaw::Grammars::Counters.clean(num)}"
+            # For historical reasons, we normally ignore the idprefix for sections, assuming
+            # them to be unique. However, in an attachment (eg. a schedule), ensure they
+            # are correctly prefixed
+            # TODO: always include the idprefix
+            id = idprefix + id if idprefix.start_with? 'att_'
+
             b.section(eId: id) { |b|
               section_title.to_xml(b)
 
@@ -371,13 +377,11 @@ module Slaw
 
         class Crossheading < Treetop::Runtime::SyntaxNode
           def to_xml(b, idprefix, i=0)
-            cnt = Slaw::Grammars::Counters.counters[idprefix]['hcontainer'] += 1
-            id = "#{idprefix}hcontainer_#{cnt}"
+            cnt = Slaw::Grammars::Counters.counters[idprefix]['crossHeading'] += 1
+            id = "#{idprefix}crossHeading_#{cnt}"
 
-            b.hcontainer(eId: id, name: 'crossheading') { |b|
-              b.heading { |b|
+            b.crossHeading(eId: id) { |b|
                 inline_items.to_xml(b, idprefix)
-              }
             }
           end
         end

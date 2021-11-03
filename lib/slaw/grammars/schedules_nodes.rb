@@ -97,8 +97,9 @@ module Slaw
 
           # the schedule id is derived from the heading
           schedule_id = self.schedule_id(heading_text, i)
+          eId = "att_#{i}"
 
-          b.attachment(eId: "att_#{i}") { |b|
+          b.attachment(eId: eId) { |b|
             schedule_title.to_xml(b, '', heading_text)
             b.doc_(name: "schedule") { |b|
               b.meta { |b|
@@ -128,7 +129,7 @@ module Slaw
               }
 
               b.mainBody { |b| 
-                body.children.elements.each_with_index { |e| e.to_xml(b, '', i) } if body.is_a? Body
+                body.children.elements.each_with_index { |e| e.to_xml(b, eId + "__", i) } if body.is_a? Body
               }
             }
           }
