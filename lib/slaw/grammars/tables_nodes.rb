@@ -67,7 +67,7 @@ module Slaw
           #   for the first line, eat whitespace at the start
           #   for the last line, eat whitespace at the end
           if not tail and (i > 0 or not inline_items.empty?)
-            eol.text_value.count("\n").times { b.eol }
+            eol.text_value.count("\n").times { b.br }
           end
         end
       end
