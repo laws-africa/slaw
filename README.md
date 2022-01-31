@@ -86,7 +86,11 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
-### 11.0.0 (2021-10-29)
+### 12.0.0 (31 January 2022)
+
+* Use `<br/>` for newlines in tables, rather than `<eol/>`, since it's more semantically correct.
+
+### 11.0.0 (29 October 2021)
 
 * Prefix eId attributes in attachments with attachement's eId
 * Use crossHeading element for crossheadings

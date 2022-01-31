@@ -261,17 +261,17 @@ Hello __underlined__.
 '
     end
 
-    it 'should replace eol with newlines in tables' do
+    it 'should replace eol and br with newlines in tables' do
       doc = xml2doc(section(<<XML
         <num>1.</num>
         <table eId="sec__21_table_1">
           <tr>
             <td>
-              <p>foo<eol/>bar<eol/>baz</p>
+              <p>foo<eol/>bar<br/>baz</p>
             </td>
             <td>
               <p>
-              one<eol/>two<eol/>three
+              one<br/>two<eol/>three
 
               </p>
             </td>

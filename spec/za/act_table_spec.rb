@@ -151,10 +151,10 @@ EOS
       to_xml(node, "prefix__").should == '<table eId="prefix__table_1">
   <tr>
     <td>
-      <p>foo<eol/>bar<eol/><eol/>baz</p>
+      <p>foo<br/>bar<br/><br/>baz</p>
     </td>
     <td>
-      <p>one<eol/>two<eol/><eol/>three</p>
+      <p>one<br/>two<br/><br/>three</p>
     </td>
     <td>
       <p>four</p>
@@ -176,7 +176,7 @@ EOS
       to_xml(node, "prefix__").should == '<table eId="prefix__table_1">
   <tr>
     <th>
-      <p>foo<eol/>three</p>
+      <p>foo<br/>three</p>
     </th>
   </tr>
   <tr>
@@ -380,7 +380,7 @@ EOS
       <p>a <ref href="/a/b">link</ref> in a table</p>
     </td>
     <td>
-      <p><ref href="/a/b">link</ref> and<eol/><remark status="editorial">[comment]</remark></p>
+      <p><ref href="/a/b">link</ref> and<br/><remark status="editorial">[comment]</remark></p>
     </td>
   </tr>
 </table>'
