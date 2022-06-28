@@ -36,7 +36,7 @@ module Slaw
             b.identification(source: "#slaw") { |b|
               # use stub values so that we can generate a validating document
               b.FRBRWork { |b|
-                b.FRBRthis(value: "#{WORK_URI}/main")
+                b.FRBRthis(value: "#{WORK_URI}/!main")
                 b.FRBRuri(value: WORK_URI)
                 b.FRBRalias(value: 'Short Title', name: 'title')
                 b.FRBRdate(date: '1980-01-01', name: 'Generation')
@@ -44,14 +44,14 @@ module Slaw
                 b.FRBRcountry(value: 'za')
               }
               b.FRBRExpression { |b|
-                b.FRBRthis(value: "#{EXPRESSION_URI}/main")
+                b.FRBRthis(value: "#{EXPRESSION_URI}/!main")
                 b.FRBRuri(value: EXPRESSION_URI)
                 b.FRBRdate(date: '1980-01-01', name: 'Generation')
                 b.FRBRauthor(href: '#council')
                 b.FRBRlanguage(language: 'eng')
               }
               b.FRBRManifestation { |b|
-                b.FRBRthis(value: "#{MANIFESTATION_URI}/main")
+                b.FRBRthis(value: "#{MANIFESTATION_URI}/!main")
                 b.FRBRuri(value: MANIFESTATION_URI)
                 b.FRBRdate(date: Time.now.strftime('%Y-%m-%d'), name: 'Generation')
                 b.FRBRauthor(href: '#slaw')
