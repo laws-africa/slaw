@@ -86,6 +86,10 @@ You can create your own grammar by creating a gem that provides these files and 
 
 ## Changelog
 
+### 13.0.0 (28 June 2022)
+
+* Generate correct `.../!main` in FRBR URIs.
+
 ### 12.0.0 (31 January 2022)
 
 * Use `<br/>` for newlines in tables, rather than `<eol/>`, since it's more semantically correct.

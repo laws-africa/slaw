@@ -1244,7 +1244,7 @@ baz
   <meta>
     <identification source="#slaw">
       <FRBRWork>
-        <FRBRthis value="/za/act/1980/01/main"/>
+        <FRBRthis value="/za/act/1980/01/!main"/>
         <FRBRuri value="/za/act/1980/01"/>
         <FRBRalias value="Short Title" name="title"/>
         <FRBRdate date="1980-01-01" name="Generation"/>
@@ -1252,14 +1252,14 @@ baz
         <FRBRcountry value="za"/>
       </FRBRWork>
       <FRBRExpression>
-        <FRBRthis value="/za/act/1980/01/eng@/main"/>
+        <FRBRthis value="/za/act/1980/01/eng@/!main"/>
         <FRBRuri value="/za/act/1980/01/eng@"/>
         <FRBRdate date="1980-01-01" name="Generation"/>
         <FRBRauthor href="#council"/>
         <FRBRlanguage language="eng"/>
       </FRBRExpression>
       <FRBRManifestation>
-        <FRBRthis value="/za/act/1980/01/eng@/main"/>
+        <FRBRthis value="/za/act/1980/01/eng@/!main"/>
         <FRBRuri value="/za/act/1980/01/eng@"/>
         <FRBRdate date="' + today + '" name="Generation"/>
         <FRBRauthor href="#slaw"/>
@@ -1882,7 +1882,7 @@ Text
   <meta>
     <identification source="#slaw">
       <FRBRWork>
-        <FRBRthis value="/za/act/1980/01/main"/>
+        <FRBRthis value="/za/act/1980/01/!main"/>
         <FRBRuri value="/za/act/1980/01"/>
         <FRBRalias value="Short Title" name="title"/>
         <FRBRdate date="1980-01-01" name="Generation"/>
@@ -1890,14 +1890,14 @@ Text
         <FRBRcountry value="za"/>
       </FRBRWork>
       <FRBRExpression>
-        <FRBRthis value="/za/act/1980/01/eng@/main"/>
+        <FRBRthis value="/za/act/1980/01/eng@/!main"/>
         <FRBRuri value="/za/act/1980/01/eng@"/>
         <FRBRdate date="1980-01-01" name="Generation"/>
         <FRBRauthor href="#council"/>
         <FRBRlanguage language="eng"/>
       </FRBRExpression>
       <FRBRManifestation>
-        <FRBRthis value="/za/act/1980/01/eng@/main"/>
+        <FRBRthis value="/za/act/1980/01/eng@/!main"/>
         <FRBRuri value="/za/act/1980/01/eng@"/>
         <FRBRdate date="' + today + '" name="Generation"/>
         <FRBRauthor href="#slaw"/>
@@ -1943,7 +1943,7 @@ Text
   <meta>
     <identification source="#slaw">
       <FRBRWork>
-        <FRBRthis value="/za/act/1980/01/main"/>
+        <FRBRthis value="/za/act/1980/01/!main"/>
         <FRBRuri value="/za/act/1980/01"/>
         <FRBRalias value="Short Title" name="title"/>
         <FRBRdate date="1980-01-01" name="Generation"/>
@@ -1951,14 +1951,14 @@ Text
         <FRBRcountry value="za"/>
       </FRBRWork>
       <FRBRExpression>
-        <FRBRthis value="/za/act/1980/01/eng@/main"/>
+        <FRBRthis value="/za/act/1980/01/eng@/!main"/>
         <FRBRuri value="/za/act/1980/01/eng@"/>
         <FRBRdate date="1980-01-01" name="Generation"/>
         <FRBRauthor href="#council"/>
         <FRBRlanguage language="eng"/>
       </FRBRExpression>
       <FRBRManifestation>
-        <FRBRthis value="/za/act/1980/01/eng@/main"/>
+        <FRBRthis value="/za/act/1980/01/eng@/!main"/>
         <FRBRuri value="/za/act/1980/01/eng@"/>
         <FRBRdate date="' + today + '" name="Generation"/>
         <FRBRauthor href="#slaw"/>
